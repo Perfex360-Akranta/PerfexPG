@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="GenTlSusamstNew" name="com.akranta.tpm.model.GenTlSusamstNew" >
+		<validate For="create update">
+			<property name="SusnFlid" type="String" required="true" />
+			<property name="SusnDate" type="Date"   LECD="true"/>
+			<property name="SusnPreparedby" type="String" required="true" />
+			<property name="SusnPersonRole" type="String" required="true" />
+			<property name="SusnDiscussionType" type="String" required="true" />
+			<property name="SusnDiscussionSumm" type="String" required="true" />
+			<property name="SusnSusaDoneJh" type="String" required="true" />
+	</validate>
+	</class>	
+	</validations>

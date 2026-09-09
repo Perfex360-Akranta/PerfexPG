@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="GenTlLocationmst" name="com.akranta.tpm.model.GenTlLocationmst" >
+		<validate For="create update location">
+		
+			<property name="LocnName" type="String" required="true"/>
+			<property name="LocnCode" type="String" required="true"/>
+			<property name="LocnCompanyid" type="String" required="true"/>
+			
+		</validate>	
+	</class>
+</validations>

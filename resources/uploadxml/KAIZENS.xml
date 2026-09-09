@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<uploadData file="KAIZENS" format="" maxRecords="0" name="KAIZENS" sheet="KAIZENS" startFromRow="2" totalFields="28">
+    <UploadTable name="KZN_TL_MST">
+        <field defaultValue="-" excelColHeader="KZN NO" excelColIndex="0" name="KZNM_KEYID" required="true" size="20" type="text" unique="true"/>
+        <field dateFormat="DD-Mon-YYYY" defaultValue="01-Jan-1801" excelColIndex="-1" name="KZNM_DATE" size="7" type="date"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_FACTORYID" size="10" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_TPMPILLARID" size="15" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_SECTIONID" size="10" type="text"/>
+        <field defaultValue="-" excelColHeader="JH Code" excelColIndex="1" refInsert="false" name="KZNM_CELLID" refCol="CELL_KEYID" refWhereCol="CELL_CODE" references="GEN_TL_CELLMST" size="10" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_MACHINEID" size="10" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_LOSSID" size="15" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_RESULTAREA" size="10" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_TEAMMEMBERS" size="150" type="text"/>
+        <field defaultValue="-" excelColHeader="Theme" excelColIndex="2" name="KZNM_THEME" required="true" size="250" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_THEMECATEGORYID" size="15" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_BENCHMARK" size="30" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_TARGET" size="30" type="text"/>
+        <field dateFormat="DD-Mon-YYYY" defaultValue="01-Jan-1801" excelColHeader="Start Date" excelColIndex="5" name="KZNM_STARTDATE" required="true" size="7" type="date"/>
+        <field dateFormat="DD-Mon-YYYY" defaultValue="01-Jan-1801" excelColIndex="-1" name="KZNM_ENDDATE" size="7" type="date"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_PRESENTPROBLEM" size="250" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_PRESENTIMAGE" size="100" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_WWMS_KEYID" size="15" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_ROOTCAUSE" size="250" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_IDEA" size="250" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_COUNTERMEASURE" size="250" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_AFTERIMAGE" size="100" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_RESULTDESCRIPTION" size="250" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_RESULTIMAGE" size="100" type="text"/>
+        <field defaultValue="-" excelColHeader="Benefits" excelColIndex="17" name="KZNM_BENEFITS" size="250" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_BENEFITSIMAGE" size="100" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_ISPROVIDINGCHANGING" size="1" type="date"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_REVERSIBLEIRREVERSIBLE" size="1" type="date"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_KAIZENLINK" size="1" type="date"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_KAIZENLINKTYPE" size="3" type="date"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_ASSEMBLYID" size="9" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_PHENOMENAID" size="8" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_CAUSEID" size="9" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_MATERIALCOST" size="75" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_LABOURCOST" size="75" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_HOWTOSUSTAIN" size="250" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_ADDITIONALDETAILS" size="250" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_ADDITIONALIMAGE" size="100" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_ISHDPOSSIBLE" size="1" type="date"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_NOOFHDS" size="10" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_PREPAREDID" size="15" type="text"/>
+        <field dateFormat="DD-Mon-YYYY" defaultValue="01-Jan-1801" excelColIndex="-1" name="KZNM_PREPAREDDATE" size="7" type="date"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_APPROVEDID" size="15" type="text"/>
+        <field dateFormat="DD-Mon-YYYY" defaultValue="01-Jan-1801" excelColIndex="-1" name="KZNM_APPROVEDDATE" size="7" type="date"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_ISWOREQUIRED" size="1" type="date"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_REFDOCTYPE" size="15" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_REFDOCNO" size="20" type="text"/>
+        <field defaultValue="-" excelColHeader="Status" excelColIndex="27" name="KZNM_STATUS" size="1" type="date"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_WOID" size="15" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_WOFEEDBACKID" size="15" type="text"/>
+        <field dateFormat="DD-Mon-YYYY" defaultValue="01-Jan-1801" excelColIndex="-1" name="KZNM_COMPLETEDDATE" size="7" type="date"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_COMPLETEDID" size="15" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_REMARKS" size="250" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_OPERATIONS" size="250" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_WHATTOSUSTAIN" size="500" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_SUSTAINFREQ" size="250" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_TOTALCOST" size="75" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_CIRCLEID" size="20" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_DEPARTMENTID" size="20" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_COSTCENTREID" size="50" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_ISTPMKZN" size="1" type="date"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_MATERIALNO" size="20" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_ISWORTHFORMP" size="1" type="date"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_CREATIONFLAG" size="1" type="date"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_RELATEDTO" size="3" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_MOULDID" size="10" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_ELEMENTID" size="250" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_FLID" size="12" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_UTILISEFORFUTURE" size="1" type="date"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_RESULTAREASEC" size="10" type="text"/>
+        <field defaultValue="-" excelColHeader="Owner" excelColIndex="23" name="KZNM_IDEAGROUPINDIVIDUAL" size="1" type="date"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_KZBNKEYID" size="10" type="text"/>
+        <field defaultValue="-" excelColHeader="Benefit Types" excelColIndex="25" name="KZNM_BENEFITTYPE" size="5" type="text"/>
+        <field defaultValue="-" excelColHeader="Montatery Benefit" excelColIndex="26" name="KZNM_BENEFITVALUE" size="25" type="text"/>
+        <field defaultValue="0" excelColIndex="-1" name="KZNM_COSTPERHOUR" size="22" type="date"/>
+        <field defaultValue="0" excelColIndex="-1" name="KZNM_COSTPEREQUIPMENT" size="22" type="date"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_TEMPFIELD1" size="1" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_TEMPFIELD2" size="1" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_TEMPFIELD3" size="1" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_TEMPFIELD4" size="1" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_TEMPFIELD5" size="1" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_TEMPFIELD6" size="1" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="KZNM_TEMPFIELD7" size="1" type="text"/>
+        <field defaultValue="Y" excelColIndex="-1" name="KZNM_ACTIVE" size="1" type="date"/>
+        <field defaultValue="loginUser" excelColIndex="-1" name="KZNM_CREATEDBY" size="8" type="text"/>
+        <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="KZNM_CREATEDON" size="7" type="date"/>
+        <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="KZNM_MODIFIEDON" size="7" type="date"/>
+    </UploadTable>
+</uploadData>

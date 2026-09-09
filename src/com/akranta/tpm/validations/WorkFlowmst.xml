@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<validations>
+	<class id="WorkFlowmst" name="com.akranta.tpm.model.WorkFlowmst" >
+		<validate For="create update">
+			<property name="WrkmName" type="String" required="true"/>	
+			<property name="WrkmNoofstage" type="String" required="true"/>			
+		</validate>	
+	</class>	
+</validations>

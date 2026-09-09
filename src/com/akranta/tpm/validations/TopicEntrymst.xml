@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="EntTlTopicmst" name="com.akranta.tpm.model.EntTlTopicmst" >
+		<validate For="createtopic">			
+			<property name="TopiName" type="String" required="true"/>	
+			<property name="TopiType" type="String" required="true"/>
+			<property name="TopiEvaluationtypeid" type="String" required="true"/>
+			<property name="TopiTrainingmode" type="String" required="true"/>
+			<property name="TopiRelatedto" type="String" required="true"/>	
+		<!-- 	<property name="TopiTrainingmode" type="String" required="true"/>	
+			<property name="TopiSpokeid" type="String" required="true"/>	  				 -->
+		</validate>	
+	</class>
+</validations>	

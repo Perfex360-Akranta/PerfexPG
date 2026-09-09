@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+		<class id="GenTlMomGroupmst" name="com.akranta.tpm.model.GenTlMomGroupmst">
+			<validate For="create">
+				<property name="MgrmName" type="String" required="true"/>
+				<property name="MgrmPillarid" type="String" required="true"/>
+			</validate>
+
+		</class>
+</validations>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="QtmTl4mfuguaimst" name="com.akranta.tpm.model.QtmTl4mfuguaimst" >
+		<validate For="create update">
+		
+			<property name="QfmfDetecteddate" type="String" required="true"/>
+			<property name="QfmfDetectedby" type="String" required="true"/>
+			<property name="QfmfPhenomenaid" type="String" required="true"/>
+			<property name="QfmfProblem" type="String" required="true"/>
+			
+			<property name="QfmfMethod" type="String" required="true"/>
+			<property name="QfmfCountermeasure" type="String" required="true"/>
+			<property name="QfmfResponsibility" type="String" required="true"/>
+			<property name="QfmfStatus" type="String" required="true"/>
+			<property name="QfmfTargetdate" type="String" required="true"/>
+			 <property required-dependent="true" name = "QfmfStatus" type="String" value="C"  >
+		   		<property name="QfmfCompletedby" type="String" required="true"/>
+			<property name="QfmfCompleteddate" type="String" required="true"/>
+			</property>	
+			
+			
+		</validate>	
+	</class>
+</validations>

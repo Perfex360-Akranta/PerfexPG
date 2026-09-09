@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="AbnTlAbnormality" name="com.akranta.tpm.model.AbnTlAbnormality" >
+		<validate For="create update completed redTagCompletion SOCType MachineType">
+			<property name="AbnmSectionid" type="String" required="true"  /> 
+			<property name="AbnmCellid" type="String" required="true"/>		
+			<property name="AbnmDescription" type="Date" required="true" />
+			<property name="AbnmTypeid" type="String" required="true" />
+			<property name="AbnmTagclassid" type="String" required="true" />
+<!-- 			<property name="AbnmTradeid" type="String" required="true" /> -->
+<!-- 			<property name="AbnmAssemblyid" type="String" required="true" /> -->
+			<property name="AbnmStatus" type="String" required="true" />	
+			<property name="AbnmDetectedby" type="Date" required="true"  />		
+			<property name="AbnmDetectiondate" type="Date" required="true"  />	
+<!-- 			<property name="AbnmCategoryid" type="String" required="true" />	 -->
+			<property name="AbnmImpactid" type="String" required="true" />	
+			<property name="AbnmDetectiondate" type="Date" LECD="true" />
+				
+		</validate>	
+		
+		<validate For="redTagTest">
+<!-- 			<property name="AbnmSectionid" type="String" required="true"  />  -->
+			<property name="AbnmCellid" type="String" required="true"/>		
+			<property name="AbnmDescription" type="Date" required="true" />
+			<property name="AbnmTypeid" type="String" required="true" />
+			<property name="AbnmTagclassid" type="String" required="true" />
+			<property name="AbnmTradeid" type="String" required="true" />
+<!-- 			<property name="AbnmAssemblyid" type="String" required="true" /> -->
+			<property name="AbnmStatus" type="String" required="true" />	
+			<property name="AbnmDetectedby" type="Date" required="true"  />		
+			<property name="AbnmDetectiondate" type="Date" required="true"  />	
+<!-- 			<property name="AbnmCategoryid" type="String" required="true" />	 -->
+			<property name="AbnmImpactid" type="String" required="true" />	
+			<property name="AbnmDetectiondate" type="Date" LECD="true" />
+				
+		</validate>
+		
+		<validate For="completed redTagCompletion ">
+			<property name="AbnmCompletedby" type="String" required="true"  />		
+			<property name="AbnmWoendtime" type="Date"  required="true" LECD="true"  LE= "AbnmDetectiondate"  />
+			<property name="AbnmCountermeasure" type="String" required="true"  />	
+		</validate>	
+		
+		<validate For="redTagCompletion">
+			<property name="AbnmCountermeasure" type="String" required="true"  /> 
+			<!-- <property name="AbnmWhatcause" type="String" required="true" /> -->		
+<!-- 			<property name="AbnmWhyabnhappened" type="String" required="true" /> -->
+			<property name="AbnmTradeid" type="String" required="true" />	
+			<property name="AbnmWostarttime" type="DateTime" LE="AbnmDetectiondate"/> 			
+			<property name="AbnmWoendtime" type="DateTime" LE="AbnmWostarttime"/> 
+		</validate>
+		
+		<validate For="redTagCompletionTest">
+			<property name="AbnmCountermeasure" type="String" required="true"  /> 
+			<!-- <property name="AbnmWhatcause" type="String" required="true" /> -->		
+<!-- 			<property name="AbnmWhyabnhappened" type="String" required="true" /> -->
+			<property name="AbnmTradeid" type="String" required="true" />	
+<!-- 			<property name="AbnmWostarttime" type="DateTime" required="true" /> 			 -->
+			<property name="AbnmWoendtime" type="DateTime" required="true" /> 
+			<property name="AbnmCompletedby" type="String" required="true"  />
+		</validate>
+		
+		<validate For="SOCType">
+<!-- 			<property name="AbnmContaminant" type="String" required="true"  />  -->
+<!-- 			<property name="AbnmMode" type="String" required="true" />		 -->
+		</validate>		
+	
+		<validate For="MachineType">
+<!-- 				<property name="AbnmEquipmentid" type="String" required="true"/> -->
+		</validate>
+		
+	</class>
+	<class id="AbnTlDtl" name="com.akranta.tpm.model.AbnTlDtl" >
+		<validate For="Safety">
+			<property name="AbndImprovementteam" type="String" required="true"  /> 
+		</validate>
+	</class>
+	<class id="AbnormalityBean" name="com.akranta.tpm.bean.AbnormalityBean" >
+		<validate For="datetime">
+<!-- 				<property name="Abnwostartdatetime" type="DateTime"  required="true"   LE= "Woallotteddatetime"  /> -->
+		</validate>
+	</class>
+	
+	<class id="AbnTlAbnormality" name="com.akranta.tpm.model.AbnTlAbnormality" >
+		<validate For="hseCreate hseupdate hseCompletion">
+<!-- 			<property name="AbnmCellid" type="String" required="true" /> -->
+			<property name="AbnmDescription" type="Date" required="true" />
+			<property name="AbnmTypeid" type="String" required="true" />
+			<property name="AbnmTagclassid" type="String" required="true" />
+			<property name="AbnmStatus" type="String" required="true" />	
+			<property name="AbnmDetectedby" type="Date" required="true"  />		
+			<property name="AbnmDetectiondate" type="Date" required="true"  />	
+<!-- 			<property name="AbnmCategoryid" type="String" required="true" />	 -->
+			<property name="AbnmImpactid" type="String" required="true" />	
+				
+		</validate>	
+		<validate For="hseCompletion">
+			<property name="AbnmCompletedby" type="String" required="true"  />		
+			<property name="AbnmWoendtime" type="Date"  required="true" LECD="true"  LE= "AbnmDetectiondate"  />	
+		</validate>	
+		
+	</class>
+	
+	
+	
+</validations>
+

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="BdmTlNewphncausereq" name="com.akranta.tpm.model.BdmTlNewphncausereq" >
+		<validate For="create update">
+			<property name="BnprProposedphn" type="String" required="true"  /> 
+			<property required-dependent="true" name="BnprIscausereq" type="String" value="Y">
+				<field name="BnprProposedcause" type="String" required="true" />
+			</property>				
+		</validate>
+	</class>
+	<class id="BdmTlPhenomenamst" name="com.akranta.tpm.model.BdmTlPhenomenamst" >
+		<validate For="create update">
+			<property name="BphmAssemblyid" type="String" required="true"  />			 
+			<property name="BphmPhenomenaname" type="String" required="true"  />	
+		</validate>
+	</class>
+	<class id="BdmTlCausemst" name="com.akranta.tpm.model.BdmTlCausemst" >
+		<validate For="create update">
+			<property name="BcsmPhenomenaid" type="String" required="true"  />			 
+			<property name="BcsmName" type="String" required="true"  />	
+		</validate>
+	</class>
+</validations>

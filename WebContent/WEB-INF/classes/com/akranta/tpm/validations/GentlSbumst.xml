@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="GenTlSbumst" name="com.akranta.tpm.model.GenTlSbumst" >
+		<validate For="create update">
+		
+			<property name="SbutName" type="String" required="true"/>
+			<property name="SbutCode" type="String" required="true"/>
+			<property name="SbutDescription" type="String" required="false"/>		
+			
+		</validate>	
+	</class>
+</validations>

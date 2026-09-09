@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="GenTlFishbonedtl" name="com.akranta.tpm.model.GenTlFishbonedtl" >
+		<validate For="create update">
+
+			    <property name="FisdCause" type="String" required="true"/>	
+<!-- 			<property name="FismProblem" type="String" required="true" /> -->
+       
+       </validate>	
+	</class>
+	
+	<class id="GenTlFishbonedtl" name="com.akranta.tpm.model.GenTlFishbonedtl" >
+		<validate For="cause">
+
+			    <property name="FisdCause" type="String" required="false"/>	
+<!-- 			<property name="FismProblem" type="String" required="true" /> -->
+       
+       </validate>	
+	</class>
+	
+</validations>

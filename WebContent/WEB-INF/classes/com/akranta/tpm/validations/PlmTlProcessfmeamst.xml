@@ -1,0 +1,13 @@
+<validations>
+<class id="PlmTlProcessfmeamst" name="com.akranta.tpm.model.PlmTlProcessfmeamst">
+<validate For="create update">
+<property name="FmpmFlid" type="String" required="true"/>
+<property name="FmpmDate" type="Date" required="true"/>
+<property name="FmpmNo" type="String" required="false"/>
+<property name="FmpmProcessid" type="String" required="true"/>
+<property name="FmpmSupprocessid" type="String" required="true"/>
+<property name="FmpmPreparedby" type="String" required="true"/>
+<property name="FmpmCoreteam" type="String" required="false"/>
+</validate>
+</class>
+</validations>

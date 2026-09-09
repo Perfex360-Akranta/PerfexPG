@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="GenTlEmployeemst" name="com.akranta.tpm.model.GenTlEmployeemst" >
+		<validate For="create update">
+			<property name="EmpmName" type="String" required="true"  /> 
+			<property name="EmpmCode" type="String" required="true"/>		
+			<property name="EmpmEmployeetype" type="String" required="true"/>
+				
+			<property name="EmpmCompany" type="String" required="true"/>
+			<property name="EmpmLocation" type="String" required="true"/>
+				
+<!-- 			<property name="EmpmEmployeenumber" type="String" required="true"/> -->
+
+			<property name="EmpmJoineddate" type="Date" required="true" LECD="true"/>
+			
+<!-- 			<property name="EmpmDepartmentid" type="String" required="true" /> -->
+<!-- 			<property name="EmpmDesignationid" type="String" required="true" /> -->
+<!--			<property name="EmpmTradeid" type="String" required="true" />-->
+
+		</validate>	
+	</class>
+	<class id="EmployeeBean" name="com.akranta.tpm.bean.EmployeeBean" >
+		<validate For="create update">
+		 <property name="EmpmJoineddate" type="Date" LE="EmpdBirthdate"/> 			
+		</validate>	
+	</class>	
+	<class id="GenTlEmployeedtl" name="com.akranta.tpm.model.GenTlEmployeedtl" >
+	<validate For="create update">
+		 <property name="EmpdBirthdate" type="Date" LECD="true"/> 		
+	</validate>	
+	</class>	
+</validations>
+

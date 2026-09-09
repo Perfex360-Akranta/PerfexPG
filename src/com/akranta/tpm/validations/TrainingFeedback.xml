@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="EntTlTrainingfeedmst" name="com.akranta.tpm.model.EntTlTrainingfeedmst" >
+		<validate For="TrainingCreate">			
+			<property name="TfmsTitle" type="String" required="true"/>	
+			<property name="TfmsDate" type="String" required="true"/>	
+			<property name="TfmsDuration" type="String" required="true"/>	
+			<property name="TfmsFaculty" type="String" required="true"/>
+			<property name="TfmsParticipantname" type="String" required="true"/>
+			<property name="TfmsDesignation" type="String" required="true"/>
+			<property name="TfmsRemarks" type="String" required="true"/> 
+			<property name="TfmsFlid" type="String" required="true"/>	   				
+		</validate>	
+	</class>
+</validations>	

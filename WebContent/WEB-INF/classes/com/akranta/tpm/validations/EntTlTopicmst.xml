@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="QtmTlDockaudit" name="com.akranta.tpm.model.EntTlTopicmst" >
+		<validate For="create update delete">		
+<!-- 			<property name="TopiCode" type="String" required="true"  />  -->
+			<property name="TopiName" type="String" required="true"/>
+<!--			<property name="SkilParentid" type="String" required="true" />-->
+<!--			<property name="SkilFactKeyid" type="String" required="true" />-->
+			<property name="TopiEvaluationtypeid" type="String" required="true" />			
+			<property name="TopiType" type="String" required="true" />
+			<property name="TopiTrainingmode" type="String" required="true"/>
+			<property name="TopiCategory" type="String" required="true"/>
+			<property name="TopiRelatedto" type="String" required="true"/>		
+			<property name="TopiLocationid" type="String" required="true" />				
+		</validate>	
+	</class>		
+</validations>

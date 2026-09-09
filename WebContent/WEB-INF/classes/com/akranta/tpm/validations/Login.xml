@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="AdmTlUsermst" name="com.akranta.tpm.model.AdmTlUsermst" >
+		<validate For="UserLogin">
+			<property name="Usrm_loginid" type="String" required="true"  /> 
+			<property name="Usrm_password" type="String" required="true" />
+		</validate>
+	</class>
+	<class id="ChangePwdBean" name="com.akranta.tpm.bean.ChangePwdBean" >
+		<validate For="changePWD">
+			<property name="CpwdUsername" type="String" required="true"  /> 
+			<property name="CpwdOldpwd" type="String" required="true" />
+			<property name="CpwdNewpwd" type="String" required="true"  /> 
+			<property name="CpwdConfpwd" type="String" required="true" />
+			<property name="CpwdOldpwd" type="String" EQUAL="CpwdNewpwd"/>
+			<!-- <property name="CpwdNewpwd" type="String" min-length="6"  />
+			<property name="CpwdNewpwd" type="String" REGEXP="^(?=.*[A-z])(?=.*\d).+$"  /> -->
+			
+			
+		</validate>
+	</class>
+</validations>
+

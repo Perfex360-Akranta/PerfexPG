@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="GenTlCellmst" name="com.akranta.tpm.model.GenTlCellmst" >
+		<validate For="create update cell">
+		
+			<property name="CellName" type="String" required="true"/>
+			<property name="CellCode" type="String" required="true"/>
+			<property name="CellCompanyid" type="String" required="false"/>
+			<property name="CellFactoryid" type="String" required="false"/>
+			<property name="CellSectionid" type="String" required="false"/>
+			<property name="CellCostcentreid" type="String" required="false"/>
+		
+			
+		</validate>	
+	</class>
+</validations>

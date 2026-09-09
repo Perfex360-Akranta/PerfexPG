@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="EntTlProgTargetRoles" name="com.akranta.tpm.model.EntTlProgTargetRoles" >
+		<validate For="create update">
+			<property name="PrtrTrarKeyid" type="String" required="true"  />
+			
+		</validate>	
+	</class>	
+</validations>

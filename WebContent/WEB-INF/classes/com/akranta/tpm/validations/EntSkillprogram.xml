@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="EntTlProgTargetSkills" name="com.akranta.tpm.model.EntTlProgTargetSkills" >
+		<validate For="create update">
+			<property name="PrtsTopiKeyid" type="String" required="true"  />
+			<property name="PrtsSkilEvaluvationtype" type="String" required="true" />
+			<property name="PrtsSkilDeliverymode" type="String" required="true"  />
+			<property name="PrtsSpokeKeyid" type="String" required="true"  />
+<!--			<property name="PrtsRatingType" type="String" required="true"  />-->
+		</validate>	
+	</class>	
+</validations>

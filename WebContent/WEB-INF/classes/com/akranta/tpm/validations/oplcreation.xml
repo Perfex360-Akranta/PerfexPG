@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="OplTlMst" name="com.akranta.tpm.model.OplTlMst" >
+		<validate For="create update category mould">
+		 	<property name="OplmDate" type="Date" LECD="true" />  
+<!-- 			<property name="OplmSectionid" type="String" required="true" /> -->
+			<property name="OplmCellid" type="String" required="true" />
+			<!-- <property name="OplmMachineid" type="String" required="true" />-->
+			<property name="OplmTheme" type="String" required="true" />
+			<property name="OplmLesson" type="String" required="false" />
+			<property name="OplmPreparedid" type="String" required="true" />
+			<property name="OplmPrepareddate" type="Date" LECD="true"/>
+<!--			<property name="OplmApproveddate" type="Date" LECD="true" LE= "OplmPrepareddate" />-->
+<!-- 			<property name="OplmRelated" type="String" required="true" /> -->  
+		
+		</validate>
+		<validate For="mould">
+			<property name="OplmMouldid" type="String" required="true" />
+		</validate>	
+	</class>
+	
+	<class id="OplTlCategorymst" name="com.akranta.tpm.model.OplTlCategorymst" >
+		<validate For="edit">
+			 	<property name="OplcName" type="String" required="true" />  
+				<property name="OplcCode" type="String" required="true"/>
+		</validate>
+	</class>
+	
+	<class id="OplFormBean" name="com.akranta.tpm.bean.OplFormBean" >
+	 	<validate For="create update category">
+	 	
+			<property required-AtLeastOne="true" name = "classification" >
+				<field name="ClassificationB" type="String" required-value="B" operation="EQ" />
+				<field name="ClassificationI" type="String" required-value="I" operation="EQ" />
+				<field name="ClassificationT" type="String" required-value="T" operation="EQ" />
+				<field name="ClassificationS" type="String" required-value="S" operation="EQ" />
+                <field name="ClassificationC" type="String" required-value="C" operation="EQ" />
+                <field name="ClassificationP" type="String" required-value="P" operation="EQ" />
+			</property>
+			
+			</validate>
+			
+			<validate For="approval" >
+			
+			 <property name="OplmApprovedid" type="String" required="false"/>	
+<!--			 <property name="OplmPreparedid" type="String" required="false" />-->
+		</validate>
+	</class>
+</validations>
+
+	

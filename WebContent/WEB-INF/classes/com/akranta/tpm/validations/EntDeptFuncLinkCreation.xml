@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+
+	<class id="EntTlRoleDeptLinkmst" name="com.akranta.tpm.model.EntTlRoleDeptLinkmst" >
+		<validate For="create update">
+			<property name="ErdlFactKeyid" type="String" required="true"  />
+			<property name="ErdlDeptKeyid" type="String" required="true"  />
+			<property name="ErdlCellFunKeyid" type="String" required="true"  />
+			<property name="ErdlRoleKeyid" type="String" required="true"  />
+<!-- 			<property name="ErdlElectiveSkills" type="String" required="true"  /> -->
+		</validate>
+	</class>
+		
+	<class id="EntTlRoleSkillLink" name="com.akranta.tpm.model.EntTlRoleSkillLink" >
+		<validate For="create update">
+			<property name="ErslSkilKeyid" type="String" required="true"  />		
+			<property name="ErslMandatoryType" type="String" required="true"  />
+			<property name="ErslTargetRating" type="String" required="true"  />	
+			<property name="ErslRatingType" type="String" required="true"  />						
+		</validate>
+	</class>
+
+	<class id="EntTlRoleSkillRating" name="com.akranta.tpm.model.EntTlRoleSkillRating" >
+		<validate For="create update">
+		</validate>
+	</class>
+
+	<class id="ENT_TL_ROLE_EMP_LINK" name="com.akranta.tpm.model.EntTlRoleEmpLink" >
+		<validate For="create update">
+			<property name="ErelEmpmKeyid" type="String" required="true"  />
+		</validate>
+	</class>
+		
+</validations>

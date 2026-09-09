@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<upload name="Abnormality History" file="AbnormalityHistoryUpload" sheet="Abnormality History" format="xls" totalfields="18">
+	<table name="ABNM_TL_ABNORMALITY" keylength="9" prefix="ABN" dateformat="" formatreset="" fromcol="ABNM_KEYID" wherecol="ABNM_EQUIPMENTID">
+		<field name="ABNM_KEYID" type="text" auto="true" excelcolindex="-1"  size="15" constranumber="PK"/>
+		<field name="ABNM_DATE" type="date"  excelcolindex="-1" size="10" format="dd-mmm-yyyy" required="false" >
+			<validations>
+				<validate LECD="true"></validate>
+			</validations>
+		</field>
+		<field name="ABNM_REFDOCTYPE" type="text"  excelcolindex="-1"  size="15" required="false" />
+		<field name="ABNM_REFDOCID" type="text"  excelcolindex="-1"  size="15" required="false" />
+		<field name="ABNM_DETECTIONDATE" type="date"  excelcolindex="3"  size="15"  format="dd-mmm-yyyy" required="true" caption="Detection Date" >
+			<validations>
+				<validate LECD="false"></validate>
+			</validations>
+		</field>
+		<field name="ABNM_DETECTEDBY" type="text"  excelcolindex="4"  size="10" required="true" caption="Detected By" references="GEN_TL_EMPLOYEEMST" 
+		       	refcol="EMPM_KEYID" refwherecol="EMPM_NAME" insert="true">
+			<table name="GEN_TL_EMPLOYEEMST" keylength="6" prefix="EMP" dateformat="" formatreset="" fromcol="EMPM_KEYID" wherecol="EMPM_NAME"> 
+		         <field name="EMPM_KEYID" type="text" auto="true" excelcolindex="-1"  size="15" constranumber="PK" required="false"/>
+                 <field name="EMPM_NAME" type="text" excelcolindex="-1" required="false" caption="Employee Name" />
+	             <field name="EMPM_CODE" type="text" excelcolindex="4" required="true" caption="Detected By" />
+	             <field name="EMPM_EMPLOYEETYPE" type="char" excelcolindex="-1" required="true" caption="Employee Type" />
+		         <field name="EMPM_EMPLOYEENUMBER" type="text" excelcolindex="-1" required="true" />
+	             <field name="EMPM_JOINEDDATE" type="date" excelcolindex="-1" format="dd-mmm-yyyy" caption="Join Date" />
+	             <field name="EMPM_DEPARTMENTID" type="text" excelcolindex="-1" size="1" required="true"/>
+		         <field name="EMPM_DESIGNATIONID" type="text" excelcolindex="-1" size="1" required="true"/>
+		         <field name="EMPM_SECTIONID" type="text" excelcolindex="-1" size="1" required="true"/>
+		         <field name="EMPM_FACTORYID" type="text" excelcolindex="-1" size="1" required="true"/>
+		         <field name="EMPM_ISSHIFTINcharGE" type="char" excelcolindex="-1" size="1" required="true"/>
+		         <field name="EMPM_ISCELLMANAGER" type="text" excelcolindex="-1" size="1" required="true"/>
+		         <field name="EMPM_CELLID" type="text" excelcolindex="-1" size="1" required="true"/>
+	             <field name="EMPM_TRADEID" type="text" excelcolindex="-1" size="1" required="true"/>
+		         <field name="EMPM_EXTENSIONPHONE" type="text" excelcolindex="-1" required="true" caption="Extension Number" />
+				 <field name="EMPM_FAX" type="text" excelcolindex="-1" required="true" caption="Fax Number" />
+				 <field name="EMPM_MOBILE" type="text" excelcolindex="-1" required="true" caption="Mobile Number" />
+				 <field name="EMPM_EMAIL" type="text" excelcolindex="-1" required="true"  />
+				 <field name="EMPM_PERSONALINFO " type="text" excelcolindex="-1" required="true" caption="Personal Information" />
+				 <field name="EMPM_REMAKS " type="text" excelcolindex="-1" required="true" caption="Remarks" />
+				 <field name="EMPM_ISSECTIONMANAGER " type="text" excelcolindex="-1" required="true"  />
+				 <field name="EMPM_REMAKS " type="text" excelcolindex="-1" required="true" caption="Remarks" />
+				 <field name="EMPM_SKILLCATEGORY " type="text" excelcolindex="-1" required="true" caption="Employee Skill Category" />
+				 <field name="EMPM_GRADEID " type="text" excelcolindex="-1" required="true" caption="Grade" />
+				 <field name="EMPM_ISOPERATOR " type="text" excelcolindex="-1" required="true" />
+				 <field name="EMPM_COMPANY " type="text" excelcolindex="-1" required="true" />
+				 <field name="EMPM_ROLEID " type="text" excelcolindex="-1" required="true" />
+				 <field name="EMPM_ACTIVE" type="char" excelcolindex="-1" required="true"/>	
+				 <field name="EMPM_CREATEDON" type="date" excelcolindex="-1" required="true"/>	
+				 <field name="EMPM_CREATEDBY" type="text" excelcolindex="-1" required="true"/>	
+				 <field name="EMPM_MODIFIEDON" type="date" excelcolindex="-1" required="true"/>	
+				 <field name="EMPM_TEMPFIELD2" type="char" excelcolindex="-1" size="1" required="true"/>
+				 <field name="EMPM_TEMPFIELD3" type="char" excelcolindex="-1" size="1" required="true"/>
+				 <field name="EMPM_TEMPFIELD4" type="char" excelcolindex="-1" size="1" required="true"/>
+			</table>
+		</field>
+		<field name="ABNM_EQUIPMENTID" type="text"  excelcolindex="1"  size="10" required="false" caption="Equipment Code" references="GEN_TL_MACHINEMST" 
+		       	refcol="MCHM_KEYID" refwherecol="MCHM_MACHINENAME" insert="true">
+			<table name="GEN_TL_MACHINEMST" keylength="6" prefix="MCH" dateformat="" formatreset="" fromcol="MCHM_KEYID" wherecol="MCHM_MACHINENAME">
+				<field name="MCHM_KEYID" type="text"  excelcolindex="-1"  size="10" required="false" />	
+				<field name="MCHM_MACHINENO" type="text"  excelcolindex="1"  size="50" required="true" caption="Equipment Code"/>
+				<field name="MCHM_MACHINENAME" type="text"  excelcolindex="-1"  size="200" required="false" />	 
+				<field name="MCHM_CELLID" type="text"  excelcolindex="-1"  size="10" required="false" />	 		
+				<field name="MCHM_SUBCELLID" type="text" excelcolindex="-1"  size="10" required="false" />	
+				<field name="MCHM_EQUIPMENTGROUP"	type="text" excelcolindex="-1"  size="15" required="false" />	
+				<field name="MCHM_CONTROLTYPE" type="text" excelcolindex="-1"  size="30" required="false" />
+				<field name="MCHM_PURPOSE"	type="text" excelcolindex="-1"  size="30" required="false" />
+				<field name="MCHM_CATEGORY" type="text" excelcolindex="-1"  size="30" required="false" />
+				<field name="MCHM_SUBCATEGORY" type="text" excelcolindex="-1"  size="30" required="false" />
+				<field name="MCHM_MACHINERANK"	type="text" excelcolindex="-1" size="10" required="false" />
+				<field name="MCHM_JHSTEP" type="text" excelcolindex="-1" size="6" required="false" />
+				<field name="MCHM_JHSTEPDATE"	type="date" format="dd-mmm-yyyy" required="false" />
+				<field name="MCHM_PHASE" type="text" excelcolindex="-1" size="2" required="false" />
+				<field name="MCHM_WIRES" type="text" excelcolindex="-1" size="2" required="false" />
+				<field name="MCHM_IPVOLT" type="text" excelcolindex="-1" size="20" required="false" />
+				<field name="MCHM_IPVOLTMIN" type="text" excelcolindex="-1" size="20" required="false" />
+				<field name="MCHM_IPVOLTMAX" type="text" excelcolindex="-1" size="20" required="false" />
+				<field name="MCHM_IPFREQ" type="text" excelcolindex="-1" size="20" required="false" />
+				<field name="MCHM_IPFREQMIN" type="text" excelcolindex="-1" size="20" required="false" />
+				<field name="MCHM_IPFREQMAX" type="text" excelcolindex="-1" size="20" required="false" />
+				<field name="MCHM_POWERSUPPLY"	type="text" excelcolindex="-1" size="20" required="false" />
+				<field name="MCHM_CONNECTEDLOAD"	type="text" excelcolindex="-1" size="20" required="false" />
+				<field name="MCHM_DBNO"	type="text" excelcolindex="-1" size="50" required="false" />	
+				<field name="MCHM_SBNO"	type="text" excelcolindex="-1" size="50" required="false" />	
+				<field name="MCHM_SPECIFICATION"	type="text" excelcolindex="-1" size="500" required="false" />	
+				<field name="MCHM_REMARKS"	type="text" excelcolindex="-1" size="100" required="false" />	
+				<field name="MCHM_MANUFACTURERID"	type="text" excelcolindex="-1" size="30" required="false" />	
+				<field name="MCHM_MANUFACTUREDDATE" type="text" excelcolindex="-1" size="30" required="false" />
+				<field name="MCHM_MAKE	" type="text" excelcolindex="-1" size="30" required="false" />
+				<field name="MCHM_MODEL" type="text" excelcolindex="-1" size="30" required="false" />
+				<field name="MCHM_MFRSLNO" type="text" excelcolindex="-1" size="30" required="false" />
+				<field name="MCHM_MFRREMARKS" type="text" excelcolindex="-1" size="200" required="false" />
+				<field name="MCHM_SUPPLIERID" type="text" excelcolindex="-1" size="6" required="false" />
+				<field name="MCHM_PONO" type="text" excelcolindex="-1" size="25" required="false" />
+				<field name="MCHM_PODATE"	type="date" format="dd-mmm-yyyy" required="false" />
+				<field name="MCHM_PURCHASEDATE"	type="date" format="dd-mmm-yyyy" required="false" />
+				<field name="MCHM_PURCHASEPRICE"	type="number" required="false" />
+				<field name="MCHM_INSTALLEDDATE"	type="date" format="dd-mmm-yyyy" required="false" />
+				<field name="MCHM_ISUNDERWARRANTY" type="text" excelcolindex="-1" size="1" required="false" />
+				<field name="MCHM_WARRANTYDATE"	type="date" format="dd-mmm-yyyy" required="false" />
+				<field name="MCHM_SUPPLIERREMARKS" type="text" excelcolindex="-1" size="200" required="false" />
+				<field name="MCHM_ISUNDERAMC" type="text" excelcolindex="-1" size="1" required="false" />
+				<field name="MCHM_AMCDATE"	type="date" format="dd-mmm-yyyy" required="false" />
+				<field name="MCHM_AMCVENDOR" type="text" excelcolindex="-1" size="12" required="false" />
+				<field name="MCHM_AMCRENEWAL" type="date" format="dd-mmm-yyyy" required="false" />
+				<field name="MCHM_AMCREMARKS"		type="text" excelcolindex="-1" size="200" required="false" />
+				<field name="MCHM_MACHINEORDER"	type="number" required="false" />
+				<field name="MCHM_EFFECTIVEDATE" type="date" format="dd-mmm-yyyy" required="false" />
+				<field name="MCHM_INACTIVATEDDATE" type="date" format="dd-mmm-yyyy" required="false" />	
+				<field name="MCHM_INCLUDEFORPRODUCTION" type="text" excelcolindex="-1" size="1" required="false" />
+				<field name="MCHM_GIVESFINALOUTPUT" type="char" excelcolindex="-1" size="1" required="false" />
+				<field name="MCHM_COSTCENTREID" type="text" excelcolindex="-1" size="8" required="false" />
+				<field name="MCHM_CIRCLEID" type="text" excelcolindex="-1" size="8" required="false" />
+				<field name="MCHM_ISCAVITYORMANDREL" type="char" excelcolindex="-1" size="1" required="false" />
+				<field name="MCHM_MAXMETERREADING" type="text" excelcolindex="-1" size="12" required="false" />
+				<field name="MCHM_CURRENCYID" type="text" excelcolindex="-1" size="12" required="false" />
+				<field name="MCHM_WORKCENTER" type="text" excelcolindex="-1" size="12" required="false" />
+				<field name="MCHM_TECHNICALID" type="text" excelcolindex="-1" size="75" required="false" />
+				<field name="MCHM_TYPE" type="text" excelcolindex="-1" size="12" required="false" />
+				<field name="MCHM_TEMPFIELD2" type="text" excelcolindex="-1" size="8" required="false" />
+				<field name="MCHM_TEMPFIELD3" type="text" excelcolindex="-1" size="10" required="false" />
+				<field name="MCHM_TEMPFIELD4" type="text" excelcolindex="-1" size="10" required="false" />
+				<field name="MCHM_TEMPFIELD5" type="text" excelcolindex="-1" size="10" required="false" />
+				<field name="MCHM_ELEMENTID" type="text" excelcolindex="-1" size="250" required="false" />	
+				<field name="MCHM_FLID" type="text" excelcolindex="-1" size="12" required="false" />	
+				<field name="MCHM_ACTIVE" type="char" excelcolindex="-1" size="1" required="false" />
+				<field name="MCHM_CREATEDBY" type="text" excelcolindex="-1" size="8" required="false" />	
+				<field name="MCHM_CREATEDON" type="date" format="dd-mmm-yyyy" required="false" />
+				<field name="MCHM_MODIFIEDON" type="date" format="dd-mmm-yyyy" required="false" />	
+			</table>
+		 </field>
+		 <field name="ABNM_SECTIONID" type="text" excelcolindex="-1" size="10" required="false" />	
+		 <field name="ABNM_CELLID" type="text" excelcolindex="-1" size="10" required="false" />
+		 <field name="ABNM_ASSEMBLYID" type="text"  excelcolindex="2"  size="10" required="true" caption="Assembly" references="GEN_TL_ASSEMBLYMST" 
+		       	refcol="ASSM_KEYID" refwherecol="ASSM_NAME" insert="true">
+			 <table name="GEN_TL_ASSEMBLYMST" keylength="6" prefix="ASM" dateformat="" formatreset="" fromcol="ASSM_KEYID" wherecol="ASSM_NAME">
+				 <field name="ASSM_KEYID" type="text"  excelcolindex="-1"  size="10" required="false" />
+				 <field name="ASSM_CODE" type="text"  excelcolindex="-1"  size="15" required="false" />	
+				 <field name="ASSM_NAME" type="text"  excelcolindex="2"  size="50" required="true"  caption="Assembly"/>
+				 <field name="ASSM_DESRIPTION" type="text"  excelcolindex="-1"  size="100" required="false" />
+				 <field name="ASSM_REMARKS" type="text"  excelcolindex="-1"  size="100" required="false" />
+				 <field name="ASSM_TYPE" type="char"  excelcolindex="-1"  size="3" required="false" />
+				 <field name="ASSM_RELATEDTO" type="text"  excelcolindex="-1"  size="3" required="false" />
+				 <field name="ASSM_ACTIVE" type="char"  excelcolindex="-1"  size="1" required="false" />
+				 <field name="ASSM_CREATEDBY" type="text"  excelcolindex="-1"  size="8" required="false" />
+				 <field name="ASSM_CREATEDON" type="date" format="dd-mmm-yyyy" required="false" />
+				 <field name="ASSM_MODIFIEDON" type="date" format="dd-mmm-yyyy" required="false" />	
+			 </table>
+		 </field>
+		 <field name="ABNM_SHIFTID" type="text"  excelcolindex="-1"  size="6" required="false" />
+		 <field name="ABNM_TRADEID" type="text"  excelcolindex="18"  size="15" required="true"  caption="Maintenance Section/Trade/Agency" references="GEN_TL_TRADEMST" 
+		       	refcol="TAGM_KEYID" refwherecol="TAGM_NAME" insert="true">
+			<table name="GEN_TL_TRADEMST" keylength="6" prefix="TRD" dateformat="" formatreset="" fromcol="TRDM_KEYID" wherecol="TRDM_NAME">					
+				<field name="TRDM_KEYID" type="text" auto="true" excelcolindex="-1"  size="6" constranumber="PK"/>
+				<field name="TRDM_CLASSIFICATION" type="text" excelcolindex="-1" size="12" required="false" />	
+				<field name="TRDM_DESRIPTION" type="text" excelcolindex="-1" size="100" required="false" />				
+				<field name="TRDM_REMARKS" type="text" excelcolindex="-1" size="1" required="false"/>
+				<field name="TRDM_NAME" type="text" excelcolindex="19" size="6" required="true" caption="Maintenance Section/Trade/Agency"/>							
+				<field name="TRDM_CODE" type="text" excelcolindex="-1" size="1" required="false"/>				
+				<field name="TRDM_ACTIVE" type="char" excelcolindex="-1" required="false"/>	
+				<field name="TRDM_CREATEDON" type="date" excelcolindex="-1" required="false"/>	
+				<field name="TRDM_CREATEDBY" type="text" excelcolindex="-1" format="dd-mmm-yyyy" required="false"/>	
+				<field name="TRDM_MODIFIEDON" type="date" excelcolindex="-1" format="dd-mmm-yyyy" required="false"/>	
+			</table>	
+		</field>
+          <field name="ABNM_WORECEIVEDDATA" type="text"  excelcolindex="-1"  size="6" required="false" />
+          <field name="ABNM_RESPONSETIME" type="text"  excelcolindex="-1"  size="6" required="false" />	
+          <field name="ABNM_WORKTIME" type="text"  excelcolindex="-1"  size="6" required="false" />
+          <field name="ABNM_WOSTARTTIME" type="text"  excelcolindex="-1"  size="6" required="false" />			
+          <field name="ABNM_WOENDTIME" type="text"  excelcolindex="-1"  size="6" required="false" />		
+          <field name="ABNM_DOWNTIME" type="text"  excelcolindex="-1"  size="6" required="false" />	  
+          <field name="ABNM_DESCRIPTION" type="text"  excelcolindex="6"  size="6" required="true"  caption = "Abnormality Detailed Description"/>	
+          <field name="ABNM_TYPEID" type="text"  excelcolindex="7"  size="10" required="true"  caption ="Abnormality Type"/>	
+          <field name="ABNM_WHYABNHAPPENED" type="text"  excelcolindex="11"  size="500" required="true" caption="Why Abnormality Happened" />	
+          <field name="ABNM_WHATCAUSE" type="text"  excelcolindex="12"  size="500" required="true" caption="Cause Of Abnormality" />	
+          <field name="ABNM_TAGCLASSID" type="text"  excelcolindex="13"  size="15" required="true"  caption="Tag Class" references="ABN_TL_TAGMST" 
+		       	refcol="TAGM_KEYID" refwherecol="TAGM_NAME" insert="true">
+			 <table name="ABN_TL_TAGMST" keylength="6" prefix="TAG" dateformat="" formatreset="" fromcol="TAGM_KEYID" wherecol="TAGM_NAME">
+				 <field name="TAGM_KEYID" type="text"  excelcolindex="-1"  size="10" required="false" />
+				 <field name="TAGM_NAME" type="text"  excelcolindex="13"  size="100" required="true" caption = "Tag Class"/>
+				 <field name="TAGM_CODE" type="text"  excelcolindex="-1"  size="15" required="false" />
+				 <field name="TAGM_ISTHROUGHWHO" type="char"  excelcolindex="-1"  size="1" required="false" />
+				 <field name="TAGM_ACTIVE" type="char"  excelcolindex="-1"  size="1" required="false" />
+				 <field name="TAGM_CREATEDBY" type="text"  excelcolindex="-1"  size="8" required="false" />
+				 <field name="TAGM_CREATEDON" type="date" format="dd-mmm-yyyy" required="false" />
+				 <field name="TAGM_MODIFIEDON" type="date" format="dd-mmm-yyyy" required="false" />	
+			 </table>
+		  </field>
+          <field name="ABNM_CATEGORYID" type="text"  excelcolindex="9"  size="10" required="true" caption="Abnormality Category" />	
+          <field name="ABNM_IMPACTID" type="text"  excelcolindex="10"  size="10" required="true" caption="Abnormality Impact" />	
+          <field name="ABNM_COUNTERMEASURE" type="text"  excelcolindex="15"  size="500" required="true" caption="Counter Measure" />
+          <field name="ABNM_PREVENTIVEMEASURE" type="text"  excelcolindex="-1"  size="6" required="false" />
+          <field name="ABNM_STATUS" type="char"  excelcolindex="14"  size="1" required="true"  caption="Status">
+		  <rules>
+				<rule value="COMPLETED" save="C"/>
+				<rule value="PENDING" save="P"/>				
+			</rules>	
+		</field>
+        <field name="ABNM_TARGETDATE" type="date"  excelcolindex="15"  format="dd-mmm-yyyy" required="true" caption="Target Date" >
+		  	<validations>
+				<validate LECD="true"></validate>
+			</validations>
+		</field>	
+		<field name="ABNM_TARGETREMARKS" type="text"  excelcolindex="-1"  size="6" required="false" />
+		<field name="ABNM_COMPLETEDBY" type="text"  excelcolindex="-1"  size="6" required="false" />
+		<field name="ABNM_WOMASTERID" type="text"  excelcolindex="-1"  size="6" required="false" />
+		<field name="ABNM_WODETAILID" type="text"  excelcolindex="-1"  size="6" required="false" />
+		<field name="ABNM_FEEDBACKID" type="text"  excelcolindex="-1"  size="6" required="false" />
+		<field name="ABNM_FEEDBACKDATE" type="text"  excelcolindex="-1"  size="6" required="false" />
+		<field name="ABNM_COMPLETEDBY" type="date"  excelcolindex="17"   required="true"   caption= "Completion Date"/>
+		<field name="ABNM_REMARKS" type="text"  excelcolindex="16"  size="500" required="true"  caption="Remarks"/>
+		<field name="ABNM_BLOCKDIAGRAMREF" type="text"  excelcolindex="-1"  size="6" required="false" />
+		<field name="ABNM_REVISIONNO" type="text"  excelcolindex="-1"  size="6" required="false" />
+		<field name="ABNM_ISSUENO" type="text"  excelcolindex="-1"  size="6" required="false" />
+		<field name="ABNM_SUBTYPE" type="text"  excelcolindex="8"  size="15" required="true"  caption= "Sub Type"/>
+		<field name="ABNM_CONTAMINANT" type="text"  excelcolindex="-1"  size="6" required="false" />
+		<field name="ABNM_MODE" type="text"  excelcolindex="-1"  size="6" required="false" />
+		<field name="ABNM_FACTORYID" type="text"  excelcolindex="-1"  size="6" required="false" />
+		<field name="ABNM_PILLAR" type="text"  excelcolindex="-1"  size="6" required="false" />
+		<field name="ABNM_SAFETYPATROL" type="text"  excelcolindex="-1"  size="6" required="false" />
+		<field name="ABNM_RELATEDTO" type="text"  excelcolindex="-1"  size="6" required="false" />
+		<field name="ABNM_MOULD" type="text"  excelcolindex="-1"  size="6" required="false" />
+		<field name="ABNM_FLID" type="text"  excelcolindex="-1"  size="6" required="false" />
+		<field name="ABNM_ELEMENTID" type="text"  excelcolindex="-1"  size="6" required="false" />
+		<field name="ABNM_ABNM_PILLARID" type="text"  excelcolindex="-1"  size="6" required="false" />
+		<field name="ABNM_ACTIVE" type="text"  excelcolindex="-1"  size="6" required="false" />
+		<field name="ABNM_CREATEDBY" type="text"  excelcolindex="-1"  size="6" required="false" />
+		<field name="ABNM_CREATEDON" type="text"  excelcolindex="-1"  size="6" required="false" />
+		<field name="ABNM_MODIFIEDON" type="text"  excelcolindex="-1"  size="6" required="false" />
+        
+	</table>
+</upload>
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+
+         		 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

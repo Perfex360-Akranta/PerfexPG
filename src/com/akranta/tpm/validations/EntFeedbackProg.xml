@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="EntTlFeedbackparammst" name="com.akranta.tpm.model.EntTlFeedbackparammst" >
+		<validate For="create update delete">		
+			<property name="FbpmDescription" type="String" required="true"  /> 
+			<property name="FbpmCode" type="String" required="true"/>				
+		</validate>	
+	</class>		
+</validations>

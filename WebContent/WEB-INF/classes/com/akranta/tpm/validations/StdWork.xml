@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="StdTlStdworksheetmst" name="com.akranta.tpm.model.StdTlStdworksheetmst" >
+		<validate For="create update">
+			<property name="StwsFlid" type="String" required="true" />
+			<property name="StwsDate" type="Date" required="true" />
+			<property name="StwsBy" type="String" required="true" />
+			<property name="StwsBudgetedtime" type="String" required="false" />
+			<property name="StwsApprovedby" type="String" required="true" />
+			<property name="StwsProcess" type="String" required="true" />
+			<property name="StwsCycletime" type="String" required="true" />               
+	</validate>
+	</class>	
+</validations>	

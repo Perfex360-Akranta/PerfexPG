@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="GenTlMachinemst" name="com.akranta.tpm.model.GenTlMachinemst" >
+		<validate For="create update machine">
+			<property name="MchmCellid" type="String" required="true"  /> 
+			<property name="MchmCostcentreid" type="String" required="true"/>		
+			<property name="MchmEquipmentgroup" type="String" required="true"/>		
+			<property name="MchmMachineno" type="String" required="true" />
+			<property name="MchmMachinename" type="Date" required="true" />
+<!--		<property name="MchmWorkcenter" type="String" required="true" />-->
+			<property name="MchmInstalleddate" type="Date" required="true" />
+			<property name="MchmEffectivedate" type="Date" required="true" />			
+			<property name="MchmMfrslno" type="String" required="true" />						
+			<property name="MchmEffectivedate" type="Date" LE="MchmInstalleddate"/> 
+			<property name="MchmManufactureddate" type="Date" GE="MchmInstalleddate"/>	
+			<property name="MchmManufactureddate" type="Date" GE="MchmEffectivedate"/>		 	
+			<property name="MchmAmcdate" type="Date" GE="MchmAmcrenewaldate"/> 
+			<property name="MchmWarrantydate" type="Date" GE="MchmAmcdate" />
+			<property name="MchmAmcrenewaldate" type="Date" LE="MchmWarrantydate"/> 			
+<!--			<property name="MchmJhstepdate" type="Date" LE="MchmInstalleddate"/>-->
+			<property name="MchmJhstepdate" type="Date" LE="MchmEffectivedate"/>
+				
+			<property name="MchmAmcrenewaldate" type="Date" LE="MchmWarrantydate"/> 	
+<!--			<property name="MchmInstalleddate" type="Date" LE="MchmJhstepdate"/> 	-->
+<!--			<property name="MchmEffectivedate" type="Date" LE="MchmJhstepdate"/> 	-->
+			
+			<property required-dependent="true" name="MchmIsunderwarranty" type="String" value="0">
+				
+				<field name="cmbMchmAmcvendor" type="String" required="true" />
+		</property>
+		
+		</validate>	
+	</class>	
+	<class id="EquipmentBean" name="com.akranta.tpm.bean.EquipmentBean" >
+		<validate For="create update">
+			<property name="Section" type="String" required="true"></property>
+		</validate>	
+	</class>	
+</validations>

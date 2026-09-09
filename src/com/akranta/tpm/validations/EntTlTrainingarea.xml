@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="EntTlTrainingarea" name="com.akranta.tpm.model.EntTlTrainingarea" >
+		<validate For="create update delete">		
+			<property name="TrarName" type="String" required="true"/>
+			<property name="TrarLocationid" type="String" required="true" />	
+			<property name="TrarReftype" type="String" required="true" />		
+		</validate>	
+	</class>		
+</validations>

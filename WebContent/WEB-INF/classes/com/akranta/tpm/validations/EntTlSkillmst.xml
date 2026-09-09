@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="QtmTlDockaudit" name="com.akranta.tpm.model.EntTlSkillmst" >
+		<validate For="create update delete">		
+			<property name="SkilCode" type="String" required="true"  /> 
+			<property name="SkilName" type="String" required="true"/>
+<!--			<property name="SkilParentid" type="String" required="true" />-->
+<!--			<property name="SkilFactKeyid" type="String" required="true" />-->
+			<property name="SkilEvaluationtypeid" type="String" required="true" />			
+			<property name="SkilType" type="String" required="true" />					
+		</validate>	
+	</class>		
+</validations>

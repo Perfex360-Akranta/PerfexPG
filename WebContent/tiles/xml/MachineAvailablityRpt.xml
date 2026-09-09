@@ -1,0 +1,75 @@
+
+<filter>
+ <form	id="frmFilter" >
+	<control id="cmbComp" disable="true"/>
+	<control id="cmbMachineRank" disable="true"/>
+	<control id="cmbeqpGroup" disable="false"/>
+	<control id="cmbTrade" disable="true"/>
+	<control id="cmbassembly" disable="true"/>
+	<control id="dteyear" disable="true"/>
+	<control id="dtefromDate" disable="false"/>
+	<control id="dtetoDate" disable="false"/>
+	<control id="chkDatewise" disable="true"/>
+	<control id="dtefromMonth" disable="true"/>
+	<control id="dtetoMonth" disable="true"/>
+	<control id="chkMonthwise" disable="true"/>
+	
+</form>
+<form id="frmBD" headerCaption="Equipment Down Time" >
+	<control id="cmbFailureType" disable="true"/>
+	<control id="cmbdefectpheno" disable="true"/>
+	<control id="cmbcause" disable="true"/>
+	<control id="cmbbdrootcause" disable="true"/>
+	<control id="cmbprodcngroup" disable="true"/>
+	<control id="cmbshiftincharge" disable="true"/>
+	<control id="txttop" disable="true"/>
+	<control id="chkoccurchkbox" disable="true"/>
+	<control id="chktimechkbox" disable="true"/>
+	<control id="chkzerobdchkbox" disable="true"/>
+	<control id="chkallchkbox" disable="false"/>
+	<control id="chkremallchkbox" disable="true"/>
+	<control id="chkfachkbox" disable="true"/>
+	<control id="chkpillarchkbox" disable="true"/>
+	<control id="chkrcchkbox" disable="true"/>
+	<control id="chkrccchkbox" disable="true"/>
+	<control id="chkcmchkbox" disable="true"/>
+	<control id="chkircchkbox" disable="true"/>
+	<control id="chkiyychkbox" disable="true"/>
+	<control id="cmbEngineer" disable="true"/>
+	<control id="chkjhchkbox" disable="true"/>
+	<control id="chkdesignchkbox" disable="true"/>
+	<control id="chkpmchkbox" disable="true"/>
+	<control id="chketchkbox" disable="true"/>
+	<control id="cmbyyy" disable="true"/>
+	<control id="cboactivityType" disable="true"/>
+	<control id="cboselBdType" disable="true"/>
+	<control id="cbosparesSelectBox" disable="true"/>
+	<control id="cbooptions" disable="true"/>
+	<control id="cmbBDKeyId" disable="true"/>
+	<control id="cmbMSRKeyId" disable="true"/>
+	<control id="cboparetooptions" disable="true"/>
+	<control id="chktradewise" disable="true"/>
+	<control id="chkjobtypwise" disable="true"/>
+	<control id="chkActwise" disable="true"/>
+	<control id="chkMonwise" disable="true"/>
+	<control id="chkemployee" disable="true"/>
+	<control id="chkcontract" disable="true"/>
+	<control id="chkspare" disable="true"/>
+	<control id="chkservice" disable="true"/>
+	<control id="chkutility" disable="true"/>
+	<control id="chkother" disable="true"/>
+	<control id="chktotal" disable="true"/>
+	<control id="chkallparameter" disable="true"/>
+	<control id="chkundefinedPP" disable="true"/>
+	<control id="cboJobType" disable="true"/>
+	<control id="chkRemoveBlank" disable="true"/>
+	<control id="cboFrequency" disable="true"/>
+	<control id="chkInternal" disable="true"/>
+	<control id="chkExternal" disable="true"/>
+	<control id="chkrepeatedBD" disable="true"/>
+	<control id="cbocounter" disable="true"/>
+	<control id="cbostatus" disable="true"/>
+	<control id="cmbstep" disable="true"/>
+</form>
+
+</filter>

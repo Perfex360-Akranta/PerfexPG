@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="GenTlToolsmst" name="com.akranta.tpm.model.GenTlToolsmst" >
+		<validate For="create update">
+			<property name="TolmName" type="String" required="true"  />
+			<property name="TolmCode" type="String" required="true"  />
+			<property name="TolmCategory" type="String" required="true"  />
+			<property name="TolmUses" type="String" required="true"  />
+		</validate>
+	</class>
+</validations>	

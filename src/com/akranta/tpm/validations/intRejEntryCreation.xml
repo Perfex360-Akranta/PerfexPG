@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+
+	<class id="QtmTlIntrejectionmst" name="com.akranta.tpm.model.QtmTlIntrejectionmst" >
+		<validate For="create update">
+<!-- 		<property name="QirmCellid" type="String" required="true"  /> -->
+<!--   		<property name="QirmInspectionid" type="String" required="true"  /> --> 
+ 		<property name="QirmInspectiondate" type="String" required="true"  />
+ 		<property name="QirmInspectedshiftid" type="String" required="true"  />
+  		<property name="QirmProductid" type="String" required="true"  /> 
+		</validate>
+	</class>
+		
+	<class id="QtmTlIntrejectiondtl" name="com.akranta.tpm.model.QtmTlIntrejectiondtl" >
+		<validate For="create update">		
+			
+			<property name="QirdProcessid" type="String" required="true"  />
+			<property name="QirdSubprocessid" type="String" required="true"  />
+			<property name="QirdPhenomenaid" type="String" required="true"  />
+			<!-- <property name="QirdCauseid" type="String" required="true"  /> -->
+			<property name="QirdQuantity" type="String" required="true"  />
+			<property name="QirdType" type="String" required="true"  />
+			<property name="Qird4mtype" type="String" required="true"  />
+				
+		</validate>
+		<validate For="4MTYPE">
+			<property name="Qird4mtype" type="String" required="true"  />	
+		</validate>
+	</class>
+	
+	<class id="QtmTlTestscrapbrkup" name="com.akranta.tpm.model.QtmTlTestscrapbrkup" >
+		<validate For="Breakup">
+	 		<property name="QsbrQuantity" type="String" required="true"  /> 
+	 		<property name="QsbrRemarks" type="String" required="true"  />	 			
+		</validate>
+	</class>
+</validations>

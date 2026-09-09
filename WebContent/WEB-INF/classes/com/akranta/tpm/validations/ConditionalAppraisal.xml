@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<validations>
+	<class id="GenTlConditionalappraisal" name="com.akranta.tpm.model.GenTlConditionalappraisal" >
+		<validate For="create update">
+			<property name="CdapTargetdate" type="String" required="Date"/>
+			<property required-dependent="true" name = "CdapStatus" type="String" value="C"  >
+		   		<property name="CdapCompletdby" type="String" required="true"/>
+			    <property name="CdapCompleteddate" type="String" required="Date"/>
+			</property>	
+		</validate>	
+	</class>
+</validations>

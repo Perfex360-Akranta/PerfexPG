@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+
+	<class id="EntTlBatchSchedule" name="com.akranta.tpm.model.EntTlBatchSchedule" >
+		<validate For="create update">
+			<property name="BsdlBachKeyid" type="String" required="true"  />
+			<property name="BsdlProgKeyid" type="String" required="true"  />
+			<property name="BsdlScheduleDate" type="String" required="true"  />
+			<property name="BsdlFromtime" type="String" required="true"  />
+			<property name="BsdlTilltime" type="String" required="true"  />
+		</validate>
+	</class>
+		
+</validations>

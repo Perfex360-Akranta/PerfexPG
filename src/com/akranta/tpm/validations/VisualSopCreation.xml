@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="JhaTlVisualsopmst" name="com.akranta.tpm.model.JhaTlVisualsopmst" >
+		<validate For="create">
+			<property name="VsomFlnid" type="String" required="true"/>
+			<property name="VsomOperation" type="String" required="true"/>
+			<property name="VsomSafetyinstruction" type="String" required="true"/>
+			
+			<property name="VsomPreparedby" type="String" required="true"/>
+			<property name="VsomIssuedby" type="String" required="true"/>
+			
+		</validate>	
+		<validate For="update">
+			<property name="VsomFlnid" type="String" required="true"/>
+			<property name="VsomOperation" type="String" required="true"/>
+			<property name="VsomSafetyinstruction" type="String" required="true"/>			
+			<property name="VsomPreparedby" type="String" required="true"/>
+			<property name="VsomIssuedby" type="String" required="true"/>
+			
+		</validate>
+	</class>
+</validations>

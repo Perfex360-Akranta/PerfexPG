@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<validations>
+	<class id="QtmTlQpoint" name="com.akranta.tpm.model.QtmTlQpoint" >
+		<validate For="create update">
+			
+			<property name="QptmDate" type="String" required="true"/>
+			<property name="QptmKpov" type="String" required="true"/>
+			<property name="QptmArea" type="String" required="true"/>	
+		</validate>	
+	</class>
+	
+	<class id="QtmTlQpoint" name="com.akranta.tpm.model.QtmTlQpointdtls" >
+		<validate For="create update">
+				<property name="QptdQpoint" type="String" required="true"/>	
+	    </validate>
+	</class>
+</validations>
+

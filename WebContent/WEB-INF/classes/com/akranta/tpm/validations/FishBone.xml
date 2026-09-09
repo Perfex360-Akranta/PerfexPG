@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="GenTlFishbonemst" name="com.akranta.tpm.model.GenTlFishbonemst" >
+		<validate For="create update">
+
+			<property name="FismTitle" type="String" required="true"/>	
+			<property name="FismProblem" type="String" required="true" />
+			<property name="FismFlid" type="String" required="true"/>
+		
+       </validate>	
+	</class>
+	
+	<class id="FishBoneBean" name="com.akranta.tpm.bean.FishBoneBean" >
+	 	<validate For="create update">
+	 	
+			
+            <property name="MomCellId" type="String" required="true"/>
+            
+			</validate>
+			
+	</class>
+	
+</validations>

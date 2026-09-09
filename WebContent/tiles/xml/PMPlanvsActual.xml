@@ -1,0 +1,48 @@
+<filter>
+ <form	id="frmFilter" >
+	<control id="dteyear" disable="true"/>	
+	<control id="chkSkipLine" disable="true"/>
+	<control id="cmbprodcngroup" disable="true"/>
+ </form>
+ <form id="frmPMRelated" >	
+	<control id="cmbactivities" disable="true"/>
+	<control id="cmbPmSource" disable="true"/>
+	<control id="cmbsupplier" disable="true"/>	
+	<control id="cmbtools" disable="true"/>
+	<control id="cboEqpCondn" disable="true"/>	
+	<control id="cmbProduction" disable="true"/>	
+	<control id="cboPmstatus" disable="true"/>	
+	<control id="cbodrillfor" disable="true"/>	
+	<control id="cboParam" disable="true"/>
+	<control id="chkComp" disable="true"/>
+	<control id="chkPend" disable="true"/>
+	<control id="chkEmp" disable="true"/>	
+	<control id="chkContractor" disable="true"/>		
+	<control id="chkSpare" disable="true"/>		
+	<control id="chkUtil" disable="true"/>
+	<control id="chkOther" disable="true"/>	
+	<control id="chkTotal" disable="true"/>	
+	
+	<control id="chkAp" disable="true"/>	
+	<control id="chkService" disable="true"/>
+	<control id="chkSect" disable="true"/>	
+	<control id="chkEqpmnt" disable="true"/>
+	
+	<control id="chkSummary" disable="true"/>	
+	<control id="chkService" disable="true"/>
+	<control id="chkMwise" disable="true"/>	
+	<control id="chkAtype" disable="true"/>
+	<control id="chkMonth" disable="true"/>
+	<control id="chkAwise" disable="true"/>	
+	<control id="cboParam" disable="true"/>
+	<control id="chkActwise" disable="true"/>	
+	<control id="chkMonwise" disable="true"/>
+	<control id="chkWeek" disable="true"/>		
+	<control id="chkTw" disable="true"/>
+	<control id="chkJtw" disable="true"/>
+	<control id="chkCell" disable="true"/>		
+	<control id="chkRemoveBlank" disable="true"/>
+	<control id="chkincludestatus" disable="true"/>
+	
+ </form>
+</filter>

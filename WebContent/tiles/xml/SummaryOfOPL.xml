@@ -1,0 +1,23 @@
+<filter>
+	 <form	id="frmFilter" >
+	 	<control id="cmbEquipmentid" disable="true"/>
+		<control id="cmbCircle" disable="true"/>
+		<control id="cmbassembly" disable="true"/>
+		<control id="cmbeqpGroup" disable="true"/>
+		<control id="cmbMachineRank" disable="true"/>
+		<control id="cmbTrade" disable="true"/>	
+		<control id="dteyear" disable="true"/>
+ 	</form> 	
+ 	<form id = "frmOPL"> 	
+ 		<control id="cmbOplNoid" disable="true"/>
+ 		<control id="cboOplTypeid" disable="true"/>
+ 		<control id="cmbPillarid" disable="true"/>
+ 		<control id="cmbImprovmntNoid" disable="true"/>
+ 		<control id="divPillar" disable="true"/>
+ 		<control id="divMainGrp" disable="true"/>
+ 		<control id="divClassfn" disable="true"/>
+ 		<control id="divSubGrp" disable="true"/>
+ 		<control id="cmbLossid" disable="true"/>
+ 		<control id="cboKznStatus" disable="true"/> 		
+ 	</form>
+</filter>

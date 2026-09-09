@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="JhaTlVisualsopdtl" name="com.akranta.tpm.model.JhaTlVisualsopdtl" >
+		<validate For="create">
+			<property name="VsodInstruction" type="String" required="true"/>
+			<property name="VsodKeypoint" type="String" required="true"/>
+		</validate>	
+		<validate For="update">
+			<property name="VsodInstruction" type="String" required="true"/>
+			<property name="VsodKeypoint" type="String" required="true"/>
+		</validate>
+	</class>
+</validations>

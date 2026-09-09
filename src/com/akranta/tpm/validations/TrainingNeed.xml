@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="EntTlTrainingneedmst" name="com.akranta.tpm.model.EntTlTrainingneedmst" >
+		<validate For="create">			
+			<property name="TnimFlid" type="String" required="true"/>	 	     				
+           <property name="TnimDate" type="String" required="true"/>		
+		</validate>	
+	</class>
+</validations>

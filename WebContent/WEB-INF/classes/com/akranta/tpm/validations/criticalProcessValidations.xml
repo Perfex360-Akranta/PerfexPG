@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="QtmTlCriticalprocessmst" name="com.akranta.tpm.model.QtmTlCriticalprocessmst" >
+		<validate For="create update">
+			<property name="CrppFlid" type="String" required="true"/>
+			<property name="CrppDate" type="Date" required="true" LECD="true"/>
+			<property name="CrppParameter" type="String" required="true"/>
+ 	</validate>	
+	</class>
+	
+	<class id="QtmTlCriticalprocessdtl" name="com.akranta.tpm.model.QtmTlCriticalprocessdtl" >
+		<validate For="detail">
+			<property name="CrpdMethod" type="String" required="true"/>
+	 	</validate>	
+	</class>
+</validations>

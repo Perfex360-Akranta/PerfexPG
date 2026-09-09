@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="GenTlVisualcontrolchecklist" name="com.akranta.tpm.model.GenTlVisualcontrolchecklist" >
+		<validate For="create update">
+		  	<property name="VcclFlid" type="String" required="true"/>
+			<property name="VcclEmployeeid" type="String" required="true"/>
+			<property name="VcclDate" type="Date" required="true"/>
+			<property name="VcclTitle" type="String" required="true"/>
+			<property name="VcclApprovedby" type="String" required="true"/>
+				
+ 			
+			
+		</validate>	
+	</class>
+</validations>

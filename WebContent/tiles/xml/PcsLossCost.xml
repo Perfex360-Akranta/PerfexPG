@@ -1,0 +1,55 @@
+
+<filter>
+ <form	id="frmFilter" >
+	form	id="frmFilter" >
+	<control id="cmbComp" disable="true"/>
+	<control id="cmbTrade" disable="true"/>
+	<control id="cmbassembly" disable="true"/>
+	<control id="dteyear" disable="true"/>
+	<control id="cmbTrade" disable="true"/>
+	<control id="cmbassembly" disable="true"/>
+	<control id="chkSkipLine" disable="true"/>
+	<control id="cmbEquipmentid" disable="true"/>
+	<control id="cmbCircle" disable="true"/>
+	<control id="cmbCostCenter" disable="true"/>
+	<control id="cmbeqpGroup" disable="true"/>
+	<control id="cmbMachineRank" disable="true"/>
+	<control id="dispFunctionalLoc" disable="true"/>
+	<control id="cboRelatedTo" disable="true"/>
+	<control id="dispFunctionalLoc" disable="true"/>
+	<control id="cmbMould" disable="true"/>
+	<control id="chkDatewise" disable="false"/>
+	<control id="dtefromMonth" disable ="false"/>
+	<control id="dtetoMonth" disable ="false"/>
+	<control id="dtefromDate" disable ="false"/>
+	<control id="dtetoDate" disable="false"/>
+	<control id="chkMonthwise" disable="false"/>
+	
+</form>
+<form id="frmPcsRelated" headerCaption="Pcs Related" >
+	<control id="cmbpcsprrod" disable="true"/>
+	<control id="cmbshift" disable="true"/>
+	<control id="cmbLoss" disable="true"/>
+	<control id="chkboxef" disable="true"/>
+	<control id="chkboxdf" disable="true"/>	
+	<control id="chkboxar" disable="true"/>
+	<control id="chkboxpr" disable="true"/>
+	<control id="chkboxqr" disable="true"/>
+	<control id="chkboxoee" disable="true"/>	
+	<control id="chkboxall" disable="true"/>
+	<control id="chkboxhour" disable="true"/>
+	<control id="chkboxshift" disable="true"/>
+	<control id="chkboxday" disable="true"/>
+	<control id="chkboxweek" disable="true"/>
+	<control id="chkboxoccurence" disable="true"/>
+	<control id="chkboxtime" disable="true"/>
+	<control id="cmbpcssubgrp" disable="true"/>
+	<control id="cmbRawMaterial" disable="true"/>
+	<control id="chkboxWoNo" disable="true"/>
+	<control id="chkboxProd" disable="true"/>
+	<control id="chkboxPcsShift" disable="true"/>	
+	<control id="chkboxPcsDate" disable="true"/>
+	<control id="chkboxMgrCal" disable="true"/>
+</form>
+
+</filter>

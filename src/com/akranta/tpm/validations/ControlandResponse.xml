@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<validations>
+	<class id="GenTlControlandresponseplan" name="com.akranta.tpm.model.GenTlControlandresponseplan" >
+		<validate For="create update">
+			<property name="CarpProcessstep" type="String" required="true"/>	
+			<property name="CarpKpov" type="String" required="true" />
+			<property name="CarpMeasurementmethod" type="String" required="true" />  
+			<property name="CarpDecisionrule" type="String" required="true" />
+			<property name="CarpCorrectiveaction" type="String" required="true" />
+		</validate>	
+	</class>
+</validations>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<validations>
+	<class id="JhaTlAuditmst" name="com.akranta.tpm.model.JhaTlAuditmst" >
+		<validate For="create update">
+		  	<property name="JhamFlid" type="String" required="true"/>
+			<property name="JhamJhstepid" type="String" required="true"/>
+			<property name="JhamAuditteamid" type="String" required="true"/>
+			<property name="JhamAuditortype" type="String" required="true"/>
+ 			<property name="JhamAuditorname" type="String" required="true" />
+			<property name="JhamLeadername" type="String" required="true" />
+			<property name="JhamTotalpoints" type="Number" required="true"/>
+			<!--<property name="JhamStatus" type="String" required="true"/>-->
+			<property name="JhamAuditdate" type="Date"  LECD="true"  required="true"/> 
+			
+		</validate>	
+	</class>
+</validations>

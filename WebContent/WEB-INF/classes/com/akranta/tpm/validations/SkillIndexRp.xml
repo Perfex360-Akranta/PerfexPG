@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="EntTlSkillReviewpointmst" name="com.akranta.tpm.model.EntTlSkillReviewpointmst" >
+		<validate For="create">			
+			<property name="SirmFlid" type="String" required="true"/>	
+			<property name="SirmRoleKeyid" type="String" required="true"/>	 	   				
+		</validate>	
+	</class>
+	
+	<class id="EntTlSkillReviewpointdet" name="com.akranta.tpm.model.EntTlSkillReviewpointdet" >
+		<validate For="create">			
+			<property name="SirdSpokKeyid" type="String" required="true"/>	 	   				
+			<property name="SirdReviewno" type="String" required="true"/>
+			<property name="SirdReviewpoint" type="String" required="true"/>
+		</validate>	
+		
+	</class>
+
+	<class id="EntTlSkillindexassessmst" name="com.akranta.tpm.model.EntTlSkillindexassessmst" >
+		<validate For="create">			
+			<property name="SiamFlid" type="String" required="true"/>	
+			<property name="SiamUniqueposid" type="String" required="true"/>
+			<property name="SiamReviewdate" type="String" required="true"/>	 	   				
+		</validate>	
+	</class>
+
+</validations>	

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="QtmTlKnowwhymst" name="com.akranta.tpm.model.QtmTlKnowwhymst" >
+		<validate For="create update">
+	      	 <property name="KnwmDescription" type="String" required="true"  />
+	      	 <property name="KnwmDevelopedby" type="String" required="true"  />
+	      	 <property name="KnwmPillarid" type="String" required="true"  />
+	      	 
+	      	 
+       		<property required-dependent="true" name="CheckPhenomena" type="String" value="Y">
+				<field name="KnwmPhenomena" type="String" required="true" />
+			</property>     
+			<property required-dependent="true" name="CheckPhenomena" type="String" value="N">
+				<property name="KnwmQuality" type="String" required="true"  />
+			</property>
+	</validate>
+	</class>
+	<class id="QtmTlKnowwhydtl" name="com.akranta.tpm.model.QtmTlKnowwhydtl" >
+		<validate For="create update">
+	      	 <property name="KnwdPossiblecauses" type="String" required="true"  />
+	      	  <property name="KnwdKnowwhy" type="String" required="true"  />
+	      	   <property name="KnwdSolution" type="String" required="true"  />
+	      	    <property name="KnwdNormalcondition" type="String" required="true"  />
+	         		     
+	</validate>
+	</class>
+	
+	
+</validations>

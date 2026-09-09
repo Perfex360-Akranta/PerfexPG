@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="EntTlBatchcompletion" name="com.akranta.tpm.model.EntTlBatchcompletion" >
+		<validate For="Cancel">
+			<property name="BcomRemarks" type="String" required="true"  />
+		</validate>
+	</class>
+	<class id="EntTlBudgetmst" name="com.akranta.tpm.model.EntTlBudgetmst" >
+		<validate For="SaveBudget">
+			<property name="BudgQuantity" type="String" required="true"  />
+			<property name="BudgAmount" type="String" required="true"  />
+			<property name="BudgEbetKeyid" type="String" required="true"  />
+		</validate>
+	</class>			
+</validations>

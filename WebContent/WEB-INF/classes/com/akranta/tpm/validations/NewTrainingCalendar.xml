@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="EntTlTragcalmst" name="com.akranta.tpm.model.EntTlTragcalmst" >
+		<validate For="create">
+		<property name="EtcmLocation" type="String" required="true"/>
+		<property name="EtcmTopicid" type="String" required="true" />
+		<property name="EtcmAnchoredby" type="String" required="true" />
+		<property name="EtcmTrainingfunction" type="String" required="true" />
+		<property name="EtcmCalendarDate" type="Date" required="true" />
+		<property name="EtcmMaxDuration" type="Number" required="true"/>
+		<property name="EtcmTopiccategory" type="String" required="true"/>
+		</validate>
+		<validate For="update">
+		<property name="EtcmLocation" type="String" required="true"/>
+		<property name="EtcmTopicid" type="String" required="true" />
+		<property name="EtcmAnchoredby" type="String" required="true" />
+		<property name="EtcmTrainingfunction" type="String" required="true" />
+	    <property name="EtcmCalendarDate" type="Date" required="true" />
+	    <property name="EtcmMaxDuration" type="Number" required="true"/>
+	    <property name="EtcmTopiccategory" type="String" required="true"/>
+	    </validate>
+		</class>
+		</validations>
+		

@@ -1,0 +1,14 @@
+<validations>
+<class id="PlmTlDesignfmeamst" name="com.akranta.tpm.model.PlmTlDesignfmeamst">
+<validate For="create update">
+<property name="FmdmFlid" type="String" required="true"/>
+<property name="FmdmDate" type="Date" required="true"/>
+<property name="FmdmNo" type="String" required="false"/>
+<property name="FmdmSystemid" type="String" required="true"/>
+<property name="FmdmSupsystemid" type="String" required="true"/>
+<property name="FmdmPreparedby" type="String" required="true"/>
+<property name="FmdmCoreteam" type="String" required="false"/>
+<property name="FmdmComponentid" type="String" required="false"/>
+</validate>
+</class>
+</validations>

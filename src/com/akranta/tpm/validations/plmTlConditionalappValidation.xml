@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+
+	<class id="PlmTlConditionalappraisalmst" name="com.akranta.tpm.model.PlmTlConditionalappraisalmst" >
+		<validate For="create update">
+			<property name="CdamFlid" type="String" required="true"/>
+			<property name="CdamDate" type="Date" required="true"/> 
+		</validate>
+	</class>
+	<class id="PlmTlConditionalappraisal" name="com.akranta.tpm.model.PlmTlConditionalappraisal" >
+		<validate For="create update">
+		
+		<property required-dependent="true" name = "CdapRefurbishmentStatus" type="String" value="Y"  >
+			<property name="CdapActionrequired" type="String" required="true"/>
+		</property>	
+			
+ 			<property name="CdapRefurbishmentStatus" type="String" required="true" />
+ 			<property name="CdapComponentType" type="String" required="true" />
+ 			<property name="CdapIdealtype" type="String" required="true" />
+ 			<property name="CdapTypeofcheck" type="String" required="true" />
+ 			<property name="CdapCheckingtool" type="String" required="true" />
+ 			<property name="CdapDimension" type="String" required="true" />
+ 			
+ 			<property required-dependent="true" name = "CdapComponentType" type="String" value="E"  >
+		   		<property name="CdapComponentid" type="String" required="true"/>
+	   		</property>	
+	   		<property required-dependent="true" name = "CdapComponentType" type="String" value="N"  >
+		   		<property name="CdapNewcomponent" type="String" required="true"/>
+	   		</property>	
+	   		<!--  <property required-dependent="true" name = "CdapIdealtype" type="String" value="M"  >
+		   		<property name="CdapUom" type="String" required="true"/>
+		   		<property name="CdapIdealminimum" type="String" required="true"/>
+		   		<property name="CdapIdealmaximum" type="String" required="true"/>
+		   		<property name="CdapActualvalue" type="String" required="true"/>
+	   		</property>	 -->
+	   		<property required-dependent="true" name = "CdapIdealtype" type="String" value="O"  >
+		   		<property name="CdapOknotok" type="String" required="true"/>
+	   		</property>	
+	   		<property required-dependent="true" name = "CdapIdealtype" type="String" value="T"  >
+				<property name="CdapIdealcondition" type="String" required="true" />
+				<property name="CdapActualcondition" type="String" required="true" />
+				<property name="CdapStatus" type="String" required="true" />
+	   		</property>	
+		</validate>
+	</class>
+</validations>

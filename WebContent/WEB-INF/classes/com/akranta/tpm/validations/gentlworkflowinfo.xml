@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<validations>
+	<class id="GenTlWorkflowInfo" name="com.akranta.tpm.model.GenTlWorkflowInfo" >
+		<validate For="create update">
+			<property name="WrinStatus" type="String" required="true"/>	
+			<property name="WrinDate" type="Date" required="true" LECD="true"/>
+		</validate>	
+	</class>	
+</validations>

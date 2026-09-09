@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="KznTlProjectcreationmst" name="com.akranta.tpm.model.KznTlProjectcreationmst" >
+		<validate For="create update define">
+		  	
+			<property name="KzpmStartdate" type="Date" required="true"/>
+			 <property name="KzpmWave" type="String" required="true"/>
+			<property name="ElementType" type="String" REGEXP="SECT|CELL|MCHM"/>
+			<property name="KzpmFlid" type="String" required="true"   />
+ 			<property name="KzpmEnddate" type="Date" required="false"  GECD="true" LE= "KzpmStartdate" />
+ 			<property name="KzpmProjectname" type="String" required="true"   />
+			<property name="KzpmProjectchamp" type="String" required="true"/>
+			
+			<property required-dependent="true" name="KzpmIstangible" type="String" value="Y">			
+				<field name="KzpmBenefits" type="String" required="true" />
+			</property>	
+			
+			<property  required-AtLeastOne="true" name="KzpmIstangible">
+			    <property name="KzpmIstangible" type="String" required="true"/>
+			    <property name="KzpmIsintangible" type="String" required="true"/>
+			    
+			</property>   
+		<!-- 	<property required-dependent="true" name="KzpmIsintangible" type="String" value="Y">			
+				<field name="KzpmImprCategory" type="String" required="true" />
+			</property>
+		-->	
+			<property name="KzpmImprCategory" type="String" required="true"/>	
+						
+		</validate>	
+		<validate For="define">		  	
+			 
+		    
+			<!-- <property name="KzpmArea" type="String" required="false" /> -->
+			<!-- <property name="KzpmBenefits" type="String" required="false" /> -->
+			<!--<property name="KzpmSavings" type="String" required="true"/> -->
+			<property name="KzpmProjectmetrics" type="String" required="true" />
+			<property name="KzpmProblemstatement" type="String" required="true"/>
+			<property name="KzpmBusinesscase" type="String" required="true" />
+			<property name="KzpmGoalobj" type="String" required="true"/>
+			<!-- <property name="KzpmScopeconst" type="String" required="false" /> -->
+					
+		</validate>	
+		<validate For="finance">
+		    <property name="KzpmVerifiedamnt" type="String" required="true" />
+		</validate>    
+	</class>
+</validations>

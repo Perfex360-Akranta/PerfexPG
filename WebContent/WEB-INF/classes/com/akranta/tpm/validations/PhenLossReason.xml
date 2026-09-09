@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="PcsTlLossphenomenamst" name="com.akranta.tpm.model.PcsTlLossphenomenamst" >
+		<validate For="create">
+		
+			<property name="PlpmName" type="String" required="true"/>
+			<property name="PlpmMainloss" type="String" required="true"/>
+			
+			
+		</validate>	
+	</class>
+</validations>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="EntTlAssessmentmst" name="com.akranta.tpm.model.EntTlAssessmentmst" >
+		<validate For="create update delete">	
+			<property name="AsmmEvaluationDesc" type="String" required="true"/>
+			<property name="AsmmEvaluationDate" type="Date" required="true"/>
+			<property name="AsmmEvaluationDate" type="Date" LECD="true" />
+			
+		</validate>	
+	</class>	
+	<class id="EntTlAssessmentdtl" name="com.akranta.tpm.model.EntTlAssessmentdtl" >
+		<validate For="create update delete">	
+			<property name="AsmdTopiKeyid" type="String" required="true"/>
+			<property name="AsmdResult" type="String" required="true" />
+<!--			<property name="AsmdScore" type="String" required="true" />-->
+		</validate>	
+	</class>
+	<class id="EntTlAssessmentmstBean" name="com.akranta.tpm.bean.EntTlAssessmentmstBean" >
+		<validate For="create update">	
+			<property name="PreEvaluationdate" type="Date"  LE="PostEvaluationdate" />
+		</validate>
+<!--		<validate For="pre">-->
+<!--			<property name="PostEvaluationdate" type="Date" required="true" GE="PreEvaluationdate" />	-->
+<!--		</validate>-->
+	</class>
+</validations>

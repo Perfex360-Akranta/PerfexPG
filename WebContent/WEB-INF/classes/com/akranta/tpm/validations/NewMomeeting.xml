@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<validations>
+	<class id="GenTlMommst" name="com.akranta.tpm.model.GenTlMommst" >
+		<validate For="create">
+			<property name="MomsFlid" type="String" required="true"/>	
+			<property name="MomsDate" type="String" required="true" />
+			<property name="MomsShiftid" type="String" required="true" />
+
+			
+			<property required-dependent="true" name="MomsIsmeetinghappen" type="String" value="Y">
+				<field name="MomsMeetingtype" type="String" required="true" />
+			</property>
+			<property required-dependent="true" name="MomsMeetingtype" type="String" value="J">
+				<field name="MomsSafetytalk" type="String" required="true" />
+			</property>	
+			<property required-dependent="true" name="MomsMeetingtype" type="String" value="P">
+				<field name="MomsPillarid" type="String" required="true" />
+			</property>		
+		</validate>	
+	</class>
+	
+	<class id="MOMeetingBean" name="com.akranta.tpm.bean.MOMeetingBean" >
+	 	<validate For="create update category">
+	 	
+            <!-- <property name="MomCellId" type="String" required="true"/> -->
+            
+			</validate>
+			
+	</class>
+	
+</validations>

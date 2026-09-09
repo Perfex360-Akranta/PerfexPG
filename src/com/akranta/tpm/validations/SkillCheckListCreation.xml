@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	
+	<class id="EntTlChecklistmst" name="com.akranta.tpm.model.EntTlChecklistmst" >
+		<validate For="create update skillCheckList">		
+			<property name="ChkmTopiKeyid" type="String" required="true"  /> 
+			<property name="ChkmSkrmKeyid" type="String" required="true"  /> 		
+		</validate>	
+	</class>
+	
+	<class id="EntTlChecklistdtl" name="com.akranta.tpm.model.EntTlChecklistdtl" >
+		<validate For="create update skillCheckList">
+		 	<property name="ChkdOrderno" type="String" required="true"/> 	
+		 	<property name="ChkdEffectiveDate" type="Date" required="true"/> 	
+			 <property name="ChkdName" type="String" required="true"/> 
+		</validate>	
+	</class>	
+
+</validations>

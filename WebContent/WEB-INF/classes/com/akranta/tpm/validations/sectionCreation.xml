@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="GenTlSectionmst" name="com.akranta.tpm.model.GenTlSectionmst" >
+		<validate For="create update section">
+		    
+			<property name="SectName" type="String" required="true"/>
+			<property name="SectCode" type="String" required="true"/>
+		
+			
+		</validate>	
+	</class>
+</validations>

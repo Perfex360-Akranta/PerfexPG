@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="GenTlShiftmst" name="com.akranta.tpm.model.GenTlShiftmst" >
+		<validate For="create update shift">
+		
+			<property name="SftmName" type="String" required="true"/>
+			<property name="SftmCode" type="String" required="true"/>
+			<property name="SftmDuration" type="Date" required="true" />
+	        <property name="SftmShiftorder" type="String" required="true"/>
+			<property name="SftmStarttime" type="Date"  required="true" LECD="true"/>
+			<property name="SftmBreaktime" type="Date" required="true"  />		
+			<property name="SftmEndtime" type="Date"  required="true" LECD="true" LE="SftmStarttime"/>
+			
+		</validate>	
+	</class>
+</validations>

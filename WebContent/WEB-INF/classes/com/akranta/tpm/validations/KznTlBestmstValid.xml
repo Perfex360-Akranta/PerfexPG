@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="KznTlBestmst" name="com.akranta.tpm.model.KznTlBestmst" >
+		<validate For="create update">
+			<property name="KzbmFlid" type="String" required="true"/>
+			<property name="KzbmDate" type="Date" required="true" LECD="true" />
+ 			<property name="KzbmEmployeeid" type="String" required="true" />
+ 			<property name="KzbmMonth" type="String" required="true" />
+		</validate>
+	</class>
+</validations>

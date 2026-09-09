@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<uploadData file="EMPLOYEEMST" format="" maxRecords="0" name="EMPLOYEEMSTUPload" sheet="Employee" startFromRow="5" totalFields="34">
+    <UploadTable name="GEN_TL_EMPLOYEEMST">
+        <field auto="true" defaultValue="-" excelColIndex="-1" name="EMPM_KEYID" type="text" seqFormat="" seqPrefix="EMP" seqReset="N" seqIdentifier="GEN_TL_EMPLOYEEMST"/>
+        <field defaultValue="-" excelColHeader="Employee Name" excelColIndex="0" name="EMPM_NAME" required="true" size="50" type="text"/>
+        <field defaultValue="-" excelColHeader="Emp Code" excelColIndex="3" name="EMPM_CODE" required="true" size="18" type="text" unique="true"/>
+        <field defaultValue="-" excelColHeader="Employee Type" excelColIndex="2" name="EMPM_EMPLOYEETYPE" required="true" size="1" type="date"/>
+        <field defaultValue="-" excelColHeader="Employee No" excelColIndex="1" name="EMPM_EMPLOYEENUMBER" required="true" size="15" type="text" unique="true"/>
+        <field dateFormat="DD-Mon-YYYY" defaultValue="01-Jan-1801" excelColHeader="Join Date" excelColIndex="4" name="EMPM_JOINEDDATE" size="7" type="date"/>
+        <field defaultValue="-" excelColHeader="Department Code" excelColIndex="6" refInsert="true" name="EMPM_DEPARTMENTID" refCol="DEPT_KEYID" refWhereCol="DEPT_CODE" references="GEN_TL_DEPARTMENTMST" size="6" type="text">
+            <UploadTable name="GEN_TL_DEPARTMENTMST">
+                <field auto="true" defaultValue="-" excelColIndex="-1" name="DEPT_KEYID" type="text" seqFormat="" seqPrefix="DPT" seqReset="Y" seqIdentifier="GEN_TL_DEPARTMENTMST"/>
+                <field defaultValue="-" excelColHeader="Department Code" excelColIndex="6" name="DEPT_CODE" required="true" size="12" type="text"/>
+                <field defaultValue="-" excelColHeader="Department Name" excelColIndex="5" name="DEPT_NAME" required="true" size="100" type="text"/>
+                <field defaultValue="{}" excelColIndex="-1" name="DEPT_FACTORYID" size="10" type="text"/>
+                <field defaultValue="M" excelColIndex="-1" name="DEPT_TYPE" size="1" type="date"/>
+                <field defaultValue="-" excelColIndex="-1" name="DEPT_TEMPFIELD1" size="1" type="date"/>
+                <field defaultValue="-" excelColIndex="-1" name="DEPT_TEMPFIELD2" size="1" type="date"/>
+                <field defaultValue="-" excelColIndex="-1" name="DEPT_TEMPFIELD3" size="1" type="date"/>
+                <field defaultValue="-" excelColIndex="-1" name="DEPT_TEMPFIELD4" size="1" type="date"/>
+                <field defaultValue="-" excelColIndex="-1" name="DEPT_TEMPFIELD5" size="1" type="date"/>
+                <field defaultValue="Y" excelColIndex="-1" name="DEPT_ACTIVE" size="1" type="date"/>
+                <field defaultValue="loginUser" excelColIndex="-1" name="DEPT_CREATEDBY" size="8" type="text"/>
+                <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="DEPT_CREATEDON" size="7" type="date"/>
+                <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="DEPT_MODIFIEDON" size="7" type="date"/>
+            </UploadTable>
+        </field>
+        <field defaultValue="-" excelColHeader="Designation Code" excelColIndex="8" refInsert="true" name="EMPM_DESIGNATIONID" refCol="DESG_KEYID" refWhereCol="DESG_CODE" references="GEN_TL_DESIGNATIONMST" size="7" type="text">
+            <UploadTable name="GEN_TL_DESIGNATIONMST">
+                <field auto="true" defaultValue="-" excelColIndex="-1" name="DESG_KEYID" type="text" seqFormat="" seqPrefix="DSG" seqReset="Y" seqIdentifier="GEN_TL_DESIGNATIONMST"/>
+                <field defaultValue="-" excelColHeader="Designation Code" excelColIndex="8" name="DESG_CODE" required="true" size="12" type="text"/>
+                <field defaultValue="-" excelColHeader="Designation Name" excelColIndex="7" name="DESG_NAME" required="true" size="100" type="text"/>
+                <field defaultValue="0" excelColIndex="-1" name="DESG_LEVELNO" size="22" type="date"/>
+                <field defaultValue="N" excelColIndex="-1" name="DESG_ISSHIFTINCHARGE" size="1" type="date"/>
+                <field defaultValue="{}" excelColIndex="-1" name="DESG_FACTORY" size="10" type="text"/>
+                <field defaultValue="Y" excelColIndex="-1" name="DESG_ACTIVE" size="1" type="date"/>
+                <field defaultValue="loginUser" excelColIndex="-1" name="DESG_CREATEDBY" size="8" type="text"/>
+                <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="DESG_CREATEDON" size="7" type="date"/>
+                <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="DESG_MODIFIEDON" size="7" type="date"/>
+            </UploadTable>
+        </field>
+        <field defaultValue="{}" excelColHeader="PBU Code" excelColIndex="11" refInsert="true" name="EMPM_FACTORYID" refCol="PBUT_KEYID" refWhereCol="PBUT_CODE" references="GEN_TL_PBUMST" size="10" type="text">
+            <UploadTable name="GEN_TL_PBUMST">
+                <field auto="true" defaultValue="-" excelColIndex="-1" name="PBUT_KEYID" type="text" seqFormat="-" seqPrefix="PBU" seqReset="N" seqIdentifier="GEN_TL_PBUMST"/>
+                <field defaultValue="{}" excelColIndex="-1" name="PBUT_FACTORYID" size="10" type="text"/>
+                <field defaultValue="-" excelColHeader="SBU" excelColIndex="10" refInsert="true" name="PBUT_SBUID" refCol="SBUT_KEYID" refWhereCol="SBUT_CODE" references="GEN_TL_SBUMST" size="10" type="text">
+                    <UploadTable name="GEN_TL_SBUMST">
+                        <field auto="true" defaultValue="-" excelColIndex="-1" name="SBUT_KEYID" type="text" seqFormat="" seqPrefix="SBU" seqReset="Y" seqIdentifier="GEN_TL_SBUMST"/>
+                        <field defaultValue="-" excelColHeader="Company" excelColIndex="30" refInsert="true" name="SBUT_COMPANYID" refCol="COMP_KEYID" refWhereCol="COMP_CODE" references="GEN_TL_COMPANYMST" size="10" type="text">
+                            <UploadTable name="GEN_TL_COMPANYMST">
+                                <field auto="true" defaultValue="-" excelColIndex="-1" name="COMP_KEYID" type="text" seqFormat="" seqPrefix="COM" seqReset="Y" seqIdentifier="GEN_TL_COMPANYMST"/>
+                                <field defaultValue="-" excelColHeader="Company" excelColIndex="30" name="COMP_NAME" required="true" size="100" type="text" unique="true"/>
+                                <field defaultValue="-" excelColHeader="Company" excelColIndex="30" name="COMP_CODE" required="true" size="12" type="text" unique="true"/>
+                                <field defaultValue="-" excelColIndex="-1" name="COMP_ADDRESS" size="300" type="text"/>
+                                <field defaultValue="{}" excelColIndex="-1" name="COMP_FLID" size="12" type="text"/>
+                                <field defaultValue="Y" excelColIndex="-1" name="COMP_ACTIVE" size="1" type="date"/>
+                                <field defaultValue="loginUser" excelColIndex="-1" name="COMP_CREATEDBY" size="8" type="text"/>
+                                <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="COMP_CREATEDON" size="7" type="date"/>
+                                <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="COMP_MODIFIEDON" size="7" type="date"/>
+                            </UploadTable>
+                        </field>
+                        <field defaultValue="-" excelColHeader="Location" excelColIndex="31" refInsert="true" name="SBUT_LOCATIONID" refCol="LOCN_KEYID" refWhereCol="LOCN_CODE" references="GEN_TL_LOCATIONMST" size="10" type="text">
+                            <UploadTable name="GEN_TL_LOCATIONMST">
+                                <field auto="true" defaultValue="-" excelColIndex="-1" name="LOCN_KEYID" type="text" seqFormat="" seqPrefix="LCN" seqReset="Y" seqIdentifier="GEN_TL_LOCATIONMST"/>
+                                <field defaultValue="-" excelColHeader="Company" excelColIndex="30" refInsert="false" name="LOCN_COMPANYID" refCol="COMP_KEYID" refWhereCol="COMP_CODE" references="GEN_TL_COMPANYMST" size="10" type="text"/>
+                                <field defaultValue="-" excelColHeader="Location" excelColIndex="31" name="LOCN_NAME" required="true" size="100" type="text"/>
+                                <field defaultValue="-" excelColHeader="Location" excelColIndex="31" name="LOCN_CODE" required="true" size="12" type="text"/>
+                                <field defaultValue="-" excelColIndex="-1" name="LOCN_DESCRIPTION" size="500" type="text"/>
+                                <field defaultValue="-" excelColIndex="-1" name="LOCN_TEMPFIELD1" size="20" type="text"/>
+                                <field defaultValue="-" excelColIndex="-1" name="LOCN_TEMPFIELD2" size="20" type="text"/>
+                                <field defaultValue="-" excelColIndex="-1" name="LOCN_TEMPFIELD3" size="20" type="text"/>
+                                <field defaultValue="{}" excelColIndex="-1" name="LOCN_FLID" size="12" type="text"/>
+                                <field defaultValue="Y" excelColIndex="-1" name="LOCN_ACTIVE" size="1" type="date"/>
+                                <field defaultValue="loginUser" excelColIndex="-1" name="LOCN_CREATEDBY" size="8" type="text"/>
+                                <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="LOCN_CREATEDON" size="7" type="date"/>
+                                <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="LOCN_MODIFIEDON" size="7" type="date"/>
+                            </UploadTable>
+                        </field>
+                        <field defaultValue="{}" excelColIndex="-1" name="SBUT_FACTORYID" size="10" type="text"/>
+                        <field defaultValue="{}" excelColIndex="-1" name="SBUT_FLID" size="12" type="text"/>
+                        <field defaultValue="-" excelColHeader="SBU" excelColIndex="10" name="SBUT_NAME" required="true" size="100" type="text"/>
+                        <field defaultValue="-" excelColHeader="SBU" excelColIndex="10" name="SBUT_CODE" required="true" size="12" type="text"/>
+                        <field defaultValue="-" excelColIndex="-1" name="SBUT_DESCRIPTION" size="300" type="text"/>
+                        <field defaultValue="-" excelColIndex="-1" name="SBUT_TEMPFIELD1" size="1" type="date"/>
+                        <field defaultValue="-" excelColIndex="-1" name="SBUT_TEMPFIELD2" size="1" type="date"/>
+                        <field defaultValue="-" excelColIndex="-1" name="SBUT_TEMPFIELD3" size="1" type="date"/>
+                        <field defaultValue="-" excelColIndex="-1" name="SBUT_TEMPFIELD4" size="1" type="date"/>
+                        <field defaultValue="Y" excelColIndex="-1" name="SBUT_ACTIVE" size="1" type="date"/>
+                        <field defaultValue="loginUser" excelColIndex="-1" name="SBUT_CREATEDBY" size="8" type="text"/>
+                        <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="SBUT_CREATEDON" size="7" type="date"/>
+                        <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="SBUT_MODIFIEDON" size="7" type="date"/>
+                    </UploadTable>
+                </field>
+                <field defaultValue="{}" excelColIndex="-1" name="PBUT_FLID" size="12" type="text"/>
+                <field defaultValue="-" excelColHeader="PBU Code" excelColIndex="12" name="PBUT_NAME" required="true" size="100" type="text"/>
+                <field defaultValue="-" excelColHeader="PBU Code" excelColIndex="12" name="PBUT_CODE" required="true" size="12" type="text"/>
+                <field defaultValue="-" excelColIndex="-1" name="PBUT_DESCRIPTION" size="300" type="text"/>
+                <field defaultValue="-" excelColIndex="-1" name="PBUT_TEMPFIELD1" size="1" type="date"/>
+                <field defaultValue="-" excelColIndex="-1" name="PBUT_TEMPFIELD2" size="1" type="date"/>
+                <field defaultValue="-" excelColIndex="-1" name="PBUT_TEMPFIELD3" size="1" type="date"/>
+                <field defaultValue="-" excelColIndex="-1" name="PBUT_TEMPFIELD4" size="1" type="date"/>
+                <field defaultValue="Y" excelColIndex="-1" name="PBUT_ACTIVE" size="1" type="date"/>
+                <field defaultValue="loginUser" excelColIndex="-1" name="PBUT_CREATEDBY" size="8" type="text"/>
+                <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="PBUT_CREATEDON" size="7" type="date"/>
+                <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="PBUT_MODIFIEDON" size="7" type="date"/>
+            </UploadTable>
+        </field>
+        <field defaultValue="N" excelColIndex="-1" name="EMPM_ISSHIFTINCHARGE" size="1" type="date"/>
+        <field defaultValue="{}" excelColHeader="DMT" excelColIndex="15" refInsert="true" name="EMPM_SECTIONID" refCol="SECT_KEYID" refWhereCol="SECT_CODE" references="GEN_TL_SECTIONMST" size="10" type="text">
+            <UploadTable name="GEN_TL_SECTIONMST">
+                <field auto="true" defaultValue="-" excelColIndex="-1" name="SECT_KEYID" type="text" seqFormat="" seqPrefix="DMT" seqReset="Y" seqIdentifier="GEN_TL_SECTIONMST"/>
+                <field defaultValue="-" excelColIndex="-1" name="SECT_FACTORYID" size="10" type="text"/>
+                <field defaultValue="-" excelColHeader="Company" excelColIndex="30" refInsert="false" name="SECT_COMPANYID" refCol="COMP_KEYID" refWhereCol="COMP_CODE" references="GEN_TL_COMPANYMST" size="10" type="text"/>
+                <field defaultValue="{}" excelColIndex="-1" name="SECT_SECTIONGROUP" size="10" type="text"/>
+                <field defaultValue="-" excelColHeader="DMT" excelColIndex="15" name="SECT_CODE" required="true" size="30" type="text"/>
+                <field defaultValue="-" excelColHeader="DMT" excelColIndex="15" name="SECT_NAME" required="true" size="100" type="text"/>
+                <field defaultValue="-" excelColIndex="-1" name="SECT_FLID" size="12" type="text"/>
+                <field defaultValue="Y" excelColIndex="-1" name="SECT_ACTIVE" size="1" type="date"/>
+                <field defaultValue="loginUser" excelColIndex="-1" name="SECT_CREATEDBY" size="8" type="text"/>
+                <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="SECT_CREATEDON" size="7" type="date"/>
+                <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="SECT_MODIFIEDON" size="7" type="date"/>
+            </UploadTable>
+        </field>
+        <field defaultValue="N" excelColIndex="-1" name="EMPM_ISCELLMANAGER" size="10" type="text"/>
+        <field defaultValue="{}" excelColHeader="JH" excelColIndex="16" refInsert="true" name="EMPM_CELLID" refCol="CELL_KEYID" refWhereCol="CELL_CODE" references="GEN_TL_CELLMST" size="10" type="text">
+            <UploadTable name="GEN_TL_CELLMST">
+                <field auto="true" defaultValue="-" excelColIndex="-1" name="CELL_KEYID" type="text" seqFormat="" seqPrefix="" seqReset="Y" seqIdentifier=""/>
+                <field defaultValue="-" excelColHeader="Company" excelColIndex="30" refInsert="false" name="CELL_COMPANYID" refCol="COMP_KEYID" refWhereCol="COMP_CODE" references="GEN_TL_COMPANYMST" size="10" type="text"/>
+                <field defaultValue="-" excelColHeader="PBU" excelColIndex="12" refInsert="false" name="CELL_FACTORYID" refCol="PBUT_KEYID" refWhereCol="PBUT_CODE" references="GEN_TL_PBUMST" size="10" type="text"/>
+                <field defaultValue="-" excelColHeader="DMT" excelColIndex="15" refInsert="false" name="CELL_SECTIONID" refCol="SECT_KEYID" refWhereCol="SECT_CODE" references="GEN_TL_SECTIONMST" size="10" type="text"/>
+                <field defaultValue="{}" excelColIndex="-1" name="CELL_SECTIONGROUP" size="10" type="text"/>
+                <field defaultValue="{}" excelColHeader="JH" excelColIndex="16" name="CELL_CODE" required="true" size="40" type="text" unique="true"/>
+                <field defaultValue="-" excelColHeader="JH" excelColIndex="16" name="CELL_NAME" required="true" size="100" type="text" unique="true"/>
+                <field defaultValue="0" excelColIndex="-1" name="CELL_LEVELNO" size="22" type="date"/>
+                <field defaultValue="-" excelColIndex="-1" name="CELL_PCNAME" size="10" type="text"/>
+                <field defaultValue="0" excelColIndex="-1" name="CELL_CELLORDER" size="22" type="date"/>
+                <field dateFormat="DD-Mon-YYYY" defaultValue="01-Jan-1801" excelColIndex="-1" name="CELL_EFFECTIVEDATE" size="7" type="date"/>
+                <field dateFormat="DD-Mon-YYYY" defaultValue="01-Jan-1801" excelColIndex="-1" name="CELL_INACTIVATEDDATE" size="7" type="date"/>
+                <field defaultValue="{}" excelColIndex="-1" name="CELL_COSTCENTREID" size="10" type="text"/>
+                <field defaultValue="-" excelColIndex="-1" name="CELL_FLID" size="12" type="text"/>
+                <field defaultValue="Y" excelColIndex="-1" name="CELL_ACTIVE" size="1" type="date"/>
+                <field defaultValue="loginUser" excelColIndex="-1" name="CELL_CREATEDBY" size="8" type="text"/>
+                <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="CELL_CREATEDON" size="7" type="date"/>
+                <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="CELL_MODIFIEDON" size="7" type="date"/>
+            </UploadTable>
+        </field>
+        <field defaultValue="{}" excelColIndex="-1" name="EMPM_TRADEID" size="15" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="EMPM_EXTENSIONPHONE" size="20" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="EMPM_FAX" size="30" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="EMPM_MOBILE" size="30" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="EMPM_EMAIL" size="100" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="EMPM_PERSONALINFO" size="200" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="EMPM_REMARKS" size="200" type="text"/>
+        <field defaultValue="N" excelColHeader="DMT Owner ? (Y/N)" excelColIndex="13" name="EMPM_ISSECTIONMANAGER" size="10" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="EMPM_SKILLCATEGORY" size="100" type="text"/>
+        <field defaultValue="-" excelColHeader="Grade" excelColIndex="9" refInsert="true" name="EMPM_GRADEID" refCol="GRDM_KEYID" refWhereCol="GRDM_CODE" references="GEN_TL_EMPGRADEMST" size="10" type="text">
+            <UploadTable name="GEN_TL_EMPGRADEMST">
+                <field auto="true" defaultValue="-" excelColIndex="-1" name="GRDM_KEYID" type="text" seqFormat="" seqPrefix="GRD" seqReset="Y" seqIdentifier="GEN_TL_EMPGRADEMST"/>
+                <field defaultValue="-" excelColHeader="Grade" excelColIndex="9" name="GRDM_NAME" required="true" size="50" type="text"/>
+                <field defaultValue="-" excelColHeader="Grade" excelColIndex="9" name="GRDM_CODE" required="true" size="12" type="text"/>
+                <field defaultValue="-" excelColIndex="-1" name="GRDM_DESCRIPTION" size="500" type="text"/>
+                <field defaultValue="Y" excelColIndex="-1" name="GRDM_ACTIVE" size="1" type="date"/>
+                <field defaultValue="loginUser" excelColIndex="-1" name="GRDM_CREATEDBY" size="12" type="text"/>
+                <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="GRDM_CREATEDON" size="7" type="date"/>
+                <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="GRDM_MODIFIEDON" size="7" type="date"/>
+            </UploadTable>
+        </field>
+        <field defaultValue="N" excelColHeader="Operator? (Y/N)" excelColIndex="14" name="EMPM_ISOPERATOR" size="1" type="date"/>
+        <field defaultValue="-" excelColIndex="-1" name="EMPM_COMPANY" size="100" type="text"/>
+        <field defaultValue="{}" excelColIndex="-1" name="EMPM_ROLEID" size="6" type="text"/>
+        <field defaultValue="-" excelColHeader="SBU" excelColIndex="10" refInsert="false" name="EMPM_SBUID" refCol="SBUT_KEYID" refWhereCol="SBUT_CODE" references="GEN_TL_SBUMST" size="10" type="text"/>
+        <field defaultValue="-" excelColIndex="-1" name="EMPM_TEMPFIELD4" size="1" type="date"/>
+        <field defaultValue="-" excelColIndex="-1" name="EMPM_TEMPFIELD5" size="1" type="date"/>
+        <field defaultValue="Y" excelColIndex="-1" name="EMPM_ACTIVE" size="1" type="date"/>
+        <field defaultValue="loginUser" excelColIndex="-1" name="EMPM_CREATEDBY" size="8" type="text"/>
+        <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="EMPM_CREATEDON" size="7" type="date"/>
+        <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="EMPM_MODIFIEDON" size="7" type="date"/>
+    </UploadTable>
+</uploadData>

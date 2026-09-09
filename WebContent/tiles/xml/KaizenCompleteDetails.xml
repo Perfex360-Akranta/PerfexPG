@@ -1,0 +1,34 @@
+<filter>
+	 <form	id="frmFilter" >
+ 	
+ 	<control id="cmbComp" disable="true"/>
+	<control id="cmbFact" disable="false"/>
+	<control id="cmbSect" disable="false"/>
+	<control id="cmbCell" disable="false"/>
+	<control id="dtefromMonth" disable="true"/>
+	<control id="dtetoMonth" disable="true"/>
+	<control id="dteyear" disable="true"/>		
+ 	<control id="dtefromDate" disable="false"/>
+ 	<control id="dtetoDate" disable="false"/>
+ 	<control id="cmbCircle" disable="false"/>
+	<control id="cmbassembly" disable="true"/>
+	<control id="cmbTrade" disable="true"/>
+	<control id="cmbMachineRank" disable="true"/>
+	<control id="chkMonthwise" disable="false"/>
+	<control id="chkDatewise" disable="false"/>
+	<control id="chkSkipLine" disable="true"/>
+ 	</form>
+ 	
+ 	<form id = "frmOPL">
+ 	
+ 		<control id="cmbOplNoid" disable="true"/>
+ 		<control id="cboOplTypeid" disable="true"/>
+ 		<control id="cmbPillarid" disable="true"/>
+ 		<control id="divPillar" disable="true"/>
+ 		<control id="divMainGrp" disable="true"/>
+ 		<control id="divClassfn" disable="true"/>
+ 		<control id="divSubGrp" disable="true"/>
+ 	<control id="chkRemoveBlank" disable="true"/>
+ 		<control id="chkGrpByCellid" disable="true"/>	
+ 	</form>
+</filter>

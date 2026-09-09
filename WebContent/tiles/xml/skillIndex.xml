@@ -1,0 +1,24 @@
+<filter>
+<form	id="frmFilter" >		
+	<control id="cmbeqpGroup" disable="true"/>
+	<control id="cmbCircle" disable="true"/>
+	<control id="cmbMachineRank" disable="true"/>
+	<control id="cmbassembly" disable="true"/>
+	<control id="cmbCostCenter" disable="true"/>
+	<control id="chkMonthwise" disable="true"/>
+	<control id="dtefromMonth" disable="true"/>
+	<control id="dtetoMonth" disable="true"/>
+	<control id="dteyear" disable="true"/>		
+ 	<control id="dtefromDate" disable="true"/>
+ 	<control id="cmbTrade" disable="true"/>
+ 	<control id="chkSkipLine" disable="true"/>
+ 	<control id="dtetoDate" disable="true"/>
+ 	<control id="cmbEquipmentid" disable="true"/>
+ 	<control id="cmbEqpSubGrp" disable="true"/>
+ 	<control id="cboRelatedTo" disable="true"/>
+ 	<control id="cboRelatedTo" disable="true"/>
+ 	<control id="cmbMould" disable="true"/>
+ 	<control id="chkDatewise" disable="true"/>
+ </form>
+ 
+</filter>

@@ -1,0 +1,44 @@
+<filter>
+<form	id="frmFilter" >		
+	<control id="cmbeqpGroup" disable="false"/>
+	<control id="cmbCircle" disable="false"/>
+	<control id="cmbMachineRank" disable="false"/>
+	<control id="cmbassembly" disable="false"/>
+	<control id="cmbCostCenter" disable="true"/>
+	<control id="chkMonthwise" disable="false"/>
+	<control id="dtefromMonth" disable="false"/>
+	<control id="dtetoMonth" disable="false"/>
+	<control id="dteyear" disable="true"/>		
+ 	<control id="dtefromDate" disable="false"/>
+ 	<control id="cmbTrade" disable="false"/>
+ 	<control id="chkSkipLine" disable="true"/>
+ 	<control id="dtetoDate" disable="false"/>
+ </form>
+ <form id="frmWO" headerCaption="Work Order" >
+ 	<control id="dteOccuredfrm" disable="true"/>
+	<control id="dteOccuredto" disable="true"/>
+	<control id="spnOccuredfrm" disable="true"/>
+	<control id="spnOccuredto" disable="true"/>
+	<control id="dteReportedfrm" disable="true"/>
+	<control id="dteReportedto" disable="true"/>
+	<control id="spnReportedfrm" disable="true"/>
+	<control id="spnReportedto" disable="true"/>
+	<control id="dteAllotedfrm" disable="true"/>
+	<control id="dteAllotedto" disable="true"/>
+	<control id="spnAllotedfrm" disable="true"/>
+	<control id="spnAllotedto" disable="true"/>
+	<control id="dteWorkStartfrm" disable="true"/>
+	<control id="dteWorkStartto" disable="true"/>
+	<control id="spnWorkStartfrm" disable="true"/>
+	<control id="spnWorkStartto" disable="true"/>
+	<control id="dteWorkEndfrm" disable="true"/>
+	<control id="dteWorkEndto" disable="true"/>
+	<control id="spnWorkEndfrm" disable="true"/>
+	<control id="spnWorkEndto" disable="true"/>
+	<control id="dteProductionfrm" disable="true"/>
+	<control id="dteProductionto" disable="true"/>
+	<control id="spnProductionfrm" disable="true"/>
+	<control id="spnProductionto" disable="true"/>
+	<control id="chkRemoveBlank" disable="true"/>
+ </form>
+</filter>

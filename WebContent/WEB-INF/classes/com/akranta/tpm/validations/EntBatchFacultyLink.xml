@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<validations>
+	<class id="EntTlBatchFacultyLink" name="com.akranta.tpm.model.EntTlBatchFacultyLink" >
+		<validate For="create update">
+			<property name="BflkBachKeyid" type="String" required="true"/>
+			<property name="BflkFtymKeyid" type="String" required="true"/>
+		</validate>	
+	</class>
+	<class id="EntTlBatchEmployeeLink" name="com.akranta.tpm.model.EntTlBatchEmployeeLink" >
+		<validate For="create update">
+			<property name="Bstdbachkeyid" type="String" required="true"/>
+		</validate>	
+	</class>
+</validations>

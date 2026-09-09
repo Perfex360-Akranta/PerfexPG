@@ -1,0 +1,47 @@
+<filter>
+ <form	id="frmFilter" >
+	<control id="cmbComp" disable="true"/>
+	<control id="cmbMachineRank" disable="true"/>
+	<control id="dtefromDate" disable="true"/>
+	<control id="dtetoDate" disable="true"/>
+	<control id="dtefromMonth" disable="true"/>
+	<control id="dtetoMonth" disable="true"/>
+	<control id="dteyear" disable="true"/>
+	<control id="cmbTrade" disable="true"/>
+	<control id="chkDatewise" disable="true"/>
+	<control id="chkMonthwise" disable="true" />
+	<control id="chkSkipLine" disable="true"/>
+	<control id="cboRelatedTo" disable="true"/>
+	
+</form>
+<form id="frmSparesRelated" headerCaption="Spares Related" >
+	<control id="cmboptions" disable="true"/>
+	<control id="cmbJhStep" disable="true" />
+	<control id="cmbprodcngroup" disable="true"/>
+	<control id="divactType" disable="true"/>
+	<control id="cboPmjobtype" disable="true" />
+	<control id="cboFreq" disable="true"/>
+	<control id="cmbSupplier" disable="true"/>	
+	<control id="cmbprodcngroup" disable="true"/>
+	<control id="chkSummary" disable="true"/>	
+	<control id="chkActType" disable="true"/>	
+	<control id="chkActwise" disable="true"/>	
+	<control id="chkMonthwise" disable="true"/>	
+	<control id="chkSectionwise" disable="true"/>
+	<control id="chkCellwise" disable="true"/>
+	<control id="chkMchwise" disable="true"/>
+	<control id="cboActivityType" disable="true"/>
+	<control id="cboShelfLifeunt" disable="true"/>
+	<control id="cboShelfLifeItem" disable="true"/>
+	<control id="cboAbcClass" disable="true"/>
+	<control id="cboSource" disable="true"/>
+	<control id="cboSpqType" disable="true"/>
+	<control id="cboMachineSpec" disable="true"/>
+	<control id="cboFreq" disable="true"/>
+	<control id="cmbcriticality" disable="true"/>
+	<control id="cmbsprMake" disable="true"/>
+	<control id="cmbsprModel" disable="true"/>
+	<control id="cmbspqcategory" disable="true"/>
+</form>
+
+</filter>

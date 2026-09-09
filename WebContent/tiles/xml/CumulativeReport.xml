@@ -1,0 +1,34 @@
+<filter>
+ <form	id="frmFilter" >
+	
+	<control id="cmbComp" disable="true"/>
+	<control id="cmbTrade" disable="true"/>
+	<control id="cmbassembly" disable="true"/>
+	<control id="dteyear" disable="true"/>
+	<control id="cmbAbnmTypeid" disable="true"/>
+	<control id="cmbAbnmCategoryid" disable="true"/>
+	<control id="cmbAbnmImpactid" disable="true"/>
+	<control id="cmbPrgdProdGroupId" disable="true"/>
+	<control id="cboabnstatus" disable="true"/>
+	<control id="chkdectbychkbox" disable="true"/>
+	<control id="chkdectdtchkbox" disable="true"/>
+	<control id="chkcauschkbox" disable="true"/>
+	<control id="chkabncatchkbox" disable="true"/>
+	<control id="chkabnimpchkbox" disable="true"/>
+	<control id="chkallchkbox" disable="true"/>
+	<control id="cmbAbnmTagclassid" disable="true"/>
+	<control id="chkRemBlanks" disable="true"/>
+	<control id="cboAbndImprovementteam" disable="true"/>
+	<control id="chkAbnType" disable="true"/>
+	<control id="chkMould" disable="true"/>
+	<control id="chkTrade" disable="true"/>
+	<control id="chkTagClass" disable="true"/>
+	<control id="chkStatus" disable="true"/>
+	<control id="chkWhyWhyHappen" disable="true"/>
+	<control id="chkHTAType" disable="true"/>
+	<control id="cmbdetectedBy" disable="true"/>
+	<control id="chkCircle" disable="true"/>
+	<control id="cmbResponsibility" disable="true"/>
+</form>
+
+</filter>

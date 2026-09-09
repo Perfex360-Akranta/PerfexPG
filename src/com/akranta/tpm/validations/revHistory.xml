@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="DcmTlRevisionhistory" name="com.akranta.tpm.model.DcmTlRevisionhistory" >
+		<validate For="update">
+<!-- 			<property name="DmrhChanges" type="String" required="true"  />  -->
+		 </validate>
+	</class>
+	<class id="DcmTlDocumentmanager" name="com.akranta.tpm.model.DcmTlDocumentmanager" >
+		<validate For="keywords">
+			<property name="DmdmFilename" type="String" required="true"  />
+			<!-- 
+			<property name="DmdmKeywords" type="String" required="false"  /> 
+			<property name="DmdmDescription" type="String" required="false"  />
+		 -->
+		 </validate>
+		 
+	</class>
+	<class id="DocTlRoleRights" name="com.akranta.tpm.model.DocTlRoleRights" >
+		<validate For="create update">
+			<property name="RlriRoleKeyid" type="String" required="true"  /> 
+		 </validate>
+	</class>
+	<class id="DocTlTemplateDefvalDtl" name="com.akranta.tpm.model.DocTlTemplateDefvalDtl" >
+		<validate For="create update">
+			<property name="DtpvValue" type="String" required="true"  /> 
+		 </validate>
+	</class>
+</validations>

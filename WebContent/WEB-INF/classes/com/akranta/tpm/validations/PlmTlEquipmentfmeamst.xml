@@ -1,0 +1,13 @@
+<validations>
+<class id="PlmTlEquipmentfmeamst" name="com.akranta.tpm.model.PlmTlEquipmentfmeamst">
+<validate For="create update">
+<property name="FmeqFlid" type="String" required="true"/>
+<property name="FmeqDate" type="Date" required="true"/>
+<property name="FmeqNo" type="String" required="false"/>
+<property name="FmeqEquipid" type="String" required="false"/>
+<property name="FmeqSupequipid" type="String" required="false"/>
+<property name="FmeqPreparedby" type="String" required="true"/>
+<property name="FmeqCoreteam" type="String" required="false"/>
+</validate>
+</class>
+</validations>

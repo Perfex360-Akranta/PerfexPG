@@ -1,0 +1,32 @@
+<filter>
+ <form	id="frmFilter" >		
+	<control id="cmbeqpGroup" disable="true"/>
+	<control id="cmbCircle" disable="true"/>
+	<control id="cmbMachineRank" disable="true"/>
+	<control id="cmbassembly" disable="true"/>
+	<control id="cmbCostCenter" disable="true"/>
+	<control id="chkMonthwise" disable="false"/>
+	<control id="dtefromMonth" disable="false"/>
+	<control id="dtetoMonth" disable="false"/>
+	<control id="dteyear" disable="true"/>		
+ 	<control id="dtefromDate" disable="false"/>
+ 	<control id="cmbTrade" disable="true"/>
+ 	<control id="chkSkipLine" disable="true"/>
+ 	<control id="dtetoDate" disable="false"/>
+ </form>
+ <form id="frmWO" headerCaption="Work Order" >
+ 	<control id="dteOccuredfrm" disable="true"/>
+	<control id="dteOccuredto" disable="true"/>
+	<control id="dteReportedfrm" disable="true"/>
+	<control id="dteReportedto" disable="true"/>
+	<control id="dteAllotedfrm" disable="true"/>
+	<control id="dteAllotedto" disable="true"/>
+	<control id="dteWorkStartfrm" disable="true"/>
+	<control id="dteWorkStartto" disable="true"/>
+	<control id="dteWorkEndfrm" disable="true"/>
+	<control id="dteWorkEndto" disable="true"/>
+	<control id="dteProductionfrm" disable="true"/>
+	<control id="dteProductionto" disable="true"/>
+<control id="chkRemoveBlank" disable="true"/>
+ </form>
+</filter>

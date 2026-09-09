@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="PcsTlOtherlossentry" name="com.akranta.tpm.model.PcsTlOtherlossentry" >
+		<validate For="create">
+		
+			<property name="OlseFlid" type="String" required="true"/>
+			<property name="OlseDate" type="Date" required="true"/>
+			<property name="OlseLossid" type="String" required="true"/>
+			<property name="ExcelName" type="String" required="true"/>
+			
+			
+		</validate>	
+	</class>
+</validations>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="GenTlActionplanmst" name="com.akranta.tpm.model.GenTlActionplanmst" >
+		<validate For="create">
+		
+			<property name="AplmWhatprobdesc" type="String" required="true"/>
+			<property name="AplmWhendate" type="String" required="true"/>
+			<property name="AplmActivitydesc" type="String" required="true"/>
+			<property name="AplmReason" type="String" required="true"/>
+			<property name="AplmLocationid" type="String" required="true"/>
+			<property name="AplmAllotedddate" type="Date" /> 
+			<property name="AplmTargetdate" type="Date" LE="AplmAllotedddate" />
+		</validate>	
+		<validate For="update">
+			<property name="AplmWhatprobdesc" type="String" required="true"/>
+			<property name="AplmWhendate" type="String" required="true"/>
+			<property name="AplmActivitydesc" type="String" required="true"/>
+			<property name="AplmReason" type="String" required="true"/>
+			<property name="AplmLocationid" type="String" required="true"/>
+			<property name="AplmAllotedddate" type="Date" /> 
+			<property name="AplmTargetdate" type="Date" LE="AplmAllotedddate" />
+			
+			 <property required-dependent="true" name = "AplmStatus" type="String" value="C"  >
+		   		<property name="AplmCompletdby" type="String" required="true"/>
+				<property name="AplmCompleteddate" type="Date" required="true"/>
+				<property name="AplmCompleteddate" type="Date" LE="AplmApproveddate" />
+				<property name="AplmCompleteddate" type="Date" LECD="true" />
+			</property>	
+			<property required-dependent="true" name = "AplmStatus" type="String" value="A"  >
+				<property name="AplmApprovedby" type="String" required="true"/>
+				<property name="AplmApproveddate" type="Date" required="true"/>
+				<property name="AplmApproveddate" type="Date" LE="AplmAllotedddate"/>
+				<property name="AplmApproveddate" type="Date" LECD="true" />
+			</property>
+		</validate>
+	</class>
+</validations>

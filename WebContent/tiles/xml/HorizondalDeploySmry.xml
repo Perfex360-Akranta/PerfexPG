@@ -1,0 +1,52 @@
+<filter>
+ <form	id="frmFilter" >
+	<control id="cmbComp" disable="true"/>	
+	<control id="cmbTrade" disable="true"/>
+	<control id="cmbassembly" disable="true"/>
+	<control id="dtefromMonth" disable="false"/>
+	<control id="dtetoMonth" disable="false"/>
+	<control id="dtefromDate" disable="false"/>
+	<control id="dtetoDate" disable="false"/>
+	<control id="dteyear" disable="true"/>
+	<control id="chkMonthwise" disable="false"/>
+	<control id="chkMonthwise" checked="false"/>
+	<control id="chkDatewise" disable="false"/>
+	<control id="cmbCostCenter" disable="false"/>
+	<control id="cmbMachineRank" disable="true"/>
+	<control id="cmbCircle" disable="true"/>
+	<control id="cmbEquipmentid" disable="true"/>
+	<control id="cmbeqpGroup" disable="true"/>
+ </form>
+ <form id="frmOPL" >	
+ 	<control id="cmbImprovmntNoid" disable="true"/>
+	<control id="cmbPillarid" disable="true"/>
+	<control id="cmbOplNoid" disable="true"/>
+	<control id="cboOplTypeid" disable="true"/>
+	<control id="chkGrpByCellid" disable="true"/>	
+	<control id="chkboxBK" disable="true"/>
+	
+	<control id="chkboxIC" disable="true"/>
+	<control id="chkboxTC" disable="true"/>
+	
+	<control id="chkboxSectWise" disable="false"/>	
+	<control id="chkboxCellWise" disable="false"/>		
+	<control id="chkboxEqptWise" disable="false"/>
+	
+	<control id="chkboxLossWise" disable="false"/>
+	<control id="chkboxPillarWise" disable="false"/>	
+	<control id="chkboxResultWise" disable="false"/>	
+	<control id="chkboxEqptGrpWise" disable="false"/>
+	
+	<control id="chkboxDM" disable="true"/>
+	<control id="chkboxET" disable="true"/>	
+	<control id="chkboxJH" disable="true"/>
+	
+	<control id="chkboxKK" disable="true"/>
+	<control id="chkboxOTpm" disable="true"/>
+	<control id="chkboxPm" disable="true"/>	
+	<control id="chkboxQm" disable="true"/>
+	<control id="chkboxShe" disable="true"/>
+	<control id="cmbLossid" disable="true"/>
+	<control id="cboKznStatus" disable="true"/>
+ </form>
+</filter>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+<class id="GenTlVisitors" name="com.akranta.tpm.model.GenTlVisitors" >
+		<validate For="createKpi">
+		    <property name="VisiVisitorname" type="String" required="true"/>			    				
+		</validate>	
+	</class>	
+</validations>

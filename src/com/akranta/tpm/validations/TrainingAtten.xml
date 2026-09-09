@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+		<class id="EntTlAssessmentmst" name="com.akranta.tpm.model.EntTlAssessmentmst" >
+			<validate For="Create update EntTlAssessmentmst">
+			<property name="AsmmEvaluationDate" type="Date" required="true"/>
+			 <property name="FacultyId" type="String" required="true" />
+			 <property name="ProgKeyid" type="String" required="true" />
+			 <property name="AsmmAssessedBy" type="String" required="true" />
+			 
+			
+		</validate>	
+	    </class>
+	<class id="EntTlAssessmentdtl" name="com.akranta.tpm.model.EntTlAssessmentdtl" >
+		<validate For="create update EntTlAssessmentdtl">
+	        <property name="AsmdProgKeyid" type="String" required="true" />
+	    </validate>
+	    </class>
+	   <class id="EntTlProgrammst" name="com.akranta.tpm.model.EntTlProgrammst" >
+		<validate For="create update EntTlProgrammst">
+	    <property name="ProgMaxDuration" type="String" required="true" />
+	</validate>
+	</class>
+   </validations>
+

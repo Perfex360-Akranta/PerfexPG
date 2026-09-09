@@ -1,0 +1,51 @@
+<filter>
+ <form id="frmFilter" >
+ 	<control id="cmbCircle" disable="true"/>
+	<control id="cmbCostCenter" disable="true"/>
+	<control id="cmbeqpGroup" disable="true"/>
+	<control id="cmbMachineRank" disable="true"/>
+	<control id="cboRelatedTo" disable="true"/>	
+	<control id="cmbTrade" disable="true"/>	
+	<control id="cmbassembly" disable="true"/>
+	<control id="chkSkipLine" disable="true"/>
+	<control id="cmbMould" disable="true"/>
+	<control id="dteyear" disable="true"/>
+	
+</form>
+ <form id="frmQuality">
+ <control id="cmbCircle" disable="true"/>
+	<control id="cmbprocess" disable="true"/>
+	<control id="cmbcomplaintno" disable="true"/>
+	<control id="cmbcustID" disable="true"/>
+	<control id="cmbdefactparam" disable="true"/>	
+	<control id="cmbrecordedby" disable="true"/>	
+	<control id="cmbshift" disable="true"/>
+	<control id="cmbInspectBy" disable="true"/>
+	<control id="cboProdDesc" disable="true"/>
+	<control id="chkdvp" disable="true"/>	
+	<control id="chkdvm" disable="true"/>	
+	<control id="cboparetooptions" disable="true"/>
+	<control id="cborptType" disable="true"/>
+	<control id="chkmacwisechkbox" disable="true"/>
+	<control id="chkcummulative" disable="true"/>
+	<control id="chkojtbox" disable="true"/>
+	<control id="chksopbox" disable="true"/>	
+	<control id="chkkkbox" disable="true"/>	
+	<control id="chketbox" disable="true"/>
+	<control id="chk4mbox" disable="true"/>
+	<control id="chkimpdonebox" disable="true"/>
+	<control id="chkDockInsp" disable="true"/>
+	<control id="chkInternalRej" disable="true"/>	
+	<control id="cbocomplainttype" disable="true"/>	
+	<control id="chkrejectionchkbox" disable="true"/>
+	<control id="txttop" disable="true"/>
+	<control id="chkquantity" disable="true"/>
+	<control id="chkdpc" disable="true"/>
+	<control id="cboQtyStatus" disable="true"/>
+	<control id="cmbinspection" disable="true"/>
+	<control id="cmbdefphen" disable="true"/>
+	<control id="chkinstance" disable="true"/>
+	
+ </form>
+</filter>
+

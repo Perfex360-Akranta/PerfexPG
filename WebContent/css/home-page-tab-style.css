@@ -1,0 +1,126 @@
+/* Optional styles */
+.sidecontentpullout {	
+	color: White;
+	margin: 0px;
+}
+
+
+
+#dashboard_tab:hover {
+	/*background-color: #4787ED;*//*changed by mani 06.2.12*/
+	/*background-color: #605F5F;
+	background-image:url("../images/favicon/rt_hover.png");
+	background-repeat:no-repeat;
+	color: White;*/
+	/*added by mani for box Hover on icons**/
+	display: block;
+    outline: none;
+    -moz-box-shadow: 3px 3px 5px #000;
+    -webkit-box-shadow: 3px 3px 5px #000;
+    box-shadow: 3px 3px 5px #000;
+    -moz-border-radius-bottomleft: 1em;
+	-moz-border-radius-topleft: 1em;
+	-moz-border-radius-bottomright: 1em;
+	-moz-border-radius-topright: 1em;
+	border:1px solid rgba(255,255,255, 0.8); 
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000')";
+      filter:
+          progid:DXImageTransform.Microsoft.Shadow(color=#000,direction=0,strength=1),
+          progid:DXImageTransform.Microsoft.Shadow(color=#000,direction=45,strength=1),
+          progid:DXImageTransform.Microsoft.Shadow(color=#000,direction=90,strength=2),
+          progid:DXImageTransform.Microsoft.Shadow(color=#000,direction=135,strength=3),
+          progid:DXImageTransform.Microsoft.Shadow(color=#cccccc,direction=180,strength=10),
+          progid:DXImageTransform.Microsoft.Shadow(color=#000,direction=225,strength=3),
+          progid:DXImageTransform.Microsoft.Shadow(color=#000,direction=270,strength=2),
+          progid:DXImageTransform.Microsoft.Shadow(color=#000,direction=315,strength=1);
+}
+
+.sidecontentpullout:hover {
+	/*background-color: #4787ED;*//*changed by mani 06.2.12*/
+	/*background-color: #605F5F;
+	background-image:url("../images/favicon/rt_hover.png");
+	background-repeat:no-repeat;
+	color: White;*/
+	/*added by mani for box Hover on icons**/
+	display: block;
+    outline: none;
+    -moz-box-shadow: 3px 3px 5px #000;
+    -webkit-box-shadow: 3px 3px 5px #000;
+    box-shadow: 3px 3px 5px #000;
+    -moz-border-radius-bottomleft: 1em;
+	-moz-border-radius-topleft: 1em;
+	-moz-border-radius-bottomright: 1em;
+	-moz-border-radius-topright: 1em;
+	border:1px solid rgba(255,255,255, 0.8); 
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000')";
+      filter:
+          progid:DXImageTransform.Microsoft.Shadow(color=#000,direction=0,strength=1),
+          progid:DXImageTransform.Microsoft.Shadow(color=#000,direction=45,strength=1),
+          progid:DXImageTransform.Microsoft.Shadow(color=#000,direction=90,strength=2),
+          progid:DXImageTransform.Microsoft.Shadow(color=#000,direction=135,strength=3),
+          progid:DXImageTransform.Microsoft.Shadow(color=#cccccc,direction=180,strength=10),
+          progid:DXImageTransform.Microsoft.Shadow(color=#000,direction=225,strength=3),
+          progid:DXImageTransform.Microsoft.Shadow(color=#000,direction=270,strength=2),
+          progid:DXImageTransform.Microsoft.Shadow(color=#000,direction=315,strength=1);
+}
+
+.sidecontent {
+	/*background-color: #c0d8f4;*/
+	background-color: #FFF;
+	color: #000000;
+	/*added by mani for sliding Div**/
+	-moz-border-radius-bottomleft: 1em;
+	-webkit-border-bottom-left-radius: 1em;
+	-moz-border-radius-topleft: 1em;
+	-webkit-border-top-left-radius: 1em;
+	border-bottom-left-radius: 1em;
+	z-index: 900;
+	 margin-right: 48px;
+	
+}
+
+.sidecontent  div  div {
+	padding-left: 0px;
+	padding-right: 205px;
+}
+.leftArrow{
+	background-image: url('../images/favicon/SlideArrowLeftOver.png');
+}
+.rightArrow{
+	background-image: url('../images/favicon/SlideArrowrightOver.png');
+}
+#slid-top-icon {
+	/*background-image: url('../images/favicon/SlideArrowLeftOver 1.png');*//*changed by mani 06.2.12*/
+	
+	height: 34px;
+	padding:0px;
+	width: 50px;
+	background-repeat: no-repeat;
+	padding: 0px;
+	margin:0px 0px 0px 0px;
+	clear: both;
+	position: fixed;
+}
+
+#slid-bottom-icon{
+background-image: url('../images/tab-menu/tab-bg.png');
+background-repeat:y;
+
+	padding:0px;
+	width: 55px;
+	background-repeat: no-repeat;
+	padding: 0px;
+	margin:0px;
+	clear: both;	
+}
+
+
+
+
+.side{
+/* background-image: url('../images/tab-menu/aarrow-right1.png'); */
+background-repeat:no-repeat;
+background-position:top left;
+
+
+}

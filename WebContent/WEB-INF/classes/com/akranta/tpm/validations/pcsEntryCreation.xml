@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+
+	<class id="PcsTlMst" name="com.akranta.tpm.model.PcsTlMst" >
+		<validate For="create update">
+			<property name="PrlmEntrydate" type="String" required="true"  />
+		</validate>
+	</class>
+		
+	<class id="PcsTlDtl" name="com.akranta.tpm.model.PcsTlDtl" >
+		<validate For="create update">
+			<property name="Machineid" type="String" required="true"  />		
+			<property name="Productid" type="String" required="true"  />	
+			<property name="Actualcycletime" type="String" required="true"  />
+<!-- 		<property name="Wno" type="String" required="true"  />		 -->
+			<property name="Producedqty" type="String" required="true"  />
+		</validate>
+	</class>
+	<class id="PcsTlDtl" name="com.akranta.tpm.model.PcsTlDtl" >
+		<validate For="TrimExp">
+			<property name="Trimmingqty" type="String" required="true"  />		
+			<property name="Expansionqty" type="String" required="true"  />
+		</validate>
+	</class>
+
+	<class id="PcsTlWorkorderlink" name="com.akranta.tpm.model.PcsTlWorkorderlink" >
+		<validate For="create update">
+		</validate>
+	</class>
+
+	<class id="PcsTlOperatordtl" name="com.akranta.tpm.model.PcsTlOperatordtl" >
+		<validate For="create update">
+			<property name="PopdPlemployeeid" type="String" required="true"  />
+		</validate>
+	</class>
+		
+	<class id="PcsTlLossreasonlink" name="com.akranta.tpm.model.PcsTlLossreasonlink" >
+		<validate For="create update">
+			<property name="PlrkLossid" type="String" required="true"  />
+			<property name="PlrkReasonid" type="String" required="true"  />
+			<property name="PlrkMinutes" type="String" required="true"  />			
+			<property name="PlrkInstance" type="String" required="true"  />			
+		</validate>
+	</class>
+
+	<class id="PcsTlLosscapture" name="com.akranta.tpm.model.PcsTlLosscapture" >
+		<validate For="create update">
+			<property name="PlosFlid" type="String" required="true"  />
+			<property name="PlosDate" type="String" required="true"  />
+			<property name="PlosShiftid" type="String" required="false"  />
+			
+			<property name="PlosFromtime" type="String" required="true"  />
+			<property name="PlosTotime" type="String" required="true"  />
+			<property name="PlosLosstime" type="String" required="true"  />
+			<property name="PlosLossreason" type="String" required="true"  />
+			<property name="PlosLossid" type="String" required="true"  />
+			<property name="PlosTradeid" type="String" required="true"  />
+			
+		</validate>
+	</class>
+	
+		
+</validations>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="QtmTlComplaintgallery" name="com.akranta.tpm.model.QtmTlComplaintgallery" >
+		<validate For="create update">
+			<!--<property name="CmgaCustomerid" type="String" required="true"/>
+			--><property name="CmgaComplaintdate" type="Date" LECD="true"/>
+			<property name="CmgaDefectid" type="String" required="true"/>
+			<property name="CmgaDefectqty" type="String" required="true"/>
+			<property name="CmgaGradespecification" type="String" required="true"/>
+			<property name="CmgaManufacturedate" type="String"  GE="CmgaComplaintdate"/>
+		</validate>
+	</class>
+</validations>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+<class id="StdTlStdworksheetdtl " name="com.akranta.tpm.model.StdTlStdworksheetdtl" >
+		<validate For="create update">
+	      	 <property name="StwdMajorsteps" type="String" required="true" />
+	      	 <property name="StwdTypeofmanpower" type="String" required="true" />   
+	      	 	 <property name="StwdMantime" type="String" required="true" />  
+	      	 	 	 <property name="StwdProcesstime" type="String" required="true" />  
+	      	 	  <property name="StwdWaittime" type="String" required="true" />  
+	      	  <property name="StwdTraveltime" type="String" required="true" />   		     
+	</validate>
+	</class>		
+	
+</validations>
+

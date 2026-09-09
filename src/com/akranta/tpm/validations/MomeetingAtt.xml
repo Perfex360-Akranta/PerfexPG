@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="GenTlMomattendance" name="com.akranta.tpm.model.GenTlMomattendance" >
+		<validate For="create">
+		<property name="MomaDate" type="String" required="true"/>		
+		
+	</validate>	
+	</class>	
+</validations>

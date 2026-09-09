@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<uploadData file="ABNORMALITYCATEGORY" format="" maxRecords="0" name="ABNORMALITYCATEGORY" sheet="ABNORMALITYCATEGORY" startFromRow="2" totalFields="2">
+    <UploadTable name="ABN_TL_CATEGORYMST" seqCol="" seqFormat="" seqLength="0" seqPrefix="" seqReset="">
+        <field auto="true" defaultValue="-" excelColIndex="-1" name="ABCM_KEYID" size="8" type="text" tmpTblColIndex="0" seqFormat="" seqPrefix="ABNC" seqReset="Y" seqIdentifier="ABN_TL_CATEGORYMST"/>
+        <field defaultValue="-" excelColHeader="NAME" excelColIndex="0" name="ABCM_NAME" required="true" size="50" type="text" tmpTblColIndex="0"/>
+        <field defaultValue="-" excelColHeader="CODE" excelColIndex="1" name="ABCM_CODE" required="true" size="12" type="text" unique="true" tmpTblColIndex="0"/>
+        <field defaultValue="0" name="ABCM_JHSTEPS" size="100" type="text" tmpTblColIndex="0"/>
+        <field defaultValue="-" name="ABCM_REMARKS" size="200" type="text" tmpTblColIndex="0"/>
+        <field defaultValue="-" name="ABCM_ACTIVE" size="1" type="date" tmpTblColIndex="0"/>
+        <field defaultValue="LOGINUSER" name="ABCM_CREATEDBY" size="8" type="text" tmpTblColIndex="0"/>
+        <field defaultValue="SYSDATE" name="ABCM_CREATEDON" size="7" type="date" tmpTblColIndex="0"/>
+        <field defaultValue="SYSDATE" name="ABCM_MODIFIEDON" size="7" type="date" tmpTblColIndex="0"/>
+    </UploadTable>
+</uploadData>

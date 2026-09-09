@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="EntTlProgrammst" name="com.akranta.tpm.model.EntTlProgrammst" >
+		<validate For="create update">
+			<property name="ProgName" type="String" required="true"  />
+ 			<property name="ProgCode" type="String" required="true" /> 
+			<property name="ProgType" type="String" required="true"  />
+			<property name="ProgMinDuration" type="String" required="true" />
+			<property name="ProgMaxDuration" type="String" required="true"  />
+			<property name="ProgTrarKeyid" type="String" required="true" />
+			<property name="ProgIsEvaluationNeed" type="boolean" required="true" />
+<!-- 			<property name="ProgSpokeKeyid" type="String" required="true" /> -->
+		</validate>
+		<validate For="createTrngCal updateTrngCal">
+			<!-- <property name="ProgKeyid" type="String" required="true"  /> -->
+			<!-- <property name="ProgCode" type="String" required="true" /> -->
+			<property name="ProgMonth" type="Date" required="true"  />
+			 <property required-dependent="true" name="ProgRepeatedProgram" type="String" value="Y">
+				<field name="ProgEffectiveFrom" type="String" required="true" />
+			</property>
+<!-- 			<property name="ProgUniquepos" type="String" required="true" /> -->
+<!-- 			<property name="ProgTgtmKeyid" type="String" required="true" /> -->
+		</validate>	
+	</class>
+	<class id="EntBatchMst" name="com.akranta.tpm.model.EntBatchMst" >
+		<validate For="create update">
+			<property name="BachVenuKeyid" type="String" required="true"  />
+	    </validate>
+	</class>	
+</validations>

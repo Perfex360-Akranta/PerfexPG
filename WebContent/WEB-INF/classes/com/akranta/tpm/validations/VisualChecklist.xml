@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="SopTlVisualchecklistmst " name="com.akranta.tpm.model.SopTlVisualchecklistmst" >
+		<validate For="create update">
+	      	 <property name="VccmFlid" type="String" required="true"  />
+	      	 <property name="VccmTitle" type="String" required="true"  />    		     
+	</validate>
+	</class>	
+
+	<class id="SopTlVisualchecklistdtl " name="com.akranta.tpm.model.SopTlVisualchecklistdtl" >
+		<validate For="create update">
+			<property name="VccdOrderno" type="String" required="true" />
+	      	 <property name="VccdCriteria" type="String" required="true" />
+	      	 <property name="VccdSortorder" type="String" required="true" />
+	      	 <property name="VccdCheckpoints" type="String" required="true" />    		     
+	</validate>
+	</class>		
+	
+</validations>
+
+
+

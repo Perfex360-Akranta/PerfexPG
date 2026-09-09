@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="KznTlProjectResourceLink" name="com.akranta.tpm.model.KznTlProjectResourceLink" >
+		<validate For="create update">
+		  	
+			<property name="KprlEmpmKeyid" type="String" required="true"   />
+ 			<property name="KprlRoleKeyid" type="String" required="true"   />
+			<property name="KprlHrsestimate" type="String" required="true" />
+			<property name="KprlLeadMemb" type="String" required="true"/>
+			
+		</validate>	
+	</class>
+</validations>

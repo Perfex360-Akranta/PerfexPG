@@ -1,0 +1,12 @@
+<filter>
+ <form id="frmFilter" >
+ 	<control id="cmbComp" disable="true"/>
+	<control id="dteyear" disable="true"/>	
+	<control id="chkRemBlanks" disable="true"/>		
+	<control id="chkSkipLine" disable="true"/>
+	<control id="cmbdetectedBy" disable="true"/>
+	<control id="chkRemoveBlank" disable="true"/>
+	<control id="chkCircle" disable="true"/>
+	<control id="cmbResponsibility" disable="true"/>
+</form>
+</filter>

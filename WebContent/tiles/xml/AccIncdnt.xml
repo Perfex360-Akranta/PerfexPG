@@ -1,0 +1,42 @@
+<filter>
+ <form	id="frmFilter" >
+	<control id="cboRelatedTo" disable="true"/>
+	<control id="cmbFact" disable="false"/>
+	<control id="cmbSect" disable="false"/>
+	<control id="cmbCell" disable="false"/>
+	<control id="cmbEquipmentid" disable="false"/>
+	<control id="cmbCostCenter" disable="false"/>
+	<control id="cmbCircle" disable="false"/>
+	<control id="cmbassembly" disable="true"/>
+	<control id="cmbeqpGroup" disable="false"/>
+	<control id="cmbMachineRank" disable="false"/>
+	<control id="dtefromDate" disable="true"/>
+	<control id="dtetoDate" disable="true"/>
+	<control id="dtefromMonth" disable="false"/>
+	<control id="dtetoMonth" disable="false"/>
+	<control id="dteyear" disable="true"/>
+	<control id="cmbTrade" disable="true"/>
+	<control id="chkDatewise" disable="true"/>
+	<control id="chkMonthwise" disable="false" />
+</form>
+<form id="frmSafety">
+	<control id="cmbtagno" disable="true"/>
+	<control id="cmbsafetysubtype" disable="true"/>	
+	<control id="dteincdntFromDate" disable="true"/>
+	<control id="dteincdntdToDate" disable="true"/>
+	<control id="cboimprovmnt" disable="true"/>
+	<control id="cbosafetytype" disable="true"/>
+	<control id="cbopriority" disable="true"/>
+	<control id="cborelatedto" disable="true"/>
+	<control id="cboreptype" disable="true"/>
+	<control id="cboworkarea" disable="true"/>
+	<control id="chkinstancechkbox" disable="true"/>
+	<control id="chkmdlchkbox" disable="true"/>
+	<control id="dteincdntFromDate" disable="true"/>
+	<control id="dteincdntdToDate" disable="true"/>
+	<control id="cboStatus" disable="true"/>
+<!--	<control id="cmbemployee" disable="true"/>-->
+<!--	<control id="cmbinjuryType" disable="true"/>-->
+<!--	<control id="cmbbodyPart" disable="true"/>-->
+</form>
+</filter>

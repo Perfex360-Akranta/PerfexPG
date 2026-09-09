@@ -1,0 +1,59 @@
+<filter>
+ <form id="frmFilter" >
+
+	<control id="dtefromMonth" disable="false"/>
+	<control id="dtetoMonth" disable="false"/>
+	<control id="dteyear" disable="true"/>	
+	<control id="chkMonthwise" disable="false"/>
+	<control id="chkRemBlanks" disable="true"/>	
+	<control id="chkDatewise" disable="false"/>
+	<control id="dtetoDate" disable="false"/>
+	<control id="dtefromDate" disable="false"/>
+	<control id="cmbEquipmentid" disable="false"/>
+	<control id="cmbeqpGroup" disable="true"/>
+	<control id="cmbTrade" disable="true"/>
+	<control id="cmbCircle" disable="false"/>
+	<control id="cmbMachineRank" disable="true"/>
+	<control id="cmbassembly" disable="true"/>
+	<control id="cmbCostCenter" disable="true"/>
+	<control id="chkSkipLine" disable="true"/>
+
+</form>
+<form id="frmQuality" >	
+	<control id="cbographoptions" disable="true"/>
+	<control id="cboparetooptions" disable="true"/>
+	<control id="cborptType" disable="true"/>
+	<control id="chkjhbox" disable="true"/>
+	<control id="chkpmbox" disable="true"/>
+	<control id="chkkkbox" disable="true"/>
+	<control id="chketbox" disable="true"/>
+	<control id="chk4mbox" disable="true"/>
+	<control id="chkimpdonebox" disable="true"/>
+	<control id="chkdvp" disable="false"/>
+	<control id="chkdvm" disable="false"/>
+	<control id="chkinstance" disable="false"/>
+	<control id="chkquantity" disable="false"/>
+	<control id="chkdpc" disable="false"/>
+	<control id="cmbcomplaintno" disable="true"/>
+	<control id="cmbrecordedby" disable="true"/>
+	<control id="cmbdefactparam" disable="true"/>
+	<control id="cmbinspection" disable="true"/>
+	<control id="chkrejectionchkbox" disable="true"/>
+	<control id="chkmacwisechkbox" disable="true"/>	
+	<control id="cmbdefphen" disable="false"/>
+	<control id="cmbproduct" disable="true"/>
+	<control id="cmbprocess" disable="false"/>
+	<control id="cbocomplainttype" disable ="true"/>
+	<control id="cmbshift" disable="true"/>
+	<control id="cmbcustID" disable="true"/>
+	<control id="cboProdDesc" disable="true"/>
+	<control id="txttop" disable="true"/>
+	<control id="cmbInspectBy" disable="true"/>
+	<control id="chkcummulative" disable="true"/>
+	<control id="chkojtbox" disable="true"/>
+	<control id="cboQtyStatus" disable="true"/>
+	<control id="chksopbox" disable="true"/>
+	<control id="chkRemoveBlank" disable="true"/>
+</form>
+</filter>
+

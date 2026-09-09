@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="GenTlActionplandtl" name="com.akranta.tpm.model.GenTlActionplandtl" >
+		<validate For="create">
+			<property name="ApldActionplan" type="String" required="true"/>
+			<!--<property name="ApldTradeid" type="String" required="true"/>
+			-->
+			<property name="ApldResponsibility" type="String" required="false"/>
+				<property required-dependent="true" name = "ApldStatus" type="String" value="C"  >
+		   		<property name="ApldCompletedby" type="String" required="true"/>
+				<property name="ApldCompleatedon" type="Date" required="true"/>
+			</property>				
+		</validate>	
+		<validate For="update">
+			<property name="ApldActionplan" type="String" required="true"/>
+			<!--<property name="ApldTradeid" type="String" required="true"/>-->
+			<property name="ApldResponsibility" type="String" required="false"/>
+				<property required-dependent="true" name = "ApldStatus" type="String" value="C"  >
+		   		<property name="ApldCompletedby" type="String" required="true"/>
+				<property name="ApldCompleatedon" type="Date" required="true"/>
+
+			</property>				
+		</validate>
+	</class>
+</validations>

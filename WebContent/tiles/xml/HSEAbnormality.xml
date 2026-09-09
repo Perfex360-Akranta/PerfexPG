@@ -1,0 +1,21 @@
+<filter>
+ <form id="frmFilter" >
+ 	<control id="cmbComp" disable="true"/>
+	<control id="cmbFact" disable="false"/>
+	<control id="cmbSect" disable="false"/>
+	<control id="cmbCell" disable="false"/>
+	<control id="dtefromMonth" disable="true"/>
+	<control id="dtetoMonth" disable="true"/>
+	<control id="dteyear" disable="true"/>	
+	<control id="cmbAbnmTypeid" disable="false"/>
+	<control id="cmbAbnmCategoryid" disable="false"/>
+	<control id="cmbAbnmImpactid" disable="false"/>
+	<control id="chkMonthwise" disable="true"/>
+	<control id="chkRemBlanks" disable="true"/>	
+	<control id="chkDatewise" disable="true"/>	
+	<control id="chkSkipLine" disable="true"/>
+</form>
+<form id="">
+	<control id="cmbAbnmTypeid" disable="true"/>
+</form>
+</filter>

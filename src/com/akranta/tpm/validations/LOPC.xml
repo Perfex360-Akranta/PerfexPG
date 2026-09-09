@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+<class id="LopcEntryMst" name="com.akranta.tpm.model.LopcEntryMst" >
+		<validate For="create">
+			<property name="LoemLocacategoryid" type="String" required="true"/>
+			<property name="LoemOccurencedatetime" type="Date" required="true"/>
+			<property name="LoemPrepareddatetime" type="Date" required="true"/>		
+			<property name="LoemLopcdesc" type="String" required="true"/>
+			<property name="LoemEmployeeid" type="String" required="false"/>
+			<property name="LoemIdentifiedby" type="String" required="false"/>		
+		    </validate>	
+	        </class>
+            </validations>

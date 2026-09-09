@@ -1,0 +1,49 @@
+<filter>
+ <form	id="frmFilter" >
+	<control id="cmbComp" disable="true"/>
+	<control id="cmbFact" disable="false"/>
+	<control id="cmbSect" disable="false"/>
+	<control id="cmbCell" disable="false"/>
+	<control id="cmbEquipmentid" disable="false"/>
+	<control id="cmbCostCenter" disable="false"/>
+	<control id="cmbCircle" disable="false"/>
+	<control id="cmbassembly" disable="false"/>
+	<control id="cmbeqpGroup" disable="false"/>
+	<control id="cmbMachineRank" disable="false"/>
+	<control id="dtefromDate" disable="true"/>
+	<control id="dtetoDate" disable="true"/>
+	<control id="dtefromMonth" disable="false"/>
+	<control id="dtetoMonth" disable="false"/>
+	<control id="dteyear" disable="true"/>
+	<control id="cmbTrade" disable="false"/>
+	<control id="chkDatewise" disable="true"/>	
+	<control id="chkSkipLine" disable="true"/>	
+</form>
+<form id="frmSparesRelated" headerCaption="Spares Related" >
+	<control id="cmbsparePartNo" disable="false"/>
+	<control id="cmbclassifcn" disable="true"/>
+	<control id="cmbsprUom" disable="true"/>	
+	<control id="cmbspqcategory" disable="true"/>
+	<control id="cmbsprMake" disable="true"/>
+	<control id="cmbcriticality" disable="true"/>
+	<control id="cmbspqSubCat" disable="true"/>	
+	<control id="cmbsprModel" disable="true"/>
+	<control id="cboSource" disable="false"/>
+	<control id="cboSpqType" disable="true"/>
+	<control id="cboMachineSpec" disable="true"/>
+	<control id="txtspareDescn" disable="true"/>
+	<control id="cboFreq" disable="false"/>
+	<control id="cboAbcClass" disable="true"/>
+	<control id="cboShelfLifeItem" disable="true"/>
+	<control id="cboShelfLifeunt" disable="true"/>
+	<control id="divsprEqpWise" disable="true"/>
+	<control id="cboPmjobtype" disable="false"/>
+	<control id="cmbSupplier" disable="false"/>
+	<control id="cboShelfLifeItem" disable="true"/>
+	<control id="cboShelfLifeunt" disable="true"/>
+	<control id="cboFreq" disable="true"/>
+	<control id="cboOptions" disable="true"/>
+	<control id="chkRemoveBlank" disable="true"/>
+</form>
+
+</filter>

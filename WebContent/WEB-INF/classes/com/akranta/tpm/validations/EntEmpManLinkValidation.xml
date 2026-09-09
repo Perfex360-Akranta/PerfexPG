@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="EntTlEmpmanagermstModel" name="com.akranta.tpm.model.EntTlEmpmanagermstModel" >
+		<validate For="create update">
+			<property name="EemmManagerId" type="String" required="true"  /> 
+			<property name="EemmMailid" type="String" required="true"/>			
+
+			 
+
+	  </validate>	
+	</class>	
+	<class id="EntTlEmpmanagerdtl" name="com.akranta.tpm.model.EntTlEmpmanagerdtl" >
+		<validate For="create update">
+				
+			<property name="EemdEmpmKeyid" type="String" required="true" />
+<!-- 			<property name="EemdMailid" type="String" required="true" /> -->
+			 
+
+	  </validate>	
+	</class>
+</validations>
+

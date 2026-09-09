@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<filter>
+	<form id="frmFilter">
+		<control id="cmbEquipmentid" disable="true" />
+		<control id="cmbTrade" disable="true" />
+		<control id="cmbassembly" disable="true" />
+		
+		<control id="cmbeqpGroup" disable="true" />
+		<control id="cmbCircle" disable="true" />
+		<control id="cmbCostCenter" disable="true" />
+		
+		<control id="cmbEqpSubGrp" disable="true" />
+		<control id="chkSkipLine" disable="true" />
+
+
+	</form>
+
+
+
+
+</filter>          

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="BdmTlWhywhymst" name="com.akranta.tpm.model.BdmTlWhywhymst" >
+		<validate For="create update">
+			<property name="WwmsArea" type="String" required="true"  />
+			 <property name="WwmsProblem" type="String" required="true"  />
+			 <property name="WwmsDate" type="Date" required="true"  />
+			 <property name="WwmsProblemattendby" type="String" required="true"  />
+			 <property name="WwmsWhywhydoneby" type="String" required="true"  />
+	     
+			
+	</validate>
+	</class>	
+		
+		</validations>

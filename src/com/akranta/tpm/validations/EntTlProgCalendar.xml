@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="EntTlProgCalendar" name="com.akranta.tpm.model.EntTlProgCalendar" >
+		<validate For="create update delete">		
+			<property name="EcalProgId" type="String" required="true"  /> 
+			<property name="EcalPlanMonth" type="String" required="true"/>				
+		</validate>	
+	</class>		
+</validations>

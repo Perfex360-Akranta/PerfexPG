@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="AdmTlUsermst" name="com.akranta.tpm.model.AdmTlUsermst" >
+		<validate For="create update">
+		
+			<property name="Usrm_ccno" type="String" required="true"/>
+			<property name="Usrm_securitypolicyid" type="String" required="true"/>
+			<property name="Usrm_loginid" type="String" required="true"/>
+			<property name="Usrm_password" type="String" required="true"/>
+			
+			<property name="Usrm_defaultpassword" type="String" required="true"/>
+		<property required-dependent="true" name="Usrm_isvalidityreq" type="String" value="Y">	
+			<!--<field name="Usrm_validtill" type="Date" GECD="true"/>-->
+			<field name="Usrm_validfrom" type="Date" GE="Usrm_validtill" />
+		</property>
+		</validate>	
+	</class>
+</validations>

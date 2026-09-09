@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<validations>
+	<class id="GenTlUpstreamdefectMst" name="com.akranta.tpm.model.GenTlUpstreamdefectMst" >
+		<validate For="create update">
+ 			<property name="UpsmTitle" type="String" required="true"  />		
+ 			<property name="UpsmDate" type="String" required="true"  />
+		</validate>
+	</class>
+	
+	<class id="GenTlUpstreamdefectDet" name="com.akranta.tpm.model.GenTlUpstreamdefectDet" >
+		<validate For="create update">
+ 			<property name="UpsdRawmaterial" type="String" required="true"  />		
+ 			<property name="UpsdCorrectionaction" type="String" required="true"  />   
+ 			<property name="UpsdInformto" type="String" required="true"  />
+ 			<property name="UpsdDefect" type="String" required="true"  />
+		</validate>
+	</class>
+	
+</validations>	

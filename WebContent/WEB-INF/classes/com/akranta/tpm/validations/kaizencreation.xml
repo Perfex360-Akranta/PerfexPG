@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="KznTlMst" name="com.akranta.tpm.model.KznTlMst" >
+		<validate For="create update whywhy hdScan mould">
+		
+<!--		        <property name="KznmKpiid" type="String" required="true" />-->
+		        <property name="KznmActivitypillarid" type="String" required="true" />
+		        <property name="KznmTheme" type="String" required="true" />
+		        <property name="KznmPresentproblem" type="String" required="true" />
+				<property name="KznmEnddate" type="Date" required="true" LE= "KznmStartdate"/>
+				<property name="KznmFipNumber" type="String" required="false"/>
+<!--			<property name="KznmDate" type="Date" required="true"  /> -->
+<!--			<property name="KznmStartdate" type="Date" required="true"  />-->
+<!--        	<property name="KznmEnddate" type="Date" required="true" LE= "KznmStartdate"/>-->
+<!--			<property name="KznmFlid" type="String" required="true" />-->
+<!--			<property name="KznmTheme" type="String" required="true" />-->
+<!--			<property name="KznmPreparedid" type="String" required="true" />-->
+<!--			<property name="KznmBenchmark" type="String" required="true" />-->
+<!--			<property name="KznmTarget" type="String" required="true" />-->
+		<!--<property name="KznmFactoryid" type="String" required="true"/>-->
+		<!-- <property name="KznmCellid" type="String" required="true" /> -->
+		<!--<property name="KznmMachineid" type="String" required="true" /> -->	
+		<!--<property name="KznmMaterialcost" type="String" required="true" />
+			<property name="KznmLabourcost" type="String" required="true" /> -->
+		<!--<property name="KznmWwmsKeyid" type="String" required="true" /> -->
+		</validate>	
+<!-- 		<validate For="mould">
+			<property name="KznmMouldid" type="String" required="true" />
+		</validate> -->
+	</class>
+	
+	
+	
+	<class id="KaizenFormBean" name="com.akranta.tpm.bean.KaizenFormBean" >
+	 	<validate For="create update whywhy hdScan mould">
+			<property required-AtLeastOne="true" name = "results" >
+				<field name="ResultAreaP" type="String" required-value="P" operation="EQ" />
+				<field name="ResultAreaQ" type="String" required-value="Q" operation="EQ" />
+				<field name="ResultAreaC" type="String" required-value="C" operation="EQ" />
+				<field name="ResultAreaD" type="String" required-value="D" operation="EQ" />
+				<field name="ResultAreaS" type="String" required-value="S" operation="EQ" />
+				<field name="ResultAreaM" type="String" required-value="M" operation="EQ" />
+				<field name="ResultAreaE" type="String" required-value="E" operation="EQ" />
+			</property>
+		</validate>
+	</class>
+	
+	<class id="KznTlMst" name="com.akranta.tpm.model.KznTlMst" >
+	 	<validate For="Completion">
+			<property name="KznmCompleteddate" type="Date" LECD="true" />
+			<property name="KznmCompletedid" type="String" required="true" />
+			<property name="KznmEnddate" type="Date" required="true" LE= "KznmStartdate"/>
+		</validate>
+	</class>
+ 	
+</validations>
+

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="KpiTlIndicator" name="com.akranta.tpm.model.KpiTlIndicator" >
+		<validate For="create update delete">		
+<!-- 			<property name="KinkIndicatorname" type="String" required="true"/> -->
+<!-- 			<property name="KinkIndicatorcode" type="String" required="true"/> -->
+			<property name="KinkKpireason" type="String" required="true"/>
+			<property name="KinkDescription" type="String" required="true"/>
+			<property name="KinkInputtype" type="String" required="true"/>
+			<property name="KinkInputentry" type="String" required="true"/>
+			<property name="KinkPillarid" type="String" required="true"/>
+			<property name="KinkFrequency" type="String" required="true" />
+			<property name="KinkImpactarea" type="String" required="true" />
+			<property name="KinkUomid" type="String" required="true" />	
+<!--			<property name="KinkParentid" type="String" required="true" />	-->
+<!-- 			<property name="KinkInputtype" type="String" required="true" />	 -->
+<!-- 			<property name="KinkInputentry" type="String" required="true" />	 -->
+<!-- 			<property name="KinkIdentifier" type="String" required="true" />	 -->
+<!-- 			<property name="KinkDeptKeyid" type="String" required="true" /> -->
+<!-- 			<property name="KinkCostarea" type="String" required="true" /> -->
+			<!--<property name="KinkManualcalctype" type="String" required="true" />
+			
+			
+			<property name="KinkExcelname" type="String" required="true" />-->
+		</validate>	
+	</class>		
+</validations>

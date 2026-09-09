@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="KznTlKaizenbankmst" name="com.akranta.tpm.model.KznTlKaizenbankmst" >
+		<validate For="create update">
+			<property name="KzbnFlid" type="String" required="true"/>
+			<property name="KzbnDate" type="Date" required="true" LECD="true"/>
+ 			<property name="KzbnSuggestedby" type="String" required="true" />
+ 			<property name="KzbnKaizen" type="String" required="true" />
+  		<!-- 	<property name="KzbnBenefit" type="String" required="true" />  --> 
+		</validate>
+		<validate For="accept">
+ 			<property name="KzbnAcrejby" type="String" required="true" />
+ 			<property name="KzbnResponsibility" type="String" required="true" />
+ 			<property name="KzbnAcceptrejon" type="Date" required="true"  GECD="true"/>
+ 			<property name="KzbnTargetdate" type="Date" required="true" LE="KzbnAcceptrejon" />
+		</validate>
+		<!-- <validate For="acceptSingle">
+ 			<property name="KzbnResponsibility" type="String" required="true" />
+ 			<property name="KzbnTargetdate" type="Date" required="true"/>
+		</validate>	 -->
+		<validate For="reject">
+ 			<property name="KzbnAcrejby" type="String" required="true"  />
+ 			<property name="KzbnAcceptrejon" type="Date" required="true" GECD="true" />
+		</validate>
+		<validate For="implement">
+ 			<property name="KzbnImplementedby" type="String" required="true" />
+ 			<property name="KzbnImplementedon" type="Date" required="true" GECD="true" />
+		</validate>	
+		<validate For="complete">
+ 			<property name="KzbnCompletedby" type="String" required="true" />
+ 			<property name="KzbnCompletedon" type="Date" required="true" GECD="true" />
+		</validate>	
+		<validate For="verify">
+ 			<property name="KzbnVerifiedby" type="String" required="true" />
+ 			<property name="KzbnVerifiedon" type="Date" required="true" GECD="true" />
+		</validate>	
+	</class>
+</validations>

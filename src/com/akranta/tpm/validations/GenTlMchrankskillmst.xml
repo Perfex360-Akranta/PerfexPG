@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<validations>
+	<class id="GenTlMchrankskillmst" name="com.akranta.tpm.model.GenTlMchrankskillmst" >
+		<validate For="create update">
+		  	<property name="MrskName" type="String" required="true"/>
+			<property name="MrskCode" type="String" required="true"/>
+			<property name="MrskMaximumpoints" type="String" required="true"/>
+			
+		</validate>	
+	</class>
+</validations>

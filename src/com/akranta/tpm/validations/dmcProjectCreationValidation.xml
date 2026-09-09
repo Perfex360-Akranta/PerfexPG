@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="KznTlProjectcreationmst" name="com.akranta.tpm.model.KznTlProjectcreationmst" >
+		<validate For="create update define">
+		  	
+			<property name="KzpmStartdate" type="Date" required="true"/>
+			 <property name="KzpmWave" type="String" required="true"/>
+			<property name="ElementType" type="String" REGEXP="SECT|CELL|MCHM"/>
+			<property name="KzpmFlid" type="String" required="true"   />
+ 			<property name="KzpmEnddate" type="Date" required="false"  GECD="true" LE= "KzpmStartdate" />
+ 			<property name="KzpmProjectname" type="String" required="true"   />
+			<property name="KzpmProjectchamp" type="String" required="true"/>
+
+			
+			<property required-dependent="true" name="KzpmIstangible" type="String" value="Y">			
+				<field name="KzpmBenefits" type="String" required="true" />
+			</property>	
+			
+			<property  required-AtLeastOne="true" name="KzpmIstangible">
+			    <property name="KzpmIstangible" type="String" required="true"/>
+			    <property name="KzpmIsintangible" type="String" required="true"/>
+			    
+			</property>   
+		<!-- 	<property required-dependent="true" name="KzpmIsintangible" type="String" value="Y">			
+				<field name="KzpmImprCategory" type="String" required="true" />
+			</property>
+		-->	
+			<property name="KzpmImprCategory" type="String" required="true"/>	
+						
+		</validate>	
+		<validate For="define">		  	
+			 
+		    
+			<!-- <property name="KzpmArea" type="String" required="false" /> -->
+			<!-- <property name="KzpmBenefits" type="String" required="false" /> -->
+			<!--<property name="KzpmSavings" type="String" required="true"/> -->
+			<property name="KzpmProjectmetrics" type="String" required="true" />
+			<property name="KzpmProblemstatement" type="String" required="true"/>
+			<property name="KzpmBusinesscase" type="String" required="true" />
+			<property name="KzpmGoalobj" type="String" required="true"/>
+			<!-- <property name="KzpmScopeconst" type="String" required="false" /> -->
+			
+		</validate>	
+		<validate For="finance">
+		    <property name="KzpmVerifiedamnt" type="String" required="true" />
+		</validate>    
+	</class>
+		<class id="GenTlDmcfipworkflow" name="com.akranta.tpm.model.GenTlDmcfipworkflow" >
+		<validate For="create update define">
+		  	
+             <property name="DfiwProjectleader" type="String" required="true"/>
+			<property name="DfiwPbuhead" type="String" required="true"/>
+			<property name="DfiwKkchampion" type="String" required="true"/>
+			<property name="DfiwFinancehead" type="String" required="true"/>
+		</validate>    
+	</class>
+		<class id="KznTlDmcfipcreationmst" name="com.akranta.tpm.model.KznTlDmcfipcreationmst" >
+		<validate For="create update define">
+		  	
+			<property name="DmcmStartdate" type="Date" required="true"/>
+			<property name="DmcmWave" type="String" required="true"/>
+			<!-- <property name="ElementType" type="String" REGEXP="SECT|CELL|MCHM"/> -->
+			<property name="DmcmFlid" type="String" required="true"   />
+ 			<property name="DmcmEnddate" type="Date" required="false"  GECD="true" LE= "DmcmStartdate" />
+ 			<property name="DmcmProjectname" type="String" required="true"   />
+			<property name="DmcmProjectchamp" type="String" required="true"/>
+
+			
+			<property required-dependent="true" name="DmcmIstangible" type="String" value="Y">			
+				<field name="DmcmBenefits" type="String" required="true" />
+			</property>	
+			
+			<property  required-AtLeastOne="true" name="DmcmIstangible">
+			    <property name="DmcmIstangible" type="String" required="true"/>
+			    <property name="DmcmIsintangible" type="String" required="true"/>
+			    
+			</property>   
+		<!-- 	<property required-dependent="true" name="DmcmIsintangible" type="String" value="Y">			
+				<field name="DmcmImprCategory" type="String" required="true" />
+			</property>
+		-->	
+			<property name="DmcmImprCategory" type="String" required="true"/>	
+						
+		</validate>	
+		<validate For="define">		  	
+			 
+		    
+			<!-- <property name="DmcmArea" type="String" required="false" /> -->
+			<!-- <property name="DmcmBenefits" type="String" required="false" /> -->
+			<!--<property name="DmcmSavings" type="String" required="true"/> -->
+			<property name="DmcmProjectmetrics" type="String" required="true" />
+			<property name="DmcmProblemstatement" type="String" required="true"/>
+			<property name="DmcmBusinesscase" type="String" required="true" />
+			<property name="DmcmGoalobj" type="String" required="true"/>
+			<!-- <property name="DmcmScopeconst" type="String" required="false" /> -->
+			
+		</validate>	
+		<validate For="finance">
+		    <property name="DmcmVerifiedamnt" type="String" required="true" />
+		</validate>    
+	</class>
+</validations>
+	        

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<uploadData file="ABNORMALITYHISTORY" format="" maxRecords="0" name="ABNORMALITYHISTORY" sheet="ABNORMALITYHISTORY" startFromRow="5" totalFields="21">
+    <UploadTable name="ABN_TL_ABNORMALITY" seqCol="" seqFormat="" seqLength="0" seqPrefix="" seqReset="">
+        <field defaultValue="ABN" excelColIndex="-1" name="ABNM_KEYID" auto="true" size="15" type="text"/>
+        <field dateFormat="DD-Mon-YYYY" defaultValue="-" excelColHeader="Detection Date" excelColIndex="3" name="ABNM_DATE" required="true" size="7" type="date"/>
+        <field defaultValue="X" excelColIndex="-1" name="ABNM_REFDOCTYPE" size="15" type="text"/>
+        <field defaultValue="{}" excelColIndex="-1" name="ABNM_REFDOCID" size="15" type="text"/>
+        <field dateFormat="DD-Mon-YYYY" defaultValue="-" excelColHeader=" Detection Date" excelColIndex="3" name="ABNM_DETECTIONDATE" required="true" size="7" type="date"/>
+        <field defaultValue="-" excelColHeader=" 4" excelColIndex="4" refInsert="false" name="ABNM_DETECTEDBY" refCol="EMPM_KEYID" refWhereCol="EMPM_CODE" references="GEN_TL_EMPLOYEEMST" size="10" type="text"/>
+        <field defaultValue="-" excelColHeader="0" excelColIndex="0" refInsert="false" name="ABNM_EQUIPMENTID" refCol="MCHM_KEYID" refWhereCol="MCHM_MACHINENO" references="GEN_TL_MACHINEMST" size="10" type="text"/>
+        <field defaultValue="{}" excelColIndex="-1" name="ABNM_SECTIONID" size="10" type="text"/>
+        <field defaultValue="{}" excelColIndex="-1" name="ABNM_CELLID" size="10" type="text"/>
+        <field defaultValue="-" excelColHeader=" 1" excelColIndex="1" refInsert="false" name="ABNM_ASSEMBLYID" refCol="ASSM_KEYID" refWhereCol="ASSM_NAME" references="GEN_TL_ASSEMBLYMST" size="10" type="text"/>
+        <field defaultValue="{}" excelColIndex="-1" name="ABNM_SHIFTID" size="6" type="text"/>
+        <field defaultValue="-" excelColHeader=" 20" excelColIndex="20" refInsert="false" name="ABNM_TRADEID" refCol="TRDM_KEYID" refWhereCol="TRDM_NAME" references="GEN_TL_TRADEMST" size="15" type="text"/>
+        <field dateFormat="DD-Mon-YYYY" defaultValue="01-Jan-1801" excelColIndex="-1" name="ABNM_WORECEIVEDDATE" size="7" type="date"/>
+        <field defaultValue="0" excelColIndex="-1" name="ABNM_RESPONSETIME" size="22" type="date"/>
+        <field defaultValue="0" excelColIndex="-1" name="ABNM_WORKTIME" size="22" type="date"/>
+        <field dateFormat="DD-Mon-YYYY" defaultValue="01-Jan-1801" excelColIndex="-1" name="ABNM_WOSTARTTIME" size="7" type="date"/>
+        <field dateFormat="DD-Mon-YYYY" defaultValue="01-Jan-1801" excelColIndex="-1" name="ABNM_WOENDTIME" size="7" type="date"/>
+        <field defaultValue="0" excelColIndex="-1" name="ABNM_DOWNTIME" size="22" type="date"/>
+        <field defaultValue="{}" excelColIndex="-1" name="ABNM_DESCRIPTION" size="500" type="text"/>
+        <field defaultValue="-" excelColHeader=" 7" excelColIndex="7" refInsert="true" name="ABNM_TYPEID" refCol="ABTM_KEYID" refWhereCol="ABTM_NAME" references="ABN_TL_TYPEMST" size="10" type="text">
+            <UploadTable name="ABN_TL_TYPEMST" seqCol="" seqFormat="" seqLength="0" seqPrefix="" seqReset="">
+                <field auto="true" defaultValue="-" excelColIndex="-1" name="ABTM_KEYID" size="8" type="text" seqFormat=" " seqPrefix=" ABT" seqReset="Y" seqIdentifier=" ABN_TL_TYPEMST"/>
+                <field defaultValue="-" excelColHeader=" ABNORMALITY TYPE" excelColIndex="7" name="ABTM_NAME" required="true" size="50" type="text"/>
+                <field defaultValue="{}" excelColIndex="-1" name="ABTM_CODE" size="12" type="text"/>
+                <field defaultValue="Y" excelColIndex="-1" name="ABTM_TYPEFLAG" size="1" type="date"/>
+                <field defaultValue="{}" excelColIndex="-1" name="ABTM_JHSTEPS" size="100" type="text"/>
+                <field defaultValue="{}" excelColIndex="-1" name="ABTM_REMARKS" size="200" type="text"/>
+                <field defaultValue="Y" excelColIndex="-1" name="ABTM_ACTIVE" size="1" type="date"/>
+                <field defaultValue="loginUser" excelColIndex="-1" name="ABTM_CREATEDBY" size="8" type="text"/>
+                <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="ABTM_CREATEDON" size="7" type="date"/>
+                <field dateFormat="DD-Mon-YYYY" defaultValue="SYSDATE" excelColIndex="-1" name="ABTM_MODIFIEDON" size="7" type="date"/>
+            </UploadTable>
+        </field>
+        <field defaultValue="-" excelColHeader=" Why Abnormality Happened" excelColIndex="12" name="ABNM_WHYABNHAPPENED" size="500" type="text"/>
+        <field defaultValue="-" excelColHeader="Cause Of Abnormality" excelColIndex="13" name="ABNM_WHATCAUSE" required="true" size="500" type="text"/>
+        <field defaultValue="-" excelColHeader=" 14" excelColIndex="14" refInsert="false" name="ABNM_TAGCLASSID" refCol="TAGM_KEYID" refWhereCol="TAGM_NAME" references="ABN_TL_TAGMST" size="15" type="text"/>
+        <field defaultValue="-" excelColHeader=" 10" excelColIndex="10" refInsert="true" name="ABNM_CATEGORYID" refCol="ABCM_KEYID" refWhereCol="ABCM_NAME" references="ABN_TL_CATEGORYMST" size="10" type="text">
+            <UploadTable name="ABN_TL_CATEGORYMST" seqCol="" seqFormat="" seqLength="0" seqPrefix="" seqReset="">
+                <field auto="true" defaultValue="-" excelColIndex="-1" name="ABCM_KEYID" size="8" type="text" seqFormat=" " seqPrefix=" ABC" seqReset="Y" seqIdentifier=" ABN_TL_CATEGORYMST"/>
+                <field defaultValue="-" excelColHeader=" ABNORMALITY CATEGORY" excelColIndex="10" name="ABCM_NAME" required="true" size="50" type="text"/>
+                <field defaultValue="{}" excelColIndex="-1" name="ABCM_CODE" size="12" type="text"/>
+                <field defaultValue="{}" excelColIndex="-1" name="ABCM_JHSTEPS" size="100" type="text"/>
+                <field defaultValue="{}" excelColIndex="-1" name="ABCM_REMARKS" size="200" type="text"/>
+                <field defaultValue="Y" excelColIndex="-1" name="ABCM_ACTIVE" size="1" type="date"/>
+                <field defaultValue="loginUser" excelColIndex="-1" name="ABCM_CREATEDBY" size="8" type="text"/>
+                <field dateFormat="DD-Mon-YYYY" defaultValue="SYSDATE" excelColIndex="-1" name="ABCM_CREATEDON" size="7" type="date"/>
+                <field dateFormat="DD-Mon-YYYY" defaultValue="SYSDATE" excelColIndex="-1" name="ABCM_MODIFIEDON" size="7" type="date"/>
+            </UploadTable>
+        </field>
+        <field defaultValue="-" excelColHeader=" 11" excelColIndex="11" refInsert="true" name="ABNM_IMPACTID" refCol="ABIM_KEYID" refWhereCol="ABIM_NAME" references="ABN_TL_IMPACTMST" size="10" type="text">
+            <UploadTable name="ABN_TL_IMPACTMST" seqCol="" seqFormat="" seqLength="0" seqPrefix="" seqReset="">
+                <field auto="true" defaultValue="-" excelColIndex="-1" name="ABIM_KEYID" size="8" type="text" seqFormat=" " seqPrefix=" ABI" seqReset="Y" seqIdentifier=" ABN_TL_IMPACTMST"/>
+                <field defaultValue="-" excelColHeader="ABNORMALITY IMPACT" excelColIndex="11" name="ABIM_NAME" required="true" size="50" type="text"/>
+                <field defaultValue="{}" excelColIndex="-1" name="ABIM_CODE" size="12" type="text"/>
+                <field defaultValue="{}" excelColIndex="-1" name="ABIM_JHSTEPS" size="100" type="text"/>
+                <field defaultValue="{}" excelColIndex="-1" name="ABIM_REMARKS" size="200" type="text"/>
+                <field defaultValue="Y" excelColIndex="-1" name="ABIM_ACTIVE" size="1" type="date"/>
+                <field defaultValue="loginUser" excelColIndex="-1" name="ABIM_CREATEDBY" size="8" type="text"/>
+                <field dateFormat="DD-Mon-YYYY" defaultValue="SYSDATE" excelColIndex="-1" name="ABIM_CREATEDON" size="7" type="date"/>
+                <field dateFormat="DD-Mon-YYYY" defaultValue="sysdate" excelColIndex="-1" name="ABIM_MODIFIEDON" size="7" type="date"/>
+            </UploadTable>
+        </field>
+        <field defaultValue="-" excelColHeader="Counter Measure" excelColIndex="16" name="ABNM_COUNTERMEASURE" required="true" size="500" type="text"/>
+        <field defaultValue="{}" excelColIndex="-1" name="ABNM_PREVENTIVEMEASURE" size="500" type="text"/>
+        <field defaultValue="-" excelColHeader="Status" excelColIndex="15" name="ABNM_STATUS" required="true" size="1" type="date"/>
+        <field dateFormat="DD-Mon-YYYY" defaultValue="01-Jan-1801" excelColIndex="-1" name="ABNM_TARGETDATE" size="7" type="date"/>
+        <field defaultValue="-" excelColHeader="Remarks" excelColIndex="18" name="ABNM_TARGETREMARKS" required="true" size="500" type="text"/>
+        <field defaultValue="loginUser" excelColIndex="-1" name="ABNM_COMPLETEDBY" size="10" type="text"/>
+        <field defaultValue="{}" excelColIndex="-1" name="ABNM_WOMASTERID" size="20" type="text"/>
+        <field defaultValue="{}" excelColIndex="-1" name="ABNM_WODETAILID" size="14" type="text"/>
+        <field defaultValue="{}" excelColIndex="-1" name="ABNM_FEEDBACKID" size="14" type="text"/>
+        <field dateFormat="DD-Mon-YYYY" defaultValue="01-Jan-1801" excelColIndex="-1" name="ABNM_FEEDBACKDATE" size="7" type="date"/>
+        <field defaultValue="{}" excelColIndex="-1" name="ABNM_REMARKS" size="500" type="text"/>
+        <field defaultValue="{}" excelColIndex="-1" name="ABNM_BLOCKDIAGRAMREF" size="500" type="text"/>
+        <field defaultValue="{}" excelColIndex="-1" name="ABNM_REVISIONNO" size="50" type="text"/>
+        <field defaultValue="{}" excelColIndex="-1" name="ABNM_ISSUENO" size="50" type="text"/>
+        <field defaultValue="-" excelColHeader=" Abnormality Detailed Description" excelColIndex="6" name="ABNM_DETAILEDESC" required="true" size="500" type="text"/>
+        <field defaultValue="-" excelColHeader="Sub Type" excelColIndex="9" name="ABNM_SUBTYPE" required="true" size="15" type="text"/>
+        <field defaultValue="{}" excelColIndex="-1" name="ABNM_CONTAMINANT" size="500" type="text"/>
+        <field defaultValue="{}" excelColIndex="-1" name="ABNM_MODE" size="500" type="text"/>
+        <field defaultValue="{}" excelColIndex="-1" name="ABNM_FACTORYID" size="10" type="text"/>
+        <field defaultValue="X" excelColIndex="-1" name="ABNM_PILLAR" size="3" type="date"/>
+        <field defaultValue="{}" excelColIndex="-1" name="ABNM_SAFETYPATROL" size="10" type="text"/>
+        <field defaultValue="{}" excelColIndex="-1" name="ABNM_RELATEDTO" size="3" type="text"/>
+        <field defaultValue="{}" excelColIndex="-1" name="ABNM_MOULD" size="30" type="text"/>
+        <field defaultValue="{}" excelColIndex="-1" name="ABNM_FLID" size="12" type="text"/>
+        <field defaultValue="{}" excelColIndex="-1" name="ABNM_ELEMENTID" size="250" type="text"/>
+        <field defaultValue="{}" excelColIndex="-1" name="ABNM_PILLARID" size="12" type="text"/>
+        <field defaultValue="Y" excelColIndex="-1" name="ABNM_ACTIVE" size="1" type="date"/>
+        <field defaultValue="loginUser" excelColIndex="-1" name="ABNM_CREATEDBY" size="8" type="text"/>
+        <field dateFormat="DD-Mon-YYYY" defaultValue="01-Jan-1801" excelColIndex="-1" name="ABNM_CREATEDON" size="7" type="date"/>
+        <field dateFormat="DD-Mon-YYYY" defaultValue="01-Jan-1801" excelColIndex="-1" name="ABNM_MODIFIEDON" size="7" type="date"/>
+    </UploadTable>
+</uploadData>
