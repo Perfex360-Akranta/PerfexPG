@@ -983,6 +983,52 @@ public class WomTlWomst {
 	public void setSubmitToSap(String submitToSap) {
 		this.submitToSap = submitToSap;
 	}
+	
+	
+	public String toJsonManual() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        boolean first = true;
+        for (tableFldConstants field : tableFldConstants.values()) {
+            int index = field.ordinal();
+            if (index < saveArray.length) {
+                if (!first) sb.append(",");
+                sb.append("\"").append(field.name()).append("\":");
+                Object val = saveArray[index];
+                if (field == tableFldConstants.keyid && val == null) {
+                    sb.append("null");
+                } else if (val == null) {
+                    sb.append("\"{}\"");
+                } else {
+                    sb.append("\"")
+                      .append(val.toString().replace("\\", "\\\\")
+                                            .replace("\"", "\\\""))
+                      .append("\"");
+                }
+                first = false;
+            }
+        }
+        sb.append("}");
+        return sb.toString();
+    }
+ 
+    /**
+     * Deserialises a JSON string (Spring response "womWorkOrder" object) back
+     * into a WomTlWomst instance.
+     */
+    public static WomTlWomst fromJson(String json) {
+        net.sf.json.JSONObject obj = net.sf.json.JSONObject.fromObject(json);
+        WomTlWomst wom = new WomTlWomst();
+        for (tableFldConstants field : tableFldConstants.values()) {
+            String val = obj.optString(field.name(), null);
+            if (val == null || "null".equalsIgnoreCase(val) || "{}".equals(val)) {
+                val = "";
+            }
+            wom.saveArray[field.ordinal()] = val;
+        }
+        return wom;
+    }
+ 
 
 }
 

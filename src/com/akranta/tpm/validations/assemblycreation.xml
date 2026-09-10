@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="GenTlAssemblymst" name="com.akranta.tpm.model.GenTlAssemblymst" >
+		<validate For="create update assembly">
+		
+			<property name="AssmName" type="String" required="true"/>
+<!--			<property name="AssmDescription" type="String" required="true"/>-->
+			
+		</validate>	
+	</class>
+</validations>
+

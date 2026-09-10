@@ -34,12 +34,14 @@ import com.akranta.tpm.model.WomsTlTaskmst;
 import com.akranta.tpm.service.WorkOrderService;
 import com.akranta.tpm.utils.CommonFunctions;import com.akranta.tpm.utils.CommonMessage ;
 import com.akranta.tpm.utils.Validations;
+import com.akranta.tpm.service.api.BdmServiceApi;
 
 
 public class WorkOrderServiceImpl implements WorkOrderService {
 	private Validations validations ;
 	private CommonFilterDao commonFilterDao;
 	private WomTlWomstDao womTlWomstDao;
+	private BdmServiceApi bdmServiceApi;
 	
 	private WomTlWorkorderMstDao womTlWorkorderMstDao;
 	
@@ -51,6 +53,17 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 		
 		womTlWorkorderMstDao = new WomTlWorkorderMstDaoImpl(dbActionTemplate);
 	}
+	
+	public void WorkOrderServiceImplJwt(String JwtToken) {
+		try {
+			womTlWomstDao.WomTlWomstDaoImplJwt(JwtToken);
+			bdmServiceApi = new BdmServiceApi(JwtToken);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// TODO Auto-generated constructor stub
+	}
+
 
 	public  WomTlWorkorderMst createNew(WomTlWorkorderMst newWomTlWorkorderMst, WomTlWorkorderMst existWomTlWorkorderMst, WOFormBean woFormBean)throws ValidationExceptions, Exception {
 		try {
@@ -658,7 +671,10 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 	}
 	public WomTlWomst select(String keyid) throws Exception
 	{
-		return womTlWomstDao.select(keyid);
+		//return womTlWomstDao.select(keyid);
+		return bdmServiceApi.getWorkOrder(keyid);
+		
+		
 	}
 	
 	public WomTlWorkorderMst selectNew(String keyid) throws Exception {

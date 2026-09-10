@@ -152,6 +152,110 @@
     <servlet-name>QRCodeGenerationServlet</servlet-name>
     <url-pattern>*.qrcgn</url-pattern>
   </servlet-mapping>
+
+
+  <servlet>
+    <servlet-name>BAL_WhywhyReportServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_WhywhyReportServlet</servlet-class>
+  </servlet>
+   <servlet-mapping>
+    <servlet-name>BAL_WhywhyReportServlet</servlet-name>
+    <url-pattern>*.balwhy</url-pattern>
+  </servlet-mapping>
+   <servlet>
+    <servlet-name>BAL_generalmaintainceServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_GeneralMaintainanceServlet</servlet-class>
+  </servlet>
+   <servlet-mapping>
+    <servlet-name>BAL_generalmaintainceServlet</servlet-name>
+    <url-pattern>*.balgenmain</url-pattern>
+  </servlet-mapping>
+   <servlet>
+    <servlet-name>BAL_phenCauseServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_PhenCauseServlet</servlet-class>
+  </servlet>
+   
+  <servlet-mapping>
+    <servlet-name>BAL_phenCauseServlet</servlet-name>
+    <url-pattern>*.pcl</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>BAL_JHCLITServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_JHCLITServlet</servlet-class>
+  </servlet>
+   <servlet-mapping>
+    <servlet-name>BAL_JHCLITServlet</servlet-name>
+    <url-pattern>*.baljhclit</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>BAL_CLTIServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_CLTIServlet</servlet-class>
+  </servlet>
+   <servlet-mapping>
+    <servlet-name>BAL_CLTIServlet</servlet-name>
+    <url-pattern>*.clti</url-pattern>
+  </servlet-mapping>
+   <servlet>
+    <servlet-name>BAL_BreakdownServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_BreakdownServlet</servlet-class>
+  </servlet>
+   <servlet-mapping>
+    <servlet-name>BAL_BreakdownServlet</servlet-name>
+    <url-pattern>*.Bbrdn</url-pattern>
+  </servlet-mapping>
+    <servlet>
+    <servlet-name>BAL_SapInfoServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_SAPInfoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BAL_SapInfoServlet</servlet-name>
+    <url-pattern>*.sapinfo</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Bal_assemblyServlet</servlet-name>
+    <url-pattern>*.asb</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Bal_assemblyServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.Bal_AssemblyServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>BAL_costinfoservlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_costinfoservlet</servlet-class>
+  </servlet>
+   <servlet-mapping>
+    <servlet-name>BAL_costinfoservlet</servlet-name>
+    <url-pattern>*.crt</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Bal_subAssemblyServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.Bal_SubAssemblyServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Bal_subAssemblyServlet</servlet-name>
+    <url-pattern>*.subasm</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>BAL_preventivemaintenanceservlet</servlet-name>
+    <url-pattern>*.prv</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>BAL_planConfigurationServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_PlanConfigurationServlet</servlet-class>
+  </servlet>
+<servlet-mapping>
+    <servlet-name>BAL_planConfigurationServlet</servlet-name>
+    <url-pattern>*.plnconfig</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
+    <servlet-name>BAL_preventivemaintenanceservlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_preventivemaintenanceservlet</servlet-class>
+  </servlet>
   
   <servlet>
     <servlet-name>ToolMonitoringServlet</servlet-name>
@@ -1086,6 +1190,10 @@
   <servlet>
     <servlet-name>qmDefectProcessServlet</servlet-name>
     <servlet-class>com.akranta.tpm.controller.QmDefectProcessServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>monPlanEntryServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.MonthlyPlanConfigEntryServlet</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>monPlanServlet</servlet-name>
@@ -2063,10 +2171,10 @@
     <servlet-name>voiceCustomerServlet</servlet-name>
     <servlet-class>com.akranta.tpm.controller.VoiceCustomerServlet</servlet-class>
   </servlet>
-  <servlet>
+  <!-- <servlet>
     <servlet-name>sapInfoServlet</servlet-name>
     <servlet-class>com.akranta.tpm.controller.SAPInfoServlet</servlet-class>
-  </servlet>
+  </servlet> -->
   <servlet-mapping>
     <servlet-name>AssessmentServlet</servlet-name>
     <url-pattern>*.asps</url-pattern>
@@ -2075,10 +2183,10 @@
     <servlet-name>AssessmentServlet</servlet-name>
     <servlet-class>com.akranta.tpm.controller.AssessmentServlet</servlet-class>
   </servlet>
-  <servlet-mapping>
+  <!-- <servlet-mapping>
     <servlet-name>sapInfoServlet</servlet-name>
     <url-pattern>*.sapinfo</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   <servlet>
     <servlet-name>TeamInstructorServlet</servlet-name>
     <servlet-class>com.akranta.tpm.controller.TeamInstructorServlet</servlet-class>
@@ -2147,10 +2255,10 @@
     <servlet-name>trainingAttendanceServlet</servlet-name>
     <url-pattern>*.tatnd</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
+  <!-- <servlet-mapping>
     <servlet-name>CLTIServlet</servlet-name>
     <url-pattern>*.clti</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   <servlet-mapping>
     <servlet-name>ConditionalAppraisalServlet</servlet-name>
     <url-pattern>*.condapp</url-pattern>
@@ -2375,10 +2483,10 @@
     <servlet-name>RptTrainingProgrammeServlet</servlet-name>
     <url-pattern>*.rptETlog</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
+  <!-- <servlet-mapping>
     <servlet-name>planConfigurationServlet</servlet-name>
     <url-pattern>*.plnconfig</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   <servlet-mapping>
     <servlet-name>dockAuditServlet</servlet-name>
     <url-pattern>*.docaud</url-pattern>
@@ -2431,10 +2539,10 @@
     <servlet-name>ImprovementVsCompleted</servlet-name>
     <url-pattern>*.imvscom</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
+  <!-- <servlet-mapping>
     <servlet-name>preventivemaintenanceservlet</servlet-name>
     <url-pattern>*.prv</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   <servlet-mapping>
     <servlet-name>docManagerServlet</servlet-name>
     <url-pattern>*.dcm</url-pattern>
@@ -2635,10 +2743,10 @@
     <servlet-name>EmployeeCostServlet</servlet-name>
     <url-pattern>*.ec</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
+ <!--  <servlet-mapping>
     <servlet-name>assemblyServlet</servlet-name>
     <url-pattern>*.asb</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   <servlet-mapping>
     <servlet-name>HolidayMasterServlet</servlet-name>
     <url-pattern>*.holiday</url-pattern>
@@ -2660,13 +2768,17 @@
     <url-pattern>*.mpc</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
+    <servlet-name>monPlanEntryServlet</servlet-name>
+    <url-pattern>*.mpce</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
     <servlet-name>healthServlet</servlet-name>
     <url-pattern>*.ohv</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
+  <!-- <servlet-mapping>
     <servlet-name>costinfoservlet</servlet-name>
     <url-pattern>*.crt</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   <servlet-mapping>
     <servlet-name>materialdataservlet</servlet-name>
     <url-pattern>*.mtrdt</url-pattern>
@@ -2787,10 +2899,10 @@
     <servlet-name>utilityServlet</servlet-name>
     <url-pattern>*.uty</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
+  <!-- <servlet-mapping>
     <servlet-name>phenCauseServlet</servlet-name>
     <url-pattern>*.pcl</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   <servlet-mapping>
     <servlet-name>assetTransferServlet</servlet-name>
     <url-pattern>*.asttrnfr</url-pattern>

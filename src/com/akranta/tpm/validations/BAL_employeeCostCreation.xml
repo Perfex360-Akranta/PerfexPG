@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="GenTlEmployeecost" name="com.akranta.tpm.model.GenTlEmployeecost" >
+		<validate For="create update">
+			<property name="EmpcCostperhour" type="String" required="true"  />
+			<property name="EmpcEffectivefromdate" type="Date" required="true" />
+		</validate>	
+	</class>	
+</validations>

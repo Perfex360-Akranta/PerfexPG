@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<validations>
+<!-- Emp Cost -->
+	<class id="WomTlManpowercostplan" name="com.akranta.tpm.model.WomTlManpowercostplan" >
+		<validate For="create update">				
+			<property name="MpcpSkillid" type="String" required="true"  /> 
+			<property name="MpcpManpowerid" type="String" required="true"  />
+			<property name="MpcpNormalmins" type="String" required="true"  />
+			<property name="MpcpNormalcost" type="String" required="true"  />			
+		</validate>
+	</class>
+
+	<class id="WomTlManpowercostactual" name="com.akranta.tpm.model.WomTlManpowercostactual" >
+		<validate For="create update">
+			<property name="MpcsSkillid" type="String" required="true"  /> 
+			<property name="MpcsManpowerid" type="String" required="true"  />
+			<property name="MpcsDate" type="Date" required="true"  />
+			<property name="MpcsNormalwt" type="String" required="true"  />
+			<property name="MpcsHolidaywt" type="String" required="true"  />
+			<property name="MpcsOtherwt" type="String" required="true"  />
+			<property name="MpcsActivity" type="String" required="true"  />
+		</validate>
+	</class>	
+
+	<class id="CostInfoBean" name="com.akranta.tpm.bean.CostInfoBean" >
+		<validate For="create update">
+		<property name="MpcsDate" type="Date" LE="StartDate"/>
+		<property name="MpcsDate" type="Date" GE="EndDate"/>		  			
+		</validate>	
+	</class>
+	
+<!-- Spare Cost -->
+	<class id="WomTlSparecostplan" name="com.akranta.tpm.model.WomTlSparecostplan" >
+		<validate For="create update">
+			<property name="WscpRequestedby" type="String" required="true"  /> 
+			<property name="WscpSparesid" type="String" required="true"  />
+			<property name="WscpQuantity" type="String" required="true"  />
+		</validate>
+	</class>
+
+	<class id="WomTlSparecostactual" name="com.akranta.tpm.model.WomTlSparecostactual" >
+		<validate For="create update">
+			<property name="WscaRequestedby" type="String" required="true"  /> 
+			<property name="WscaSparesid" type="String" required="true"  />
+			<property name="WscaQuantity" type="String" required="true"  />
+		</validate>
+	</class>	
+	
+<!-- Service Cost -->
+	<class id="WomTlServicecostplan" name="com.akranta.tpm.model.WomTlServicecostplan" >
+		<validate For="create update">
+			<property name="SvcpServiceid" type="String" required="true"  /> 
+			<property name="SvcpJobdescription" type="String" required="true"  />
+			<property name="SvcpBillvalue" type="String" required="true"  />
+		</validate>
+	</class>
+
+	<class id="WomTlServicecostactual" name="com.akranta.tpm.model.WomTlServicecostactual" >
+		<validate For="create update">
+			<property name="SvcaServiceid" type="String" required="true"  /> 
+			<property name="SvcaJobdescription" type="String" required="true"  />			
+			<property name="SvcaBilldate" type="String" required="true"  />
+			<property name="SvcaBillvalue" type="String" required="true"  />
+		</validate>
+	</class>	
+
+<!-- Utility Cost -->
+	<class id="WomTlUtilitycostplan" name="com.akranta.tpm.model.WomTlUtilitycostplan" >
+		<validate For="create update">
+			<property name="UtcpUtilitymstid" type="String" required="true"  /> 
+			<property name="UtcpRequestedby" type="String" required="true"  />
+			<property name="UtcpQuantity" type="String" required="true"  />
+			<property name="UtcpMinutes" type="String" required="true"  />
+		</validate>
+	</class>
+
+	<class id="WomTlUtilitycostactual" name="com.akranta.tpm.model.WomTlUtilitycostactual" >
+		<validate For="create update">
+			<property name="UtcaUtilitymstid" type="String" required="true"  /> 
+			<property name="UtcaRequestedby" type="String" required="true"  />
+			<property name="UtcaQuantity" type="String" required="true"  />
+			<property name="UtcaMinutes" type="String" required="true"  />		
+			<property name="UtcaDate" type="String" required="true"  />			
+		</validate>
+	</class>	
+
+<!-- Other Cost -->
+	<class id="WomTlOthercostplan" name="com.akranta.tpm.model.WomTlOthercostplan" >
+		<validate For="create update">
+			<property name="OtcpOthercostmstid" type="String" required="true"  /> 
+			<property name="OtcpRequestedby" type="String" required="true"  />
+			<property name="OtcpAmount" type="String" required="true"  />			
+		</validate>
+	</class>
+
+	<class id="WomTlOthercostactual" name="com.akranta.tpm.model.WomTlOthercostactual" >
+		<validate For="create update">
+			<property name="OtcdOthercostmstid" type="String" required="true"  /> 
+			<property name="OtcdRequestedby" type="String" required="true"  />
+			<property name="OtcdAmount" type="String" required="true"  />			
+			<property name="OtcdDate" type="String" required="true"  />			
+		</validate>
+	</class>	
+		
+</validations>

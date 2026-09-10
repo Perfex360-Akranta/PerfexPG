@@ -906,7 +906,7 @@ public  class AbnTlAbnormalityDaoImpl implements AbnTlAbnormalityDao {
 		WomTlWomstSql womTlWomstSql = new WomTlWomstSql(); // contains dbtable,field names, Field types and related sqls  of master table
 		
 				
-			womTlWomst.setWomsKeyid(dbActionTemplate.getSequenceNumber(WomTlWomstSql.TBL_WOM_TL_WOMST, 10, "MW", "YYMM", "Y"));//getSequenceNumber(WomTlWomstSql.TBL_WOM_TL_WOMST)); // set the sequnce number
+			womTlWomst.setWomsKeyid(dbActionTemplate.getSequenceNumber(WomTlWomstSql.TBL_BAL_WOM_TL_WOMST, 10, "MW", "YYMM", "Y"));//getSequenceNumber(WomTlWomstSql.TBL_WOM_TL_WOMST)); // set the sequnce number
 			
 			abnTlAbnormality.setAbnmWomasterid(womTlWomst.getWomsKeyid());
 			abnTlAbnormality.setAbnmRefdocid(womTlWomst.getWomsKeyid());
@@ -1322,7 +1322,7 @@ public  class AbnTlAbnormalityDaoImpl implements AbnTlAbnormalityDao {
 			else
 				womTlWomst.setWomsTradeid("{}");
 			
-			String woStatus = dbActionTemplate.getSingleValue(WomTlWomstSql.TBL_WOM_TL_WOMST, "WOMS_STATUS", "WOMS_KEYID", abnTlAbnormality.getAbnmRefdocid());
+			String woStatus = dbActionTemplate.getSingleValue(WomTlWomstSql.TBL_BAL_WOM_TL_WOMST, "WOMS_STATUS", "WOMS_KEYID", abnTlAbnormality.getAbnmRefdocid());
 			CommonMessage.debugMsg("woStatus "+woStatus + " : "+abnTlAbnormality.getAbnmStatus());
 			if(UIUtils.isValidKeyId(abnTlAbnormality.getAbnmStatus()))
 			{

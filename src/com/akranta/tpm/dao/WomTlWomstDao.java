@@ -60,6 +60,7 @@ public interface WomTlWomstDao {
 	public void updateControlKey(String womsKey, String cntrlKey) throws Exception;
 	public abstract List<String[]> getSapReservationDetail(String keyId) throws Exception;
 	public abstract List<String[]> getSapStatus(String womsId, String type) throws Exception;
+	  public abstract void WomTlWomstDaoImplJwt(String jwtToken);
 
 }
 

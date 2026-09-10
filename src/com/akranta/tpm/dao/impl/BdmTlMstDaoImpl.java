@@ -677,7 +677,7 @@ public List<String> insertWorkOrder(BdmTlMst bdmTlMst,List<String> sqls) 	throws
 	WomTlWomstSql womTlWomstSql = new WomTlWomstSql(); // contains dbtable,field names, Field types and related sqls  of master table
 	
 		
-		womTlWomst.setWomsKeyid(dbActionTemplate.getSequenceNumber(WomTlWomstSql.TBL_WOM_TL_WOMST, 15, "MW", null, null));//getSequenceNumber(WomTlWomstSql.TBL_WOM_TL_WOMST)); // set the sequnce number
+		womTlWomst.setWomsKeyid(dbActionTemplate.getSequenceNumber(WomTlWomstSql.TBL_BAL_WOM_TL_WOMST, 15, "MW", null, null));//getSequenceNumber(WomTlWomstSql.TBL_WOM_TL_WOMST)); // set the sequnce number
 		bdmTlMst.setBdmsWno(womTlWomst.getWomsKeyid());
 		sqls.add(WomTlWomstSql.getInsertSql(womTlWomstSql.getWomsDbFields(), womTlWomst.getSaveArray())); // add insert sql for master table
 	
@@ -905,7 +905,7 @@ private List<String> getFilterParamValues(CommonFilter commonFilter){
 }	
 
 private void fillWorkOrder(WomTlWomst womTlWomst,BdmTlMst bdmTlMst) 	throws Exception {
-	String woStatus = dbActionTemplate.getSingleValue(WomTlWomstSql.TBL_WOM_TL_WOMST, "WOMS_STATUS", "WOMS_KEYID", bdmTlMst.getBdmsWno());
+	String woStatus = dbActionTemplate.getSingleValue(WomTlWomstSql.TBL_BAL_WOM_TL_WOMST, "WOMS_STATUS", "WOMS_KEYID", bdmTlMst.getBdmsWno());
 	womTlWomst.setWomsActive(bdmTlMst.getBdmsActive());
 	String dateTime = CommonFunctions.dateTimeNow();
 	womTlWomst.setWomsCreatedon(bdmTlMst.getBdmsCreatedon());

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="BdmTlMst" name="com.akranta.tpm.model.BdmTlMst" >
+		<validate For="create update">
+<!-- 			<property name="BdmsRelatedto" type="String" required="true"  />  --> 
+<!-- 			<property name="BdmsFactoryid" type="String" required="true"  />  -->
+			<property name="BdmsSectionid" type="String" required="true"/>
+			<property name="BdmsProblemdescription" type="String" required="true"/>
+						
+			<property name="BdmsCellid" type="String" required="true" />
+			<property name="BdmsMachineid" type="String" required="true" />
+		<!--	<property required-dependent="true" name="BdmsRelatedto" type="String" value="MLD">			
+				<field name="BdmsMould" type="String" required="true" />
+			</property>
+			
+			<property required-dependent="true" name="BdmsRelatedto" type="String" value="MCH">
+				<field name="BdmsMachineid" type="String" required="true" />
+			</property>
+			-->			
+			<property name="BdmsReporteddate" type="String" required="true" />
+			<!-- <property name="BdmsPriority" type="String" required="true" />
+			<property name="BdmsActualworktime" type="String" required="true"/>  -->
+			<property name="BdmsAssemblyid" type="String" required="true"  /> 
+			<property name="BdmsFinalphenomena" type="String" required="true"/>
+			<property name="BdmsBookedby" type="String" required="true"/>			
+			<property name="BdmsBookedtrade" type="String" required="true"/>
+			<property required-dependent="true" name="BdmsStatus" type="String" value="C" >
+			     <property name="BdmsCompleteddate" type="Date" required="true" />
+			</property>
+			
+			<!--  <property required-dependent="true" name="chkOtherPhenomena" type="String" value="OTHERS" >
+			    <property name="BdmsOtherPhenomena" type="String" required="true"/>
+			</property>
+			-->
+<!-- 			<property name="BdmsWostarttime" type="Date" LE="BdmsReceiveddate"/>  -->
+<!-- 			  <property name="BdmsReceiveddate" type="Date" LECD="true"/> -->
+<!-- 			  <property name="BdmsWoendtime" type="Date" LE="BdmsWostarttime"/>  -->
+<!-- 			  <property name="BdmsWostarttime" type="Date" LECD="true"/> -->
+<!-- 			<property name="BdmsShiftid" type="String" required="true"/>			 -->
+	  </validate>
+	  
+	  <validate For="validDateBD">
+		 	  <property name="BdmsWostarttime" type="Date" LE="BdmsReceiveddate"/> 
+			  <property name="BdmsReceiveddate" type="Date" LECD="true"/>
+			  <property name="BdmsWoendtime" type="Date" LE="BdmsWostarttime"/> 
+			  <property name="BdmsWostarttime" type="Date" LECD="true"/>
+			  <property name="BdmsWostarttime" type="Date" LE="BdmsReceiveddate"/> 
+<!-- 			  <property name="WomsReschedulestartdate" type="Date" LE="WomsRescheduledate"/>  -->
+<!-- 			  <property name="WomsRescheduledate" type="Date" LECD="true"/> -->
+		</validate>	
+		<validate For="prodAcceptance">
+			  <property name="BdmsWostarttime" type="Date" GE="BdmsProdaccepdate"/> 
+			 <!-- <property name="BdmsProdaccepdate" type="Date" GECD="true"/>  --> 
+			  <property name="BdmsWoendtime" type="Date" GE="BdmsProdaccepdate"/> 
+			  <!--  <property name="BdmsProdaccepdate" type="Date" GECD="true"/>-->
+		</validate>
+		 <validate For="FinalAction">			
+				<field name="BdmsWostartflag" type="String" required="true" />			
+				<field name="BdmsWoendflag" type="String" required="true" />			
+		</validate>			
+	</class>
+	<class id="BdmTlDtl" name="com.akranta.tpm.model.BdmTlDtl" >
+		<validate For="create update">
+		    
+		    <property required-dependent="true" name="ChkCompletedBy" type="String" value="Y" >
+			     <property name="BdanClassificationid" type="String" required="true" />
+			     <property name="BdanFinalaction" type="String" required="true" />
+			     <property name="BdanCompletedby" type="String" required="true" /> 
+			</property>
+			
+			<!-- <property name="BdanCostcentre" type="String" required="true" /> -->
+			<property name="BdanFailuretype" type="String" required="true"  />
+			
+			<!--<property required-dependent="true" name="chkFailure" type="String" value="OTHERS-O" >
+					<property name="BdanOtherFailuretype" type="String" required="true"  />
+			</property>-->
+			
+			<!-- <property name="BdanClassificationid" type="String" required="true"/> -->			
+			
+<!-- 			<property required-dependent="true" name="Woendtime" type="String" value="Y"> -->
+<!-- 				<property name="BdanFinalaction" type="String" required="true" /> -->
+<!-- 			</property>			 -->
+<!-- 			 -->
+			
+				
+	  </validate>	
+	
+	  <validate For="FinalAction">
+			<property name="BdanFinalaction" type="String" required="true" />						
+	 </validate>
+	</class>
+	
+	
+	
+
+</validations>

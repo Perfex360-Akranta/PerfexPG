@@ -13,8 +13,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Pattern;
+import com.akranta.tpm.service.api.BAL_PlmStandardsServiceApi;
+import com.akranta.tpm.service.api.BdmServiceApi;
+import com.akranta.tpm.service.api.FunctionCallApi;
 
 import net.sf.json.JSONObject;
 
@@ -75,11 +77,25 @@ public class WomTlWomstDaoImpl implements WomTlWomstDao {
 	private DBActionTemplate dbActionTemplate; 
 	private BdmTlMstSql bdmTlMstSql = null;
 	private BdmTlDtlSql bdmTlDtlSql = null;
+	private BdmServiceApi bdmServiceApi;
+	FunctionCallApi fnCallApi;
+	
 	
 	  private PlmTlUnplannedmaintmstSql plmTlUnplannedmaintmstSql = null; 
 	  private PlmTlUnplannedmaintdtlSql plmTlUnplannedmaintdtlSql = null;
 	 
-
+	//mano
+	  public void WomTlWomstDaoImplJwt(String JwtToken) 
+		{
+			try{
+				bdmServiceApi = new BdmServiceApi(JwtToken);
+			fnCallApi = new FunctionCallApi(JwtToken);
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
 	public WomTlWomstDaoImpl(DBActionTemplate dbActionTemplate) 
 	{
 		this.dbActionTemplate = dbActionTemplate;
@@ -145,7 +161,7 @@ public class WomTlWomstDaoImpl implements WomTlWomstDao {
 			{
 				if(womTlWomst.getWomsActivitytype().equals("G") || womTlWomst.getWomsActivitytype().equals("L"))
 				{
-					womTlWomst.setWomsKeyid(dbActionTemplate.getSequenceNumber(WomTlWomstSql.TBL_WOM_TL_WOMST, 10, "MW", "YYMM", "Y"));//getSequenceNumber(WomTlWomstSql.TBL_WOM_TL_WOMST)); // set the sequnce number 
+					womTlWomst.setWomsKeyid(dbActionTemplate.getSequenceNumber(WomTlWomstSql.TBL_BAL_WOM_TL_WOMST, 10, "MW", "YYMM", "Y"));//getSequenceNumber(WomTlWomstSql.TBL_WOM_TL_WOMST)); // set the sequnce number 
 					sqls.add(WomTlWomstSql.getInsertSql(womTlWomstSql.getWomsDbFields(), womTlWomst.getSaveArray())); // add insert sql for master table
 					/*List<String[]>  overlapFlag = isMSRExist(womTlWomst);
 					if(overlapFlag.size()>0)
@@ -163,7 +179,7 @@ public class WomTlWomstDaoImpl implements WomTlWomstDao {
 					
 					if(CommonFunctions.isValidKeyId(prodAvlTime) && prodAvlTime.equals("1"))
 					{
-						womTlWomst.setWomsKeyid(dbActionTemplate.getSequenceNumber(WomTlWomstSql.TBL_WOM_TL_WOMST, 10, "MW", "YYMM", "Y"));//getSequenceNumber(WomTlWomstSql.TBL_WOM_TL_WOMST)); // set the sequnce number 
+						womTlWomst.setWomsKeyid(dbActionTemplate.getSequenceNumber(WomTlWomstSql.TBL_BAL_WOM_TL_WOMST, 10, "MW", "YYMM", "Y"));//getSequenceNumber(WomTlWomstSql.TBL_WOM_TL_WOMST)); // set the sequnce number 
 						sqls.add(WomTlWomstSql.getInsertSql(womTlWomstSql.getWomsDbFields(), womTlWomst.getSaveArray())); // add insert sql for master table						
 						//if(UIUtils.isValidKeyId(womTlWomst.getWomsActivitytype()) && womTlWomst.getWomsActivitytype().equals("B"))			
 						//createBD(bdmTlMst,sqls);	
@@ -188,7 +204,7 @@ public class WomTlWomstDaoImpl implements WomTlWomstDao {
 				
 				if(CommonFunctions.isValidKeyId(prodAvlTime) && prodAvlTime.equals("1"))
 				{
-					womTlWomst.setWomsKeyid(dbActionTemplate.getSequenceNumber(WomTlWomstSql.TBL_WOM_TL_WOMST, 10, "MW", "YYMM", "Y"));//getSequenceNumber(WomTlWomstSql.TBL_WOM_TL_WOMST)); // set the sequnce number 
+					womTlWomst.setWomsKeyid(dbActionTemplate.getSequenceNumber(WomTlWomstSql.TBL_BAL_WOM_TL_WOMST, 10, "MW", "YYMM", "Y"));//getSequenceNumber(WomTlWomstSql.TBL_WOM_TL_WOMST)); // set the sequnce number 
 					sqls.add(WomTlWomstSql.getInsertSql(womTlWomstSql.getWomsDbFields(), womTlWomst.getSaveArray())); // add insert sql for master table
 					/*List<String[]>  overlapFlag = isMSRExist(womTlWomst);
 					if(overlapFlag.size()>0)
@@ -576,7 +592,7 @@ public void bdUpdate(BdmTlMst bdmTlMst,WomTlWomst womTlWomst)	throws Exception {
 			{
 				CommonMessage.debugMsg("Approval Flag : "+newWomTlWomst.getWomsRequestapproved());
 				String timeFormat = "dd-MMM-yyyy HH:mm";
-				SimpleDateFormat sdf = new SimpleDateFormat(timeFormat,Locale.ENGLISH);
+				SimpleDateFormat sdf = new SimpleDateFormat(timeFormat);
 				newWomTlWomst.setWomsStatus("A");
 				Object [] updateApproval	= { newWomTlWomst.getWomsRequestapproved(),newWomTlWomst.getWomsRequestapprovedby(),new java.sql.Timestamp( sdf.parse(newWomTlWomst.getWomsRequestapproveddate()).getTime()),newWomTlWomst.getWomsRequestapprovremarks(),newWomTlWomst.getWomsStatus(),newWomTlWomst.getWomsKeyid()};
 				int [] dataTypes1 =  { Types.VARCHAR,Types.VARCHAR,Types.TIMESTAMP,Types.VARCHAR,Types.VARCHAR,Types.VARCHAR};
@@ -652,7 +668,7 @@ public void bdUpdate(BdmTlMst bdmTlMst,WomTlWomst womTlWomst)	throws Exception {
 		List<int[]> dataTypes  = new ArrayList<int[]>();
 		CommonMessage.debugMsg(creationUpdateSql);
 		String timeFormat = "dd-MMM-yyyy HH:mm";
-		SimpleDateFormat sdf = new SimpleDateFormat(timeFormat,Locale.ENGLISH);
+		SimpleDateFormat sdf = new SimpleDateFormat(timeFormat);
 		
 		//CommonMessage.debugMsg(sdf.parse(newWomTlWomst.getWomsProposedstartdate()));
 		CommonMessage.debugMsg(sdf.parse(newWomTlWomst.getWomsProposedenddate()));
@@ -676,7 +692,7 @@ public void bdUpdate(BdmTlMst bdmTlMst,WomTlWomst womTlWomst)	throws Exception {
 		List<int[]> dataTypes  = new ArrayList<int[]>();
 		
 		String timeFormat = "dd-MMM-yyyy HH:mm";
-		SimpleDateFormat sdf = new SimpleDateFormat(timeFormat,Locale.ENGLISH);
+		SimpleDateFormat sdf = new SimpleDateFormat(timeFormat);
 		
 		Object [] updateAcceptance	= {new java.sql.Timestamp( sdf.parse(newWomTlWomst.getWomsRescheduledate()).getTime()), newWomTlWomst.getWomsRescheduleby(),newWomTlWomst.getWomsRescheduleflag(),newWomTlWomst.getWomsRescheduledstflag(),new java.sql.Timestamp( sdf.parse(newWomTlWomst.getWomsReschedulestartdate()).getTime()),newWomTlWomst.getWomsRescheduledendflag(),new java.sql.Timestamp( sdf.parse(newWomTlWomst.getWomsRescheduleenddate()).getTime()),newWomTlWomst.getWomsRescheduleremarks(),newWomTlWomst.getWomsStatus(),newWomTlWomst.getWomsKeyid()};
 		int [] dataTypes1 =  { Types.TIMESTAMP,Types.VARCHAR,Types.VARCHAR,Types.VARCHAR,Types.TIMESTAMP,Types.VARCHAR,Types.TIMESTAMP,Types.VARCHAR,Types.VARCHAR,Types.VARCHAR};
@@ -733,7 +749,7 @@ public void bdUpdate(BdmTlMst bdmTlMst,WomTlWomst womTlWomst)	throws Exception {
 		List<String> charList  = new ArrayList<String>();
 		
 		String timeFormat = "dd-MMM-yyyy HH:mm";
-		SimpleDateFormat sdf = new SimpleDateFormat(timeFormat,Locale.ENGLISH);
+		SimpleDateFormat sdf = new SimpleDateFormat(timeFormat);
 
 		boolean breakdown = false;
 		boolean MachineActivity = false;
@@ -1074,7 +1090,7 @@ public void bdUpdate(BdmTlMst bdmTlMst,WomTlWomst womTlWomst)	throws Exception {
 		List<int[]> dataTypes  = new ArrayList<int[]>();
 		
 		String timeFormat = "dd-MMM-yyyy HH:mm";
-		SimpleDateFormat sdf = new SimpleDateFormat(timeFormat,Locale.ENGLISH);
+		SimpleDateFormat sdf = new SimpleDateFormat(timeFormat);
 		String finalActivity = newWomTlWomst.getWomsFinalactivitytype();
 		if(oldWomTlWomst != null)
 		{
@@ -1122,7 +1138,7 @@ public void bdUpdate(BdmTlMst bdmTlMst,WomTlWomst womTlWomst)	throws Exception {
 		List<String> charList  = new ArrayList<String>();
 		
 		String timeFormat = "dd-MMM-yyyy HH:mm";
-		SimpleDateFormat sdf = new SimpleDateFormat(timeFormat,Locale.ENGLISH);
+		SimpleDateFormat sdf = new SimpleDateFormat(timeFormat);
 		
 		
 		String parameterCode = null;	
@@ -2319,7 +2335,7 @@ public void bdUpdate(BdmTlMst bdmTlMst,WomTlWomst womTlWomst)	throws Exception {
 	}
 	public static String getTimeDifferenceInMins(String dateStart,String dateStop)
 	{
-		SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy HH:mm",Locale.ENGLISH);
+		SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy HH:mm");
 		Date d1 = null;
         Date d2 = null;
         

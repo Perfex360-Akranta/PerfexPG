@@ -1,0 +1,685 @@
+<script type="text/javascript">
+jQuery(document).ready(function(){
+
+	initialiseForm('frmEmpCostEst');	
+	initialiseForm('frmEmpCostAct');
+	fillComboBox("frmEmpCostEst","cmbmpcpSkillid","combo_empgrade.crt");	
+	//readOnlyFields('cmbmpcpManpowerid');
+/*	fillComboBox("frmEmpCostEst","cmbmpcpSkillid","combo_empgrade.crt");		
+	fillComboBox("frmEmpCostAct","cmbmpcsManpowerid","employee.commonFilter");
+	fillComboBox("frmEmpCostAct","cmbmpcsSkillid","combo_empgrade.crt"); */
+
+	formatDateBox('dtempcsDate','dd-MMM-yyyy');
+	fillWithCurrentDate('dtempcsDate');
+	numericTextBox('txtmpcpNormalmins');	
+	numericTextBox('txtmpcsNormalwt');
+	numericTextBox('txtmpcsHolidaywt');
+	numericTextBox('txtmpcsOtherwt');
+	
+	jQuery("#txtmpcpNormalcost").attr('disabled','disabled');
+	jQuery("#txtmpcpTotalvalue").attr('disabled','disabled');
+	jQuery("#txtmpcsNormalrate").attr('disabled','disabled');
+	jQuery("#txtmpcsHolidayrate").attr('disabled','disabled');
+	jQuery("#txtmpcsOtherrate").attr('disabled','disabled');	
+	jQuery("#txtmpcsTotalvalue").attr('disabled','disabled');
+
+	jQuery("#empCostEstDiv").hide();
+	jQuery("#empCostActDiv").hide();
+	
+	var woId = jQuery('#hdnwoId').val();
+	//q=2&formName=empCost&woId="+ woid
+	processGridnew('empCostEstimation_view.crt',"?q=2&formName=empCost&woId="+ woId,"tblEmpCostEstGrid","empCostEstPager","","tblEmpCostEstGrid_dblClick","","costGridLoad","");						
+	processGridnew('empCostActual_view.crt',"?q=2&formName=empCost&woId="+ woId,"tblEmpCostActGrid","empCostActPager","","tblEmpCostActGrid_dblClick","","costGridLoad","");
+
+	var formType = jQuery('#hdnGlbType').val();
+	processGridnew('empCostManPower_view.crt',"?q=2&formName=empCost&woId="+ woId+"&formType="+formType,"tblEmpCostManPowerGrid","empCostManPowerPager","","","","costGridLoad","");
+
+	fnSetPageTotal();
+
+//EMPCOST ESTIMATE 
+
+		jQuery("#btnEmpEstNew").click(function(){
+			fnEmpEstClear();			
+			fnOpenNewEst();			
+		});
+
+	jQuery('#btnEmpEstInsert').click(function(){
+	 //alert("Insert clicked");
+		var NorMins = jQuery('#txtmpcpNormalmins').val();
+		var NorCost = jQuery('#txtmpcpNormalcost').val();
+		//NormalCost = Round(Val(Val(EmpCost) * (Val(NormalMin) / 60)), 2)
+		var TotValue = jQuery('#txtmpcpNormalcost').val() * (jQuery('#txtmpcpNormalmins').val() / 60); 
+		TotValue = TotValue.toFixed(2);				
+		jQuery('#txampcpTotalvalue').val(TotValue);		
+
+		var actVal = jQuery('#txtActualTime').val();
+		//alert(actVal + ' ' + NorMins);
+		if (parseInt( actVal) < parseInt(NorMins) )
+		{ alert("Total No. of Mins Should Not Exceed the Actual Time");
+			return;	
+		}
+		var formId = jQuery('#submitForm').val(); //defined in classic.jsp
+		var url = "empCostManPower_save.crt?q=2&Type=Estimate&Skill=E" ;//defined in classic.jsp
+			
+		if (jQuery('#hdnEstMode').val() == "Update")
+			url+= '&saveMode=Update';
+		else
+			url+= '&saveMode=Save';	
+
+		var woId=jQuery('#hdnwoId').val();
+		var docType=jQuery('#hdnDocType').val();
+		url+= '&woId='+woId+'&docType='+docType;
+
+		if(formId.length > 0 )
+			saveForm(formId,url);
+	
+	});
+
+	jQuery('#btnEmpEstClear').click(function(){
+		//alert("Clear clicked");
+		fnEmpEstClear();
+		});
+	
+	jQuery('#btnEmpEstDelete').click(function(){
+		//alert("Delete clicked");
+		var formId = jQuery('#submitForm').val(); //defined in classic.jsp
+		var rowId = jQuery("#tblEmpCostEstGrid").jqGrid('getGridParam', 'selrow');
+
+		if (rowId == null || rowId < 0) {	return; }
+		
+		var rowData = jQuery("#tblEmpCostEstGrid").jqGrid('getRowData',rowId);
+		var EmpId =rowData.cmbmpcpManpowerid;
+		var GrdId =rowData.cmbmpcpSkillid;
+
+		var woId=jQuery('#hdnwoId').val();
+				
+		var url = "empCostManPower_delete.crt" ;//defined in classic.jsp
+		url+= '?q=2&FormName=EmpCost&Type=Estimate&&womid='+woId+'&empid='+EmpId+'&grdid='+GrdId;
+		if(formId.length > 0 )
+			deleteRecord(formId,url);
+		//deleteRecord(formId,url);
+				
+			});
+
+//EMPCOST ACTUAL	
+
+		jQuery("#btnEmpActNew").click(function(){
+			//alert(jQuery('#submitForm').val());
+			fnEmpActClear();
+			fnOpenNewAct();
+		});
+		
+	jQuery('#btnEmpActInsert').click(function(){
+		//alert("insertclciked");
+		 var NorMins = jQuery('#txtmpcsNormalwt').val();
+		 var HolidayMins = jQuery('#txtmpcsHolidaywt').val();
+		 var OtherMins = jQuery('#txtmpcsOtherwt').val();
+		 var NorCost = jQuery('#txtmpcsNormalrate').val();
+		 var HolidayCost = jQuery('#txtmpcsHolidayrate').val();	 
+		 var OtherCost = jQuery('#txtmpcsOtherrate').val();
+		
+		    //NormalCost = Round(Val(Val(TxtMpNormalCost) * (Val(TxtMpNormalMin) / 60)), 2)
+		    //HolidayCost = Round(Val(Val(TxtMpHolidaylCost) * (Val(TxtMpHolidayMin) / 60)), 2)
+		    //WOM_TL_OTHERCOSTACTUAL = Round(Val(Val(TxtMpOtherCost) * (Val(TxtMpOtherMin) / 60)), 2)		     
+		    //Txtmantotalvalue.Text = NormalCost + HolidayCost + WOM_TL_OTHERCOSTACTUAL
+		    var NrCst =  NorCost * (NorMins / 60);		 		 
+		    var HdCst =  HolidayCost * (HolidayMins / 60);
+		    var OtCst =  OtherCost * (OtherMins / 60);
+		    
+		 var TotValue =  NrCst + HdCst + OtCst ;		 
+		 TotValue = TotValue.toFixed(2);
+		 jQuery('#txtmpcsTotalvalue').val(TotValue);
+
+		var actVal = jQuery('#txtActualTime').val();		
+		if (parseInt(actVal) < ( parseInt(NorMins) +parseInt(HolidayMins) + parseInt(OtherMins)))
+		{ alert("Total No. of Mins Should Not Exceed the Actual Time");
+			return;	
+		}
+
+		/*var selDate = jQuery('#dtempcsDate').datebox('getValue');
+		var planDate = jQuery('#dteplanDate').datebox('getValue');
+		alert("plan dt"+planDate +" sel date "+selDate);	 
+		alert(Date(selDate)-planDate);*/
+		 
+		var formId = jQuery('#submitForm').val(); //defined in classic.jsp
+		var url = "empCostManPower_save.crt?q=2&Type=Actual&Skill=E" ;//defined in classic.jsp
+			
+		if (jQuery('#hdnActMode').val() == "Update")
+			url+= '&saveMode=Update';
+		else
+			url+= '&saveMode=Save';	
+
+		var woId=jQuery('#hdnwoId').val();
+		var docType=jQuery('#hdnDocType').val();
+		url+= '&woId='+woId+'&docType='+docType;		
+
+		var workStart = jQuery('#dteworkStart').datebox('getValue');
+		var workEnd = jQuery('#dteworkEnd').datebox('getValue');		
+		url+= '&workStart='+workStart+'&workEnd='+workEnd;
+		
+		if(formId.length > 0 )
+			saveForm(formId,url);
+		
+	});
+
+
+	jQuery('#btnEmpActClear').click(function(){	
+		fnEmpActClear();
+	});
+
+	jQuery('#btnEmpActDelete').click(function(){
+		//alert("Delete clicked");
+		var formId = jQuery('#submitForm').val(); //defined in classic.jsp
+		var rowId = jQuery("#tblEmpCostActGrid").jqGrid('getGridParam', 'selrow');
+
+		if (rowId == null || rowId < 0) {	return; }
+		
+		var rowData = jQuery("#tblEmpCostActGrid").jqGrid('getRowData',rowId);
+		var EmpId =rowData.cmbmpcsManpowerid;
+		var GrdId =rowData.cmbmpcsSkillid;
+		var woId=jQuery('#hdnwoId').val();		
+				
+		var url = "empCostManPower_delete.crt" ;//defined in classic.jsp
+		url+= '?q=2&FormName=EmpCost&Type=Actual&womid='+woId+'&empid='+EmpId+'&grdid='+GrdId;
+		if(formId.length > 0 )
+			deleteRecord(formId,url);
+		
+	});		
+				
+	jQuery("#txtmpcpNormalmins").focusout(function () {	    
+		var Minutes = jQuery('#txtmpcpNormalmins').val();
+		var Cost = jQuery('#txtmpcpNormalcost').val();
+		var TotCost = Minutes * Cost ;
+		jQuery('#txtmpcpTotalvalue').val(TotCost);
+	});
+
+	jQuery("#txtmpcsNormalmins").focusout(function () {	    
+		var Minutes = jQuery('#txtmpcpNormalmins').val();
+		var Cost = jQuery('#txtmpcpNormalcost').val();
+		var TotCost = Minutes * Cost ;
+		jQuery('#txtmpcsTotalvalue').val(TotCost);		
+	});
+
+});
+
+	function fnOpenNewEst() {
+		jQuery('#submitForm').val("frmEmpCostEst");
+		jQuery( "#empCostEstDiv" ).show();
+		jQuery( "#empCostEstDiv" ).dialog({
+			autoOpen: false,
+			modal: true,
+			height: 300,
+			width: 360		
+		});				
+	}
+	function fnOpenNewAct() {
+		jQuery('#submitForm').val("frmEmpCostAct");
+		jQuery( "#empCostActDiv" ).show();
+		jQuery( "#empCostActDiv" ).dialog({
+			autoOpen: false,
+			modal: true,
+			height: 360,
+			width: 830		
+		});				
+	}	
+	
+	function frmEmpCostEstcmbmpcpSkillid_onLoadSuccess() 	{
+		fillComboBox("frmEmpCostEst","cmbmpcpManpowerid","employee.commonFilter");
+	}
+	function frmEmpCostEstcmbmpcpManpowerid_onLoadSuccess() 	{
+		fillComboBox("frmEmpCostAct","cmbmpcsSkillid","combo_empgrade.crt");
+  	}
+
+	function frmEmpCostActcmbmpcsSkillid_onLoadSuccess() 	{
+		fillComboBox("frmEmpCostAct","cmbmpcsManpowerid","employee.commonFilter");
+
+		if (jQuery('#hdnGlbType').val() == "Actual")	{
+
+			disableForm("frmEmpCostEst");
+			jQuery('#btnEmpEstNew').attr('disabled','disabled');	
+			jQuery('#btnEmpEstDelete').attr('disabled','disabled');
+		}
+		else { 
+			jQuery('#submitForm').val('frmEmpCostEst');
+			disableForm("frmEmpCostAct");
+			jQuery('#btnEmpActNew').attr('disabled','disabled');	
+			jQuery('#btnEmpActDelete').attr('disabled','disabled');			
+		}
+			
+  	}
+
+	function frmEmpCostEstcmbmpcpSkillid_onSelect(record) 	{
+		jQuery('#cmbmpcpManpowerid').combobox('clear');
+		reloadCombo("frmEmpCostEst","cmbmpcpManpowerid","employee.commonFilter?gradeId="+record.id);
+	}
+	 
+	function frmEmpCostActcmbmpcsSkillid_onSelect(record) 	{
+		jQuery('#cmbmpcsManpowerid').combobox('clear');
+		reloadCombo("frmEmpCostAct","cmbmpcsManpowerid","employee.commonFilter?gradeId="+record.id);
+	}
+	
+function fnEmpEstClear() {	
+	enableFields("cmbmpcpSkillid");
+	enableFields("cmbmpcpManpowerid");	
+	jQuery('#cmbmpcpManpowerid').combobox('clear');
+	jQuery('#cmbmpcpSkillid').combobox('clear');
+	jQuery('#txtmpcpNormalmins').val("");
+	jQuery('#txtmpcpNormalcost').val("0");		 
+	jQuery('#txtmpcpTotalvalue').val("0");
+	jQuery('#hdnEstMode').val("");
+
+	jQuery("#txtmpcpTotalvalue").attr('disabled','disabled');
+}
+
+function fnEmpActClear() { 
+ 	enableFields("cmbmpcsSkillid");
+ 	enableFields("cmbmpcsManpowerid"); 
+ 	jQuery('#dtempcsDate').datebox('clear');
+ 	fillWithCurrentDate('dtempcsDate');	 
+ 	jQuery('#cmbmpcsSkillid').combobox('clear');	 	 
+ 	jQuery('#cmbmpcsManpowerid').combobox('clear');
+ 	jQuery('#txampcsActivity').val("");
+ 	jQuery('#txtmpcsNormalwt').val("");
+ 	jQuery('#txtmpcsHolidaywt').val("");
+ 	jQuery('#txtmpcsOtherwt').val("");
+ 	jQuery('#txtmpcsNormalrate').val("0");
+ 	jQuery('#txtmpcsHolidayrate').val("0");	 
+ 	jQuery('#txtmpcsOtherrate').val("0");
+ 	jQuery('#txtmpcsTotalvalue').val("0");
+ 	jQuery('#txampcsRemarks').val("");
+ 	jQuery('#hdnActMode').val("");
+
+ 	jQuery("#txtmpcsTotalvalue").attr('disabled','disabled');}
+ 
+function tblEmpCostEstGrid_dblClick(id)
+	{
+	var formType = jQuery('#hdnGlbType').val();
+	if (formType =="Actual") return ;
+	
+		var rowData = jQuery("#tblEmpCostEstGrid").jqGrid('getRowData',id);
+		
+		if (rowData.cmbmpcpManpowerid != null )
+			jQuery('#hdnEstMode').val("Update");
+		else
+			jQuery('#hdnEstMode').val("");
+		
+		jQuery('#cmbmpcpManpowerid').combobox('setValue',rowData.cmbmpcpManpowerid);	
+		jQuery('#cmbmpcpSkillid').combobox('setValue',rowData.cmbmpcpSkillid);
+
+		readOnlyFields("cmbmpcpManpowerid");
+		readOnlyFields("cmbmpcpSkillid");
+		
+		jQuery('#txtmpcpNormalmins').val(rowData.txtmpcpNormalmins);
+		jQuery('#txtmpcpNormalcost').val(rowData.txtmpcpNormalcost);
+		jQuery('#txtmpcpTotalvalue').val(rowData.txtmpcpTotalvalue);
+
+		fnOpenNewEst();		
+	}
+
+function tblEmpCostActGrid_dblClick(id)
+{
+	var formType = jQuery('#hdnGlbType').val();
+	if (formType =="Estimate") 	return ;
+	
+	var rowData = jQuery("#tblEmpCostActGrid").jqGrid('getRowData',id);
+	//alert(rowData.cmbmpcsManpowerid);
+	if (rowData.cmbmpcsManpowerid != null )
+		jQuery('#hdnActMode').val("Update");
+	else
+		jQuery('#hdnActMode').val("");
+	
+	 readOnlyFields("cmbmpcsSkillid");
+	 readOnlyFields("cmbmpcsManpowerid");
+
+ 	 jQuery('#cmbmpcsSkillid').combobox('setValue',rowData.cmbmpcsSkillid);	 	
+	 jQuery('#cmbmpcsManpowerid').combobox('setValue',rowData.cmbmpcsManpowerid);
+
+	 jQuery('#txampcsActivity').val(rowData.txampcsActivity);
+	 jQuery('#txtmpcsNormalwt').val(rowData.txtmpcsNormalwt);	 
+	 jQuery('#txtmpcsHolidaywt').val(rowData.txtmpcsHolidaywt);
+	 jQuery('#txtmpcsOtherwt').val(rowData.txtmpcsOtherwt);	 
+	 jQuery('#txtmpcsNormalrate').val(rowData.txtmpcsNormalrate);	 
+	 jQuery('#txtmpcsHolidayrate').val(rowData.txtmpcsHolidayrate);	 
+	 jQuery('#txtmpcsOtherrate').val(rowData.txtmpcsOtherrate);	 
+	 jQuery('#txtmpcsTotalvalue').val(rowData.txtmpcsTotalvalue);	 
+	 jQuery('#txampcsRemarks').val(rowData.txampcsRemarks);	 
+	 jQuery('#dtempcsDate').datebox('setValue',rowData.dtempcsDate);
+
+	 fnOpenNewAct();		 
+}
+
+
+function  frmEmpCostEstcmbmpcpManpowerid_onSelect(record) {
+	if (jQuery('#cmbmpcpSkillid').combobox('getValue')== "") {
+		alert("Select Grade");
+		jQuery('#cmbmpcpManpowerid').combobox('clear');
+		return;
+	}
+	processAjaxCalls("empCost_getEmpCost.crt","?q=2&empId="+record.id,"empIdRecallSuccess","empIdRecallError");
+	/*	selectskillId = jQuery('#cmbmpcpSkillid').combobox('getValue');
+	selectempId = jQuery('#cmbmpcpManpowerid').combobox('getValue');
+	reccnt = jQuery("#tblEmpCostEstGrid").getDataIDs().length;
+	var i;
+	for (i=1; i <= reccnt; i++) {
+		var rowData = jQuery("#tblEmpCostEstGrid").jqGrid('getRowData',i);
+		var EmpId =rowData.cmbmpcpManpowerid;
+		var GrdId =rowData.cmbmpcpSkillid;
+		if (selectskillId == GrdId && selectempId == EmpId) {
+			tblEmpCostEstGrid_dblClick(i);
+		}
+	}
+	*/
+}
+
+function  frmEmpCostActcmbmpcsManpowerid_onSelect(record) {
+	//alert(record.id);
+	if (jQuery('#cmbmpcsSkillid').combobox('getValue')=="") {
+		alert("Select Grade");
+		jQuery('#cmbmpcsManpowerid').combobox('clear');
+		return;
+	}
+	
+	processAjaxCalls("empCost_getEmpCost.crt","?q=2&empId="+record.id,"actualempIdRecallSuccess","empIdRecallError");
+}
+
+function empIdRecallSuccess(result)
+	 {
+		jQuery('#hdnEmpNo').val(result.empDetails.empNo);	
+		jQuery('#hdnEmpName').val(result.empDetails.empName);
+		//alert('empcost'+result.empDetails.empCost);
+		if (!result.empDetails.empCost ==null || !result.empDetails.empCost =="" 
+			|| !result.empDetails.empCost ==" ")
+			displayText('txtmpcpNormalcost',result.empDetails.empCost);
+		else
+			displayText('txtmpcpNormalcost',"0");
+		
+		displayText('txtmpcpTotalvalue',"0");
+	 }
+
+function actualempIdRecallSuccess(result)
+{
+	//alert(result.empDetails.empName);
+	//alert(result.empDetails.empNorRate);
+	
+	jQuery('#hdnEmpNo').val(result.empDetails.empNo);	
+	jQuery('#hdnEmpName').val(result.empDetails.empName);
+
+	
+	if (! result.empDetails.empNorRate ==null || !result.empDetails.empNorRate =="" 
+		|| !result.empDetails.empNorRate ==" ")
+		displayText('txtmpcsNormalrate',result.empDetails.empNorRate);
+	else
+		displayText('txtmpcsNormalrate',"0");
+	if (!result.empDetails.empOtRate ==null || !result.empDetails.empOtRate ==""
+		|| !result.empDetails.empOtRate ==" " )
+		displayText('txtmpcsHolidayrate',result.empDetails.empOtRate);
+	else
+		displayText('txtmpcsHolidayrate',"0");
+	if (!result.empDetails.empCalloutRate ==null || !result.empDetails.empCalloutRate =="" 
+		|| !result.empDetails.empCalloutRate ==" ")
+		displayText('txtmpcsOtherrate',result.empDetails.empCalloutRate);
+	else
+		displayText('txtmpcsOtherrate',"0");
+	displayText('txtmpcsTotalvalue',"0");
+	
+}
+
+function frmEmpCostEst_successsCallback(result)
+{	
+	//alert("succcccc");
+	//alert(result.successData.msg);
+	jQuery("#tblEmpCostEstGrid").jqGrid().trigger("reloadGrid");
+	jQuery("#tblEmpCostManPowerGrid").jqGrid().trigger("reloadGrid");
+	fnEmpEstClear();
+	fnSetPageTotal();	
+	jQuery( "#empCostEstDiv" ).dialog("close");
+}
+
+function frmEmpCostAct_successsCallback(result)
+{
+	//alert(result.successData.msg);	
+	jQuery("#tblEmpCostActGrid").trigger("reloadGrid");
+	jQuery("#tblEmpCostManPowerGrid").jqGrid().trigger("reloadGrid");
+	fnEmpActClear();		
+	fnSetPageTotal();	
+	jQuery( "#empCostActDiv" ).dialog("close");
+}
+
+function fnSetPageTotal() {	
+	var formType = jQuery('#hdnGlbType').val();
+	var woId = jQuery('#hdnwoId').val();
+	processAjaxCalls("costInfo_getPageTotal.crt","?q=2&formName=empCost&formType="+formType+'&woId='+woId,"getTotalSuccessRecall","getTotalRecallError");	
+}
+
+function getTotalSuccessRecall(result) {
+	jQuery('#txtTotal').val(result.pageTotal.value);
+	jQuery('#txtNoofContractor').val(result.pageTotal.noofemp);
+	//alert(result.pageTotal.noofemp);
+}
+
+function frmEmpCostEst_deleteSuccessCallback()
+{
+	//alert("delete succcccccc");
+	jQuery("#tblEmpCostEstGrid").trigger("reloadGrid");
+	jQuery("#tblEmpCostManPowerGrid	").trigger("reloadGrid");	
+	fnEmpEstClear();	
+}		 
+function frmEmpCostAct_deleteSuccessCallback()
+{
+	jQuery("#tblEmpCostActGrid").trigger("reloadGrid");
+	jQuery("#tblEmpCostManPowerGrid	").trigger("reloadGrid");
+	fnEmpActClear();
+}
+
+function frmEmpCostEst_deleteErrorCallback()
+{ 	alert("Error"); }
+
+function frmEmpCostAct_deleteErrorCallback()
+{ 	alert("Error"); }
+
+function empIdRecallError(result)
+{ 	alert("error"); }
+
+function costGridLoad()
+{	//alert("loadeddddd");
+}
+
+</script>
+
+<div> <input type="hidden" id="hdnEstMode"></div>
+<div> <input type="hidden" id="hdnActMode"></div>
+<div> <input type="hidden" id="hdnEmpName"></div>
+<div> <input type="hidden" id="hdnEmpNo"></div>
+
+<div  class="sub-header" align=left>Employee Cost Estimation</div>
+
+  <div title="Employee Cost Estimate" style="padding:10px;" id="empCostEstDiv"  >
+  	<form id="frmEmpCostEst" name="frmEmpCostEst">
+		<div style="float:left;padding:px;margin-left: px;">
+           <div  class="easyui-paddingbfpx" align="left"><label class="mandatory-lbl">Grade</label></div> 
+            <div class="easyui-paddingbfpx"> 
+                <input id="cmbmpcpSkillid" name="cmbmpcpSkillid" class="easyui-combobox"  style="width:300px;" value=""  >                
+                <span id="err_cmbmpcpSkillid" class="tpm-errormsg"></span>
+            </div>  
+            
+           <div  class="easyui-paddingbfpx" align="left"><label class="mandatory-lbl">Employee</label></div> 
+            <div class="easyui-paddingbfpx"> 
+                <input id="cmbmpcpManpowerid" name="cmbmpcpManpowerid" class="easyui-combobox"  style="width:300px;" value=""  >
+                <span id="err_cmbmpcpManpowerid" class="tpm-errormsg"></span>                
+            </div>              
+ 			
+       		<div class="easyui-paddingbfpx" style="float:left;margin-left: px;">      			
+            	<label class="mandatory-lbl">Minutes</label>
+                <span  style="margin-left: 47px;margin-left: 57px\9;"><label class="mandatory-lbl">Cost</label></span>
+                <span  style="margin-left: 68px;margin-left: 77px\9;"><label>Total Cost</label></span>
+             </div>
+            <div class="easyui-paddingbfpx">
+	            <input id="txtmpcpNormalmins" name="txtmpcpNormalmins" type="text" class="easyui-text" size="15" >
+	            <input id="txtmpcpNormalcost" name="txtmpcpNormalcost" type="text" class="easyui-text" size="15" style="margin-left: 16px;" value="0">
+	            <input id="txtmpcpTotalvalue" name="txtmpcpTotalvalue" type="text" class="easyui-text" size="15" style="margin-left: 16px;" value="0">
+         
+                	
+                	
+            	<!-- <div class="easyui-paddingbfpx" >  
+                	<input id="txtmpcpNormalmins" name="txtmpcpNormalmins" type="text" class="easyui-text" size="15" >
+                	<span id="err_txtmpcpNormalmins" class="tpm-errormsg"></span>
+                </div>
+                <div class="easyui-paddingbfpx" >  
+                	<input id="txtmpcpNormalcost" name="txtmpcpNormalcost" type="text" class="easyui-text" size="15" style="margin-left: 16px;" value="0">
+                	<span id="err_txtmpcpNormalcost" class="tpm-errormsg"></span>
+                </div>
+                <div class="easyui-paddingbfpx" >  
+                	<input id="txtmpcpTotalvalue" name="txtmpcpTotalvalue" type="text" class="easyui-text" size="15" style="margin-left: 16px;" value="0">
+                	<span id="err_txtmpcpTotalvalue" class="tpm-errormsg"></span>
+                </div> -->
+            </div>  
+             <div class="easyui-paddingbfpx">   
+	             <span id="err_txtmpcpNormalmins" class="tpm-errormsg"></span>
+	             <span id="err_txtmpcpNormalcost" class="tpm-errormsg"></span>
+	             <span id="err_txtmpcpTotalvalue" class="tpm-errormsg"></span>
+             </div>          
+
+             <br>
+                 
+       		<div align="center" style="float: top; padding-right: 0px">
+       		<br><br>
+			<input type="button" id="btnEmpEstInsert" name="btnEmpEstInsert" class="easyui-button" value="Insert" style="width: 80px;"> 
+			<input type="button" id="btnEmpEstClear" name="btnEmpEstClear" class="easyui-button" value="Clear" style="width: 80px;">						
+       </div>
+       </div>
+      </form>
+    </div>
+    
+     <table width="100%">
+   		<tr>
+   		<td class="valigncnt" colspan="2" valign="middle" align="center" width="70%">
+  			<div style="float: left;padding-right: 40px;_padding-right: 20px">       		
+   			<table id="tblEmpCostEstGrid" width="500px" style="float: left;"></table></div>
+   			<div id="empCostEstPager" style="float: center;"></div>
+   		</td>
+      	<td width="30%" align="right" >
+		<div style="">
+			<input type="button" id="btnEmpEstNew" name="btnEmpEstNew" class="easyui-button" value="Add New" style="width: 80px;"> <br><br>									
+			<input type="button" id="btnEmpEstDelete" name="btnEmpEstDelete" class="easyui-button" value="Delete" style="width: 80px;"> <br><br>
+		</div>
+	</td>  	      	
+	</tr>
+	</table>        		 
+
+
+<div  class="sub-header" align=left>Employee Cost Actual</div>   	
+	<div title="Employee Cost Actual"  style="padding:10px;" id="empCostActDiv"  align="left">
+	<form id="frmEmpCostAct" name="frmEmpCostAct">
+       <table width="100%">
+           <tr>
+               <!--top left content -->
+               <td class="valigncnt" valign='top' style="width:40%;">
+                   <div style="float:left;margin-left: px;">
+                        <div  class="easyui-paddingbfpx"><label class="mandatory-lbl">Grade</label></div> 
+                       <div class="easyui-paddingbfpx"> 
+                           <input id="cmbmpcsSkillid" name="cmbmpcsSkillid" class="easyui-combobox"  style="width:315px;" value=""  >                            
+                                                       
+                           <span id="err_cmbmpcsSkillid" class="tpm-errormsg"></span>
+                       </div>
+                       <div  class="easyui-paddingbfpx"><label class="mandatory-lbl">Employee</label></div> 
+                       <div class="easyui-paddingbfpx"> 
+                           <input id="cmbmpcsManpowerid" name="cmbmpcsManpowerid" class="easyui-combobox"  style="width:315px;" value=""  >
+                           
+                           <span id="err_cmbmpcsManpowerid" class="tpm-errormsg"></span>                            
+                       </div>    
+                       <div  class="easyui-paddingbfpx">
+                       <label>Normal</label>
+                       <span  style="margin-left: 54px;margin-left: 60px\9;"><label>Call-Out</label></span>
+                       <span  style="margin-left: 49px;margin-left: 54px\9;"><label>Over Time</label></span>
+                       </div> 
+                       <div class="easyui-paddingbfpx">
+                           <input id="txtmpcsNormalrate" name="txtmpcsNormalrate" type="text" class="easyui-text" size="15" value="0" >
+                           <input id="txtmpcsHolidayrate" name="txtmpcsHolidayrate" type="text" class="easyui-text" size="15" style="margin-left: 16px;" value="0">
+                           <input id="txtmpcsOtherrate" name="txtmpcsOtherrate" type="text" class="easyui-text" size="18" style="margin-left: 16px;" value="0">                                  
+                       </div>                      
+                   </div>
+               </td>
+               <!--top Right content-->
+               <td class="valigncnt" valign='top' style="width:40%;">
+                   <div  style="padding-left:0px;">
+                       <div  class="easyui-paddingbfpx">
+                       <label class="mandatory-lbl">Normal Mins</label>
+                       <span  style="margin-left: 10px;margin-left: 18px\9;"><label class="mandatory-lbl">Call-Out Mins</label></span>
+                       <span  style="margin-left: 8px;margin-left: 18px\9;"><label class="mandatory-lbl">Over Time Mins</label></span>
+                       <span  style="margin-left: 23px;margin-left: 8px\9;"><label class="mandatory-lbl">Total</label></span>
+                       </div> 
+                       <div class="easyui-paddingbfpx">
+                           <input id="txtmpcsNormalwt" name="txtmpcsNormalwt" type="text" class="easyui-text" size="10" >
+                           <input id="txtmpcsHolidaywt" name="txtmpcsHolidaywt" type="text" class="easyui-text" size="10" style="margin-left: 25px;">
+                           <input id="txtmpcsOtherwt" name="txtmpcsOtherwt" type="text" class="easyui-text" size="10" style="margin-left: 25px;">                                                              
+                           <input id="txtmpcsTotalvalue" name="txtmpcsTotalvalue" type="text" class="easyui-text" size="10" style="margin-left: 50px;margin-left: 25px\9;" value="0">
+						 <div  style=" height : 20px;width:285px;">
+           					<span id="err_txtmpcsNormalwt" class="tpm-errormsg" style="float:left;" ></span>
+            				<span  style="padding-left:40px;float:left;"; " id="err_txtmpcsHolidaywt" class="tpm-errormsg"></span>
+            				<span  style="padding-left:40px;float:left;"; " id="err_txtmpcsOtherwt" class="tpm-errormsg"></span>
+               			 </div>                                                           
+                       </div>
+                       <div class="easyui-paddingbfpx">
+                       	<label class="mandatory-lbl">Date</label>
+                       	<span  style="margin-left: 75px;"><label class="mandatory-lbl">Activity</label></span>
+                       </div> 
+                       <div> 
+                           <input id="dtempcsDate" name="dtempcsDate" class="easyui-datebox" style="width:100px;"/>
+                           <textarea id="txampcsActivity" name="txampcsActivity" style="width: 235px;height: 25px" rows="6" cols="1"></textarea>
+						 <div  style=" height : 20px;width:255px;">
+           					<span id="err_dtempcsDate" class="tpm-errormsg" style="float:left;" ></span>
+            				<span  style="padding-left:5px;float:right;"; " id="err_txampcsActivity" class="tpm-errormsg"></span>
+               			 </div>                                                                                                    
+                           
+                       </div>
+                       <div  class="easyui-paddingbfpx"><label>Remarks</label></div> 
+                       <div class="easyui-paddingbfpx"> 
+                           <textarea id="txampcsRemarks" name="txampcsRemarks" style="width: 350px;height: 50px" rows="5" cols="2"></textarea>                                                     
+                       </div>          
+                   </div>	
+               </td>
+           </tr>
+	</table>
+				
+        <div  align=center>
+        	<br><br>        					
+			<input type="button" id="btnEmpActInsert" name="btnEmpActInsert" class="easyui-button" value="Insert" style="width: 80px;">  
+			<input type="button" id="btnEmpActClear" name="btnEmpActClear" class="easyui-button" value="Clear" style="width: 80px;padding-right: 10px">	<br>		
+		</div>
+		</form>
+		</div>
+	
+		<table width="100%">        
+        <tr>
+        <td class="valigncnt" colspan="2" valign="middle" align="center" width="70%">
+        	<div style="float: left;padding-right: 40px ;_padding-right: 20px">
+        	<table id="tblEmpCostActGrid" width="500px" style="float: left;"></table> </div>
+			<div id="empCostActPager" style="float: center;"></div>
+        </td>
+        <td align="right" width="30%">
+        	<div>        	
+				<input type="button" id="btnEmpActNew" name="btnEmpActNew" class="easyui-button" value="Add New" style="width: 80px;"> <br><br>
+				<input type="button" id="btnEmpActDelete" name="btnEmpActDelete" class="easyui-button" value="Delete" style="width: 80px;"> <br>
+			</div>
+		</td>
+        </tr>
+        <tr>
+        <td class="valigncnt" colspan="2" valign="middle" align="center" width="70%">
+        <div>        
+        	<div style="float: left;padding-right: 40px ;_padding-right: 20px">
+        	<table id="tblEmpCostManPowerGrid" width="500px" style="float: left;"></table> </div>
+			<div id="empCostManPowerPager" style="float: center;"></div>
+        </div>
+        </td>
+        <td valign="top" align="right" width="30%">        
+        	<div>        
+        		<label>Number of Contractor</label>
+        		<input id="txtNoofContractor" name="txtNoofContractor" type="text" class="easyui-text" value="" disabled="disabled" size="10" >
+        		<br/><br/>
+        		<label>Total Amount</label><br>
+        		<input id="txtTotal" name="txtTotal" type="text" class="easyui-text" value="" disabled="disabled" size="10" >
+        	</div>
+        </td>
+        </tr>		    
+        </table>
+ 

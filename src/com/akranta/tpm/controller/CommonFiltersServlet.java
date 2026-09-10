@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -1479,13 +1480,38 @@ public class CommonFiltersServlet extends HttpServlet {
 					commonFilter.setUom(currentFilter);
 					comboList = commonFilterService.getUomComboList(commonFilter);
 
-				} else if (action.equals("assembly.commonFilter")) {
+				}
+				/*
+				 * else if (action.equals("assembly.commonFilter")) { currentFilter =
+				 * UIUtils.fillComboFilter(request); commonFilter.setAssembly(currentFilter);
+				 * String relatedTo = request.getParameter("relatedto"); // defaullt for
+				 * machine, MLD for mould comboList =
+				 * commonFilterService.getAssemblyComboList(commonFilter, relatedTo);
+				 * 
+				 * }
+				 */
+				
+				else if (action.equals("assembly.commonFilter")) {
 					currentFilter = UIUtils.fillComboFilter(request);
 					commonFilter.setAssembly(currentFilter);
 					String relatedTo = request.getParameter("relatedto"); // defaullt for machine, MLD for mould
-					comboList = commonFilterService.getAssemblyComboList(commonFilter, relatedTo);
+					// added here by priyanka on 21aug 2026
+					String machineNotToShown = request.getParameter("machineNotToShown");
+				    if (UIUtils.isValidKeyId(machineNotToShown))
+				        commonFilter.setMachineNotToShown(machineNotToShown);
+				    // end
+				    String machineId1 = request.getParameter("machineId");
+				    if (UIUtils.isValidKeyId(machineId)) {
+				        ComboFilter machineFilter = new ComboFilter();
+				        machineFilter.setId(machineId);
+				        commonFilter.setMachine(machineFilter);
+				    }
 
-				} else if (action.equals("equipmentgroup.commonFilter")) {
+				   
+					comboList = commonFilterService.getAssemblyComboList(commonFilter, relatedTo);
+//
+				}
+				else if (action.equals("equipmentgroup.commonFilter")) {
 					CommonMessage.debugMsg(" Inside Equipment group ");
 
 					String machId = request.getParameter("machId");
@@ -2482,7 +2508,7 @@ public class CommonFiltersServlet extends HttpServlet {
 
 	public static String getDateWithFormat(String format) {
 		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		SimpleDateFormat sdf = new SimpleDateFormat(format,Locale.ENGLISH);
 		return sdf.format(cal.getTime());
 	}
 

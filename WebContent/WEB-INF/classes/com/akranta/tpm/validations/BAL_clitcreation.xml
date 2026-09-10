@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="CliTlStandards" name="com.akranta.tpm.model.CliTlStandards" >
+		<validate For="create update clit">
+			<property name="ClisMachineid" type="String" required="true" />
+			<property name="ClisStandard" type="String" required="true" />
+			<!-- <property name="ClisWherelocation" type="String" required="true" /> -->
+			<property name="ClisWhatactivity" type="String" required="true" />
+<!-- 			<property name="ClisActivitytype" type="String" required="true" /> -->
+			<property name="ClisFrequencyunit" type="String" required="true" />			
+<!--  for shift	-->
+<!-- 			<property required-dependent="true" name="ClisFrequencyunit" type="String" value="S"> -->
+<!-- 				<field name="ClisShiftid" type="String" required="false" /> -->
+<!-- 			</property> -->
+<!-- 			<property required-dependent="true" name="ClisFrequencyunit" type="String" value="D"> -->
+<!-- 				<field name="ClisShiftid" type="String" required="true" /> -->
+<!-- 			</property> -->
+<!-- 			<property required-dependent="true" name="ClisFrequencyunit" type="String" value="W"> -->
+<!-- 				<field name="ClisShiftid" type="String" required="true" /> -->
+<!-- 			</property> -->
+<!-- 			<property required-dependent="true" name="ClisFrequencyunit" type="String" value="F"> -->
+<!-- 				<field name="ClisShiftid" type="String" required="true" /> -->
+<!-- 			</property> -->
+<!-- 			<property required-dependent="true" name="ClisFrequencyunit" type="String" value="M"> -->
+<!-- 				<field name="ClisShiftid" type="String" required="true" /> -->
+<!-- 			</property> -->
+<!-- 			<property required-dependent="true" name="ClisFrequencyunit" type="String" value="Q"> -->
+<!-- 				<field name="ClisShiftid" type="String" required="true" /> -->
+<!-- 			</property> -->
+<!--   END     --> 
+			<property name="ClisHowmethod" type="String" required="true" />
+			<property name="ClisHowmuchduration" type="String" required="true" />
+			<property name="ClisNextduedate" type="Date" required="true"  /> 
+			<!-- <property name="ClisEffectivedate" type="Date" required="true"  GE="ClisNextduedate"/> -->
+<!-- 			<property name="ClisResponsibilityid" type="String" required="true" /> -->
+			<property name="ClisCreatedby" type="String" required="true" />
+			
+			
+		    
+		    
+<!--	        <property name="ClisNextduedate" type="Date" required="true" LECD="true" />-->
+			
+		</validate>	
+	</class>
+</validations>
+
+

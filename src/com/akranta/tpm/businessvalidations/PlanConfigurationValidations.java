@@ -26,14 +26,14 @@ public class PlanConfigurationValidations {
 				CommonMessage.debugMsg("inside business validations of planconfig"+userConfirmation);
 			
 			if(indentifir.equals("M") ){
-				 sql = "SELECT DISTINCT MCHM_MACHINENO ,MCHM_KEYID  FROM " +TableNames.TBL_PLM_TL_PLANCONFIGURATION + 
+				 sql = "SELECT DISTINCT MCHM_MACHINENO ,MCHM_KEYID  FROM " +TableNames.TBL_BAL_PLM_TL_PLANCONFIGURATION + 
 			      "," + TableNames.TBL_GEN_TL_MACHINEMST +" WHERE PPLC_MACHINEID = MCHM_KEYID " +
 						" AND PPLC_LEVEL='M' AND PPLC_ASSEMBLYID ='{}' " +
 						" AND PPLC_MACHINEID IN ('" + string + "') ";
 			}
 			else if(indentifir.equals("A") ){
 				sql = "SELECT distinct MCHM_MACHINENO ,MCHM_KEYID    FROM " +
-				TableNames.TBL_PLM_TL_PLANCONFIGURATION + "," + TableNames.TBL_GEN_TL_MACHINEMST +
+				TableNames.TBL_BAL_PLM_TL_PLANCONFIGURATION + "," + TableNames.TBL_GEN_TL_MACHINEMST +
 				 " WHERE PPLC_MACHINEID =MCHM_KEYID " +
 				 " AND PPLC_LEVEL ='A' and PPLC_ASSEMBLYID <> '{}' AND PPLC_MACHINEID IN ('"  + string + "') ";
 			}

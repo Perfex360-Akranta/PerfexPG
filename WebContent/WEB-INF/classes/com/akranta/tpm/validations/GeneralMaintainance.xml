@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="PlmTlGenmaintenance" name="com.akranta.tpm.model.PlmTlGenmaintenance" >
+		<validate For="create update general maintainance">
+<!-- 			<property name="GmntRelatedto" type="String" required="true"  /> --> 
+<!--			<property name="GmntMachineid" type="String" required="true"  /> 
+			<property required-dependent="true" name="GmntRelatedto" type="String" value="MLD">
+				<field name="GmntFactoryid" type="String" required="true" />
+				<field name="GmntMouldid" type="String" required="true" />
+			</property>
+			<property required-dependent="true" name="GmntRelatedto" type="String" value="MCH">
+				<field name="GmntMachineid" type="String" required="true" />
+			</property>
+			-->
+			<!--  <field name="GmntMachineid" type="String" required="true" /> -->
+			<property name="GmntFactoryid" type="String" required="true"  />  
+			<property name="GmntSectionid" type="String" required="true"/>
+			<property name="GmntLineid" type="String" required="true" /> 
+			<property name="GmntShiftdate" type="Date" required="true"  EQUAL="GmntOccureddate"/> 
+			<property name="GmntShift" type="String" required="true"  /> 
+			<property name="GmntOccureddate" type="Date" required="true" EQUAL="GmntShiftdate" /> 
+			<property name="GmntActivitytype" type="String" required="true" />
+			<property name="GmntProblem" type="String" required="true" />
+			<property name="GmntTrade" type="String" required="true" />
+			  <property name="GmntTargetdate" type="Date" required="true" LE="GmntOccureddate" />
+			<property name="GmntReportedby" type="String" required="true" />
+			<property name="GmntStatus" type="String" required="true" />
+			
+<!--			<property name="GmntWorkstartdate" type="Date" required="true" />-->
+<!--			<property name="GmntWorkenddate" type="Date" required="true" />-->
+		    <property required-dependent="true" name = "GmntStatus" type="String" value="C"  >
+		   		<field name="GmntAction" type="String" required="true" />
+				<field name="GmntCompletedby" type="String" required="true" />
+				<field name="GmntWostartdate" type="Date" required="true" LE= "GmntOccureddate"/>
+				<field name="GmntWoenddate" type="Date" required="true" LE= "GmntWostartdate"/>
+				<field name="GmntWoenddate" type="Date" required="true" LECD= "true"/>
+			</property>	
+		</validate>	
+	</class>
+</validations>
+
+
+
+
+
+
+
+
+
+
+

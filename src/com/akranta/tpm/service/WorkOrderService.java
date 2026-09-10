@@ -107,6 +107,7 @@ public interface WorkOrderService {
 	public List<ComboBox> getSapFunctionallocn(ComboFilter comboFilter) throws Exception;
 	public List<String[]> getSapFnlnDetail(String flid, String fnlnTxt) throws Exception;
 	public List<String[]> getDefSapFnln(String flid, String fnlnTxt) throws Exception;
+	 public void WorkOrderServiceImplJwt(String JwtToken);
 	
 	
 }

@@ -4,9 +4,15 @@ package com.akranta.tpm.model;
  * Created on:25.11.2011
  */
 import java.util.ArrayList;
+
 import java.util.List;
 
 import com.akranta.tpm.dao.sql.TableFieldType;
+import com.akranta.tpm.model.GenTlMomattendance.tableFldConstants;
+import com.akranta.tpm.utils.CommonMessage;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 public class GenTlAssemblymst {
 
@@ -30,6 +36,15 @@ public class GenTlAssemblymst {
 	public void setSaveArray(Object [] saveArray) {
 		this.saveArray = saveArray;
 	}
+	// added by priyanka on 16/07/2026
+	public void setValue(tableFldConstants field, Object val) {
+	    saveArray[field.ordinal()] = val;
+	}
+
+	public Object getValue(tableFldConstants field) {
+	    return saveArray[field.ordinal()];
+	}
+	//end 
 
 	public String getAssmKeyid() {
 		return (String) saveArray[ tableFldConstants.keyid.ordinal() ];
@@ -121,6 +136,140 @@ public class GenTlAssemblymst {
 	}
 	
 	
+	
+	// added by priyanka on 16/07/2026
+	public String toJsonManual() {
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("{");
+
+	    boolean first = true;
+	    for (tableFldConstants field : tableFldConstants.values()) {
+	        int index = field.ordinal();
+	        if (index < saveArray.length) {
+	            if (!first) sb.append(",");
+	            sb.append("\"").append(field.name()).append("\":");
+	            Object val = saveArray[index];
+	            //if(field.name() == "keyid" && val == null) 
+	            if ("keyid".equals(field.name()) && val == null){
+	            	sb.append("null");
+	            }else if (val == null|| "{}".equals(val.toString())
+	                    || "null".equalsIgnoreCase(val.toString())
+	                    || "[object Object]".equalsIgnoreCase(val.toString())) {
+	                //sb.append("\"{}\"");
+	            	 sb.append("\"\"");
+	            } else {
+	                //sb.append("\"").append(val.toString()).append("\"");
+	            	String value = val.toString()
+	                        .replace("\\", "\\\\")
+	                        .replace("\"", "\\\"")
+	                        .replace("\r", "\\r")
+	                        .replace("\n", "\\n");
+
+	                sb.append("\"")
+	                  .append(value)
+	                  .append("\"");
+	            }
+	            first = false;
+	        }
+	    }
+
+	    sb.append("}");
+	    return sb.toString();
+	}
+  
+  public static GenTlAssemblymst fromJson(String json) {
+	  CommonMessage.debugMsg("RAW JSON Response: [" + json + "]");
+
+	  JSONObject obj = JSONObject.fromObject(json);
+
+	  GenTlAssemblymst assm = new GenTlAssemblymst();
+	  CommonMessage.debugMsg("RAW JSON Response: :"+json);
+
+	    for (tableFldConstants field : tableFldConstants.values()) {
+	    	//String key = field.name();
+	    	String val = obj.optString(field.name(), null);
+	    	
+	    	//CommonMessage.debugMsg("JSON[" + field + "] :"+obj.get(key));
+	        //String val = obj.optString(field.name(), null);
+	        //assm.setValue(field, val != null && val.equals("null") ? null : val);
+	    	 if (val == null
+	                 || "null".equalsIgnoreCase(val)
+	                 || "{}".equals(val)
+	                 || "[object Object]".equalsIgnoreCase(val)) {
+
+	             val = "";
+	         }
+
+	         assm.setValue(field, val);
+	    	
+	    }
+	    return assm;
+	}
+  
+  public static List<GenTlAssemblymst> fromJsonList(String json) {
+
+		CommonMessage.debugMsg("RAW JSON ARRAY Response: " + json);
+
+		JSONArray jsonArray = JSONArray.fromObject(json);
+		List<GenTlAssemblymst> list = new ArrayList<>();
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+
+			JSONObject obj = jsonArray.getJSONObject(i);
+			GenTlAssemblymst assm = new GenTlAssemblymst();
+
+			for (tableFldConstants field : tableFldConstants.values()) {
+				//String key = field.name();
+
+				//Object valueObj = obj.opt(key);
+				//String val = (valueObj == null || "null".equals(valueObj.toString())) ? null : valueObj.toString();
+				
+				String val =obj.optString(field.name(), null);
+				
+				if (val == null|| "null".equalsIgnoreCase(val)|| "{}".equals(val)
+						|| "[object Object]".equalsIgnoreCase(val)) {
+					  val = "";
+	            }
+				
+
+				assm.setValue(field, val);
+			}
+
+			list.add(assm);
+		}
+
+		return list;
+	}
+	
+	public static String toJsonManualList(List<GenTlAssemblymst> list) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+
+		//for (int i = 0; i < list.size(); i++) {
+			//if (i > 0)
+				//sb.append(",");
+			//sb.append(list.get(i).toJsonManual());
+		//}
+		
+		if (list != null) {
+
+	        for (int i = 0; i < list.size(); i++) {
+	        	if (i > 0) {
+	                sb.append(",");
+	            }
+	            GenTlAssemblymst assm = list.get(i);
+
+	            if (assm != null) {
+	                sb.append(assm.toJsonManual());
+	            } else {
+	                sb.append("null");
+	            }
+	        }
+	    }
+
+		sb.append("]");
+		return sb.toString();
+	}
 	
 	
  }

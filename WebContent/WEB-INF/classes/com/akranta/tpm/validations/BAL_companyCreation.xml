@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="GenTlCompanymst" name="com.akranta.tpm.model.GenTlCompanymst" >
+		<validate For="create update company">
+		
+			<property name="CompName" type="String" required="true"/>
+			<property name="CompCode" type="String" required="true"/>
+			<property name="CompAddress" type="String" required="true"/>
+		
+			
+		</validate>	
+	</class>
+</validations>
+
+

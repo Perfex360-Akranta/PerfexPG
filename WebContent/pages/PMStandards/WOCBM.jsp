@@ -1,0 +1,466 @@
+<script type="text/javascript">	
+	
+jQuery(document).ready(function(){ 
+ 		initialiseForm('frmCBMWO');
+ 		var pmstdId = jQuery('#hdnPmstdId').val();
+ 		jQuery('#frmCBMWO .easyui-text').css('text-transform', 'uppercase');
+ 		jQuery('#frmCBMWO textarea').css('text-transform', 'uppercase');
+ 		var filterString = "?q=2";   
+ 			if(pmstdId.trim().length>0)
+ 	 			{
+ 				filterString ="&pmstdId="+pmstdId ;
+ 				filterString +="&forCBMWO=true";
+ 			}	
+ 		
+ 		processGridnew('cbm_input.prv',filterString ,"cbmWOGrid","","","cbmwoDBLClick","","cbmWOLoadComplete"); 		
+ 		processGridnew("spareCBMWO_input.mpc",'&pmstdKeyid='+pmstdId,"cbmsprGrid","cbmSprPager","","pmAssembly_dblclick","","loadComFunction");
+ 		jQuery('#submitForm').val('frmCBMWO'); 		
+ 		jQuery('#frmCBMWO .easyui-text').css('text-transform', 'uppercase');
+ 	    jQuery('#frmCBMWO textarea').css('text-transform', 'uppercase');	
+ 	    jQuery('#frmCBMWO .easyui-datebox').css('text-transform', 'lowercase');	
+ 		fillComboBox("frmCBMWO","cmbCmdtInspectionid","inspectionCombo.prv");
+ 		fillComboBox("frmCBMWO","cmbCmdtUomid","uomCombo.commonFilter");
+ 		var inspection = jQuery('#hdninspectionId').val();
+ 		var uomid = jQuery('#hdnUOMId').val();
+ 		formatDateBox('dteCmcdNextduedate','dd-MMM-yyyy');
+ 		fillWithCurrentDate('dteCmcdNextduedate');
+ 		jQuery('#txtnxtplanedDate').val(getFieldValue("dteCmcdNextduedate"));
+ 		setFieldValue("cmbCmdtUomid", uomid,"frmCBMWO");
+ 		setFieldValue("cmbCmdtInspectionid", inspection,"frmCBMWO");
+ 		disableField("frmCBMWO","cmbCmdtUomid");
+ 		disableField("frmCBMWO","cmbCmdtInspectionid");
+ 		disableField("txtnxtplanedDate","cmbCmdtUomid");
+ 		jQuery('#txtnxtplanedDate').css('background-color','#EDED6F');
+ 		jQuery('#txtnxtplanedDate').css('border-color','#c1c1c1');
+ 		numericTextBox('txtCmdtLowerlimit');
+ 		numericTextBox('txtCmdtUpperlimit');
+/*For disabling Controls
+ 		numericTextBox('txtCmdtDesirablereading');
+ 		disableField("frmCBMWO",'txtCmdtLowerlimit');
+ 		disableField("frmCBMWO",'txtCmdtUpperlimit');
+ 		disableField("frmCBMWO",'txtCmdtDesirablereading');*/
+ 		
+ 		//disableField("frmCBMWO",'txtCmdtCorrectiveaction');
+ 		//disableField("frmCBMWO",'txtCmdtMeasuringmethod');
+ 		
+
+/***CLICKING BUTTON CLOSE**/
+ 		jQuery('#btnCbmWOClose').click(function(){
+ 			closePopUpDialoge('divOpenCBM');
+ 	 	});
+/***CLICKING BUTTON OK**/
+		jQuery('#btnCbmWOOk').click(function(){
+			var curReading = jQuery('#txtCmcdCurrentreading').val();
+			var AdjustReading = jQuery('#txtCmcdAdjustedreading').val();
+			var chkAdjust = jQuery('#hdnchkAdjustreading').val();
+			var hdnCBMWodata = jQuery('#hdnCBMWodata').val();
+			var hdnCurReadId = jQuery('#hdnCurReadId').val();
+			var nxtDueDate = getFieldValue("dteCmcdNextduedate");
+			var zoneCondition = jQuery('#hdnzoneCondition').val();
+			var txtCondition = jQuery('#txtCondition').val().toUpperCase();
+			var txtZcolor = jQuery('#txtZcolor').css('background-color');
+			
+
+			var reduprlmt   = jQuery('#hdnredUpperLimit').val();
+			var greenuprlmt   = jQuery('#hdngreenUpperLimit').val();
+			var yellowuprlmt   = jQuery('#hdnyellowUpperLimit').val();
+			var redlwrlmt   = jQuery('#hdnredlowerLimit').val();
+			var yellowlwrlmt   = jQuery('#hdnyellowlowerLimit').val();
+			var greenlwrlmt   = jQuery('#hdngreenlowerLimit').val();
+			
+			if(curReading.trim().length<=0){
+					alert('Enter Current Reading');
+					return false;
+				}
+				else if(chkAdjust.trim().length<=0  ){
+				 if(AdjustReading.trim().length<=0){
+					 alert('Enter Adjusted Reading');
+				 	return false;
+				 }
+				}
+				
+			 	
+			 		if(AdjustReading.trim().length<=0){
+				 		if(parseInt(AdjustReading)>parseInt(reduprlmt)){
+				 			alert("Current Reading Should be between the upper and lower limit values");
+				 			return false;
+				 		}
+				 	
+				 		else if(parseInt(AdjustReading)<parseInt(greenlwrlmt)){
+				 			alert("Current Reading Should be between the upper and lower limit values");
+				 			return false;
+				 		}
+			 		}
+			 		else{//alert((parseInt(AdjustReading)<=parseInt(yellowlwrlmt))+" && "+  (parseInt(AdjustReading)<=parseInt(yellowuprlmt)));
+			 			 var row = jQuery("#cbmWOGrid").jqGrid('getDataIDs');
+			 			 var cm = jQuery("#cbmWOGrid").jqGrid("getGridParam", "colModel");
+			 			 var txtCondition = jQuery('#txtCondition').val().toUpperCase();;
+			 			 var isExists = false;
+			 			 var redZone;
+			 			 var replace;
+			 			 var noaction;
+			 			 var adjust;
+			 			var lowerLimitValue ;
+			 			var upperLimitValue ;
+			 			var grdCondition;
+			 			 for(var i=0;i<row.length;i++)
+			 			 {
+			 				
+				 			 lowerLimitValue = jQuery("#cbmWOGrid").jqGrid('getCell',row[i],"txtCmdtLowerlimit");
+				 			 upperLimitValue = jQuery("#cbmWOGrid").jqGrid('getCell',row[i],"txtCmdtUpperlimit");
+				 			 grdCondition = jQuery("#cbmWOGrid").jqGrid('getCell',row[i],"correctiveactioncond");
+				 			//alert("lowerLimitValue "+lowerLimitValue +"upperLimitValue  "+upperLimitValue+"grdCondition  "+grdCondition);
+				 			//alert("lowerLimitValue "+ lowerLimitValue +"upperLimitValue  "+upperLimitValue);
+				 		//	alert( "AdjustReading  "+ (parseInt(AdjustReading) >= parseInt(lowerLimitValue)));
+				 			//alert("lowerLimitValue "+ lowerLimitValue +"upperLimitValue  "+upperLimitValue);
+				 			//alert( "AdjustReading  "+ (parseInt(AdjustReading) <= parseInt(upperLimitValue)));
+				 			 if (parseInt(AdjustReading) >= parseInt(lowerLimitValue) && parseInt(AdjustReading) <= parseInt(upperLimitValue)){
+				 				isExists = true;
+				 				//alert(i+' true');
+				 				replace =jQuery("#cbmWOGrid").jqGrid('getCell',row.length,"correctiveactioncond");
+				 				adjust=jQuery("#cbmWOGrid").jqGrid('getCell',row.length,"correctiveactioncond");
+				 				noaction=jQuery("#cbmWOGrid").jqGrid('getCell',row.length,"correctiveactioncond");
+				 				//alert(txtCondition+"  "+ grdCondition);
+				 				if(txtCondition == replace && (grdCondition != adjust && grdCondition.trim() != noaction.trim())  ){
+					 				alert(" Adjusted Reading should be between the Green Zone Values");
+					 				return false;
+				 				}
+				 				else if(txtCondition == adjust &&  grdCondition == replace  ){
+					 				alert( " Adjusted Reading should be between the Green / Yellow Zone values");
+					 				return false;
+				 				}
+				 			//	if(txtCondition == replace && grdCondition != grdCondition )
+					 		} 
+						 	
+			 			 }
+			 			if(isExists == false){
+							alert("Adjusted Reading should be between the upper and Lower limit values");
+							return false;
+						 }
+				 	}
+				 	//if(chkAdjust)
+				 	//alert( curReading);
+			 		jQuery('#'+hdnCurReadId).val(curReading);
+			 		
+			 		jQuery('#'+zoneCondition).val(txtCondition);
+			 		jQuery('#ZoneColor').val(txtZcolor);
+			 		jQuery('#minReading').val(jQuery('#hdngreenUpperLimit').val());
+			 		if(AdjustReading.trim().length<=0)
+						AdjustReading ="0";
+					//alert("&txtCmcdCurrentreading="+curReading+"&AdjustReading="+AdjustReading+"&dteCmcdNextduedate="+nxtDueDate+"&minimumReading="+jQuery('#hdngreenUpperLimit').val()+"&maximumReading="+jQuery('#hdnredUpperLimit').val());
+					var dataStr = "&txtCmcdCurrentreading="+curReading+"&AdjustReading="+AdjustReading+"&dteCmcdNextduedate="+nxtDueDate+"&minimumReading="+jQuery('#hdngreenUpperLimit').val()+"&maximumReading="+jQuery('#hdnredUpperLimit').val();
+					//alert(dataStr);
+					jQuery('#'+hdnCBMWodata).val(dataStr);
+			 		closePopUpDialoge('divOpenCBM');
+			 		return true;
+			 
+					
+			var pmstdId = jQuery('#hdnPmstdId').val();
+			var CmdtLowerlimit       = jQuery("#txtCmdtLowerlimit").val();		
+			var CmdtUpperlimit       = jQuery("#txtCmdtUpperlimit").val();	
+			var CmdtDesirablereading = jQuery("#txtCmdtDesirablereading").val();
+			var CmdtMeasuringmethod = jQuery("#txtCmdtMeasuringmethod").val();
+			var CmdtCorrectiveaction = jQuery("#txtCmdtCorrectiveaction").val();
+		
+		
+			  // jQuery("#cbmWOGrid").trigger("reloadGrid");
+			//saveForm("frmCBMWO","openCBM_save.prv?&pmstdId="+pmstdId+"&zoneid="+zonid );		
+
+			
+		}); 
+		//imageUpload(jQuery( "#btnnew" ),'ImageUpload.commonFilter','btnnew',"imgknowimage","imgknowImgFilename");	
+
+		//var btnName = jQuery("#hdnBtnName").val();
+		   //jQuery("#btnnew").val(btnName);
+	       jQuery("#btnnew").click(function(){
+	    	     var row = jQuery("#cbmWOGrid").jqGrid('getDataIDs');
+	   		
+	    		 var cm = jQuery("#cbmWOGrid").jqGrid("getGridParam", "colModel");
+	    		 for(var i=0;i<row.length;i++)
+	    		 {
+	    			 for(var j=0;j<cm.length;j++)
+	    	     	 {
+	    				 sif(cm[j].name == "txtCmdtLowerlimit" || cm[j].name == "txtCmdtUpperlimit" || cm[j].name == "txtCmdtDesirablereading" )
+	    				 jQuery("#cbmWOGrid").jqGrid('setCell',row[i],cm[j].name,j);
+	    				 
+	    	     	 }
+	    		 }//processAjaxCalls("openFile.file?fileName=Kaizen_Format.pdf", "", "", "", "", "viewTemplate");
+	    	     				
+	    	       });
+});
+function txtLostFocus(txtid){
+	
+	var chkReadingVal = jQuery('#'+txtid).val();
+	var greenid ='';
+	var yellowid='';
+	var redid = '';
+	var greenC =jQuery('#hdngreen').val('green');
+	var yellowC=jQuery('#hdnyellow').val('yellow');
+	var redC= jQuery('#hdnred').val('red');
+	var reduprlmt   = jQuery('#hdnredUpperLimit').val();
+	var greenuprlmt   = jQuery('#hdngreenUpperLimit').val();
+	var yellowuprlmt   = jQuery('#hdnyellowUpperLimit').val();
+	var redlwrlmt   = jQuery('#hdnredlowerLimit').val();
+	var yellowlwrlmt   = jQuery('#hdnyellowlowerLimit').val();
+	var greenlwrlmt   = jQuery('#hdngreenlowerLimit').val();
+	
+	 if(parseInt(chkReadingVal)>=parseInt(yellowlwrlmt)&& parseInt(chkReadingVal)<=parseInt(yellowuprlmt)){
+		//alert('Y');
+		yellowid='yellow';
+	}
+	else if(parseInt(chkReadingVal)>=parseInt(redlwrlmt) && parseInt(chkReadingVal)<=parseInt(reduprlmt)){
+		//alert('R');
+		redid='red';
+	}
+	else if(parseInt(chkReadingVal)>=parseInt(greenlwrlmt) && parseInt(chkReadingVal)<=parseInt(greenuprlmt)){
+		//alert('G');
+		greenid='green';
+	}
+	else if(parseInt(chkReadingVal)>parseInt(reduprlmt)){
+		alert("Current Reading Should be between the upper and lower limit values");
+	}
+	else if(parseInt(chkReadingVal)<parseInt(greenlwrlmt)){
+		alert("Current Reading Should be between the upper and lower limit values");
+	}
+	else
+		greenid='green';
+
+	
+if(yellowid.length<=0 && redid.length<=0){			
+	if(parseInt(chkReadingVal)>=parseInt(greenlwrlmt) && parseInt(chkReadingVal)<=parseInt(greenuprlmt) && greenid == 'green'){
+		
+		// greenid   = "green";
+		jQuery('#hdnchkAdjustreading').val('true');
+		jQuery('#txtZcolor').css('background-color','#94E031');
+		jQuery('#txtZcolor').css('border','none');
+		jQuery('#txtStatus').val('Ok');
+		jQuery('#txtStatus').css('color','blue');
+		jQuery('#txtStatus').css('text-align','center');
+		jQuery('#txtCondition').css('color','blue');
+		jQuery('#txtCondition').val('No Action');
+		jQuery('#txtCondition').css('text-align','center');
+		disableField("frmCBMWO","txtCmcdAdjustedreading");
+		
+	}	
+	//else
+		//alert("G Current Reading Should be between the upper and lower limit values");
+}
+	
+	else if(greenid.length<=0 && redid.length<=0){
+		if(parseInt(chkReadingVal)>=parseInt(yellowlwrlmt) && parseInt(chkReadingVal)<=parseInt(yellowuprlmt)){
+		
+			// yellowid  ='yellow' ;
+			jQuery('#hdnchkAdjustreading').val('true');
+			jQuery('#txtZcolor').css('background-color','#EDED6F');
+			jQuery('#txtZcolor').css('border','none');
+			jQuery('#txtStatus').val('Ok');
+			jQuery('#txtStatus').css('color','blue');
+			jQuery('#txtStatus').css('text-align','center');
+			jQuery('#txtCondition').css('color','blue');
+			jQuery('#txtCondition').val('Adjust');
+			jQuery('#txtCondition').css('text-align','center');
+			enableFields("txtCmcdAdjustedreading");
+		}
+		else
+			alert("Y Current Reading Should be between the upper and lower limit values");	
+	}
+	else if(greenid.length<=0 && yellowid.length<=0){
+		if(parseInt(chkReadingVal)>=parseInt(redlwrlmt) && parseInt(chkReadingVal)<=parseInt(reduprlmt)){
+			
+		//	redid     ='red';
+			jQuery('#hdnchkAdjustreading').val('');
+			jQuery('#txtZcolor').css('background-color','#E52222');
+			jQuery('#txtZcolor').css('border','none');
+			jQuery('#txtStatus').val('Ok');
+			jQuery('#txtStatus').css('color','blue');
+			jQuery('#txtStatus').css('text-align','center');
+			jQuery('#txtCondition').css('color','blue');
+			jQuery('#txtCondition').val('Replace');
+			jQuery('#txtCondition').css('text-align','center');
+			enableFields("txtCmcdAdjustedreading");
+		}	
+		else
+			alert(" R Current Reading Should be between the upper and lower limit values");
+	}
+}
+function cbmWOLoadComplete(){
+	var row = jQuery("#cbmWOGrid").jqGrid('getDataIDs');
+	
+	 var cm = jQuery("#cbmWOGrid").jqGrid("getGridParam", "colModel");
+	 var green = jQuery("#cbmWOGrid").jqGrid('getCell',row[0],cm[0].name);
+	 var greenlowerLimit = jQuery("#cbmWOGrid").jqGrid('getCell',row[0],cm[4].name);
+	 var greenUpperLimit = jQuery("#cbmWOGrid").jqGrid('getCell',row[0],cm[5].name);
+	 var yellow = jQuery("#cbmWOGrid").jqGrid('getCell',row[1],cm[0].name);
+	 var yellowlowerLimit = jQuery("#cbmWOGrid").jqGrid('getCell',row[1],cm[4].name);
+	 var yellowUpperLimit = jQuery("#cbmWOGrid").jqGrid('getCell',row[1],cm[5].name);
+	 var red = jQuery("#cbmWOGrid").jqGrid('getCell',row[2],cm[0].name);
+	 var redlowerLimit = jQuery("#cbmWOGrid").jqGrid('getCell',row[2],cm[4].name);
+	 var redUpperLimit = jQuery("#cbmWOGrid").jqGrid('getCell',row[2],cm[5].name);
+	 var redDesireableReading = jQuery("#cbmWOGrid").jqGrid('getCell',row[2],cm[6].name);
+	
+	 jQuery('#hdngreen').val(green);
+	 jQuery('#hdngreenlowerLimit').val(greenlowerLimit);
+	 jQuery('#hdngreenUpperLimit').val(greenUpperLimit);
+	 jQuery('#hdnyellow').val(yellow);
+	 jQuery('#hdnyellowlowerLimit').val(yellowlowerLimit);
+	 jQuery('#hdnyellowUpperLimit').val(yellowUpperLimit);
+	 jQuery('#hdnred').val(red);
+	 jQuery('#hdnredlowerLimit').val(redlowerLimit);
+	 jQuery('#hdnredUpperLimit').val(redUpperLimit);
+	 jQuery("#hdnredDesirablereading").val(redDesireableReading);
+	 //alert(green +" -- "+ yellow+" -- "+ red);	
+	  jQuery("#cbmWOGrid").jqGrid('setCell',row[0],cm[3].name," ",{'color':'#fff','font-weight':'bold','font-size':'15px','background-color':'#94E031'});
+	  jQuery("#cbmWOGrid").jqGrid('setCell',row[1],cm[3].name," ",{'color':'#fff','font-weight':'bold','font-size':'15px','background-color':'#EDED6F'});
+	  jQuery("#cbmWOGrid").jqGrid('setCell',row[2],cm[3].name," ",{'color':'#fff','font-weight':'bold','font-size':'15px','background-color':'#E52222'});
+	
+}
+
+function cbmActRecFormatter(cellvalue, options, rowObject) {	
+	var rowId = options.rowId;
+	var formatStr  = '<select style="width:180px;height:50px;"> <option value="Action Recommended1"> Action Recommended1</option>  <option value="Action Recommended1"> Action Recommended2</option>  <option value="Action Recommended1"> Action Recommended3</option>  </select>' ;
+ 
+	return formatStr;
+}
+
+
+function openFileOption()
+{
+document.getElementById("file1").click();
+}
+function allowExcel(sender) 
+{
+    var validExts = new Array(".xlsx", ".xls", ".csv");
+    var fileExt = sender.value;
+    fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
+    if (validExts.indexOf(fileExt) < 0) 
+        {
+          alert("Invalid file selected, valid files are of " + validExts.toString() + " ");
+          return false;
+    }
+    else return true;
+}
+</script>
+
+
+<form id="frmCBMWO">
+<div id=" ">
+<div style="margin-top:6px;">
+<table class="tablealign-center" width="88%" align="center" style="margin-left:10%;">
+  <tr>
+  <td width="33.3%" valign="top">
+ 
+                
+                  <div  class="">
+                    <label class="mandatory-lbl">Inspection</label>                    
+                </div>
+                <div class=""> 
+                    <input id="cmbCmdtInspectionid" name="cmbCmdtInspectionid" class="easyui-combobox"  style="width:330px;"    value="${requestScope.plmTlCbmstdcadtl.cmdtInspectionid}">                    
+                </div>        
+                <div  class="">
+                    <label class="mandatory-lbl">UoM</label>                    
+                </div>
+                <div class=""> 
+                    <input id="cmbCmdtUomid" name="cmbCmdtUomid" class="easyui-combobox"  style="width:330px;"    value="${requestScope.plmTlCbmstdcadtl.cmdtUomid}">                    
+                </div>
+                <div  class="">
+                    <label>Current Reading</label>
+                    <span  style="margin-left: 71px;" class=" fntSize">Next Due Date</span>
+                </div> 
+                <div class=""> 
+                    
+                    <input id="txtCmcdCurrentreading" name="txtCmcdCurrentreading" maxlength="4" style="width:140px;text-align:right;" type="text" class="easyui-text" onblur="txtLostFocus('txtCmcdCurrentreading')"/>
+                    <span style="margin-left:6%;margin-left: 2%\9;">
+                    <input id="dteCmcdNextduedate" name="dteCmcdNextduedate" maxlength="4" style="width:160px;text-align:right;"  type="text" class="easyui-datebox"   value="${requestScope.plmTlCbmstdcadtl.cmdtUpperlimit }"/>
+                    </span>
+                    <span id="err_cmbPmsdMachinecondition" class="tpm-errormsg" style="margin-left:150px;" ></span>
+	                
+	            </div>     
+	             <div  class="">
+                    <label>Zone Color</label>
+                    <span  style="margin-left: 102px;" class=" fntSize">Next Plan Date</span>
+                </div> 
+                <div class=""> 
+                    
+                    <input id="txtZcolor" name="txtZcolor" maxlength="4" style="width:140px;text-align:right;" type="text" class="easyui-text"  value="${requestScope.plmTlCbmstdcadtl.cmdtLowerlimit }"/>
+                    <span style="margin-left:6%;margin-left: 2%\9;">
+                    <input id="txtnxtplanedDate" name="txtnxtplanedDate" maxlength="4" style="width:160px;text-align:center;"  type="text" class="easyui-text"  value="${requestScope.plmTlCbmstdcadtl.cmdtUpperlimit }"/>
+                    </span>
+                    <span id="err_cmbPmsdMachinecondition" class="tpm-errormsg" style="margin-left:150px;" ></span>
+	                
+	            </div> 
+<!---->
+				<div  class="">
+                    <label>Adjusted Reading</label>
+                    <span  style="margin-left: 63px;" class=" fntSize">Condition</span>
+                </div> 
+                <div class=""> 
+                    
+                    <input id="txtCmcdAdjustedreading" name="txtCmcdAdjustedreading" maxlength="4" style="width:140px;text-align:right;" type="text" class="easyui-text" onblur="txtLostFocus('txtCmcdAdjustedreadingtxtCmcdCurrentreading')"/>
+                    <span style="margin-left:6%;margin-left: 2%\9;">
+                    <input id="txtCondition" name="txtCondition" maxlength="0" style="width:160px;font-weight:bold;"  type="text" class="easyui-text"  value="${requestScope.plmTlCbmstdcadtl.cmdtUpperlimit }"/>
+                    </span>
+                    <span id="err_cmbPmsdMachinecondition" class="tpm-errormsg" style="margin-left:150px;" ></span>
+	                
+	            </div>  
+<!---->
+                <div  class=" ">
+                    <label class="">Status</label>
+                    <span  style="margin-left: 108px;" >
+                    <label id="lblVal" ></label>
+                   
+                    </span>
+                </div> 
+                <div class="">     
+                <input id="txtStatus" name="txtStatus" maxlength="0"  class="easyui-text"  style="width:140px;font-weight:bold;"   value="${requestScope.plmTlCbmstdcadtl.cmdtDesirablereading}" >                
+		                    
+                </div>                
+  </td>
+  <td valign="top">
+  	<table id="cbmsprGrid"><tr><td></td></tr></table>
+  	<div id='cbmSprPager'></div>
+  </td>
+  
+		</tr>
+</table>
+<div id="cbmTable" align="left" style="width:72.7%;width:79.6%\9;margin-left:8%;">
+<input type="file" id="file1" style="display:none" onchange="allowExcel(this);">
+<div style="padding-left:866px;">
+<!-- <input type="button" class="easyui-button" id = "btnnew"  value = "Data Upload"   onclick="openFileOption();" style="height: 20px; width : 102px;" />
+ -->
+</div>
+	<div align="center" style="background-color: #F7E496;font-weight:bold;font-size:16px;width:111%;box-shadow:0 3px 1px rgba(0, 0, 0, 0.2);border-radius: 3px 3px 3px 3px;  ">Condition Based Maintaince</div>
+	<table id="cbmWOGrid"><tr><td></td></tr></table>
+	<div id="cbmWOPager"></div>
+	<div align="center" style="width:111%;margin-top:5px;">
+		<input type="button" value="Ok" id="btnCbmWOOk" class="easyui-button"/>
+		
+		<input type="button" value="Close" id="btnCbmWOClose" class="easyui-button"/>
+	</div>
+</div>
+<input type="hidden" id="hdnPmstdId" name="hdnPmstdId" value='${requestScope.pmsdId}'/>
+<input type="hidden" id="hdnZoneId" name="hdnZoneId" value=''/>
+<input type="hidden" id="hdngreen" name="hdngreen" value=''/>
+<input type="hidden" id="hdnyellow" name="hdnyellow" value=''/>
+<input type="hidden" id="hdnred" name="hdnred" value=''/>
+<input type="hidden" id="saveval" name="saveval" value='${requestScope.hdnSaveVal }'/>
+<input type="hidden" id="hdninspectionId" name="hdninspectionId" value='${requestScope.inspectionId}'/>
+<input type="hidden" id="hdnUOMId" name="hdnUOMId" value='${requestScope.uomid}'/>
+
+
+
+<input type="hidden" id="hdnredUpperLimit" name="hdnredUpperLimit" value=''/>
+<input type="hidden" id="hdngreenUpperLimit" name="hdngreenUpperLimit" value=''/>
+<input type="hidden" id="hdnyellowUpperLimit" name="hdnyellowUpperLimit" value=''/>
+<input type="hidden" id="hdnredlowerLimit" name="hdnredlowerLimit" value=''/>
+<input type="hidden" id="hdnyellowlowerLimit" name="hdnyellowlowerLimit" value=''/>
+<input type="hidden" id="hdngreenlowerLimit" name="hdngreenlowerLimit" value=''/>
+<input type="hidden" id="hdnchkAdjustreading" name="hdnchkAdjustreading" value=''/>
+
+<input type="hidden" id="hdnredDesirablereading" name="hdnredDesirablereading" value=''/>
+<input type="hidden" id="hdnCurReadId" name="hdnCurReadId" value='${requestScope.hdnCurReadId}'/>
+<input type="hidden" id="hdnCBMWodata" name="hdnCBMWodata" value='${requestScope.hdnCBMWodata}'/>
+<input type="hidden" id="hdnzoneCondition" name="hdnzoneCondition" value='${requestScope.hdnzoneCondition}'/>
+
+</div>
+</div>
+</form>

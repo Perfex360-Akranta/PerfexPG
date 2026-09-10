@@ -5,7 +5,7 @@ public class WomTlWomstSql {
 
 
 
-	public static final String TBL_WOM_TL_WOMST = "WOM_TL_WOMST";  
+	public static final String TBL_BAL_WOM_TL_WOMST = "BAL_WOM_TL_WOMST";  
 
 	TableFieldType [] womsDbFields = null;
 
@@ -398,12 +398,14 @@ public class WomTlWomstSql {
 
 	public static String getInsertSql(TableFieldType [] fieldTypeArr, Object [] dataArray)
 	{
-		return SqlUtils.getInsertSql(TBL_WOM_TL_WOMST, fieldTypeArr, dataArray);
+		//MANO CHANGED THE TABLE NAME 
+		return SqlUtils.getInsertSql(TBL_BAL_WOM_TL_WOMST, fieldTypeArr, dataArray);
 	}
 
 	public static String getUpdateSql(TableFieldType [] fieldTypeArr, Object [] dataArray)
 	{
-		String sql = SqlUtils.getUpdateSql(TBL_WOM_TL_WOMST, fieldTypeArr, dataArray);
+		//MANO CHANGED THE TABLE NAME
+		String sql = SqlUtils.getUpdateSql(TBL_BAL_WOM_TL_WOMST, fieldTypeArr, dataArray);
 		
 		sql += " where " + fieldTypeArr[tableFldConstants.keyid.ordinal()].fieldName  +
 			  " = '" +  (String)dataArray[ tableFldConstants.keyid.ordinal() ] + "'";
@@ -412,7 +414,8 @@ public class WomTlWomstSql {
 
 	public static String getDeleteSql(TableFieldType [] fieldTypeArr, Object [] dataArray)
 	{
-		String sql = "DELETE from " + TBL_WOM_TL_WOMST ;
+		//MANO CHANGED THE TABLE NAME
+		String sql = "DELETE from " + TBL_BAL_WOM_TL_WOMST ;
 		
 		sql += " where " + fieldTypeArr[tableFldConstants.keyid.ordinal()].fieldName  +
 			  " = '" +  (String)dataArray[ tableFldConstants.keyid.ordinal()] + "'";
@@ -420,14 +423,16 @@ public class WomTlWomstSql {
 	}
 	public static String selectWO()
 	{
-		String sql = "select * from "+ TBL_WOM_TL_WOMST+" where woms_keyid=?";
+		//MANO CHANGED THE TABLE NAME
+		String sql = "select * from "+ TBL_BAL_WOM_TL_WOMST+" where woms_keyid=?";
 		return sql;
 	}
 
 	public static String getUpdateApprovalSql()
 	{
 		StringBuffer sb = new StringBuffer();
-		sb.append("UPDATE "+ TBL_WOM_TL_WOMST+" SET WOMS_REQUESTAPPROVED = ?,WOMS_REQUESTAPPROVEDBY =?,");
+		//MANO CHANGED THE TABLE NAME
+		sb.append("UPDATE "+ TBL_BAL_WOM_TL_WOMST+" SET WOMS_REQUESTAPPROVED = ?,WOMS_REQUESTAPPROVEDBY =?,");
 		sb.append("WOMS_REQUESTAPPROVEDDATE =?,WOMS_REQUESTAPPROVREMARKS=?,WOMS_STATUS =? WHERE woms_keyid = ?");
 		
 		return sb.toString();
@@ -435,7 +440,8 @@ public class WomTlWomstSql {
 	public static String getcancelWorkOrderSql()
 	{
 		StringBuffer sb = new StringBuffer();
-		sb.append("UPDATE "+ TBL_WOM_TL_WOMST+" SET WOMS_REQUESTAPPROVED = ?,WOMS_STATUS =?,");
+		//MANO CHANGED THE TABLE NAME
+		sb.append("UPDATE "+ TBL_BAL_WOM_TL_WOMST+" SET WOMS_REQUESTAPPROVED = ?,WOMS_STATUS =?,");
 		sb.append("WOMS_ACTIVE =? WHERE woms_keyid = ?");
 		
 		return sb.toString();
@@ -443,7 +449,7 @@ public class WomTlWomstSql {
 	public static String getUpdateCreationSql()
 	{
 		StringBuffer sb = new StringBuffer();
-		sb.append("UPDATE "+ TBL_WOM_TL_WOMST+" SET WOMS_ACCEPTEDDATE = ?,WOMS_ACCEPTEDBY =?,");
+		sb.append("UPDATE "+ TBL_BAL_WOM_TL_WOMST+" SET WOMS_ACCEPTEDDATE = ?,WOMS_ACCEPTEDBY =?,");
 		sb.append("WOMS_SAFETYPERMITSREQURIED =?,WOMS_Proposedstartdate = ?,WOMS_Proposedenddate = ?,");
 		sb.append("WOMS_ACCEPTEDREMARKS =?,WOMS_ACCEPTEDFLAG = ?,WOMS_PROPOSEDSTFLAG = ?,WOMS_PROPOSEDENDFLAG = ?,");
 		sb.append("WOMS_PRODUCTIONAPPROVAL = ?,WOMS_STATUS=? WHERE woms_keyid = ?");
@@ -453,7 +459,8 @@ public class WomTlWomstSql {
 	public static String getUpdateCreationAcceptanceSql()
 	{
 		StringBuffer sb = new StringBuffer();
-		sb.append("UPDATE "+ TBL_WOM_TL_WOMST+" SET WOMS_RESCHEDULEDATE = ?,WOMS_RESCHEDULEBY =?,");
+		//MANO CHANGED THE TABLE NAME
+		sb.append("UPDATE "+ TBL_BAL_WOM_TL_WOMST+" SET WOMS_RESCHEDULEDATE = ?,WOMS_RESCHEDULEBY =?,");
 		sb.append("WOMS_RESCHEDULEFLAG =?,WOMS_RESCHEDULEDSTFLAG = ?,WOMS_RESCHEDULESTARTDATE = ?,");
 		sb.append("WOMS_RESCHEDULEDENDFLAG =?,WOMS_RESCHEDULEENDDATE = ?,WOMS_RESCHEDULEREMARKS = ?,");
 		sb.append("WOMS_STATUS=? WHERE woms_keyid = ?");
@@ -463,7 +470,8 @@ public class WomTlWomstSql {
 	public static String getUpdateAllocationSql()
 	{
 		StringBuffer sb = new StringBuffer();
-		sb.append("UPDATE "+ TBL_WOM_TL_WOMST+" SET WOMS_ALLOTTEDDATE = ?,WOMS_ALLOTTEDTO =?,");
+		//MANO CHANGED THE TABLE NAME
+		sb.append("UPDATE "+ TBL_BAL_WOM_TL_WOMST+" SET WOMS_ALLOTTEDDATE = ?,WOMS_ALLOTTEDTO =?,");
 		sb.append("WOMS_ALLOTTEDFLAG =?,WOMS_ALLOTTEDREMARKS = ?,WOMS_ALLOTTEDSOURCE = ?,WOMS_ACTIVITYID = ?,");
 		sb.append("WOMS_STATUS=?, WOMS_FINALSTATUS=?,WOMS_FINALACTIVITYTYPE=?,WOMS_MODIFIEDBY=?,WOMS_MODIFIEDON=?,WOMS_RELATEDTO = ?,WOMS_LOSS = ?,");
 		sb.append("WOMS_ACCEPTEDFLAG=?,WOMS_ACCEPTEDDATE=? WHERE woms_keyid = ?");		
@@ -473,7 +481,8 @@ public class WomTlWomstSql {
 	{
 		StringBuffer sb = new StringBuffer();
 		//sb.append("UPDATE "+ TBL_WOM_TL_WOMST+" SET WOMS_EXCEPTEDRETURNDATE = ?,WOMS_DONEBY =?,");
-		sb.append("UPDATE "+ TBL_WOM_TL_WOMST+" SET WOMS_FINALACTIVITYTYPE = ?,WOMS_ACTIVITYID =?,");
+		//MANO CHANGED THE TABLE NAME
+		sb.append("UPDATE "+ TBL_BAL_WOM_TL_WOMST+" SET WOMS_FINALACTIVITYTYPE = ?,WOMS_ACTIVITYID =?,");
 		sb.append("WOMS_WORKSTARTFLAG =?,WOMS_WORKSTARTDATE=?,WOMS_WORKENDFLAG = ?,WOMS_WORKENDDATE=?,");
 		sb.append("WOMS_DONEBY =?,WOMS_INTOREXTEQUIP=?,WOMS_INTOREXTEQUIPDESC = ?,");
 		sb.append("WOMS_WOAPPROVALFLAG =?,WOMS_WOAPPROVALDATE=?,WOMS_WOAPPROVALBY = ?,");
@@ -484,7 +493,8 @@ public class WomTlWomstSql {
 	public static String getUpdateProdAcceptanceSql()
 	{
 		StringBuffer sb = new StringBuffer();
-		sb.append("UPDATE "+ TBL_WOM_TL_WOMST+" SET WOMS_PRODUCTIONSTARTDATE = ?,WOMS_PRODUCTIONBY =?,");
+		//MANO CHANGED THE TABLE NAME
+		sb.append("UPDATE "+ TBL_BAL_WOM_TL_WOMST+" SET WOMS_PRODUCTIONSTARTDATE = ?,WOMS_PRODUCTIONBY =?,");
 		sb.append("WOMS_PRODUCTIONREMARKS =?,WOMS_PRODUCTIONSTARTFLAG=?,");
 		sb.append("WOMS_STATUS=?,WOMS_FINALSTATUS=?,WOMS_MODIFIEDBY=?,WOMS_MODIFIEDON=? WHERE woms_keyid = ?");		
 		return sb.toString();
@@ -524,7 +534,8 @@ public class WomTlWomstSql {
 	public static String inactiveWOSql(String keyId)
 	{
 		StringBuffer sb = new StringBuffer();
-		sb.append("UPDATE "+ TBL_WOM_TL_WOMST+" SET WOMS_ACTIVE = 'N'");
+		//MANO CHANGED THE TABLE NAME
+		sb.append("UPDATE "+ TBL_BAL_WOM_TL_WOMST+" SET WOMS_ACTIVE = 'N'");
 		sb.append(" WHERE woms_keyid = '"+keyId+"'");
 		
 		return sb.toString();
@@ -532,7 +543,8 @@ public class WomTlWomstSql {
 	public static String woInactiveSql()
 	{
 		StringBuffer sb = new StringBuffer();
-		sb.append("UPDATE "+ TBL_WOM_TL_WOMST+" SET WOMS_ACTIVE = 'N'");
+		//MANO CHANGED THE TABLE NAME
+		sb.append("UPDATE "+ TBL_BAL_WOM_TL_WOMST+" SET WOMS_ACTIVE = 'N'");
 		sb.append(" WHERE woms_keyid IN(");
 		
 		return sb.toString();

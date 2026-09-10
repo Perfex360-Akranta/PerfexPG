@@ -332,5 +332,41 @@ public class TableNames {
 	public static final String TBL_MOC_TL_ITEM="MOC_TL_ITEM";
 	public static final String TBL_GEN_TL_WHYWHY_PILLAR_ROLELINK = "GEN_TL_WHYWHY_PILLAR_ROLELINK";
 	
+	//bajaj
+	public static final String TBL_BAL_BDM_VW_PHENCASLAYOUT = "BAL_BDM_VW_PHNCASLAYOUT";
+	public static final String TBL_BAL_BDM_TL_PHNCAUSELINK = "BAL_BDM_TL_PHNCAUSELINK";
+	public static final String TBL_BAL_GEN_TL_TRADEMST = "BAL_GEN_TL_TRADEMST";
+	public static final String TBL_BAL_BDM_TL_PHENOMENAMST = "BAL_BDM_TL_PHENOMENAMST";
+	public static final String TBL_BAL_GEN_VW_MCHASMLINK = "BAL_GEN_VW_MCHASMLINK";
+	public static final String TBL_BAL_GEN_TL_ASSEMBLYMST = "BAL_GEN_TL_ASSEMBLYMST";
+	public static final String TBL_BAL_BDM_TL_PHENCAUSELINK = "BAL_BDM_TL_PHENCAUSELINK";
+	public static final String TBL_BAL_WOM_TL_WOMST = "BAL_WOM_TL_WOMST";
+	public static final String TBL_BAL_BDM_TL_CAUSEMST = "BAL_BDM_TL_CAUSEMST";
+	public static final String TBL_BAL_GEN_TL_CRITICALITYMST = "BAL_GEN_TL_CRITICALITYMST";
+	public static final String TBL_BAL_GEN_TL_FUNCTIONALLOCN = "BAL_GEN_TL_FUNCTIONALLOCN";
+	
+	
+	
+	
+	
+	public static final String TBL_BAL_SAP_TL_MAINTORDERTYPE = "BAL_SAP_TL_MAINTORDERTYPE";
+	public static final String TBL_BAL_WOM_TL_MST = "BAL_WOM_TL_WOMST";
+	
+	
+	// added by priyanka 
+	
+	public static final String TBL_BAL_GEN_TL_SUBASSEMBLYMST = "BAL_GEN_TL_SUBASSEMBLYMST";
+	
+	public static final String TBL_BAL_BDM_TL_FAILURETYPEMST = "BAL_BDM_TL_FAILURETYPEMST";
+	
+	public static final String TBL_BAL_PLM_TL_ACTIVITYTYPEMST = "BAL_PLM_TL_ACTIVITYTYPEMST ";
+	
+	public static final String TBL_SAP_TL_spares="SAP_TL_spares";
+	
+	
+	public static final String TBL_BAL_PLM_TL_STANDARDS = "BAL_PLM_TL_STANDARDS";
+	public static final String TBL_BAL_PLM_TL_WORESPMST = "BAL_PLM_TL_WORESPMST";
+	public static final String TBL_BAL_PLM_TL_PLANCONFIGURATION = "BAL_PLM_TL_PLANCONFIGURATION";
+
 }
 

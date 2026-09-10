@@ -24,6 +24,7 @@ jQuery(document).ready(function(){
 	readOnlyFields('cmbPplcHalfyearly');
 	//alert(jQuery('#hdnFilterVals').val());
 	/*fill yearly cmb box*/
+	
 	fillComboBox("frmPlanConfiguration","cmbPplcYearly","fillYear.plnconfig");
 	numericTextBox('txtPplcWeekno');
 	var weekNo = jQuery('#txtPplcWeekno').val();
@@ -32,11 +33,12 @@ jQuery(document).ready(function(){
 	jQuery('#txtPplcWeekno').val('4');
 
 	
-	var yearlyVal = jQuery("#frmPlanConfigurationpop input[id='cmbPplcYearly']").combobox("getValue");
-	if(yearlyVal.trim().length>0 || yearlyVal.trim().length != null){
+	setTimeout(function() {var yearlyVal = jQuery("#frmPlanConfigurationpop input[id='cmbPplcYearly']").combobox("getValue");},50);
+	if( yearlyVal != null && yearlyVal.trim().length>0 ){
 		fillYearHierarchy("fillcmbMnthQrtHy.plnconfig",yearlyVal,"cmbPplcMonthly","cmbPplcQuarterly","cmbPplcHalfyearly");
 		loadYears();
 	}
+	
 	});
 
 jQuery('#pcSaveBtn').click(function saveToGrid(){
@@ -67,7 +69,6 @@ jQuery('#pcSaveBtn').click(function saveToGrid(){
 	  else{
 		  /*If cmbPplcYearly is selected*/
 		 if(cmbPplcYearly != " " && cmbPplcYearly != "" && cmbPplcYearly != null){
-		  alert('normal save'); 
 		  saveForm("frmPlanConfigurationpop","planConfig_save.plnconfig?"+datastr);
 		 }
 		 else{
@@ -76,6 +77,11 @@ jQuery('#pcSaveBtn').click(function saveToGrid(){
 		 }
 	  }  
 });
+
+function frmPlanConfigurationpop_beforeSubmit(){
+	var retStr = "&cmbPplcFactoryid="+jQuery("input:hidden[name=cmbPplcFactoryid]").val() +"&cmbPplcSectionid="+jQuery("input:hidden[name=cmbPplcSectionid]").val() +"&cmbPplcCellid=" +jQuery("input:hidden[name=cmbPplcCellid]").val() + "&hdnPplcElementid="+jQuery("input:hidden[name=hdnPplcElementid]").val() ;
+	return retStr; 
+}
 function chktxtVal(){
 	var txtval = jQuery('#txtPplcWeekno').val();
 	if(parseInt(txtval) ==0  ){
@@ -94,23 +100,26 @@ function chktxtVal(){
 function frmPlanConfigurationpop_exceptionCallback(result){
 	 var filterStr = jQuery('#hdnFilterVals').val();
 	 var svePmPlan=confirm(result.tpmException);
-	 processGridnew("planConfig_input.plnconfig","?q=2filterStr="+filterStr,"planconfig","planconfig_pager","","","","planconfig_loadComplete");
-	 jQuery('#chkApplyToall').attr('checked',false);
-	 jQuery('#chkApplyToallAssm').attr('checked',false);
-		 jQuery( "#subformPopUpId" ).dialog('close');
+
+	 //processGridnew("planConfig_input.plnconfig","?q=2filterStr="+filterStr,"planconfig","planconfig_pager","","","","planconfig_loadComplete");
+	// jQuery('#chkApplyToall').attr('checked',false);
+	 //jQuery('#chkApplyToallAssm').attr('checked',false);
+		 //jQuery( "#subformPopUpId" ).dialog('close');
 		//  var x=window.confirm("Are you sure you are ok?")
 		  if (svePmPlan){
-			  var recvdtpmException = result.tpmException;
+			 // var recvdtpmException = result.tpmException;
 			 
-			  if(recvdtpmException.substring(0,4)=== "Plan"){
+//			  if(recvdtpmException.substring(0,4)=== "Plan"){
 				 var delExistRec = confirm("Current Annual Plan will be removed for Equipment , Do you want to continue?");
 			 	 if(delExistRec){
 				 	
 				 	processAjaxCalls("delPmExist_input.plnconfig?",'&del=del','delPmPlan_OnSuccess','delPmPlan_OnError');
-				 }
+//				 }
 			  }
 		   }
-		  else{jQuery('#planconfig').trigger("reloadGrid");}
+		  else{
+			  jQuery('#planconfig').trigger("reloadGrid");
+		  }
 	
 }
 function delPmPlan_OnSuccess(result){
@@ -125,15 +134,16 @@ function delPmPlan_OnSuccess(result){
 	var woOpen = result.woException;
 	
 	if(woOpen != "undefined" && woOpen != undefined && woOpen != " " && woOpen != "") {
-		var opnWoResp = confirm(result.woException);
+		/*var opnWoResp = confirm(result.woException);
 		if(opnWoResp){
-			 var filterStr = jQuery('#hdnFilterVals').val();
+			 var filterStr = jQuery('#hdnFilterVals').val();// + "&machId="+result.successData.mchId;
 			 //alert(filterStr.substring(53));
 			 subFormPop("wrkOdrResp_input.plnconfig", "500","200","360", "698","WorkOrderResponsibility",filterStr.substring(53));
 			}
+		*/
 	}
 	//jQuery( "#subformPopUpId" ).dialog('close');
-	jQuery('#planconfig').trigger("reloadGrid");
+	//jQuery('#planconfig').trigger("reloadGrid");
 
 }
 function delPmPlan_OnError(result){
@@ -156,7 +166,17 @@ function frmPlanConfigurationcmbPplcYearly_onSelect(record)
 }
 
 function loadYears(){
-  
+
+	jQuery("#cmbPplcYearly2").combobox("clear");
+	jQuery("#cmbPplcYearly3").combobox("clear");
+	jQuery("#cmbPplcYearly4").combobox("clear");
+	jQuery("#cmbPplcYearly5").combobox("clear");
+	jQuery("#cmbPplcYearly6").combobox("clear");
+	jQuery("#cmbPplcYearly7").combobox("clear");
+	jQuery("#cmbPplcYearly8").combobox("clear");
+	jQuery("#cmbPplcYearly9").combobox("clear");
+	jQuery("#cmbPplcYearly10").combobox("clear");
+	  
 	reloadCombo("frmPlanConfigurationpop","cmbPplcYearly2","fill2Year.plnconfig");
 	//reloadCombo("frmPmStandardform","cmbPmsdAssemblyid","assembly.commonFilter?q=2&machineId="+ record.id);
 	reloadCombo("frmPlanConfigurationpop","cmbPplcYearly3","fill3Year.plnconfig");
@@ -170,9 +190,10 @@ function loadYears(){
 }
 function frmPlanConfigurationpop_successsCallback(result){
 
+	
 	var woOpen = result.woException;
 	if(woOpen != "undefined" && woOpen != undefined && woOpen != " " && woOpen != "") {
-		var opnWoResp = confirm(result.woException);
+		/*var opnWoResp = confirm(result.woException);
 		if(opnWoResp){
 			 var filterStr = jQuery('#hdnFilterVals').val();
 			 subFormPop("wrkOdrResp_input.plnconfig", "300","100","360", "698","WorkOrderResponsibility",filterStr);
@@ -180,11 +201,15 @@ function frmPlanConfigurationpop_successsCallback(result){
 		else{
 			//jQuery( "#subformPopUpId" ).dialog('close');
 			closePopUpDialoge('divplanconfig');
-			}
+			}*/
+			jQuery('#planconfig').trigger("reloadGrid");
+		closePopUpDialoge('divplanconfig');
 	}
-	//jQuery( "#subformPopUpId" ).dialog('close');
+	else{
+		//jQuery( "#subformPopUpId" ).dialog('close');
 	
-	jQuery('#planconfig').trigger("reloadGrid");
+		jQuery('#planconfig').trigger("reloadGrid");
+	}
 }
 </script>
 
@@ -197,7 +222,8 @@ function frmPlanConfigurationpop_successsCallback(result){
 	    				<label>Week No</label>                       
 	    			</div> 
 			     <div class="easyui-paddingbfpx"> 
-			         <input  id="txtPplcWeekno" onblur="chktxtVal();" name="txtPplcWeekno" class="easyui-text" maxlength ="1" style="width:70px;" value="${requestScope.plmTlPlanconfiguration.pplcWeekno }"/ >                       
+			         <input  id="txtPplcWeekno" onblur="chktxtVal();" name="txtPplcWeekno" class="easyui-text" maxlength ="1" style="width:70px;" value="${requestScope.plmTlPlanconfiguration.pplcWeekno }"/ >
+			         <label>(Upcoming Schedules for Standards)</label>                       
 			     </div>
 			</td>
 			<td>

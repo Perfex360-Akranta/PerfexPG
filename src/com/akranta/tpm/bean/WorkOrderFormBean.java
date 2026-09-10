@@ -2,6 +2,7 @@ package com.akranta.tpm.bean;
 import java.util.List;
 
 import com.akranta.tpm.model.PlmTlWofeedback;
+
 public class WorkOrderFormBean {
 	private String genwMachineid;
 	private String WogenCostCenter;

@@ -19,7 +19,7 @@ function viewGrid(url,filterString)
 		
 	 if( validateFilterSelection(filterString))
 	{//var url = jQuery('#hiddenUrl').val();
-		//alert(url+""+filterString);generalMaintMould_modify.genmain
+		//alert(url+""+filterString);generalMaintMould_modify.balgenmain
 		var tableCaption = "Machine Activity Report";
 		 processGridnew(url,filterString,"gen_main","pager_genmain","","dblclick","","gen_main_loadComplete");
 		return true;
@@ -44,7 +44,7 @@ function frmFilter_enableDisableSuccessCallBack()
     },1250);
 
 	
-	if(url == "generalMaintMould_modify.genmain"){
+	if(url == "generalMaintMould_modify.balgenmain"){
 		disableField("frmFilter","cboRelatedTo");
 		setFieldValue("cboRelatedTo", "MLD","frmFilter");
 		setTimeout(function() {enableFields("cmbMould");},1250);
@@ -118,19 +118,21 @@ return true;
 function dblclick(id)
 {
 	var rowData = jQuery("#gen_main").jqGrid('getRowData',id);																								
-	var docno = rowData.docno;
-	var WOID = rowData.workorderno;
+	//var docno = rowData.docno;
+	//var WOID = rowData.workorderno;
+	var docno = rowData.DOCNO;          //  uppercase
+	var WOID = rowData.WORKORDERNO;     //  uppercase
 	var menumode = jQuery('#hdnsetupandadj').val();
 	
 	var url  = jQuery('#hiddenUrl').val();
 	var hdnMode =jQuery('#hdnfield').val();
 	
-	if(url == "generalMaint_modify.genmain" || url =="generalMaintMould_modify.genmain"){
+	if(url == "generalMaint_modify.balgenmain" || url =="generalMaintMould_modify.balgenmain"){
 		 hdnMode ="MODIFY";
 	}
-	else{//generalMaint_view.genmain
+	else{//generalMaint_view.balgenmain
 		if(menumode != ' ' && menumode != '' && menumode != null){
-			if(url == "generalSetAndAdj_modify.genmain"){
+			if(url == "generalSetAndAdj_modify.balgenmain"){
 				 hdnMode ="MODIFY";
 			}
 			else
@@ -145,12 +147,12 @@ function dblclick(id)
 	//alert(hdnMode );
 	if(menumode != ' ' && menumode != '' && menumode != null)
 		filterData +='&menumode='+menumode; 
-	 navigateToNextForm('generalMaintcreat_input.genmain?q=2&filterData='+filterData+'&vurl='+url+'&closeOnSave=true'+'&mode='+hdnMode,'');
+	 navigateToNextForm('generalMaintcreat_input.balgenmain?q=2&filterData='+filterData+'&vurl='+url+'&closeOnSave=true'+'&mode='+hdnMode,'');
 	   
 }
 jQuery('#genMain').click(function(){
-	 navigateToNextForm('generalMaintcreat_input.genmain','Machine Activity');
-	/*jQuery("#GeneralMaintMain").load('generalMaint_newFrm.genmain','', function(response, status, xhr) {
+	 navigateToNextForm('generalMaintcreat_input.balgenmain','Machine Activity');
+	/*jQuery("#GeneralMaintMain").load('generalMaint_newFrm.balgenmain','', function(response, status, xhr) {
 		
 		   if (status == "error") {
 		    var msg = "Sorry but there was an error: ";
@@ -159,7 +161,7 @@ jQuery('#genMain').click(function(){
 		});
 	*/	
 });
-function gen_main_loadComplete()
+/*function gen_main_loadComplete()
 {//alert('ds');
 	var gen_mainId = jQuery("#gen_main").jqGrid('getDataIDs');
 	 for(i=1;i<=gen_mainId.length;i++)	
@@ -169,6 +171,27 @@ function gen_main_loadComplete()
 		else
 			jQuery("#gen_main").jqGrid('setCell',i,"docno","",{'background-color':'#FDB8B8'});
 	 }		
+}*/
+function gen_main_loadComplete()
+{
+    var gen_mainId = jQuery("#gen_main").jqGrid('getDataIDs');
+    for(var i = 0; i < gen_mainId.length; i++)
+    {
+        var rowid = gen_mainId[i];
+        var rowData = jQuery("#gen_main").jqGrid('getRowData', rowid);
+        
+        var status = rowData.STATUS || rowData.status || '';
+        var woCol = rowData.WORKORDERNO !== undefined ? 'WORKORDERNO' : 'workorderno';
+        
+        if(status == "Pending" || status == "pending")
+        {
+            jQuery("#gen_main").jqGrid('setCell', rowid, woCol, "", {'background-color':'#FDB8B8'});
+        }
+        else if(status == "Completed" || status == "completed")
+        {
+            jQuery("#gen_main").jqGrid('setCell', rowid, woCol, "", {'background-color':'#c0ffc0'});
+        }
+    }
 }
 </script>
 <form name="frmGenMaintMain" id="frmGenMaintMain" action="" method="post">

@@ -490,34 +490,69 @@ public class CommonFilterServiceImpl implements CommonFilterService{
 	
 	
 	
-		public List<ComboBox> getAssemblyComboList(CommonFilter commonFilter,String relatedTo)	throws Exception {
+	/*
+	 * public List<ComboBox> getAssemblyComboList(CommonFilter commonFilter,String
+	 * relatedTo) throws Exception {
+	 * 
+	 * ComboFilter assembly =commonFilter.getAssembly(); String machineId =
+	 * (commonFilter.getMachine() != null ? commonFilter.getMachine().getId() :
+	 * null); if( ! UIUtils.isValidKeyId(relatedTo) || ! "MLD".equals(relatedTo)){
+	 * assembly.setIdField("ASSEMBLYID"); assembly.setNameField("ASSEMBLYNAME");
+	 * 
+	 * if( UIUtils.isValidKeyId(machineId) ){
+	 * assembly.setCondSql(" AND MACHINEID = '" + machineId + "'"); }
+	 * 
+	 * assembly.setTableName(TableNames.TBL_GEN_VW_MCHASMLINK); } else {
+	 * assembly.setIdField("ASSM_KEYID"); assembly.setNameField("ASSM_NAME");
+	 * assembly.setCondSql(" AND ASSM_RELATEDTO = 'MLD'");
+	 * assembly.setTableName(TableNames.TBL_GEN_TL_ASSEMBLYMST); if(
+	 * UIUtils.isValidKeyId(machineId)) { assembly.
+	 * setCondSql(" AND ASSM_KEYID IN( SELECT  FNLN_ORIGINALID FROM GEN_TL_FUNCTIONALLOCN WHERE INSTR(FNLN_ELEMENTID,'"
+	 * +machineId+"',1,1)>0 AND FNLN_ELEMENTTYPE='A'"); } }
+	 * CommonMessage.debugMsg("machineId:"+machineId); return
+	 * commonFilterDao.fillComboValues(assembly); }
+	 */
 	
-			ComboFilter assembly =commonFilter.getAssembly();
-			String machineId = (commonFilter.getMachine() != null ? commonFilter.getMachine().getId() : null);
-			if( ! UIUtils.isValidKeyId(relatedTo) || ! "MLD".equals(relatedTo)){
-				assembly.setIdField("ASSEMBLYID");
-				assembly.setNameField("ASSEMBLYNAME");
-				
-				if( UIUtils.isValidKeyId(machineId)  ){
-					assembly.setCondSql(" AND MACHINEID = '" + machineId + "'");
-				}
-				
-				assembly.setTableName(TableNames.TBL_GEN_VW_MCHASMLINK);
-			}
-			else
-			{
-				assembly.setIdField("ASSM_KEYID");
-				assembly.setNameField("ASSM_NAME");
-				assembly.setCondSql(" AND ASSM_RELATEDTO = 'MLD'");
-				assembly.setTableName(TableNames.TBL_GEN_TL_ASSEMBLYMST);
-				if( UIUtils.isValidKeyId(machineId))
-				{
-					assembly.setCondSql(" AND ASSM_KEYID IN( SELECT  FNLN_ORIGINALID FROM GEN_TL_FUNCTIONALLOCN WHERE INSTR(FNLN_ELEMENTID,'"+machineId+"',1,1)>0 AND FNLN_ELEMENTTYPE='A'");
-				}
-			}
-			CommonMessage.debugMsg("machineId:"+machineId);
-			return commonFilterDao.fillComboValues(assembly);
-		}
+	public List<ComboBox> getAssemblyComboList(CommonFilter commonFilter, String relatedTo) throws Exception {
+
+	    ComboFilter assembly = commonFilter.getAssembly();
+	    String machineId = (commonFilter.getMachine() != null ? commonFilter.getMachine().getId() : null);
+	    String machineNotToShown = commonFilter.getMachineNotToShown();
+
+	    if (!UIUtils.isValidKeyId(relatedTo) || !"MLD".equals(relatedTo)) {
+	        assembly.setIdField("ASSEMBLYID");
+	        assembly.setNameField("ASSEMBLYNAME");
+
+	        String condSql = "";
+	        if (UIUtils.isValidKeyId(machineId)) {
+	            condSql += " AND MACHINEID = '" + machineId + "'";
+	        }
+	        if (UIUtils.isValidKeyId(machineNotToShown)) {
+	            condSql += " AND MACHINEID <> '" + machineNotToShown + "'";
+	        }
+	        assembly.setCondSql(condSql);
+
+	        assembly.setTableName(TableNames.TBL_GEN_VW_MCHASMLINK);
+	    } else {
+	        assembly.setIdField("ASSM_KEYID");
+	        assembly.setNameField("ASSM_NAME");
+
+	        String condSql = " AND ASSM_RELATEDTO = 'MLD'";
+	        if (UIUtils.isValidKeyId(machineId)) {
+	            condSql += " AND ASSM_KEYID IN( SELECT FNLN_ORIGINALID FROM GEN_TL_FUNCTIONALLOCN WHERE INSTR(FNLN_ELEMENTID,'" + machineId + "',1,1)>0 AND FNLN_ELEMENTTYPE='A')";
+	        }
+	        if (UIUtils.isValidKeyId(machineNotToShown)) {
+	            condSql += " AND ASSM_KEYID NOT IN( SELECT FNLN_ORIGINALID FROM GEN_TL_FUNCTIONALLOCN WHERE INSTR(FNLN_ELEMENTID,'" + machineNotToShown + "',1,1)>0 AND FNLN_ELEMENTTYPE='A')";
+	        }
+	        assembly.setCondSql(condSql);
+
+	        assembly.setTableName(TableNames.TBL_GEN_TL_ASSEMBLYMST);
+	    }
+	    CommonMessage.debugMsg("machineId:" + machineId + " machineNotToShown:" + machineNotToShown);
+	    return commonFilterDao.fillComboValues(assembly);
+	}
+	
+	// end
 	
 		public List<ComboBox> getSubassemblyComboList(CommonFilter commonFilter)	throws Exception {
 

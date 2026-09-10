@@ -1,0 +1,904 @@
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	jQuery('.static-popup-clone').remove();
+	STATIC_POPUP_IDS = {};
+	initialiseForm('frmContractorCostEst');
+	initialiseForm('frmContractorCostAct');	
+
+	fillComboBox("frmContractorCostEst","cmbmpcpManpoweridcc","combo_contractor.crt");	
+	//fillComboBox("frmContractorCostAct","cmbmpcpSkillidcc","combo_vendor.crt");
+	//fillComboBox("frmContractorCostEst","cmbmpcsManpoweridcc","combo_contractor.crt");
+	//fillComboBox("frmContractorCostAct","cmbmpcsSkillidcc","combo_vendor.crt");
+
+	formatDateBox('dtempcsDatecc','dd-MMM-yyyy');
+	fillWithCurrentDate('dtempcsDatecc');
+	numericTextBox('txtmpcpNormalminscc');
+	numericTextBox('txtmpcsNormalwtcc');
+	numericTextBox('txtmpcsHolidaywtcc');
+	numericTextBox('txtmpcsOtherwtcc');
+	
+	jQuery("#txtmpcpNormalcostcc").attr('readonly','readonly');
+	jQuery("#txtmpcpTotalvaluecc").attr('readonly','readonly');
+	jQuery("#txtmpcsNormalratecc").attr('readonly','readonly');
+	jQuery("#txtmpcsHolidayratecc").attr('readonly','readonly');
+	jQuery("#txtmpcsOtherratecc").attr('readonly','readonly');	
+	jQuery("#txtmpcsTotalvaluecc").attr('readonly','readonly');	
+
+	jQuery("#empContractorEstDiv").hide();
+	jQuery("#empContractorActDiv").hide();
+		
+	//alert(jQuery('#hdnwoId').val());
+	var woid = jQuery('#hdnwoId').val();
+	//&woId="+ woid +"&skillId=E"		
+	processGridnew('contracotCostEstimation_view.crt',"?q=2&formName=contractorCost&woId="+ woid,"contracotCostEstGrid","contracotCostEstPager","","contracotCostEstGrid_dblClick","","costGridLoad","");						
+	processGridnew('contracotCostActual_view.crt',"?q=2&formName=contractorCost&woId="+ woid,"contracotCostActGrid","contracotCostActPager","","contracotCostActGrid_dblClick","","costGridLoad","");
+
+	var formType = jQuery('#hdnGlbType').val();
+	processGridnew('contracotCostManPower_view.crt',"?q=2&formName=contractorCost&woId="+ woid+"&formType="+formType,"contracotCostManPowerGrid","contracotCostManPowerPager","","","","costGridLoad","");
+
+	fnSetPageTotal();
+
+//Contractor ESTIMATE
+
+	jQuery("#btnEstNewcc").click(function(){
+		fnEstClearcc();			
+		fnOpenNewEstcc();			
+	});
+	
+	jQuery('#btnEstInsertcc').click(function(){
+		 //alert("Insert clicked");
+			var GradeId = jQuery('#cmbmpcpSkillidcc').combobox('getValue');
+			var EmpId = jQuery('#cmbmpcpManpoweridcc').combobox('getValue');			
+			var NorMins = jQuery('#txtmpcpNormalminscc').val();
+			var NorCost = jQuery('#txtmpcpNormalcostcc').val();
+
+			//NormalCost = Round(Val(Val(EmpCost) * (Val(NormalMin) / 60)), 2)
+			var TotValue = jQuery('#txtmpcpNormalcostcc').val() * (jQuery('#txtmpcpNormalminscc').val() / 60); 
+			TotValue = TotValue.toFixed(2);							
+			jQuery('#txtmpcpTotalvaluecc').val(TotValue);	
+
+			if (GradeId == null || GradeId == "") {
+				alert("Select Vendor"); 
+			      return; }			
+			if (EmpId == null || EmpId == "") {
+				alert("Select Contractor");				  
+			      return; }
+			if (NorMins == null || NorMins == 0) {
+				alert("Enter Minutes");				  
+			      return; }								
+
+			var formId = jQuery('#submitForm').val(); //defined in classic.jsp
+			var url = "empCostManPower_save.crt?q=2&Type=Estimate&Skill=H" ;//defined in classic.jsp
+				
+			if (jQuery('#hdnEstMode').val() == "Update")
+				url+= '&saveMode=Update';
+			else
+				url+= '&saveMode=Save';	
+
+			var woId=jQuery('#hdnwoId').val();
+			var docType=jQuery('#hdnDocType').val();
+			url+= '&woId='+woId+'&docType='+docType;
+
+			var actVal = jQuery('#txtActualTime').val();
+			//alert(actVal + ' ' + NorMins);			
+			if (parseInt( actVal) < parseInt(NorMins) )
+			{ alert("Total No. of Mins Should Not Exceed the Actual Time");
+				return;	
+			}
+						
+			if(formId.length > 0 )
+				saveForm(formId,url);			
+		});
+
+
+		jQuery('#btnEstClearcc').click(function(){
+			//alert("Clear clicked");
+			fnEstClearcc();	
+		});
+		
+		jQuery('#btnEstDeletecc').click(function(){
+			//alert("Delete clicked");
+			var formId = jQuery('#submitForm').val(); //defined in classic.jsp
+			var rowId = jQuery("#contracotCostEstGrid").jqGrid('getGridParam', 'selrow');
+
+			if (rowId == null || rowId < 0) {	return; }
+			
+			var rowData = jQuery("#contracotCostEstGrid").jqGrid('getRowData',rowId);
+			var EmpId =rowData.cmbmpcpManpoweridcc;
+			var GrdId =rowData.cmbmpcpSkillidcc;			
+			var url = "empCostManPower_delete.crt" ;//defined in classic.jsp
+			var woId=jQuery('#hdnwoId').val();
+			url+= '?q=2&FormName=EmpCost&Type=Estimate&womid='+woId+'&empid='+EmpId+'&grdid='+GrdId;
+			if(formId.length > 0 )				
+				deleteRecord(formId,url);
+					
+			var rowid = jQuery("#contracotCostEstGrid").jqGrid('getGridParam', 'selrow');
+			jQuery("#contracotCostEstGrid").delRowData(rowid);		 
+				});
+
+//EMPCOST ACTUAL	
+
+	jQuery("#btnActNewcc").click(function(){
+		fnActClearcc();			
+		fnOpenNewActcc();			
+	});
+	
+	jQuery('#btnActInsertcc').click(function(){
+		//alert("insertclciked");
+		
+		var Date = jQuery('#dtempcsDatecc').datebox('getValue');
+		//alert(jQuery('#dtempcsDatecc').datebox('getValue'));	 
+		var GradeId = jQuery('#cmbmpcsSkillidcc').combobox('getValue');
+		var GradeId = jQuery('#cmbmpcsSkillidcc').combobox('getValue');
+		var EmpId = jQuery('#cmbmpcsManpoweridcc').combobox('getValue');			
+	
+		 var NorMins = jQuery('#txtmpcsNormalwtcc').val();
+		 var HolidayMins = jQuery('#txtmpcsHolidaywtcc').val();
+		 var OtherMins = jQuery('#txtmpcsOtherwtcc').val();
+		 var NorCost = jQuery('#txtmpcsNormalratecc').val();
+		 var HolidayCost = jQuery('#txtmpcsHolidayratecc').val();	 
+		 var OtherCost = jQuery('#txtmpcsOtherratecc').val();
+		 var Activity = jQuery('#txampcsActivitycc').val();
+		 
+		 //var TotValue = NorMins * NorCost ;
+		 //jQuery('#txampcsTotalvaluecc').val(TotValue);
+
+	    var NrCst =  NorCost * (NorMins / 60);		 		 
+	    var HdCst =  HolidayCost * (HolidayMins / 60);
+	    var OtCst =  OtherCost * (OtherMins / 60);
+	    
+		 var TotValue =  NrCst + HdCst + OtCst ;		 
+		 TotValue = TotValue.toFixed(2);		 
+		 jQuery('#txtmpcsTotalvaluecc').val(TotValue);
+		 		 
+		if (Date == null || Date == "") {	alert("Select Date");	      return; }
+		if (GradeId == null || GradeId == "") {	alert("Select Vendor");	      return; }			
+		if (EmpId == null || EmpId == "") {		alert("Select Contractor");	  return; }
+		if (NorMins == null || NorMins == "") {  alert("Enter Normal Minutes");   return; }	
+		if (HolidayMins == null || HolidayMins == "") {	alert("Enter Call-Out Mins");  return; }		      							
+		if (OtherMins == null || OtherMins == "") { alert("Enter OT Mins"); return; }
+		if (Activity == null || Activity == "") {	alert("Enter Activity");     return; }		      							
+
+		var actVal = jQuery('#txtActualTime').val();		
+		if (parseInt(actVal) < ( parseInt(NorMins) +parseInt(HolidayMins) + parseInt(OtherMins)))
+		{ alert("Total No. of Mins Should Not Exceed the Actual Time");
+			return;	
+		}
+		
+		var formId = jQuery('#submitForm').val(); //defined in classic.jsp
+		var url = "empCostManPower_save.crt?q=2&Type=Actual&Skill=H" ;//defined in classic.jsp
+			
+		if (jQuery('#hdnActMode').val() == "Update")
+			url+= '&saveMode=Update';
+		else
+			url+= '&saveMode=Save';	
+
+		var woId=jQuery('#hdnwoId').val();
+		var docType=jQuery('#hdnDocType').val();
+		url+= '&woId='+woId+'&docType='+docType;
+				
+		var workStart = jQuery('#dteworkStart').datebox('getValue');
+		var workEnd = jQuery('#dteworkEnd').datebox('getValue');		
+		url+= '&workStart='+workStart+'&workEnd='+workEnd;
+
+		if(formId.length > 0 )
+			saveForm(formId,url);
+
+	});
+	
+		jQuery('#btnActClearcc').click(function(){
+				fnActClearcc();
+		});
+
+		jQuery('#btnActDeletecc').click(function(){
+			//alert("Delete clicked");
+			var formId = jQuery('#submitForm').val(); //defined in classic.jsp
+			var rowId = jQuery("#contracotCostActGrid").jqGrid('getGridParam', 'selrow');
+
+			if (rowId == null || rowId < 0) {	return; }
+			
+			var rowData = jQuery("#contracotCostActGrid").jqGrid('getRowData',rowId);
+			var EmpId =rowData.cmbmpcsManpoweridcc;
+			var GrdId =rowData.cmbmpcsSkillidcc;
+			
+			var url = "empCostManPower_delete.crt" ;//defined in classic.jsp
+			var woId=jQuery('#hdnwoId').val();
+			url+= '?q=2&FormName=EmpCost&Type=Actual&womid='+woId+'&empid='+EmpId+'&grdid='+GrdId;
+			if(formId.length > 0 )
+				saveForm(formId,url);
+					
+			var rowid = jQuery("#contracotCostActGrid").jqGrid('getGridParam', 'selrow');
+			jQuery("#contracotCostActGrid").delRowData(rowid);		 
+		});
+
+		jQuery("#txtmpcpNormalminscc").focusout(function () {	    
+			var Minutes = jQuery('#txtmpcpNormalminscc').val();
+			var Cost = jQuery('#txtmpcpNormalcostcc').val();
+			var TotCost = Minutes * Cost ;
+			//mano
+			//var TotCost = (Cost * (Minutes / 60)).toFixed(2); 
+			jQuery('#txtmpcpTotalvaluecc').val(TotCost);
+		});
+
+		/* jQuery("#txtmpcsNormalmins").focusout(function () {	    
+			var Minutes = jQuery('#txtmpcpNormalminscc').val();
+			var Cost = jQuery('#txtmpcpNormalcostcc').val();
+			var TotCost = Minutes * Cost ;
+			//mano
+			//var TotCost = (Cost * (Minutes / 60)).toFixed(2);
+			jQuery('#txtmpcpTotalvaluecc').val(TotCost);
+		});
+ */
+		function fnCalcContractorActTotal() {
+		    var NorMins = parseFloat(jQuery('#txtmpcsNormalwtcc').val()) || 0;
+		    var HolidayMins = parseFloat(jQuery('#txtmpcsHolidaywtcc').val()) || 0;
+		    var OtherMins = parseFloat(jQuery('#txtmpcsOtherwtcc').val()) || 0;
+		    var NorCost = parseFloat(jQuery('#txtmpcsNormalratecc').val()) || 0;
+		    var HolidayCost = parseFloat(jQuery('#txtmpcsHolidayratecc').val()) || 0;
+		    var OtherCost = parseFloat(jQuery('#txtmpcsOtherratecc').val()) || 0;
+
+		    var NrCst = NorCost * (NorMins / 60);
+		    var HdCst = HolidayCost * (HolidayMins / 60);
+		    var OtCst = OtherCost * (OtherMins / 60);
+
+		    var TotValue = (NrCst + HdCst + OtCst).toFixed(2);
+		    jQuery('#txtmpcsTotalvaluecc').val(TotValue);
+		}
+		jQuery("#txtmpcsNormalwtcc").focusout(function () { fnCalcContractorActTotal(); });
+		jQuery("#txtmpcsHolidaywtcc").focusout(function () { fnCalcContractorActTotal(); });
+		jQuery("#txtmpcsOtherwtcc").focusout(function () { fnCalcContractorActTotal(); });
+	});
+	//mano 
+	// Registry of popup divIds that hold static, server-rendered content
+// (form + grid markup) rather than AJAX-loaded content. These must
+// never be destroyed with .remove() — only hidden — or they can never
+// be reopened for the rest of the page session.
+var STATIC_POPUP_IDS = {};
+function registerStaticPopUp(divId) {
+    STATIC_POPUP_IDS[divId] = true;
+}
+
+// Wrap the original closePopUpDialoge exactly once. This catches every
+// call path in one place — the popup's own generated close icon
+// (hardcoded onclick), the Esc keyup handler LoadPopUp binds, AND
+// programmatic calls from popFormNavigation/refreshHomePageForMenu
+// during ordinary tab/menu navigation — without needing to intercept
+// or rebind each one individually.
+if (typeof closePopUpDialoge === "function" && !closePopUpDialoge._staticWrapped) {
+    var _originalClosePopUpDialoge = closePopUpDialoge;
+    closePopUpDialoge = function (divId, direct) {
+        if (STATIC_POPUP_IDS[divId]) {
+            closeStaticPopUp(divId);
+            return;
+        }
+        return _originalClosePopUpDialoge(divId, direct);
+    };
+    closePopUpDialoge._staticWrapped = true;
+}
+
+function closeStaticPopUp(divId) {
+    jQuery('#' + divId + 'PopupMask').fadeOut(100, function () {
+        jQuery(this).remove();
+    });
+    jQuery('#' + divId).fadeOut(100); // hide only — no .remove()
+
+    var loadPopSetting = curntLoadPopSettingQ.pop();
+    if (loadPopSetting != null) {
+        jQuery("#submitForm").val(loadPopSetting.sbtFormId);
+        setSubmitFormUrl(loadPopSetting.submitUrl);
+        jQuery('#loadFormMode').val(loadPopSetting.loadFromMode);
+    }
+
+    for (var i = formNavigations.length - 1; i >= 0; i--) {
+        if (formNavigations[i].divId == "loadPopUp" + divId) {
+            formNavigations.splice(i, 1);
+        }
+    }
+    clearCommonErrorMsg();
+}
+
+
+/* function fnOpenNewEstcc() {
+	jQuery('#submitForm').val("frmContractorCostEst");
+	jQuery( "#empContractorEstDiv" ).show();
+	jQuery( "#empContractorEstDiv" ).dialog({
+		autoOpen: false,
+		modal: true,
+		height: 320,
+		width: 380,
+		zIndex: 99999
+	});				
+}
+function fnOpenNewActcc() {
+	jQuery('#submitForm').val("frmContractorCostAct");
+	jQuery( "#empContractorActDiv" ).show();
+	jQuery( "#empContractorActDiv" ).dialog({
+		autoOpen: false,
+		modal: true,
+		height: 360,
+		width: 850,
+		zIndex: 99999
+	});				
+}	 */
+//mano
+/* function fnOpenNewEstcc() {
+    jQuery('#submitForm').val("frmContractorCostEst");
+
+    // LoadPopUp only detaches/repositions the div when a url is passed.
+    // This content is static (no AJAX load), so replicate that step ourselves
+    // once, so it doesn't stay trapped inside any ancestor's stacking context.
+    if (!jQuery("#empContractorEstDiv").parent().is("#mainlayout")) {
+        jQuery("#empContractorEstDiv")
+            .detach()                 // keeps bound events/data, unlike remove()
+            .insertAfter("#mainlayout")
+            .css('margin-top', '1%')
+            .css('border', '6px solid #444444')
+            .css('border-radius', '8px');
+    }
+
+    LoadPopUp(
+        "empContractorEstDiv",
+        "",
+        true,
+        "380px",
+        "320px",
+        "10%",
+        "15%",
+        "",
+        "Contractor Cost Estimate"
+    );
+}
+
+function fnOpenNewActcc() {
+    jQuery('#submitForm').val("frmContractorCostAct");
+
+    if (!jQuery("#empContractorActDiv").parent().is("#mainlayout")) {
+        jQuery("#empContractorActDiv")
+            .detach()
+            .insertAfter("#mainlayout")
+            .css('margin-top', '1%')
+            .css('border', '6px solid #444444')
+            .css('border-radius', '8px');
+    }
+
+    LoadPopUp(
+        "empContractorActDiv",
+        "",
+        true,
+        "850px",
+        "360px",
+        "10%",
+        "15%",
+        "",
+        "Contractor Cost Actual"
+    );
+} */
+function fnOpenNewEstcc() {
+    jQuery('#submitForm').val("frmContractorCostEst");
+
+    if (!jQuery("#empContractorEstDiv").parent().is("#mainlayout")) {
+        jQuery("#empContractorEstDiv")
+            .detach()
+            .addClass('static-popup-clone')
+            .insertAfter("#mainlayout")
+            .css('margin-top', '1%')
+            .css('border', '6px solid #444444')
+            .css('border-radius', '8px');
+    }
+
+    jQuery("#empContractorEstDiv > div.sub-header").remove();
+    jQuery("#empContractorEstDiv > a.close").remove(); 
+    LoadPopUp(
+        "empContractorEstDiv", "", true, "380px", "320px", "10%", "15%", "",
+        "Contractor Cost Estimate"
+    );
+
+    registerStaticPopUp("empContractorEstDiv");
+}
+
+function fnOpenNewActcc() {
+    jQuery('#submitForm').val("frmContractorCostAct");
+
+    if (!jQuery("#empContractorActDiv").parent().is("#mainlayout")) {
+        jQuery("#empContractorActDiv")
+            .detach()
+            .addClass('static-popup-clone')
+            .insertAfter("#mainlayout")
+            .css('margin-top', '1%')
+            .css('border', '6px solid #444444')
+            .css('border-radius', '8px');
+    }
+
+    jQuery("#empContractorActDiv > div.sub-header").remove();
+    jQuery("#empContractorActDiv > a.close").remove(); 
+
+    LoadPopUp(
+        "empContractorActDiv", "", true, "850px", "360px", "10%", "15%", "",
+        "Contractor Cost Actual"
+    );
+
+    registerStaticPopUp("empContractorActDiv");
+}
+function frmContractorCostEstcmbmpcpManpoweridcc_onLoadSuccess() 	{
+	fillComboBox("frmContractorCostEst","cmbmpcpSkillidcc","combo_vendor.crt");
+}
+function frmContractorCostEstcmbmpcpSkillidcc_onLoadSuccess() 	{
+	fillComboBox("frmContractorCostAct","cmbmpcsManpoweridcc","combo_contractor.crt");
+	}
+function frmContractorCostActcmbmpcsManpoweridcc_onLoadSuccess() 	{
+	fillComboBox("frmContractorCostAct","cmbmpcsSkillidcc","combo_vendor.crt");
+
+	//alert(jQuery('#hdnGlbType').val());
+	if (jQuery('#hdnGlbType').val() == "Actual")	{
+		jQuery('#submitForm').val('frmContractorCostAct');
+		disableForm("frmContractorCostEst");
+		jQuery('#btnEstNewcc').attr('readonly','readonly');	
+		jQuery('#btnEstDeletecc').attr('readonly','readonly');			
+	}
+	else { 
+		jQuery('#submitForm').val('frmContractorCostEst');
+		disableForm("frmContractorCostAct");
+		jQuery('#btnActNewcc').attr('readonly','readonly');	
+		jQuery('#btnActDeletecc').attr('readonly','readonly');			
+		
+	}	
+	}
+
+function fnEstClearcc() {	
+	enableFields("cmbmpcpSkillidcc");
+ 	enableFields("cmbmpcpManpoweridcc"); 			
+	jQuery('#cmbmpcpManpoweridcc').combobox('clear');
+	jQuery('#cmbmpcpSkillidcc').combobox('clear');
+	jQuery('#txtmpcpNormalminscc').val("");
+	jQuery('#txtmpcpNormalcostcc').val("0");		 
+	jQuery('#txtmpcpTotalvaluecc').val("0");
+	jQuery('#hdnEstMode').val("");
+}
+function fnActClearcc() {
+	 enableFields("cmbmpcsSkillidcc");
+	 enableFields("cmbmpcsManpoweridcc");			 		
+	 jQuery('#dtempcsDatecc').datebox('clear');
+	 fillWithCurrentDate('dtempcsDatecc');		 	 
+	 jQuery('#cmbmpcsSkillidcc').combobox('clear');	 	 
+	 jQuery('#cmbmpcsManpoweridcc').combobox('clear');
+	 jQuery('#txampcsActivitycc').val("");
+	 jQuery('#txtmpcsNormalwtcc').val("");
+	 jQuery('#txtmpcsHolidaywtcc').val("");
+	 jQuery('#txtmpcsOtherwtcc').val("");
+	 jQuery('#txtmpcsNormalratecc').val("0");
+	 jQuery('#txtmpcsHolidayratecc').val("0");	 
+	 jQuery('#txtmpcsOtherratecc').val("0");
+	 jQuery('#txtmpcsTotalvaluecc').val("0");
+	 jQuery('#txampcsRemarkscc').val("");
+	 jQuery('#hdnActMode').val("");
+}
+
+	function contracotCostEstGrid_dblClick(id)
+		{
+
+		var formType = jQuery('#hdnGlbType').val();
+		if (formType =="Actual") return ;
+			
+			var rowData = jQuery("#contracotCostEstGrid").jqGrid('getRowData',id);			
+			if (rowData.cmbmpcpManpoweridcc != null )
+				jQuery('#hdnEstMode').val("Update");
+			else
+				jQuery('#hdnEstMode').val("");
+
+			readOnlyFields("cmbmpcpManpoweridcc");
+			readOnlyFields("cmbmpcpSkillidcc");
+			
+			jQuery('#cmbmpcpManpoweridcc').combobox('setValue',rowData.cmbmpcpManpoweridcc);	
+			jQuery('#cmbmpcpSkillidcc').combobox('setValue',rowData.cmbmpcpSkillidcc);
+			jQuery('#txtmpcpNormalminscc').val(rowData.txtmpcpNormalminscc);
+			jQuery('#txtmpcpNormalcostcc').val(rowData.txtmpcpNormalcostcc);
+			jQuery('#txtmpcpTotalvaluecc').val(rowData.txtmpcpTotalvaluecc);
+
+			fnOpenNewEstcc();	
+		}
+
+	function contracotCostActGrid_dblClick(id)
+	{
+		var formType = jQuery('#hdnGlbType').val();
+		if (formType =="Estimate") 	return ;
+		
+		//alert("hi222");
+		var rowData = jQuery("#contracotCostActGrid").jqGrid('getRowData',id);
+		if (rowData.cmbmpcsManpoweridcc  != null )
+			jQuery('#hdnActMode').val("Update");
+		else
+			jQuery('#hdnActMode').val("");
+
+		 readOnlyFields("cmbmpcsManpoweridcc");
+		 readOnlyFields("cmbmpcsSkillidcc");
+		
+		 jQuery('#cmbmpcsSkillidcc').combobox('setValue',rowData.cmbmpcsSkillidcc);	 	 
+		 jQuery('#cmbmpcsManpoweridcc').combobox('setValue',rowData.cmbmpcsManpoweridcc);	
+		 jQuery('#txampcsActivitycc').val(rowData.txampcsActivitycc);
+		 jQuery('#txtmpcsNormalwtcc').val(rowData.txtmpcsNormalwtcc);	 
+		 jQuery('#txtmpcsHolidaywtcc').val(rowData.txtmpcsHolidaywtcc);
+		 jQuery('#txtmpcsOtherwtcc').val(rowData.txtmpcsOtherwtcc);	 
+		 jQuery('#txtmpcsNormalratecc').val(rowData.txtmpcsNormalratecc);	 
+		 jQuery('#txtmpcsHolidayratecc').val(rowData.txtmpcsHolidayratecc);	 
+		 jQuery('#txtmpcsOtherratecc').val(rowData.txtmpcsOtherratecc);	 
+		 jQuery('#txtmpcsTotalvaluecc').val(rowData.txtmpcsTotalvaluecc);	 
+		 jQuery('#txampcsRemarkscc').val(rowData.txampcsRemarkscc);
+		 jQuery('#dtempcsDatecc').datebox('setValue',rowData.dtempcsDatecc);	  
+
+		 fnOpenNewActcc();		 	
+	}
+
+	function  frmContractorCostEstcmbmpcpManpoweridcc_onSelect(record)
+	{
+		if (jQuery('#cmbmpcpSkillidcc').combobox('getValue')=="") {
+			alert("Select Vendor");
+			jQuery('#cmbmpcpManpoweridcc').combobox('clear');
+			return;
+		}			
+			//alert(jQuery("#cmbmpcpManpoweridcc").combobox('getValue'));			
+			processAjaxCalls("contractorCost_getContractorCost.crt","?q=2&empId="+record.id,"empIdRecallSuccess","empIdRecallError");
+	}
+
+	function  frmContractorCostActcmbmpcsSkillidcc_onSelect(record)
+	{
+		/* if (jQuery("#tblEmpCostActGrid").getGridParam("reccount") < 1) {
+			alert("Enter Skilled Manpower cost Details");	
+			jQuery('#cmbmpcsSkillidcc').combobox('clear');			
+			//jQuery('#tabcostInfo').tabs('select', 1);			
+		}	*/
+		var woid = jQuery('#hdnwoId').val();
+		var formType = jQuery('#hdnGlbType').val();
+		processAjaxCalls("checkManpowerExists.crt","?q=2&woId="+woid+"&formType="+formType,"chkActManPowerRecallSuccess","chkManPowerRecallError");
+		
+	}
+	
+	function  frmContractorCostEstcmbmpcpSkillidcc_onSelect(record)
+	{
+		/* if (jQuery("#tblEmpCostEstGrid").getGridParam("reccount") < 1) {
+			alert("Enter Skilled Manpower cost Details");	
+			jQuery('#cmbmpcpSkillidcc').combobox('clear');			
+			//jQuery('#tabcostInfo').tabs('select', 1);			
+		}	*/
+		var woid = jQuery('#hdnwoId').val();
+		var formType = jQuery('#hdnGlbType').val();
+		//alert(formType);
+		processAjaxCalls("checkManpowerExists.crt","?q=2&woId="+woid+"&formType="+formType,"chkEstManPowerRecallSuccess","chkManPowerRecallError");
+	}
+
+	function chkEstManPowerRecallSuccess(result) {
+		if (parseInt(result.count) == 0) {					
+			jQuery('#cmbmpcpSkillidcc').combobox('clear');
+			alert("Enter Skilled Manpower cost Details");
+		}
+	}
+	function chkActManPowerRecallSuccess(result) {
+		if (parseInt(result.count) == 0) {					
+			jQuery('#cmbmpcsSkillidcc').combobox('clear');
+			alert("Enter Skilled Manpower cost Details");
+		}			
+	}
+		
+	function  frmContractorCostActcmbmpcsManpoweridcc_onSelect(record)
+	{
+		//alert(jQuery("#cmbmpcsManpoweridcc").combobox('getValue'));
+		if (jQuery('#cmbmpcsSkillidcc').combobox('getValue')=="") {
+			alert("Select Vendor");
+			jQuery('#cmbmpcsManpoweridcc').combobox('clear');
+			return;
+		}		
+		processAjaxCalls("contractorCost_getContractorCost.crt","?q=2&empId="+record.id,"actualempIdRecallSuccess","empIdRecallError");
+	}
+
+
+	function empIdRecallSuccess(result)
+		 {
+			jQuery('#hdnEmpNo').val(result.empDetails.empNo);	
+			jQuery('#hdnEmpName').val(result.empDetails.empName);
+		 
+			if (result.empDetails.empCost !=null )
+				displayText('txtmpcpNormalcostcc',result.empDetails.empCost);
+			else
+				displayText('txtmpcpNormalcostcc',"0");
+			
+			displayText('txtmpcpTotalvaluecc',"0");
+		 }
+
+	function actualempIdRecallSuccess(result)
+	{		
+		//alert(result.empDetails.empCalloutRate);
+		jQuery('#hdnEmpNo').val(result.empDetails.empNo);	
+		jQuery('#hdnEmpName').val(result.empDetails.empName);
+		
+		if (result.empDetails.empNorRate !=null )
+			displayText('txtmpcsNormalratecc',result.empDetails.empNorRate);
+		else
+			displayText('txtmpcsNormalratecc',"0");
+		if (result.empDetails.empOtRate !=null )
+			displayText('txtmpcsHolidayratecc',result.empDetails.empOtRate);
+		else
+			displayText('txtmpcsHolidayratecc',"0");
+		if (result.empDetails.empCalloutRate !=null )
+			displayText('txtmpcsOtherratecc',result.empDetails.empCalloutRate);
+		else
+			displayText('txtmpcsOtherratecc',"0");
+		displayText('txtmpcsTotalvaluecc',"0");
+				
+	}
+
+	
+	function frmContractorCostEst_successsCallback() 	{	
+		jQuery("#contracotCostEstGrid").jqGrid().trigger("reloadGrid");
+		jQuery("#contracotCostManPowerGrid").jqGrid().trigger("reloadGrid");		
+		fnEstClearcc();	
+		fnSetPageTotal();
+		//jQuery( "#empContractorEstDiv" ).dialog("close");
+		 closeStaticPopUp("empContractorEstDiv", true);
+	}
+	function frmContractorCostAct_successsCallback(result) 	{
+		jQuery("#contracotCostActGrid").trigger("reloadGrid");
+		jQuery("#contracotCostManPowerGrid").jqGrid().trigger("reloadGrid");
+		fnActClearcc();
+		fnSetPageTotal();
+		//jQuery( "#empContractorActDiv" ).dialog("close");	
+		 closeStaticPopUp("empContractorActDiv", true);
+	}
+	function frmContractorCostEst_deleteSuccessCallback() 	{
+		jQuery("#contracotCostEstGrid").trigger("reloadGrid");
+		jQuery("#contracotCostManPowerGrid").jqGrid().trigger("reloadGrid");
+		fnEstClearcc();
+	}		 
+	function frmContractorCostAct_deleteSuccessCallback() 	{
+		jQuery("#contracotCostActGrid").trigger("reloadGrid");
+		jQuery("#contracotCostManPowerGrid").jqGrid().trigger("reloadGrid");	
+		fnActClearcc();
+	}
+
+	function frmContractorCostEst_deleteErrorCallback()
+	{ alert("Error"); 	}
+	function frmContractorCostAct_deleteErrorCallback()
+	{ alert("Error"); 	}		 
+
+	function fnSetPageTotal() {		
+		var formType = jQuery('#hdnGlbType').val();
+		var woId = jQuery('#hdnwoId').val();
+		processAjaxCalls("costInfo_getPageTotal.crt","?q=2&formName=contractorCost&formType="+formType+'&woId='+woId,"getTotalSuccessRecall","getTotalRecallError");	
+	}
+	
+	function getTotalSuccessRecall(result) {
+		jQuery('#txtTotalcc').val(result.pageTotal.value);
+		jQuery('#txtNoofContractorcc').val(result.pageTotal.noofemp);
+	}
+	
+	function empIdRecallError(result)
+	{ 		alert("error"+result.size()); 	}
+
+	function costGridLoad()
+	{	//alert("loadeddddd");
+	}
+</script>
+
+<div> <input type="hidden" id="hdnEstMode"></div>
+<div> <input type="hidden" id="hdnActMode"></div>
+<div> <input type="hidden" id="hdnEmpName"></div>
+<div> <input type="hidden" id="hdnEmpNo"></div>
+
+<div class="sub-header"  align="left">Contractor Cost Estimation</div>
+
+   <div title="Contractor Estimate" style="padding:10px;" id="empContractorEstDiv">
+   	<form id="frmContractorCostEst" name="frmContractorCostEst">                
+      	<div style="float:left;padding:px;margin-left: px;">
+           <div  class="easyui-paddingbfpx" align="left"><label class="mandatory-lbl">Vendor</label></div> 
+            <div class="easyui-paddingbfpx">
+                <input id="cmbmpcpSkillidcc" name="cmbmpcpSkillidcc" class="easyui-combobox"  style="width:300px;" value=""  >
+                
+                <span id="err_cmbmpcpSkillidcc" class="tpm-errormsg"></span>             
+            </div>               
+           <div  class="easyui-paddingbfpx" align="left"><label class="mandatory-lbl">Contractor</label></div> 
+            <div class="easyui-paddingbfpx">
+                <input id="cmbmpcpManpoweridcc" name="cmbmpcpManpoweridcc" class="easyui-combobox"  style="width:300px;" value=""  >
+                                
+                <span id="err_cmbmpcpManpoweridcc" class="tpm-errormsg"></span>                
+            </div>               
+            
+			<div  class="easyui-paddingbfpx" align="left"><label class="mandatory-lbl">Minutes</label>
+                <span  style="margin-left: 47px;margin-left: 57px\9;">Cost</span>
+                <span  style="margin-left: 68px;margin-left: 77px\9;">Total Cost</span>           
+			</div>
+			<div>
+				<input id="txtmpcpNormalminscc" name="txtmpcpNormalminscc" type="text" class="easyui-text" size="15" >
+                <input id="txtmpcpNormalcostcc" name="txtmpcpNormalcostcc" type="text" class="easyui-text" size="15" style="margin-left: 16px;" value="0">
+                <input id="txtmpcpTotalvaluecc" name="txtmpcpTotalvaluecc" type="text" class="easyui-text" size="15" style="margin-left: 16px;" value="0">
+			</div>
+			<div>
+				<span id="err_txtmpcpNormalminscc" class="tpm-errormsg"></span>	
+				<span id="err_txtmpcpNormalcostcc" class="tpm-errormsg"></span>
+				<span id="err_txtmpcpTotalvaluecc" class="tpm-errormsg"></span>
+			</div>
+            <!--  <div>
+                <input id="txtmpcpNormalminscc" name="txtmpcpNormalminscc" type="text" class="easyui-text" size="15" >
+                <span id="err_txtmpcpNormalminscc" class="tpm-errormsg"></span>
+             </div>
+             <div>
+                <input id="txtmpcpNormalcostcc" name="txtmpcpNormalcostcc" type="text" class="easyui-text" size="15" style="margin-left: 16px;" value="0">
+                <span id="err_txtmpcpNormalcostcc" class="tpm-errormsg"></span>
+             </div>
+             <div>
+                <input id="txtmpcpTotalvaluecc" name="txtmpcpTotalvaluecc" type="text" class="easyui-text" size="15" style="margin-left: 16px;" value="0">
+                <span id="err_txtmpcpTotalvaluecc" class="tpm-errormsg"></span>
+             </div>  
+              -->    
+			<div align="center" style="float: top; padding-right: 0px">
+				<br><br><br>
+				<input type="button" id="btnEstInsertcc" name="btnEstInsertcc" class="easyui-button" value="Insert" style="width: 80px;"> 
+				<input type="button" id="btnEstClearcc" name="btnEstClearcc" class="easyui-button" value="Clear" style="width: 80px;">					
+			</div>
+			</div>       		
+       	</form>
+	   </div>
+	
+        <table border="0" width="100%">                
+        <tr>
+        <td colspan="2" valign="middle" align="center" width="70%">
+       		<div style="float: left;padding-right: 40px;_padding-right: 20px;">
+       		<table id="contracotCostEstGrid" width="500px"></table> </div>
+			<div id="contracotCostEstPager"></div>
+       	<td  align="right" width="30%">
+			<div>
+				<input type="button" id="btnEstNewcc" name="btnEstNewcc" class="easyui-button" value="Add New" style="width: 80px;"> <br><br>									
+				<input type="button" id="btnEstDeletecc" name="btnEstDeletecc" class="easyui-button" value="Delete" style="width: 80px;"> <br><br>
+			</div>
+		</td>        
+        </tr>
+        </table>
+<div  class="sub-header" align="left">Contractor Cost Actual</div>
+	<div title="Contractor Cost Actual" style="padding:10px;" id="empContractorActDiv">
+	<form id="frmContractorCostAct" name="frmContractorCostAct">        
+       <table width="100%">       
+         <tr>
+                <!--top left content -->
+                <td class="valigncnt" style="width:50%" >
+                    <div style="float:left;margin-left: px;">
+                         <div  class="easyui-paddingbfpx"><label class="mandatory-lbl">Vendor</label></div> 
+                        <div class="easyui-paddingbfpx"> 
+                            <input id="cmbmpcsSkillidcc" name="cmbmpcsSkillidcc" class="easyui-combobox"  style="width:315px;" value=""  >
+                                                        
+                            <span id="err_cmbmpcsSkillidcc" class="tpm-errormsg"></span>
+                        </div>
+                        <div  class="easyui-paddingbfpx"><label>Contractor</label></div> 
+                        <div class="easyui-paddingbfpx"> 
+                            <input id="cmbmpcsManpoweridcc" name="cmbmpcsManpoweridcc" class="easyui-combobox"  style="width:315px;" value=""  >
+                            
+                            <span id="err_cmbmpcsSkillidcc" class="tpm-errormsg"></span>                            
+                        </div>    
+                         <div  class="easyui-paddingbfpx">
+                        <label>Normal</label>
+                        <span  style="margin-left: 54px;margin-left: 60px\9;"><label>Call-Out</label></span>
+                        <span  style="margin-left: 49px;margin-left: 57px\9;"><label>Over Time</label></span>
+                        </div> 
+                        <div class="easyui-paddingbfpx">
+                            <input id="txtmpcsNormalratecc" name="txtmpcsNormalratecc" type="text" class="easyui-text" size="15" value="0" >
+                            <input id="txtmpcsHolidayratecc" name="txtmpcsHolidayratecc" type="text" class="easyui-text" size="15" style="margin-left: 16px;" value="0">
+                            <input id="txtmpcsOtherratecc" name="txtmpcsOtherratecc" type="text" class="easyui-text" size="18" style="margin-left: 16px;" value="0">                                  
+                        </div>                      
+                    </div>
+                </td>
+                <!--top Right content-->
+                <td class="valigncnt" valign='top' style="width:40%;">
+                    <div  style="padding-left:0px;">
+                       <!--  <div  class="easyui-paddingbfpx">
+                        <label class="mandatory-lbl">Normal Mins</label>
+                        <span  style="margin-left: 10px;margin-left: 20px\9;"><label class="mandatory-lbl">Call-Out Mins</label></span>
+                        <span  style="margin-left: 8px;margin-left: 18px\9;"><label class="mandatory-lbl">Over Time Mins</label></span>
+                        <span  style="margin-left: 23px;margin-left: 5px\9;"><label>Total</label></span>
+                        </div>  -->
+                        
+                        <div class="easyui-paddingbfpx" style="display:flex; flex-wrap:nowrap; gap:14px;">
+    <div style="display:flex; flex-direction:column; width:90px;">
+        <label class="mandatory-lbl">Normal Mins</label>
+        <input id="txtmpcsNormalwtcc" name="txtmpcsNormalwtcc" type="text"
+               class="easyui-text" style="width:85px;">
+    </div>
+    <div style="display:flex; flex-direction:column; width:90px;">
+        <label class="mandatory-lbl">Call-Out Mins</label>
+        <input id="txtmpcsHolidaywtcc" name="txtmpcsHolidaywtcc" type="text"
+               class="easyui-text" style="width:85px;">
+    </div>
+    <div style="display:flex; flex-direction:column; width:100px;">
+        <label class="mandatory-lbl">Over Time Mins</label>
+        <input id="txtmpcsOtherwtcc" name="txtmpcsOtherwtcc" type="text"
+               class="easyui-text" style="width:85px;">
+    </div>
+    <div style="display:flex; flex-direction:column; width:70px;">
+        <label>Total</label>
+        <input id="txtmpcsTotalvaluecc" name="txtmpcsTotalvaluecc" type="text"
+               class="easyui-text" style="width:65px;" value="0" readonly>
+    </div>
+</div>
+                     <!--    <div class="easyui-paddingbfpx">
+                            <input id="txtmpcsNormalwtcc" name="txtmpcsNormalwtcc" type="text" class="easyui-text" size="10" >
+                            <input id="txtmpcsHolidaywtcc" name="txtmpcsHolidaywtcc" type="text" class="easyui-text" size="10" style="margin-left: 25px;">
+                            <input id="txtmpcsOtherwtcc" name="txtmpcsOtherwtcc" type="text" class="easyui-text" size="10" style="margin-left: 25px;">
+                                                              
+                            <input id="txtmpcsTotalvaluecc" name="txtmpcsTotalvaluecc" type="text" class="easyui-text" size="10" style="margin-left: 50px;margin-left: 25px\9;" value="0">                            
+                        </div>    -->
+                     <!--    <div  class="easyui-paddingbfpx">
+                        <label>Date</label>
+                        <span  style="margin-left: 75px;"><label>Activity</label> </span>
+                        </div> 
+                        <div> 
+                            <input id="dtempcsDatecc" name="dtempcsDatecc" class="easyui-datebox" style="width:100px;"/>
+                            <textarea id="txampcsActivitycc" name="txampcsActivitycc" style="width: 245px;height: 25px" rows="6" cols="1"></textarea>
+							<span id="err_dtempcpDatecc" class="tpm-errormsg"></span>                                                                
+                            <span id="err_cmbmpcpActivitycc" class="tpm-errormsg"></span>
+                        </div>
+                        <div  class="easyui-paddingbfpx"><label>Remarks</label></div> 
+                        <div class="easyui-paddingbfpx"> 
+                            <textarea id="txampcsRemarkscc" name="txampcsRemarkscc" style="width: 350px;height: 55px" rows="5" cols="2"></textarea>                                                     
+                        </div>   -->  
+                        <div class="easyui-paddingbfpx" style="display:flex; gap:24px; align-items:flex-start;">
+    <div style="display:flex; flex-direction:column; width:110px;">
+        <label>Date</label>
+        <input id="dtempcsDatecc" name="dtempcsDatecc" class="easyui-datebox" style="width:100px;"/>
+        <span id="err_dtempcpDatecc" class="tpm-errormsg"></span>
+    </div>
+    <div style="display:flex; flex-direction:column; width:280px;">
+        <label>Activity</label>
+        <textarea id="txampcsActivitycc" name="txampcsActivitycc"
+                  style="width:280px; height:55px; resize:none;" rows="3"></textarea>
+        <span id="err_cmbmpcpActivitycc" class="tpm-errormsg"></span>
+    </div>
+</div>
+
+<div class="easyui-paddingbfpx" style="margin-top:14px;">
+    <label>Remarks</label>
+</div>
+<div class="easyui-paddingbfpx">
+    <textarea id="txampcsRemarkscc" name="txampcsRemarkscc"
+              style="width:414px; height:55px; resize:none;" rows="4"></textarea>
+</div>      
+                    </div>	
+                </td>
+            </tr>
+         </table>
+			<br>
+			<div  align=center>
+				<input type="button" id="btnActInsertcc" name="btnActInsertcc" class="easyui-button" value="Insert" style="width: 80px;"> 
+				<input type="button" id="btnActClearcc" name="btnActClearcc" class="easyui-button" value="Clear" style="width: 80px;">				
+			</div>         
+         </form>
+    	</div>    
+		  
+         <table width="100%">
+        <tr>
+        	<td class="valigncnt" colspan="2" valign="middle" align="center" width="70%">
+       			<div style="float: left;padding-right: 40px;_padding-right: 20px;">
+       			<table id="contracotCostActGrid" width="500px" style="float: left;"></table> </div>
+				<div id="contracotCostActPager" style="float: center;"></div>        
+        	</td>
+                 <td align="right" width="30%">
+					<div>
+						<input type="button" id="btnActNewcc" name="btnActNewcc" class="easyui-button" value="Add New" style="width: 80px;"> <br><br>										
+						<input type="button" id="btnActDeletecc" name="btnActDeletecc" class="easyui-button" value="Delete" style="width: 80px;"> <br><br>
+					</div>
+				</td>        	
+        </tr>
+        <tr>
+        <td class="valigncnt" colspan="2" valign="middle" align="center" align="right" width="70%">                
+        <div style="float: left;">        
+        	<div style="float: left;padding-right: 40px;_padding-right: 20px;">
+       			<table id="contracotCostManPowerGrid" width="500px" style="float: left;"></table> </div>
+				<div id="contracotCostManPowerPager" style="float: center;"></div>
+        </div>
+        </td>
+        <td valign="top" align="right" width="30%" > 
+        	<div style="width:80px">      
+	        	<label>Number of Contractor</label><br> 
+	        	<input id="txtNoofContractorcc" name="txtNoofContractorcc" type="text" class="easyui-text" value="" readonly="readonly" size="10" >        
+	       		<br/><br/>     	
+	        	<label>Total Amount</label><br> 
+	        	<input id="txtTotalcc" name="txtTotalcc"  type="text" class="easyui-text" value="" readonly="readonly" size="10" >
+        	</div>
+        </td>
+        </tr>
+        </table>
+ 

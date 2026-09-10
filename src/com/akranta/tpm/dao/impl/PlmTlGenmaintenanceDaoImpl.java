@@ -420,7 +420,7 @@ public class PlmTlGenmaintenanceDaoImpl implements PlmTlGenmaintenanceDao {
 		WomTlWomstSql womTlWomstSql = new WomTlWomstSql(); // contains dbtable,field names, Field types and related sqls  of master table
 		
 		try{		
-			womTlWomst.setWomsKeyid(dbActionTemplate.getSequenceNumber(WomTlWomstSql.TBL_WOM_TL_WOMST, 15, "MW", null, null));//getSequenceNumber(WomTlWomstSql.TBL_WOM_TL_WOMST)); // set the sequnce number
+			womTlWomst.setWomsKeyid(dbActionTemplate.getSequenceNumber(WomTlWomstSql.TBL_BAL_WOM_TL_WOMST, 15, "MW", null, null));//getSequenceNumber(WomTlWomstSql.TBL_WOM_TL_WOMST)); // set the sequnce number
 			List<String[]>  overlapFlag = isMSRExist(womTlWomst);
 			if(overlapFlag.size()>0)
 			{

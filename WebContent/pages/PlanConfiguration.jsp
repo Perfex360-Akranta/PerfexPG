@@ -39,7 +39,20 @@
 				
 });
 
+	jQuery("#cmbPplcMachineid").combobox({onRequest:function( ){
+		var fctid = jQuery("#frmPlanConfiguration input[id='factory']").val();
+		var machId = jQuery("#frmPlanConfiguration input[id='cmbPplcMachineid']").combobox("getValue");
+		 //jQuery("#frmPlanConfiguration "+fieldId).combobox("getValue");
+		var cellid = jQuery("#frmPlanConfiguration input[id='cell']").val();
+	//	var flid = jQuery("#frmPlanConfiguration input[id='flid']").val();
+		filterStr = '&factId='+fctid;
+		filterStr +='&machId='+machId;
+		filterStr +='&cellId='+cellid;
+	//	filterStr +='&flid='+flid;
 	
+	 	 
+		return filterStr;
+	}}); 	
 		jQuery('#chMPplcLevel').click(function(){
 			chekChkBox("eqp");
 			jQuery('#chkApplyToall').attr('checked',false);
@@ -166,20 +179,21 @@
 		getDataFunc();
 		});	 
 		jQuery('#btnClear').click(function(){
-			jQuery( ' #chMPplcLevel ').attr('disabled',false);
-			jQuery( ' #chAPplcLevel ').attr('disabled',false);
+			jQuery('#chMPplcLevel ').attr('disabled',false);
+			jQuery('#chAPplcLevel ').attr('disabled',false);
 			//enableFields('chMPplcLevel');
 			//enableFields('chAPplcLevel');
 			enableFields('cmbPplcMachineid');
 			clearField('cmbPplcMachineid');
-			loadFunctionalLocation("pplcfunLocation","functionalLoc.plnconfig","pplcfunLocationValues","frmPlanConfiguration");
+			loadFunctionalLocation("pplcfunLocation","functionalLoc.plnconfig","pplcfunLocationValues","frmPlanConfiguration","");
 			enableFields('btnfrmPlanConfigurationmainFunLoc');
 			jQuery("#planconfig").clearGridData();
 			/*Enabling functional location*/
-			jQuery("#btnfrmPlanConfigurationmainFunLoc").click(function() { 
-				jQuery("#functLocHierarPopupId").dialog('open');
-			});
-			 jQuery('#dispFunctionalLoc a').click(function() { jQuery("#functLocHierarPopupId").dialog('open'); });
+			//jQuery("#btnfrmPlanConfigurationmainFunLoc").click(function() { 
+				//jQuery("#functLocHierarPopupId").dialog('open');
+			//});
+			// jQuery('#dispFunctionalLoc a').click(function() { jQuery("#functLocHierarPopupId").dialog('open'); });
+			 
 			 
 		});
 		function planconfig_loadComplete(){
@@ -209,7 +223,8 @@
 				var rowData = jQuery("#planconfig").jqGrid('getRowData',row_id);
 				
 				var selId = rowData.machineid;
-				var keyId = rowData.worespkeyid;//alert(keyId);
+				var keyId = rowData.worespkeyid;
+				alert("keyId inside load complete "+keyId);
 				//var optedValue=getFieldValue('cmbPwrmlevel');
 				var filterStrldCmplted ="";
 				var fctid = getFieldValue('factory');
@@ -277,10 +292,11 @@
 				var cellid = getFieldValue('cell');
 				var rowId = jQuery("#planconfig").jqGrid('getDataIDs');
 				 applytoall='M';
-				 if((cellid != " " && cellid != "" && cellid != null )||(machId != " " && machId != "" && machId != null))
+				 var eleType = jQuery("#frmPlanConfiguration input[id=elementType]").val();
+				 if(eleType == "CELL" || ( cellid != " " && cellid != "" && cellid != null ) ||(machId != " " && machId != "" && machId != null))
 					showaddPlan(rowId,applytoall);
 				 else{
-					alert("Select Line");
+					alert("Select Cell");
 					 jQuery('#chkApplyToall').attr('checked',false);
 				 }
 			}
@@ -306,7 +322,8 @@
 				var cellid = getFieldValue('cell');
 				var rowId = jQuery("#planconfig").jqGrid('getDataIDs');
 				 applytoall='A';
-				 if((cellid != " " && cellid != "" && cellid != null )||(machId != " " && machId != "" && machId != null))
+				 var eleType = jQuery("#frmPlanConfiguration input[id=elementType]").val();
+				 if(eleType == "MCHM" ||(cellid != " " && cellid != "" && cellid != null )||(machId != " " && machId != "" && machId != null))
 					showaddPlan(rowId,applytoall);
 				 else{
 					 alert("Select Machine");
@@ -350,9 +367,11 @@
 		
 		
 		keyId = rowData.keyid;
+		alert("keyId add plan inside"+keyId);
 		assmId = rowData.assmid;
 		/*for opening Woresp*/
 		worespkeyId = rowData.worespkeyid;
+		alert("worespkeyId add plan inside"+worespkeyId);
 	  }
 		/*var fctid = getFieldValue('factory');
 		var machId = getFieldValue('machine');
@@ -397,7 +416,7 @@
 			datstr += "&assmId="+assmId;
 		}
 		var filterString = datstr;
-	//alert(filterStr);
+	  //alert(filterStr);
 	    datstr += "&filterStr="+filterStr;
 	    //jQuery('#subFormPopUpId').html(' ');
 	    jQuery('#submitForm').val('');
@@ -418,17 +437,18 @@
 		var rowData = jQuery("#planconfig").jqGrid('getRowData',rowId);
 		var selId = rowData.machineid;
 		//var plankeyId = rowData.worespkeyid;
-		//alert(selId);
+		alert("selId"+selId);
 		var keyId = rowData.worespkeyid;
+		alert("keyId inside responsible"+keyId)
 		//var optedValue=getFieldValue('cmbPwrmlevel');
 		var filterStr="?q=2";
-		var fctid = jQuery("#frmPlanConfiguration input[id='factory']").val();
+		var fctid  = jQuery("#frmPlanConfiguration input[id='factory']").val();
 		var machId = jQuery("#frmPlanConfiguration input[id='machine']").val();
 		var cellid = jQuery("#frmPlanConfiguration input[id='cell']").val();
 		var sectid = jQuery("#frmPlanConfiguration input[id='section']").val();
-		var flid = jQuery("#frmPlanConfiguration input[id='flid']").val();
+		var flid   = jQuery("#frmPlanConfiguration input[id='flid']").val();
 		var costcenterid = getFieldValue('cmbCostcentreid');
-		filterStr = '&fctid='+fctid;
+		filterStr  = '&fctid='+fctid;
 		filterStr +='&machId='+machId;
 		filterStr +='&cellid='+cellid;
 		filterStr +='&sectid='+sectid;
@@ -442,7 +462,7 @@
 		if(keyId != null && keyId != "" && keyId != " " )
 				filterStr +='&workMstKeyId='+keyId;
 			else
-				filterStr +='&workMstKeyId=" "';
+				filterStr +='&workMstKeyId=';
 		
 		
 		/*if(plankeyId != null && plankeyId != "" && plankeyId != " " )
@@ -453,7 +473,7 @@
 			//LoadPopUp("divplanconfig","wrkOdrResp_input.plnconfig?q=2&datstr="+escape(filterStr), true,"598px","300px","0px","20%", "multiSelectOk_Callback","WorkOrder Responsibility");
 			
 			subFormPop("wrkOdrResp_input.plnconfig","300","20","385", "608","WorkOrderResponsibility",filterStr);
-	}	
+	}
 	function frmPlanConfigurationpop_exceptionCallback(){alert('exception');}
 	function frmPlanConfigurationpop_phencauseLinkCallBack(){//alert('no key id');
 		}
@@ -484,6 +504,12 @@
 		jQuery('#planconfig').trigger("reloadGrid");
 		
 		}
+	
+	/*  commemt */
+/* 	function frmPlanConfigurationpop_onSuccess(response){
+	    jQuery('#planconfig').trigger("reloadGrid");
+	}
+ */	
 	function getval(fieldId)
 	{
 		//alert(fieldId);
@@ -568,14 +594,29 @@
     }
 	  function frmPlanConfiguration_FuntLocHierarchy_SuccessCallBack(keyIds)
 		{
-		    setFieldValue('cmbPplcMachineid',keyIds.machId);
-			reloadMachine("frmPlanConfiguration",'cmbPplcMachineid',keyIds.cellId,keyIds.sectId,keyIds.factId,keyIds.locnId,keyIds.compId);
+		  var machId = jQuery("#frmPlanConfiguration input[id='machine']").val();
+		 // alert("mechine"+machId);
+		  setFieldValue("cmbPplcMachineid",machId); 
+		  setFunctionalLocWidth("frmPlanConfiguration", 1032);
+		    reloadCombo("frmPlanConfiguration","cmbPplcMachineid","machineCombo.commonFilter");
+			//reloadMachine("frmPlanConfiguration",'cmbPplcMachineid',keyIds.cellId,keyIds.sectId,keyIds.factId,keyIds.locnId,keyIds.compId);
+			
+			
+			//sbu
+			var sbuVal = jQuery("#frmPlanConfiguration input[name='hdnsbu']").val();
+			  // Fallback by id, in case it's rendered as id instead of name in some cases
+			  if(sbuVal == null || sbuVal == '' || sbuVal == undefined)
+			    sbuVal = jQuery("#hdnsbu").val();
+			  console.log("sbuVal from hdnsbu:", sbuVal);
+			  if(sbuVal != null && sbuVal != '' && sbuVal != undefined) {
+			    jQuery("#frmPlanConfiguration input[id='factory']").val(sbuVal);
+			  }
 		} 
 	 
 </script>
 <form id="frmPlanConfiguration" name="frmPlanConfiguration">
 <div id="wrapper" style="width:1000px">
-<div class="main-cntborder"  style="width:1000px\9">
+<div class="main-cntborder"  style="width:1072px">
 <div style="margin-left:2%;">
 
 <table  border="0" style="width:100%;" >
@@ -585,10 +626,11 @@
 				<input type="hidden" id="factory" name="cmbPplcFactoryid" value=""  ></input>
 				<input type="hidden" id="section" name="cmbPplcSectionid" value=""  ></input>
 				<input type="hidden" id="cell" name="cmbPplcCellid" value=""  ></input>
-				<input type="hidden" id="machine" name="pplcMachineid" value=""></input>
+				<input type="hidden" id="machine" name="hdnPplcMachineid" value=""></input>
 				<input type="hidden" id="flid" name="cmbPplcFlid" value=""></input>
+				<input type="hidden" id="elementId" name="hdnPplcElementid" value=""></input>
 				</div>
-				<div id="pplcfunLocation" style="padding-top: 15px;"></div>
+				<div id="pplcfunLocation" style="padding-top: 15px";></div>
 			</td>
 		</tr>
 		<tr >
