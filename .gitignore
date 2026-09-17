@@ -1,0 +1,21 @@
+# Java class files
+*.class
+
+
+# Eclipse compiled output
+WebContent/WEB-INF/classes/
+
+# Java build output
+target/
+build/
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
