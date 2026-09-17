@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="PlmTlStandards" name="com.akranta.tpm.model.PlmTlStandards" >
+		<validate For="create update plmTlStandards">
+			<property name="PmsdMachineid" type="String" required="true" />
+ 			<property name="PmsdAssemblyid" type="String" required="true" /> 
+			<property name="PmsdSource" type="String" required="true" />
+			<property name="PmsdTradeid" type="String" required="true" />
+			<property name="PmsdActivitytype" type="String" required="true" />
+			<property name="PmsdMachinecondition" type="String" required="true" />
+<!-- 			<property name="PmsdDuration" type="String" required="true" /> -->
+			<property name="PmsdActivity" type="String" required="true" />
+			<property name="PmsdHowmethod" type="String" required="true" />
+		    <property name="PmsdPreparedbyid" type="String" required="true" />
+
+		</validate>	
+	</class>
+	<class id="PlmTlCbmstdcadtl" name="com.akranta.tpm.model.PlmTlCbmstdcadtl" >
+		<validate For="create update plmTlCbmstdcadtl">
+			<property name="CmdtUomid" type="String" required="true" />
+			<property name="CmdtInspectionid" type="String" required="true" />
+		</validate>
+	</class>
+</validations>
+
+

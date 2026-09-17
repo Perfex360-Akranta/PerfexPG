@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="SprPckupFormBean" name="com.akranta.tpm.bean.SprPckupFormBean" >
+		<validate For="create update">
+			<property name="cmbSprName" type="String" required="true"  /> 
+			
+	  </validate>	
+	</class>
+	
+	<class id="PlmTlSparedtl" name="com.akranta.tpm.model.PlmTlSparedtl" >
+		<validate For="create update ">
+			<property name="PspdQuantity" type="String" required="true" />
+		</validate> 
+		
+	</class>
+</validations>

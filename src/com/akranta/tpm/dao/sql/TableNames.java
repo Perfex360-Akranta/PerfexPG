@@ -368,5 +368,10 @@ public class TableNames {
 	public static final String TBL_BAL_PLM_TL_WORESPMST = "BAL_PLM_TL_WORESPMST";
 	public static final String TBL_BAL_PLM_TL_PLANCONFIGURATION = "BAL_PLM_TL_PLANCONFIGURATION";
 
+public static final String TBL_BAL_PLM_TL_ZONEMST = "BAL_PLM_TL_ZONEMST ";
+	
+	public static final String TBL_BAL_PLM_TL_CBMSTDCADTL = "BAL_PLM_TL_CBMSTDCADTL ";
+	public static final String TBL_BAL_PLM_TL_SPAREDTL ="BAL_PLM_TL_SPAREDTL";
+	
 }
 

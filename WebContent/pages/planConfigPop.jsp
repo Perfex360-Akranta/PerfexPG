@@ -78,10 +78,21 @@ jQuery('#pcSaveBtn').click(function saveToGrid(){
 	  }  
 });
 
+/* function frmPlanConfigurationpop_beforeSubmit(){
+	var retStr = "&cmbPplcFactoryid="+jQuery("input:hidden[name=cmbPplcFactoryid]").val() +"&cmbPplcSectionid="+jQuery("input:hidden[name=cmbPplcSectionid]").val() +"&cmbPplcCellid=" +jQuery("input:hidden[name=cmbPplcCellid]").val() + "&hdnPplcElementid="+jQuery("input:hidden[name=hdnPplcElementid]").val() + "&pplcKeyid="+jQuery("input:hidden[name=pplcKeyid]").val() ;
+	return retStr; 
+} */
+
+//elumalai
 function frmPlanConfigurationpop_beforeSubmit(){
-	var retStr = "&cmbPplcFactoryid="+jQuery("input:hidden[name=cmbPplcFactoryid]").val() +"&cmbPplcSectionid="+jQuery("input:hidden[name=cmbPplcSectionid]").val() +"&cmbPplcCellid=" +jQuery("input:hidden[name=cmbPplcCellid]").val() + "&hdnPplcElementid="+jQuery("input:hidden[name=hdnPplcElementid]").val() ;
+	var retStr = "&cmbPplcFactoryid="+jQuery("input:hidden[name=cmbPplcFactoryid]").val()
+	           + "&cmbPplcSectionid="+jQuery("input:hidden[name=cmbPplcSectionid]").val()
+	           + "&cmbPplcCellid=" +jQuery("input:hidden[name=cmbPplcCellid]").val()
+	           + "&hdnPplcElementid="+jQuery("input:hidden[name=hdnPplcElementid]").val()
+	           + "&keyId="+jQuery("input:hidden[name=pplcKeyid]").val();  
 	return retStr; 
 }
+
 function chktxtVal(){
 	var txtval = jQuery('#txtPplcWeekno').val();
 	if(parseInt(txtval) ==0  ){
@@ -122,6 +133,9 @@ function frmPlanConfigurationpop_exceptionCallback(result){
 		  }
 	
 }
+
+
+
 function delPmPlan_OnSuccess(result){
 	//alert(Object.keys(result));
 	
@@ -143,7 +157,8 @@ function delPmPlan_OnSuccess(result){
 		*/
 	}
 	//jQuery( "#subformPopUpId" ).dialog('close');
-	//jQuery('#planconfig').trigger("reloadGrid");
+	jQuery('#planconfig').trigger("reloadGrid");
+	closePopUpDialoge('divplanconfig');
 
 }
 function delPmPlan_OnError(result){
@@ -209,6 +224,7 @@ function frmPlanConfigurationpop_successsCallback(result){
 		//jQuery( "#subformPopUpId" ).dialog('close');
 	
 		jQuery('#planconfig').trigger("reloadGrid");
+		closePopUpDialoge('divplanconfig'); 
 	}
 }
 </script>
@@ -355,5 +371,7 @@ function frmPlanConfigurationpop_successsCallback(result){
 		</tr>
 	</table></form>
 	<input type="hidden" id="hdnMch" name="hdnMch" value="${ requestScope.rowmachId}"/>
+	<input type="hidden" id="pplcKeyid" name="pplcKeyid" value="${requestScope.plmTlPlanconfiguration.pplcKeyid}"/>
+	
 <!--	<input type="hidden" id="asmChkd" name="asmChkd" value="${ requestScope.assmId}"/>-->
 	<input type="hidden" id="hdnFilterVals" name="hdnFilterVals" value="${ requestScope.datastr}"/>

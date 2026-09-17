@@ -83,8 +83,8 @@ public class BAL_PlmTlPlanconfigurationServiceImpl implements BAL_PlmTlPlanconfi
 	@Override
 	public List<String[]> getYearHirerachy(String selYear) throws Exception {
 		// TODO Auto-generated method stub
-		//return this.plmTlPlanconfigurationDao.getYearHirerachy(selYear) ;
-		return this.balWorespServiceApi.getNextDueDates();
+		return this.plmTlPlanconfigurationDao.getYearHirerachy(selYear) ;
+		//return this.balWorespServiceApi.getNextDueDates();
 	}
 	public PcsTlProductionplan create(PcsTlProductionplan newPcsTlProductionplan,PcsTlProductionplan oldPcsTlProductionplan)throws ValidationExceptions, Exception
 	{
@@ -108,25 +108,81 @@ public class BAL_PlmTlPlanconfigurationServiceImpl implements BAL_PlmTlPlanconfi
 			System.out.println("insdie service impl of planconfig create  " + newPlmTlPlanconfiguration.getPplcMonthly());
 			String validationsFor = "create";
 			if(!UIUtils.isValidKeyId(usrConfirmation)){
+				
+				
+				
 			//validations.validate(newPlmTlPlanconfiguration,"Planconfiguration",validationsFor);//com.akranta.validations.tpm.validations.clitcreation.xml - defined rules for server side validations
-				 if(UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly()))
-					 newPlmTlPlanconfiguration.setPplcYearly("01-"+newPlmTlPlanconfiguration.getPplcYearly());
+				String PplcYearly = newPlmTlPlanconfiguration.getPplcYearly();
+				if (UIUtils.isValidKeyId(PplcYearly)) {
+					PplcYearly = "01-" + PplcYearly;
+				}
+				newPlmTlPlanconfiguration.setPplcYearly(CommonFunctions.pg_getDateTimeFromDate(PplcYearly));
+				//if(UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly()))
+					// newPlmTlPlanconfiguration.setPplcYearly("01-"+newPlmTlPlanconfiguration.getPplcYearly());
+				
+				String PplcHalfyearly2 = newPlmTlPlanconfiguration.getPplcYearly2();
+				newPlmTlPlanconfiguration.setPplcYearly2(CommonFunctions.pg_getDateTimeFromDate(PplcHalfyearly2));
 				 if(UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly2()))
 					 newPlmTlPlanconfiguration.setPplcYearly2("01-"+newPlmTlPlanconfiguration.getPplcYearly2());
+				 
+				 String PplcHalfyearly3 = newPlmTlPlanconfiguration.getPplcYearly3();
+					newPlmTlPlanconfiguration.setPplcYearly3(CommonFunctions.pg_getDateTimeFromDate(PplcHalfyearly3));
 				 if(UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly3()))
 					 newPlmTlPlanconfiguration.setPplcYearly3("01-"+newPlmTlPlanconfiguration.getPplcYearly3());
+				 
+				 String PplcYearly4 = newPlmTlPlanconfiguration.getPplcYearly4();
+				 if (UIUtils.isValidKeyId(PplcYearly4)) {
+					 PplcYearly4 = "01-" + PplcYearly4;
+					}
+					newPlmTlPlanconfiguration.setPplcYearly4(CommonFunctions.pg_getDateTimeFromDate(PplcYearly4));
 				 if(UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly4()))
 					 newPlmTlPlanconfiguration.setPplcYearly4("01-"+newPlmTlPlanconfiguration.getPplcYearly4());
+				 
+				 String PplcYearly5 = newPlmTlPlanconfiguration.getPplcYearly5();
+				 if (UIUtils.isValidKeyId(PplcYearly5)) {
+					 PplcYearly5 = "01-" + PplcYearly5;
+					}
+					newPlmTlPlanconfiguration.setPplcYearly5(CommonFunctions.pg_getDateTimeFromDate(PplcYearly5));
 				 if(UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly5()))
 					 newPlmTlPlanconfiguration.setPplcYearly5("01-"+newPlmTlPlanconfiguration.getPplcYearly5());
+				 
+				 String PplcYearly6 = newPlmTlPlanconfiguration.getPplcYearly6();
+				 if (UIUtils.isValidKeyId(PplcYearly6)) {
+					 PplcYearly6 = "01-" + PplcYearly6;
+					}
+					newPlmTlPlanconfiguration.setPplcYearly6(CommonFunctions.pg_getDateTimeFromDate(PplcYearly6));
 				 if(UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly6()))
 					 newPlmTlPlanconfiguration.setPplcYearly6("01-"+newPlmTlPlanconfiguration.getPplcYearly6());
+				 
+				 String PplcYearly7 = newPlmTlPlanconfiguration.getPplcYearly7();
+				 if (UIUtils.isValidKeyId(PplcYearly7)) {
+					 PplcYearly7 = "01-" + PplcYearly7;
+					}
+					newPlmTlPlanconfiguration.setPplcYearly7(CommonFunctions.pg_getDateTimeFromDate(PplcYearly7));
 				 if(UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly7()))
 					 newPlmTlPlanconfiguration.setPplcYearly7("01-"+newPlmTlPlanconfiguration.getPplcYearly7());
+				 
+				 String PplcYearly8 = newPlmTlPlanconfiguration.getPplcYearly8();
+				 if (UIUtils.isValidKeyId(PplcYearly8)) {
+					 PplcYearly8 = "01-" + PplcYearly8;
+					}
+					newPlmTlPlanconfiguration.setPplcYearly8(CommonFunctions.pg_getDateTimeFromDate(PplcYearly8));
 				 if(UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly8()))
 					 newPlmTlPlanconfiguration.setPplcYearly8("01-"+newPlmTlPlanconfiguration.getPplcYearly8());
+				 
+				 String PplcYearly9 = newPlmTlPlanconfiguration.getPplcYearly9();
+				 if (UIUtils.isValidKeyId(PplcYearly9)) {
+					 PplcYearly9 = "01-" + PplcYearly9;
+					}
+					newPlmTlPlanconfiguration.setPplcYearly9(CommonFunctions.pg_getDateTimeFromDate(PplcYearly9));
 				 if(UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly9()))
 					 newPlmTlPlanconfiguration.setPplcYearly9("01-"+newPlmTlPlanconfiguration.getPplcYearly9());
+				 
+				 String PplcYearly10 = newPlmTlPlanconfiguration.getPplcYearly10();
+				 if (UIUtils.isValidKeyId(PplcYearly10)) {
+					 PplcYearly10 = "01-" + PplcYearly10;
+					}
+					newPlmTlPlanconfiguration.setPplcYearly10(CommonFunctions.pg_getDateTimeFromDate(PplcYearly10));
 				 if(UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly10()))
 					 newPlmTlPlanconfiguration.setPplcYearly10("01-"+newPlmTlPlanconfiguration.getPplcYearly10());
 			 
@@ -166,7 +222,7 @@ public class BAL_PlmTlPlanconfigurationServiceImpl implements BAL_PlmTlPlanconfi
 			}
 			else{
 				//plmTlPlanconfiguration =  plmTlPlanconfigurationDao.create(newPlmTlPlanconfiguration);
-				plmTlPlanconfiguration = balWorespServiceApi.insertRecord(newPlmTlPlanconfiguration);
+				plmTlPlanconfiguration = balWorespServiceApi.createPlanConfiguration(newPlmTlPlanconfiguration);
 				
 			}
 			return  plmTlPlanconfiguration;
@@ -187,37 +243,110 @@ public class BAL_PlmTlPlanconfigurationServiceImpl implements BAL_PlmTlPlanconfi
 		}
 */		   
 	}
+	
+	
+	
 	private void chkToGenerateCalendar(BAL_PlmTlPlanconfiguration newPlmTlPlanconfiguration,BAL_PlmTlPlanconfiguration existPlmTlPlanconfiguration,
 			BAL_PlanConfigurationBean planConfigurationBean) {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
 	@Override
 	public BAL_PlmTlPlanconfiguration update(BAL_PlmTlPlanconfiguration newPlmTlPlanconfiguration,BAL_PlmTlPlanconfiguration existPlmTlPlanconfiguration,
 			BAL_PlanConfigurationBean planConfigurationBean) throws ValidationExceptions {
 		System.out.println("Update called");
 		String validationsFor = "update";
 		System.out.println("Inside the ServiceImpl update");
+		
+		
+		
+		
 		//validations.validate(newPlmTlPlanconfiguration,"planconfiguration",validationsFor);
 		 System.out.println(" after validatiop " );
-		 if(UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly()))
-			 newPlmTlPlanconfiguration.setPplcYearly("01-"+newPlmTlPlanconfiguration.getPplcYearly());
+		 
+		 String PplcYearly = newPlmTlPlanconfiguration.getPplcYearly();
+		 if (UIUtils.isValidKeyId(PplcYearly)) {
+			 PplcYearly = "01-" + PplcYearly;
+			}
+			newPlmTlPlanconfiguration.setPplcYearly(CommonFunctions.pg_getDateTimeFromDate(PplcYearly));
+			System.out.println("Yearly 2    : " + newPlmTlPlanconfiguration.getPplcYearly());
+			/*
+			 * if(UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly()))
+			 * newPlmTlPlanconfiguration.setPplcYearly("01-"+newPlmTlPlanconfiguration.
+			 * getPplcYearly());
+			 */
+		 
+		 String PplcYearly2 = newPlmTlPlanconfiguration.getPplcYearly2();
+		 if (UIUtils.isValidKeyId(PplcYearly2)) {
+			 PplcYearly2 = "01-" + PplcYearly2;
+			}
+			newPlmTlPlanconfiguration.setPplcYearly2(CommonFunctions.pg_getDateTimeFromDate(PplcYearly2));
 			 if(UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly2()))
 		 	 newPlmTlPlanconfiguration.setPplcYearly2("01-"+newPlmTlPlanconfiguration.getPplcYearly2());
+			 
+			 String PplcYearly3 = newPlmTlPlanconfiguration.getPplcYearly3();
+			 if (UIUtils.isValidKeyId(PplcYearly3)) {
+				 PplcYearly3 = "01-" + PplcYearly3;
+				}
+				newPlmTlPlanconfiguration.setPplcYearly3(CommonFunctions.pg_getDateTimeFromDate(PplcYearly3));
 			 if(UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly3()))
 		 	 newPlmTlPlanconfiguration.setPplcYearly3("01-"+newPlmTlPlanconfiguration.getPplcYearly3());
+			 
+			 String PplcYearly4 = newPlmTlPlanconfiguration.getPplcYearly4();
+			 if (UIUtils.isValidKeyId(PplcYearly4)) {
+				 PplcYearly4 = "01-" + PplcYearly4;
+				}
+				newPlmTlPlanconfiguration.setPplcYearly4(CommonFunctions.pg_getDateTimeFromDate(PplcYearly4));
 			 if(UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly4()))
 		 	 newPlmTlPlanconfiguration.setPplcYearly4("01-"+newPlmTlPlanconfiguration.getPplcYearly4());
+			 
+			 String PplcYearly5 = newPlmTlPlanconfiguration.getPplcYearly5();
+			 if (UIUtils.isValidKeyId(PplcYearly5)) {
+				 PplcYearly5 = "01-" + PplcYearly5;
+				}
+				newPlmTlPlanconfiguration.setPplcYearly5(CommonFunctions.pg_getDateTimeFromDate(PplcYearly5));
 			 if(UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly5()))
 		 	 newPlmTlPlanconfiguration.setPplcYearly5("01-"+newPlmTlPlanconfiguration.getPplcYearly5());
+			 
+			 String PplcYearly6 = newPlmTlPlanconfiguration.getPplcYearly6();
+			 if (UIUtils.isValidKeyId(PplcYearly6)) {
+				 PplcYearly6 = "01-" + PplcYearly6;
+				}
+				newPlmTlPlanconfiguration.setPplcYearly6(CommonFunctions.pg_getDateTimeFromDate(PplcYearly6));
 			 if(UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly6()))
 		 	 newPlmTlPlanconfiguration.setPplcYearly6("01-"+newPlmTlPlanconfiguration.getPplcYearly6());
+			 
+			 String PplcYearly7 = newPlmTlPlanconfiguration.getPplcYearly7();
+			 if (UIUtils.isValidKeyId(PplcYearly7)) {
+				 PplcYearly7 = "01-" + PplcYearly7;
+				}
+				newPlmTlPlanconfiguration.setPplcYearly7(CommonFunctions.pg_getDateTimeFromDate(PplcYearly7));
 			 if(UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly7()))
 		 	 newPlmTlPlanconfiguration.setPplcYearly7("01-"+newPlmTlPlanconfiguration.getPplcYearly7());
+			 
+			 String PplcYearly8 = newPlmTlPlanconfiguration.getPplcYearly8();
+			 if (UIUtils.isValidKeyId(PplcYearly8)) {
+				 PplcYearly8 = "01-" + PplcYearly8;
+				}
+				newPlmTlPlanconfiguration.setPplcYearly8(CommonFunctions.pg_getDateTimeFromDate(PplcYearly8));
 			 if(UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly8()))
 		 	 newPlmTlPlanconfiguration.setPplcYearly8("01-"+newPlmTlPlanconfiguration.getPplcYearly8());
+			 
+			 String PplcYearly9 = newPlmTlPlanconfiguration.getPplcYearly9();
+			 if (UIUtils.isValidKeyId(PplcYearly9)) {
+				 PplcYearly9 = "01-" + PplcYearly9;
+				}
+				newPlmTlPlanconfiguration.setPplcYearly9(CommonFunctions.pg_getDateTimeFromDate(PplcYearly9));
 			 if(UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly9()))
 		 	 newPlmTlPlanconfiguration.setPplcYearly9("01-"+newPlmTlPlanconfiguration.getPplcYearly9());
+			 
+			 String PplcYearly10 = newPlmTlPlanconfiguration.getPplcYearly10();
+			 if (UIUtils.isValidKeyId(PplcYearly10)) {
+				 PplcYearly10 = "01-" + PplcYearly10;
+				}
+				newPlmTlPlanconfiguration.setPplcYearly10(CommonFunctions.pg_getDateTimeFromDate(PplcYearly10));
 			 if(UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly10()))
 		 	 newPlmTlPlanconfiguration.setPplcYearly10("01-"+newPlmTlPlanconfiguration.getPplcYearly10());
 		 
@@ -226,7 +355,9 @@ public class BAL_PlmTlPlanconfigurationServiceImpl implements BAL_PlmTlPlanconfi
 		 System.out.println(" after2 validatiop " +newPlmTlPlanconfiguration.getPplcHalfyearly() );
 		 BAL_PlmTlPlanconfiguration plmTlPlanconfiguration = null;
 		try {
-			plmTlPlanconfiguration = plmTlPlanconfigurationDao.update(newPlmTlPlanconfiguration);
+			//plmTlPlanconfiguration = plmTlPlanconfigurationDao.update(newPlmTlPlanconfiguration);
+			//plmTlPlanconfiguration = balWorespServiceApi.updateRecord(newPlmTlPlanconfiguration);
+			plmTlPlanconfiguration = balWorespServiceApi.createPlanConfiguration(newPlmTlPlanconfiguration);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -235,6 +366,10 @@ public class BAL_PlmTlPlanconfigurationServiceImpl implements BAL_PlmTlPlanconfi
 		//return cliTlStandardsDao.update(newCliTlStandards);		
 
 	}
+	
+	
+	
+	
 	private BAL_PlmTlPlanconfiguration fillValues(BAL_PlmTlPlanconfiguration newPlmTlPlanconfiguration,
 			BAL_PlmTlPlanconfiguration existPlmTlPlanconfiguration,
 			BAL_PlanConfigurationBean planConfigurationBean) {
@@ -244,7 +379,7 @@ public class BAL_PlmTlPlanconfigurationServiceImpl implements BAL_PlmTlPlanconfi
 		//	System.out.println("Form Mode   :"+planConfigurationBean.getFormMode());
 			System.out.println("fillvalues  :");
 			
-			String dateTime = CommonFunctions.dateTimeNow();
+			String dateTime = CommonFunctions.pg_dateTimeNow();
 			System.out.println(dateTime);
 			if(newPlmTlPlanconfiguration.getPplcKeyid() == null )
 				newPlmTlPlanconfiguration.setPplcCreatedon(dateTime);
@@ -261,18 +396,28 @@ public class BAL_PlmTlPlanconfigurationServiceImpl implements BAL_PlmTlPlanconfi
 			if( ! UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcFactoryid()) )
 				newPlmTlPlanconfiguration.setPplcFactoryid("{}");			
 			if( ! UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcFrequency()) )
-				newPlmTlPlanconfiguration.setPplcFrequency("X");			
+				newPlmTlPlanconfiguration.setPplcFrequency("X");
+			
+			String PplcHalfyearly = newPlmTlPlanconfiguration.getPplcHalfyearly();
+			newPlmTlPlanconfiguration.setPplcHalfyearly(CommonFunctions.pg_getDateTimeFromDate(PplcHalfyearly));
 			if( ! UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcHalfyearly()) )
 				newPlmTlPlanconfiguration.setPplcFrequency(dateTime);
+			
 			if( ! UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcLevel()) )
 				newPlmTlPlanconfiguration.setPplcLevel("M");	
 			System.out.println("111111111111111111111111111");
 			if( ! UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcMachineid()) )
-				newPlmTlPlanconfiguration.setPplcMachineid("{}");			
+				newPlmTlPlanconfiguration.setPplcMachineid("{}");
+			
+			String PplcMonthly = newPlmTlPlanconfiguration.getPplcMonthly();
+			newPlmTlPlanconfiguration.setPplcMonthly(CommonFunctions.pg_getDateTimeFromDate(PplcMonthly));
 			if( ! UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcMonthly()) )
-				newPlmTlPlanconfiguration.setPplcMonthly(Constants.futureNullDate);
+				newPlmTlPlanconfiguration.setPplcMonthly(Constants.pgFutureNullDateTime);
+			
+			String PplcQuarterly = newPlmTlPlanconfiguration.getPplcQuarterly();
+			newPlmTlPlanconfiguration.setPplcQuarterly(CommonFunctions.pg_getDateTimeFromDate(PplcQuarterly));
 			if( ! UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcQuarterly()) )
-				newPlmTlPlanconfiguration.setPplcQuarterly(Constants.futureNullDate);			
+				newPlmTlPlanconfiguration.setPplcQuarterly(Constants.pgFutureNullDateTime);			
 			if( ! UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcSectionid()) )
 				newPlmTlPlanconfiguration.setPplcSectionid("{}");			
 			if( ! UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcElementid()) )
@@ -288,26 +433,29 @@ public class BAL_PlmTlPlanconfigurationServiceImpl implements BAL_PlmTlPlanconfi
 			if( ! UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcWeekno()) )
 				newPlmTlPlanconfiguration.setPplcWeekno("0");	
 			System.out.println("22222222222222222222222222");
-			if( ! UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly()) )
-				newPlmTlPlanconfiguration.setPplcYearly(Constants.futureNullDate);
+			System.out.println("Yearly"+newPlmTlPlanconfiguration.getPplcYearly());
+			
+			 if( ! UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly()) )
+			 newPlmTlPlanconfiguration.setPplcYearly(Constants.pgFutureNullDateTime);
+			 
 			if( ! UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly2()) )
-				newPlmTlPlanconfiguration.setPplcYearly2(Constants.futureNullDate);
+				newPlmTlPlanconfiguration.setPplcYearly2(Constants.pgFutureNullDateTime);
 			if( ! UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly3()) )
-				newPlmTlPlanconfiguration.setPplcYearly3(Constants.futureNullDate);
+				newPlmTlPlanconfiguration.setPplcYearly3(Constants.pgFutureNullDateTime);
 			if( ! UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly4()) )
-				newPlmTlPlanconfiguration.setPplcYearly4(Constants.futureNullDate);
+				newPlmTlPlanconfiguration.setPplcYearly4(Constants.pgFutureNullDateTime);
 			if( ! UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly5()) )
-				newPlmTlPlanconfiguration.setPplcYearly5(Constants.futureNullDate);
+				newPlmTlPlanconfiguration.setPplcYearly5(Constants.pgFutureNullDateTime);
 			if( ! UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly6()) )
-				newPlmTlPlanconfiguration.setPplcYearly6(Constants.futureNullDate);
+				newPlmTlPlanconfiguration.setPplcYearly6(Constants.pgFutureNullDateTime);
 			if( ! UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly7()) )
-				newPlmTlPlanconfiguration.setPplcYearly7(Constants.futureNullDate);
+				newPlmTlPlanconfiguration.setPplcYearly7(Constants.pgFutureNullDateTime);
 			if( ! UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly8()) )
-				newPlmTlPlanconfiguration.setPplcYearly8(Constants.futureNullDate);
+				newPlmTlPlanconfiguration.setPplcYearly8(Constants.pgFutureNullDateTime);
 			if( ! UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly9()) )
-				newPlmTlPlanconfiguration.setPplcYearly9(Constants.futureNullDate);
+				newPlmTlPlanconfiguration.setPplcYearly9(Constants.pgFutureNullDateTime);
 			if( ! UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcYearly10()) )
-				newPlmTlPlanconfiguration.setPplcYearly10(Constants.futureNullDate);
+				newPlmTlPlanconfiguration.setPplcYearly10(Constants.pgFutureNullDateTime);
 			if( ! UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcElementid()) )
 				newPlmTlPlanconfiguration.setPplcElementid("{}");
 			if( ! UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcFlid()) )
@@ -315,6 +463,10 @@ public class BAL_PlmTlPlanconfigurationServiceImpl implements BAL_PlmTlPlanconfi
 			return newPlmTlPlanconfiguration;
 		
 	}
+
+	
+	
+	
 	@Override
 	public List<ComboBox> getplnconfigTradeCombo(String string,ComboFilter comboFilter) throws Exception {
 		// TODO Auto-generated method stub
@@ -348,7 +500,8 @@ public class BAL_PlmTlPlanconfigurationServiceImpl implements BAL_PlmTlPlanconfi
 	private List<BAL_PlmTlWorespmst> refTablesFillValues(BAL_PlmTlPlanconfiguration newPlmTlPlanconfiguration,BAL_PlmTlPlanconfiguration existPlmTlPlanconfiguration) 
 	{
 		System.out.println("Detail 1");
-		String dateTime = CommonFunctions.dateTimeNow();
+		//String dateTime = CommonFunctions.dateTimeNow();
+		String dateTime = CommonFunctions.pg_dateTimeNow();
 	  
 		
 		/***method master***/
@@ -417,8 +570,8 @@ public class BAL_PlmTlPlanconfigurationServiceImpl implements BAL_PlmTlPlanconfi
 	private List<BAL_PlmTlWorespdtl > refdtlTablesFillValues(BAL_PlmTlPlanconfiguration newPlmTlPlanconfiguration,BAL_PlmTlPlanconfiguration existPlmTlPlanconfiguration) 
 	{
 		System.out.println("Detail 1");
-		String dateTime = CommonFunctions.dateTimeNow();
-	  
+		//String dateTime = CommonFunctions.dateTimeNow();
+		String dateTime = CommonFunctions.pg_dateTimeNow();
 		
 		/***method master***/
 		List<BAL_PlmTlWorespdtl > newPlmTlWorespdtlmsts = newPlmTlPlanconfiguration.getWoRespDetail();

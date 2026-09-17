@@ -58,7 +58,7 @@ private Validations validations ;
 				CommonFunctions.debugMsg("After Filling detail Values");
 				
 				//return  plmTlWorespmstDao.create(newplmTlWorespmst);
-				return this.balWorespServiceApi.insertRecord(newplmTlWorespmst);
+				return this.balWorespServiceApi.saveWoresp(newplmTlWorespmst);
 				
 			   }catch (ValidationExceptions e){
 				
@@ -86,7 +86,7 @@ private Validations validations ;
 			 BAL_PlmTlWorespmst plmTlWorespmst = null;
 			try {
 				//plmTlWorespmst = plmTlWorespmstDao.update(newplmTlWorespmst);
-				plmTlWorespmst = this.balWorespServiceApi.updateRecord(newplmTlWorespmst);
+				plmTlWorespmst = this.balWorespServiceApi.saveWoresp(newplmTlWorespmst);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -105,14 +105,14 @@ private Validations validations ;
 			CommonFunctions.debugMsg("Form Modecreatae   :"+wOResponsibilityBean.getFormMode());
 			CommonFunctions.debugMsg("lllllll  :");
 			
-			String dateTime = CommonFunctions.dateTimeNow();
+			//String dateTime = CommonFunctions.dateTimeNow();
+			String dateTime = CommonFunctions.pg_dateTimeNow();
 			CommonFunctions.debugMsg("bfr if "+dateTime);
 			CommonFunctions.debugMsg(newplmTlWorespmst.getPwrmkeyid()+"createdon   :");
 			if(newplmTlWorespmst.getPwrmkeyid() == null )
 				newplmTlWorespmst.setPwrmcreatedon(dateTime);
 			else
 				newplmTlWorespmst.setPwrmcreatedon(dateTime);
-			
 			CommonFunctions.debugMsg("createdon   :"+newplmTlWorespmst.getPwrmcreatedon());
 			CommonFunctions.debugMsg("sdfgs  "+dateTime);
 			CommonFunctions.debugMsg("0.0");
@@ -159,7 +159,8 @@ private Validations validations ;
 		private List<BAL_PlmTlWorespdtl > refdtlTablesFillValues(BAL_PlmTlWorespmst newplmTlWorespmst,BAL_PlmTlWorespmst existplmTlWorespmst) 
 		{
 			CommonFunctions.debugMsg("Detail 1");
-			String dateTime = CommonFunctions.dateTimeNow();
+			//String dateTime = CommonFunctions.dateTimeNow();
+			String dateTime = CommonFunctions.pg_dateTimeNow();
 		  
 			
 			/***method master***/
@@ -186,7 +187,7 @@ private Validations validations ;
 					
 					PlmTlWorespdtl.setPwrdcreatedon(dateTime);
 					PlmTlWorespdtl .setPwrdeffectfrom(dateTime);
-					PlmTlWorespdtl .setPwrdeffecttill(Constants.futureNullDate);
+					PlmTlWorespdtl .setPwrdeffecttill(Constants.pgFutureNullDateTime);
 					//PlmTlWorespdtl .setPwrdmasterid(newplmTlWorespmst.getPwrmmachineid());
 					//newplmTlWorespmst.set(newplmTlWorespmst.getClisEffectivedate());
 				}	
@@ -243,6 +244,7 @@ private Validations validations ;
 		public String delSelectedTrade(String worespdtlId) throws BusinessApplicationExceptions, Exception {
 			// TODO Auto-generated method stub
 			return this.plmTlWorespmstDao.delSelectedTrade(worespdtlId);
+			//return this.balWorespServiceApi.deleteWorespDetail(worespdtlId);
 		}
 	}
 

@@ -2,7 +2,7 @@ package com.akranta.tpm.dao.sql;
 
 public class BAL_PlmTlCbmstdcadtlSql {
 
-	public static final String TBL_PLM_TL_CBMSTDCADTL = "PLM_TL_CBMSTDCADTL";  
+	public static final String TBL_BAL_PLM_TL_CBMSTDCADTL = "BAL_PLM_TL_CBMSTDCADTL";  
 
 	TableFieldType [] cmdtDbFields = null;
 
@@ -76,12 +76,12 @@ public class BAL_PlmTlCbmstdcadtlSql {
 
 	public static String getInsertSql(TableFieldType [] fieldTypeArr, Object [] dataArray)
 	{
-		return SqlUtils.getInsertSql(TBL_PLM_TL_CBMSTDCADTL, fieldTypeArr, dataArray);
+		return SqlUtils.getInsertSql(TBL_BAL_PLM_TL_CBMSTDCADTL, fieldTypeArr, dataArray);
 	}
 
 	public static String getUpdateSql(TableFieldType [] fieldTypeArr, Object [] dataArray)
 	{
-		String sql = SqlUtils.getUpdateSql(TBL_PLM_TL_CBMSTDCADTL, fieldTypeArr, dataArray);
+		String sql = SqlUtils.getUpdateSql(TBL_BAL_PLM_TL_CBMSTDCADTL, fieldTypeArr, dataArray);
 		
 		sql += " where " + fieldTypeArr[tableFldConstants.keyid.ordinal()].fieldName  +
 			  " = '" +  (String)dataArray[ tableFldConstants.keyid.ordinal() ] + "'";
@@ -90,7 +90,7 @@ public class BAL_PlmTlCbmstdcadtlSql {
 
 	public static String getDeleteSql(TableFieldType [] fieldTypeArr, Object [] dataArray)
 	{
-		String sql = "DELETE from " + TBL_PLM_TL_CBMSTDCADTL ;
+		String sql = "DELETE from " + TBL_BAL_PLM_TL_CBMSTDCADTL ;
 		
 		sql += " where " + fieldTypeArr[tableFldConstants.keyid.ordinal()].fieldName  +
 			  " = '" +  (String)dataArray[ tableFldConstants.keyid.ordinal()] + "'";
@@ -99,7 +99,7 @@ public class BAL_PlmTlCbmstdcadtlSql {
 
 	public static String getCMBListSql(String pmsdId) {
 		// TODO Auto-generated method stub
-		return "select * from " +TBL_PLM_TL_CBMSTDCADTL+" where CMDT_PMSTANDARDID = ?";
+		return "select * from " +TBL_BAL_PLM_TL_CBMSTDCADTL+" where CMDT_PMSTANDARDID = ?";
 	}
 
 	

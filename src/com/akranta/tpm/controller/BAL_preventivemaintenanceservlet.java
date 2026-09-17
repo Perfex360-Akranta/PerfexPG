@@ -552,6 +552,8 @@ public class BAL_preventivemaintenanceservlet extends HttpServlet {
 		    PrintWriter out = response.getWriter();
 		    String flid  = request.getParameter("flid");
 		    String mchId = request.getParameter("machineID");
+		    String activityType = request.getParameter("activityType");   // ADD
+	        
 		    String grid  = request.getParameter("grid");
 		    CommonFunctions.debugMsg("flid : " + flid);
 		    CommonFunctions.debugMsg("grid : " + grid);
@@ -571,6 +573,8 @@ public class BAL_preventivemaintenanceservlet extends HttpServlet {
 		        String machId  = request.getParameter("machId");
 		        String flId    = request.getParameter("flid");
 		        String tradeId = request.getParameter("tradeId");
+		        String activityType = request.getParameter("activityType");   // ADD
+
 
 		        if (!UIUtils.isValidKeyId(machId))
 		            machId = request.getParameter("cmbPmsdMulMachineid");
@@ -584,6 +588,9 @@ public class BAL_preventivemaintenanceservlet extends HttpServlet {
 		        ComboFilter tradeFilter = new ComboFilter();
 		        tradeFilter.setId(tradeId);
 		        commonFilter.setTrade(tradeFilter);
+		        ComboFilter actTypeFilter = new ComboFilter();      // ADD
+		        actTypeFilter.setId(activityType);                  // ADD
+		        commonFilter.setActType(actTypeFilter);  
 		        commonFilter.setViewClick('Y');
 
 		        PrintWriter out = response.getWriter();
@@ -1018,6 +1025,7 @@ public class BAL_preventivemaintenanceservlet extends HttpServlet {
 				 if(UIUtils.isValidKeyId(dataStr))
 				 convertToCBMObject(dataStr);
 				 else{
+					 
 					 cbmGrid  =  plmTlStandardsService.getCBM(pmStandardId);
 					 //CommonFunctions.debugMsg(cbmGrid.size());
 					  cbmGriddata = UIUtils.convertToJqGridTableObject(cbmGrid,request,0,0);
@@ -1669,23 +1677,50 @@ public class BAL_preventivemaintenanceservlet extends HttpServlet {
     	PrintWriter out = response.getWriter();
     	out.print(UIUtils.getPropertyValue("com.akranta.tpm.resources.PmstandardProp", "colModelSpares"));
     }
+	/*
+	 * else if(action.equals("spare_getData.prv")) { try { PrintWriter out =
+	 * response.getWriter(); String standardId
+	 * =(String)httpSession.getAttribute("pmstdKeyid");
+	 * CommonFunctions.debugMsg("inside standardId   "+standardId); List<String []>
+	 * sparesDtlList = plmTlStandardsService.getSprPickup(standardId); JSONObject
+	 * sparesDtlData =
+	 * UIUtils.convertToJqGridTableObject(sparesDtlList,request,0,0);
+	 * 
+	 * out.println(sparesDtlData); } catch(Exception e) {
+	 * CommonFunctions.debugMsg("Spares getData Exception"+e.getMessage()); } }
+	 */
+		
     else if(action.equals("spare_getData.prv"))
-	{
-	   try
-		{	
-			PrintWriter out = response.getWriter();
-			String standardId =(String)httpSession.getAttribute("pmstdKeyid");
-			CommonFunctions.debugMsg("inside standardId   "+standardId);
-			List<String []> sparesDtlList  = plmTlStandardsService.getSprPickup(standardId);
-			JSONObject sparesDtlData = UIUtils.convertToJqGridTableObject(sparesDtlList,request,0,0);
-			
-			out.println(sparesDtlData);
-		}
-		catch(Exception e)
-		{
-			CommonFunctions.debugMsg("Spares getData Exception"+e.getMessage());
-		} 
-	}
+    {
+       try
+        {
+            PrintWriter out = response.getWriter();
+
+            String standardId = request.getParameter("standardId");
+            if (standardId == null || standardId.trim().length() == 0) {
+                standardId = (String) httpSession.getAttribute("pmstdKeyid");
+            }
+
+            CommonFunctions.debugMsg("inside standardId   " + standardId);
+
+            List<String []> sparesDtlList;
+            if (standardId == null || standardId.trim().length() == 0) {
+                sparesDtlList = new ArrayList<>();
+            } else {
+                sparesDtlList = plmTlStandardsService.getSprPickup(standardId);
+                if (sparesDtlList == null) {
+                    sparesDtlList = new ArrayList<>();
+                }
+            }
+
+            JSONObject sparesDtlData = UIUtils.convertToJqGridTableObject(sparesDtlList, request, 0, 0);
+            out.println(sparesDtlData);
+        }
+        catch(Exception e)
+        {
+            CommonFunctions.debugMsg("Spares getData Exception" + e.getMessage());
+        }
+    }
     else if(action.equals("spare_delete.prv")){
     	try{
     		String pmstdId = request.getParameter("pmstdId");
@@ -2457,334 +2492,7 @@ private void saveCbm(HttpServletRequest request,
 			}
    	
 }
-    
-    //mano
-//    private void saveMultiplePmsd(HttpServletRequest request, HttpServletResponse response)
-//            throws IOException, ValidationExceptions {
-//
-//        CommonFunctions.debugMsg("inside saveMultiplePmsd");
-//        HttpSession httpSession = request.getSession(false);
-//        ServletOutputStream out = response.getOutputStream();
-//        AdmTlUsermst user = UIUtils.getLoginUser(request);
-//
-//        JSONObject returnData = new JSONObject();
-//        JSONArray savedRows = new JSONArray();
-//
-//        try {
-//            if (httpSession != null && user != null) {
-//
-//                String pmsdStdDetailsStr = request.getParameter("pmsdStdDetails");
-//                String flId       = request.getParameter("flId");
-//                String sectionId  = request.getParameter("sectionId");
-//                String cellId     = request.getParameter("cellId");      // mano - added, was missing
-//                String factoryId  = request.getParameter("factoryId");
-//                String elementId  = request.getParameter("elementId");   // mano - added, was missing
-//                String locationId = request.getParameter("locationId");
-//                System.out.println(factoryId+"factoryid");
-//                System.out.println(cellId+"cellid");
-//                
-//                // mano - added, was missing
-//
-//                if (!UIUtils.isValidKeyId(pmsdStdDetailsStr)) {
-//                    JSONObject err = new JSONObject();
-//                    err.put("tpmException", "No rows to save");
-//                    out.print(err.toString());
-//                    return;
-//                }
-//
-//                JSONArray gridRows = JSONArray.fromString(pmsdStdDetailsStr);
-//                BAL_PlmTlStandardsFormBean formBean = new BAL_PlmTlStandardsFormBean();
-//
-//                List<BAL_PlmTlStandards> createList = new ArrayList<>();
-//                List<String> createRowIds = new ArrayList<>();
-//
-//                List<BAL_PlmTlStandards> updateNewList = new ArrayList<>();
-//                List<BAL_PlmTlStandards> updateExistList = new ArrayList<>();
-//                List<String> updateRowIds = new ArrayList<>();
-//
-//                for (int i = 0; i < gridRows.length(); i++) {
-//                    JSONObject row = gridRows.getJSONObject(i);
-//
-//                    // confirm actual key name via console.log(gridval) before submit
-//                    String rowId = row.optString("id", row.optString("rowid", ""));
-//                    String existingKeyid = trimOrEmpty(row.optString("hdnPmsdKeyid"));
-//
-//                    BAL_PlmTlStandards newPlmTlStandards = new BAL_PlmTlStandards();
-//                    newPlmTlStandards.setPmsdCreatedby(user.getUsrm_ccno());
-//
-//                    newPlmTlStandards.setPmsdFlid(flId);
-//                    newPlmTlStandards.setPmsdSectionid(sectionId);
-//                    newPlmTlStandards.setPmsdCellid(cellId);           // mano - added, was missing
-//                    newPlmTlStandards.setPmsdFactoryid(factoryId); 
-//                    newPlmTlStandards.setPmsdElementid(elementId);     // mano - added
-//                    newPlmTlStandards.setPmsdLocationid(locationId);
-//                    newPlmTlStandards.setPmsdMachineid(getVal(row, "cmbMulPmsdMachineid", "hdnMulPmsdMachineid"));
-//                    newPlmTlStandards.setPmsdAssemblyid(getVal(row, "cmbMulPmsdAssemblyid", "hdnMulPmsdAssemblyid"));
-//                    newPlmTlStandards.setPmsdSubassemblyid(getVal(row, "cmbMulPmsdSubassemblyid", "hdnMulPmsdSubassemblyid"));
-//                    newPlmTlStandards.setPmsdSource(trimOrEmpty(row.optString("cmbMulPmsdSource")));
-//                    newPlmTlStandards.setPmsdSupplierid(getVal(row, "cmbMulPmsdSupplierid", "hdnMulPmsdSupplierid"));
-//                    newPlmTlStandards.setPmsdTradeid(trimOrEmpty(row.optString("hdnMulPmsdTradeid")));
-//                    newPlmTlStandards.setPmsdActivitytype(trimOrEmpty(row.optString("hdnMulPmsdActivitytype")));
-//                    newPlmTlStandards.setPmsdMachinecondition(getVal(row, "cmbMulPmsdMachinecondition", "hdnMulPmsdMachinecondition"));
-//                    newPlmTlStandards.setPmsdActivitysubtype(trimOrEmpty(row.optString("txtMulPmsdActivitysub")));
-//					/*
-//					 * newPlmTlStandards.setPmsdFrequencyunit(getVal(row, "cmbMulPmsdFrequencyunit",
-//					 * "hdnMulPmsdFrequencyunit"));
-//					 * newPlmTlStandards.setPmsdFrequency(trimOrEmpty(row.optString(
-//					 * "txtMulPmsdFrequency")));
-//					 * newPlmTlStandards.setPmsdDuration(trimOrEmpty(row.optString(
-//					 * "txtMulPmsdDuration")));
-//					 * newPlmTlStandards.setPmsdLocation(trimOrEmpty(row.optString(
-//					 * "txtMulPmsdLocation")));
-//					 */
-//                    
-//                    newPlmTlStandards.setPmsdFrequencyunit(getVal(row, "cmbMulPmsdFrequencyunit", "hdnMulPmsdFrequencyunit"));
-//
-//                    // --- validate Frequency (numeric, required) ---
-//                    String freqStr = trimOrEmpty(row.optString("txtMulPmsdFrequency"));
-//                    if (freqStr.isEmpty() || !freqStr.matches("\\d+(\\.\\d+)?")) {
-//                        JSONObject err = new JSONObject();
-//                        err.put("tpmException", "Row " + (i + 1) + ": Frequency must be a valid number");
-//                        out.print(err.toString());
-//                        return;
-//                    }
-//                    newPlmTlStandards.setPmsdFrequency(freqStr);
-//
-//                    // --- validate Duration (numeric, optional -> defaults to 0) ---
-//                    String durStr = trimOrEmpty(row.optString("txtMulPmsdDuration"));
-//                    if (!durStr.isEmpty() && !durStr.matches("\\d+(\\.\\d+)?")) {
-//                        JSONObject err = new JSONObject();
-//                        err.put("tpmException", "Row " + (i + 1) + ": Duration must be a valid number");
-//                        out.print(err.toString());
-//                        return;
-//                    }
-//                    if (durStr.isEmpty()) {
-//                        durStr = "0";
-//                    }
-//                    newPlmTlStandards.setPmsdDuration(durStr);
-//
-//                    newPlmTlStandards.setPmsdLocation(trimOrEmpty(row.optString("txtMulPmsdLocation")));
-//                    
-//                    
-//                    newPlmTlStandards.setPmsdActivity(trimOrEmpty(row.optString("txtMulPmsdActivity")));
-//                    newPlmTlStandards.setPmsdHowmethod(trimOrEmpty(row.optString("txtMulPmsdHowmethod")));
-//                    newPlmTlStandards.setPmsdStandard(trimOrEmpty(row.optString("txtMulPmsdStandard")));
-//                    newPlmTlStandards.setPmsdIssparesreq(trimOrEmpty(row.optString("chkMulPmsdIssparesreq")));
-//                    newPlmTlStandards.setPmsdIstoolsreq(trimOrEmpty(row.optString("chkMulPmsdIstoolsreq")));
-//                    newPlmTlStandards.setPmsdPreparedbyid(getVal(row, "cmbMulPmsdPreparedbyid", "hdnMulPmsdPreparedbyid"));
-//
-//                    if (!UIUtils.isValidKeyId(existingKeyid)) {
-//                        createList.add(newPlmTlStandards);
-//                        createRowIds.add(rowId);
-//                    } else {
-//                        newPlmTlStandards.setPmsdKeyid(existingKeyid);
-//                        BAL_PlmTlStandards existPlmTlStandards =
-//                                (BAL_PlmTlStandards) httpSession.getAttribute("plmTlStandards" + existingKeyid);
-//
-//                        updateNewList.add(newPlmTlStandards);
-//                        updateExistList.add(existPlmTlStandards);
-//                        updateRowIds.add(rowId);
-//                    }
-//                }
-//
-//                // ---- run creates ----
-//                if (!createList.isEmpty()) {
-//                    List<BAL_PlmTlStandards> createdList = plmTlStandardsService.createMultiple(createList, formBean);
-//                    for (int i = 0; i < createdList.size(); i++) {
-//                        BAL_PlmTlStandards saved = createdList.get(i);
-//                        httpSession.setAttribute(saved.getPmsdKeyid(), saved);
-//
-//                        JSONObject savedRow = new JSONObject();
-//                        savedRow.put("rowid", createRowIds.get(i));
-//                        savedRow.put("hdnPmsdKeyid", saved.getPmsdKeyid());
-//                        savedRows.put((Object) savedRow);
-//                    }
-//                }
-//
-//                // ---- run updates ----
-//                if (!updateNewList.isEmpty()) {
-//                    List<BAL_PlmTlStandards> updatedList =
-//                            plmTlStandardsService.updateMultiple(updateNewList, updateExistList, formBean);
-//                    for (int i = 0; i < updatedList.size(); i++) {
-//                        BAL_PlmTlStandards saved = updatedList.get(i);
-//                        httpSession.setAttribute(saved.getPmsdKeyid(), saved);
-//
-//                        JSONObject savedRow = new JSONObject();
-//                        savedRow.put("rowid", updateRowIds.get(i));
-//                        savedRow.put("hdnPmsdKeyid", saved.getPmsdKeyid());
-//                        savedRows.put((Object) savedRow);
-//                    }
-//                }
-//
-//                returnData.put("savedRows", savedRows);
-//                out.print(returnData.toString());
-//                CommonFunctions.debugMsg("end of saveMultiplePmsd");
-//            }
-//        } catch (ValidationExceptions e) {
-//            JSONObject errMessage = UIUtils.validationExceptions(e.toString(), "PmstandardException");
-//            out.print(errMessage.toString());
-//        } catch (Exception e) {
-//            CommonFunctions.debugMsg("saveMultiplePmsd error: " + e.getMessage());
-//            e.printStackTrace();
-//            JSONObject err = new JSONObject();
-//            err.put("tpmException", "Data Not Saved");
-//            out.print(err.toString());
-//        }
-//    }
-	/*
-	 * private void saveMultiplePmsd(HttpServletRequest request, HttpServletResponse
-	 * response) throws IOException, ValidationExceptions {
-	 * 
-	 * CommonFunctions.debugMsg("inside saveMultiplePmsd"); HttpSession httpSession
-	 * = request.getSession(false); ServletOutputStream out =
-	 * response.getOutputStream(); AdmTlUsermst user =
-	 * UIUtils.getLoginUser(request);
-	 * 
-	 * JSONObject returnData = new JSONObject(); JSONArray savedRows = new
-	 * JSONArray();
-	 * 
-	 * try { if (httpSession != null && user != null) {
-	 * 
-	 * String pmsdStdDetailsStr = request.getParameter("pmsdStdDetails"); String
-	 * flId = request.getParameter("flId"); String sectionId =
-	 * request.getParameter("sectionId"); String cellId =
-	 * request.getParameter("cellId"); String factoryId =
-	 * request.getParameter("factoryId"); String elementId =
-	 * request.getParameter("elementId"); String locationId =
-	 * request.getParameter("locationId");
-	 * System.out.println(factoryId+"factoryid");
-	 * System.out.println(cellId+"cellid");
-	 * 
-	 * if (!UIUtils.isValidKeyId(pmsdStdDetailsStr)) { JSONObject err = new
-	 * JSONObject(); err.put("tpmException", "No rows to save");
-	 * out.print(err.toString()); return; }
-	 * 
-	 * JSONArray gridRows = JSONArray.fromString(pmsdStdDetailsStr);
-	 * BAL_PlmTlStandardsFormBean formBean = new BAL_PlmTlStandardsFormBean();
-	 * 
-	 * List<BAL_PlmTlStandards> createList = new ArrayList<>(); List<String>
-	 * createRowIds = new ArrayList<>();
-	 * 
-	 * List<BAL_PlmTlStandards> updateNewList = new ArrayList<>();
-	 * List<BAL_PlmTlStandards> updateExistList = new ArrayList<>(); List<String>
-	 * updateRowIds = new ArrayList<>();
-	 * 
-	 * for (int i = 0; i < gridRows.length(); i++) { JSONObject row =
-	 * gridRows.getJSONObject(i);
-	 * 
-	 * String rowId = row.optString("id", row.optString("rowid", "")); String
-	 * existingKeyid = trimOrEmpty(row.optString("hdnPmsdKeyid"));
-	 * 
-	 * BAL_PlmTlStandards newPlmTlStandards = new BAL_PlmTlStandards();
-	 * newPlmTlStandards.setPmsdCreatedby(user.getUsrm_ccno());
-	 * 
-	 * newPlmTlStandards.setPmsdFlid(flId);
-	 * newPlmTlStandards.setPmsdSectionid(sectionId);
-	 * newPlmTlStandards.setPmsdCellid(cellId);
-	 * newPlmTlStandards.setPmsdFactoryid(factoryId);
-	 * newPlmTlStandards.setPmsdElementid(elementId);
-	 * newPlmTlStandards.setPmsdLocationid(locationId);
-	 * newPlmTlStandards.setPmsdMachineid(getVal(row, "cmbMulPmsdMachineid",
-	 * "hdnMulPmsdMachineid")); newPlmTlStandards.setPmsdAssemblyid(getVal(row,
-	 * "cmbMulPmsdAssemblyid", "hdnMulPmsdAssemblyid"));
-	 * newPlmTlStandards.setPmsdSubassemblyid(getVal(row, "cmbMulPmsdSubassemblyid",
-	 * "hdnMulPmsdSubassemblyid"));
-	 * newPlmTlStandards.setPmsdSource(trimOrEmpty(row.optString("cmbMulPmsdSource")
-	 * )); newPlmTlStandards.setPmsdSupplierid(getVal(row, "cmbMulPmsdSupplierid",
-	 * "hdnMulPmsdSupplierid"));
-	 * newPlmTlStandards.setPmsdTradeid(trimOrEmpty(row.optString(
-	 * "hdnMulPmsdTradeid")));
-	 * newPlmTlStandards.setPmsdActivitytype(trimOrEmpty(row.optString(
-	 * "hdnMulPmsdActivitytype")));
-	 * newPlmTlStandards.setPmsdMachinecondition(getVal(row,
-	 * "cmbMulPmsdMachinecondition", "hdnMulPmsdMachinecondition"));
-	 * newPlmTlStandards.setPmsdActivitysubtype(trimOrEmpty(row.optString(
-	 * "txtMulPmsdActivitysub")));
-	 * 
-	 * newPlmTlStandards.setPmsdFrequencyunit(getVal(row, "cmbMulPmsdFrequencyunit",
-	 * "hdnMulPmsdFrequencyunit"));
-	 * 
-	 * // --- validate Frequency (numeric, required) --- String freqStr =
-	 * trimOrEmpty(row.optString("txtMulPmsdFrequency")); if (freqStr.isEmpty() ||
-	 * !freqStr.matches("\\d+(\\.\\d+)?")) { JSONObject err = new JSONObject();
-	 * err.put("tpmException", "Row " + (i + 1) +
-	 * ": Frequency must be a valid number"); out.print(err.toString()); return; }
-	 * newPlmTlStandards.setPmsdFrequency(freqStr);
-	 * 
-	 * // --- validate Duration (numeric, optional -> defaults to 0) --- String
-	 * durStr = trimOrEmpty(row.optString("txtMulPmsdDuration")); if
-	 * (!durStr.isEmpty() && !durStr.matches("\\d+(\\.\\d+)?")) { JSONObject err =
-	 * new JSONObject(); err.put("tpmException", "Row " + (i + 1) +
-	 * ": Duration must be a valid number"); out.print(err.toString()); return; } if
-	 * (durStr.isEmpty()) { durStr = "0"; }
-	 * newPlmTlStandards.setPmsdDuration(durStr);
-	 * 
-	 * newPlmTlStandards.setPmsdLocation(trimOrEmpty(row.optString(
-	 * "txtMulPmsdLocation")));
-	 * 
-	 * newPlmTlStandards.setPmsdActivity(trimOrEmpty(row.optString(
-	 * "txtMulPmsdActivity")));
-	 * newPlmTlStandards.setPmsdHowmethod(trimOrEmpty(row.optString(
-	 * "txtMulPmsdHowmethod")));
-	 * newPlmTlStandards.setPmsdStandard(trimOrEmpty(row.optString(
-	 * "txtMulPmsdStandard")));
-	 * 
-	 * // mano - FIX: pmsd_issparesreq / pmsd_istoolsreq are NOT NULL character(1)
-	 * // columns expecting exactly "Y" or "N". The grid sends "" / " " / anything
-	 * // non-"Y" when the checkbox is unchecked (unlike the single-entry HTML //
-	 * checkbox, whose omission gets defaulted to "N" inside fillValues() on // the
-	 * create()/update() path). createMultiple()/updateMultiple() do not // run that
-	 * same defaulting, so normalize here instead of relying on it. String
-	 * issparesreq = trimOrEmpty(row.optString("chkMulPmsdIssparesreq"));
-	 * newPlmTlStandards.setPmsdIssparesreq("Y".equalsIgnoreCase(issparesreq) ? "Y"
-	 * : "N");
-	 * 
-	 * String istoolsreq = trimOrEmpty(row.optString("chkMulPmsdIstoolsreq"));
-	 * newPlmTlStandards.setPmsdIstoolsreq("Y".equalsIgnoreCase(istoolsreq) ? "Y" :
-	 * "N");
-	 * 
-	 * newPlmTlStandards.setPmsdPreparedbyid(getVal(row, "cmbMulPmsdPreparedbyid",
-	 * "hdnMulPmsdPreparedbyid"));
-	 * 
-	 * if (!UIUtils.isValidKeyId(existingKeyid)) {
-	 * createList.add(newPlmTlStandards); createRowIds.add(rowId); } else {
-	 * newPlmTlStandards.setPmsdKeyid(existingKeyid); BAL_PlmTlStandards
-	 * existPlmTlStandards = (BAL_PlmTlStandards)
-	 * httpSession.getAttribute("plmTlStandards" + existingKeyid);
-	 * 
-	 * updateNewList.add(newPlmTlStandards);
-	 * updateExistList.add(existPlmTlStandards); updateRowIds.add(rowId); } }
-	 * 
-	 * // ---- run creates ---- if (!createList.isEmpty()) {
-	 * List<BAL_PlmTlStandards> createdList =
-	 * plmTlStandardsService.createMultiple(createList, formBean); for (int i = 0; i
-	 * < createdList.size(); i++) { BAL_PlmTlStandards saved = createdList.get(i);
-	 * httpSession.setAttribute(saved.getPmsdKeyid(), saved);
-	 * 
-	 * JSONObject savedRow = new JSONObject(); savedRow.put("rowid",
-	 * createRowIds.get(i)); savedRow.put("hdnPmsdKeyid", saved.getPmsdKeyid());
-	 * savedRows.put((Object) savedRow); } }
-	 * 
-	 * // ---- run updates ---- if (!updateNewList.isEmpty()) {
-	 * List<BAL_PlmTlStandards> updatedList =
-	 * plmTlStandardsService.updateMultiple(updateNewList, updateExistList,
-	 * formBean); for (int i = 0; i < updatedList.size(); i++) { BAL_PlmTlStandards
-	 * saved = updatedList.get(i); httpSession.setAttribute(saved.getPmsdKeyid(),
-	 * saved);
-	 * 
-	 * JSONObject savedRow = new JSONObject(); savedRow.put("rowid",
-	 * updateRowIds.get(i)); savedRow.put("hdnPmsdKeyid", saved.getPmsdKeyid());
-	 * savedRows.put((Object) savedRow); } }
-	 * 
-	 * returnData.put("savedRows", savedRows); out.print(returnData.toString());
-	 * CommonFunctions.debugMsg("end of saveMultiplePmsd"); } } catch
-	 * (ValidationExceptions e) { JSONObject errMessage =
-	 * UIUtils.validationExceptions(e.toString(), "PmstandardException");
-	 * out.print(errMessage.toString()); } catch (Exception e) {
-	 * CommonFunctions.debugMsg("saveMultiplePmsd error: " + e.getMessage());
-	 * e.printStackTrace(); JSONObject err = new JSONObject();
-	 * err.put("tpmException", "Data Not Saved"); out.print(err.toString()); } }
-	 */
+//mano
     private void saveMultiplePmsd(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ValidationExceptions {
 
@@ -2883,12 +2591,25 @@ private void saveCbm(HttpServletRequest request,
                     newPlmTlStandards.setPmsdStandard(trimOrEmpty(row.optString("txtMulPmsdStandard")));
 
                     String issparesreq = trimOrEmpty(row.optString("chkMulPmsdIssparesreq"));
-                    newPlmTlStandards.setPmsdIssparesreq("Y".equalsIgnoreCase(issparesreq) ? "Y" : "N");
+                    newPlmTlStandards.setPmsdIssparesreq(isCheckedValue(issparesreq) ? "Y" : "N");
 
                     String istoolsreq = trimOrEmpty(row.optString("chkMulPmsdIstoolsreq"));
-                    newPlmTlStandards.setPmsdIstoolsreq("Y".equalsIgnoreCase(istoolsreq) ? "Y" : "N");
-
+                    newPlmTlStandards.setPmsdIstoolsreq(isCheckedValue(istoolsreq) ? "Y" : "N");
                     newPlmTlStandards.setPmsdPreparedbyid(getVal(row, "cmbMulPmsdPreparedbyid", "hdnMulPmsdPreparedbyid"));
+
+                    /* ---------- NEW: save CBM grid for this row ---------- */
+                    String cbmDataStr = trimOrEmpty(row.optString("cbmData"));
+                    if (UIUtils.isValidKeyId(cbmDataStr)) {
+                        CommonFunctions.debugMsg("Row " + (i + 1) + " cbmData: " + cbmDataStr);
+                        JSONArray cbmJson = JSONArray.fromString(cbmDataStr);
+                        BAL_PlmTlCbmstdcadtl newPlmTlCbmstdcadtl = new BAL_PlmTlCbmstdcadtl();
+                        List<BAL_PlmTlCbmstdcadtl> listCBM =
+                                (List<BAL_PlmTlCbmstdcadtl>) UIUtils.convertJSONArrToList(newPlmTlCbmstdcadtl, cbmJson);
+                        if (listCBM != null) {
+                            newPlmTlStandards.setCbmData(listCBM);
+                        }
+                    }
+                    /* ---------- end CBM block ---------- */
 
                     if (!UIUtils.isValidKeyId(existingKeyid)) {
                         createList.add(newPlmTlStandards);
@@ -2968,6 +2689,184 @@ private void saveCbm(HttpServletRequest request,
             out.print(err.toString());
         }
     }
+    /**
+     * jqGrid checkbox columns can post different truthy representations
+     * depending on the formatter in use ("1"/"0", "true"/"false", "on", or
+     * "Y"/"N"). Accept all of them instead of only literal "Y".
+     */
+    private boolean isCheckedValue(String val) {
+        if (val == null) return false;
+        val = val.trim();
+        return val.equalsIgnoreCase("Y")
+            || val.equals("1")
+            || val.equalsIgnoreCase("true")
+            || val.equalsIgnoreCase("on");
+    }
+   
+/*
+ * private void saveMultiplePmsd(HttpServletRequest request, HttpServletResponse
+ * response) throws IOException, ValidationExceptions {
+ * 
+ * CommonFunctions.debugMsg("inside saveMultiplePmsd"); HttpSession httpSession
+ * = request.getSession(false); ServletOutputStream out =
+ * response.getOutputStream(); AdmTlUsermst user =
+ * UIUtils.getLoginUser(request);
+ * 
+ * JSONObject returnData = new JSONObject(); JSONArray savedRows = new
+ * JSONArray();
+ * 
+ * try { if (httpSession != null && user != null) {
+ * 
+ * String pmsdStdDetailsStr = request.getParameter("pmsdStdDetails"); String
+ * flId = request.getParameter("flId"); String sectionId =
+ * request.getParameter("sectionId"); String cellId =
+ * request.getParameter("cellId"); String factoryId =
+ * request.getParameter("factoryId"); String elementId =
+ * request.getParameter("elementId"); String locationId =
+ * request.getParameter("locationId");
+ * System.out.println(factoryId+"factoryid");
+ * System.out.println(cellId+"cellid");
+ * 
+ * if (!UIUtils.isValidKeyId(pmsdStdDetailsStr)) { JSONObject err = new
+ * JSONObject(); err.put("tpmException", "No rows to save");
+ * out.print(err.toString()); return; }
+ * 
+ * JSONArray gridRows = JSONArray.fromString(pmsdStdDetailsStr);
+ * BAL_PlmTlStandardsFormBean formBean = new BAL_PlmTlStandardsFormBean();
+ * 
+ * List<BAL_PlmTlStandards> createList = new ArrayList<>(); List<String>
+ * createRowIds = new ArrayList<>();
+ * 
+ * List<BAL_PlmTlStandards> updateNewList = new ArrayList<>();
+ * List<BAL_PlmTlStandards> updateExistList = new ArrayList<>(); List<String>
+ * updateRowIds = new ArrayList<>();
+ * 
+ * for (int i = 0; i < gridRows.length(); i++) { JSONObject row =
+ * gridRows.getJSONObject(i);
+ * 
+ * String rowId = row.optString("id", row.optString("rowid", "")); String
+ * existingKeyid = trimOrEmpty(row.optString("hdnPmsdKeyid"));
+ * 
+ * BAL_PlmTlStandards newPlmTlStandards = new BAL_PlmTlStandards();
+ * newPlmTlStandards.setPmsdCreatedby(user.getUsrm_ccno());
+ * 
+ * newPlmTlStandards.setPmsdFlid(flId);
+ * newPlmTlStandards.setPmsdSectionid(sectionId);
+ * newPlmTlStandards.setPmsdCellid(cellId);
+ * newPlmTlStandards.setPmsdFactoryid(factoryId);
+ * newPlmTlStandards.setPmsdElementid(elementId);
+ * newPlmTlStandards.setPmsdLocationid(locationId);
+ * newPlmTlStandards.setPmsdMachineid(getVal(row, "cmbMulPmsdMachineid",
+ * "hdnMulPmsdMachineid")); newPlmTlStandards.setPmsdAssemblyid(getVal(row,
+ * "cmbMulPmsdAssemblyid", "hdnMulPmsdAssemblyid"));
+ * newPlmTlStandards.setPmsdSubassemblyid(getVal(row, "cmbMulPmsdSubassemblyid",
+ * "hdnMulPmsdSubassemblyid"));
+ * newPlmTlStandards.setPmsdSource(trimOrEmpty(row.optString("cmbMulPmsdSource")
+ * )); newPlmTlStandards.setPmsdSupplierid(getVal(row, "cmbMulPmsdSupplierid",
+ * "hdnMulPmsdSupplierid"));
+ * newPlmTlStandards.setPmsdTradeid(trimOrEmpty(row.optString(
+ * "hdnMulPmsdTradeid")));
+ * newPlmTlStandards.setPmsdActivitytype(trimOrEmpty(row.optString(
+ * "hdnMulPmsdActivitytype")));
+ * newPlmTlStandards.setPmsdMachinecondition(getVal(row,
+ * "cmbMulPmsdMachinecondition", "hdnMulPmsdMachinecondition"));
+ * newPlmTlStandards.setPmsdActivitysubtype(trimOrEmpty(row.optString(
+ * "txtMulPmsdActivitysub")));
+ * 
+ * newPlmTlStandards.setPmsdFrequencyunit(getVal(row, "cmbMulPmsdFrequencyunit",
+ * "hdnMulPmsdFrequencyunit"));
+ * 
+ * // --- validate Frequency (numeric, required) --- String freqStr =
+ * trimOrEmpty(row.optString("txtMulPmsdFrequency")); if (freqStr.isEmpty() ||
+ * !freqStr.matches("\\d+(\\.\\d+)?")) { JSONObject err = new JSONObject();
+ * err.put("tpmException", "Row " + (i + 1) +
+ * ": Frequency must be a valid number"); out.print(err.toString()); return; }
+ * newPlmTlStandards.setPmsdFrequency(freqStr);
+ * 
+ * // --- validate Duration (numeric, optional -> defaults to 0) --- String
+ * durStr = trimOrEmpty(row.optString("txtMulPmsdDuration")); if
+ * (!durStr.isEmpty() && !durStr.matches("\\d+(\\.\\d+)?")) { JSONObject err =
+ * new JSONObject(); err.put("tpmException", "Row " + (i + 1) +
+ * ": Duration must be a valid number"); out.print(err.toString()); return; } if
+ * (durStr.isEmpty()) { durStr = "0"; }
+ * newPlmTlStandards.setPmsdDuration(durStr);
+ * 
+ * newPlmTlStandards.setPmsdLocation(trimOrEmpty(row.optString(
+ * "txtMulPmsdLocation")));
+ * 
+ * newPlmTlStandards.setPmsdActivity(trimOrEmpty(row.optString(
+ * "txtMulPmsdActivity")));
+ * newPlmTlStandards.setPmsdHowmethod(trimOrEmpty(row.optString(
+ * "txtMulPmsdHowmethod")));
+ * newPlmTlStandards.setPmsdStandard(trimOrEmpty(row.optString(
+ * "txtMulPmsdStandard")));
+ * 
+ * String issparesreq = trimOrEmpty(row.optString("chkMulPmsdIssparesreq"));
+ * newPlmTlStandards.setPmsdIssparesreq("Y".equalsIgnoreCase(issparesreq) ? "Y"
+ * : "N");
+ * 
+ * String istoolsreq = trimOrEmpty(row.optString("chkMulPmsdIstoolsreq"));
+ * newPlmTlStandards.setPmsdIstoolsreq("Y".equalsIgnoreCase(istoolsreq) ? "Y" :
+ * "N");
+ * 
+ * newPlmTlStandards.setPmsdPreparedbyid(getVal(row, "cmbMulPmsdPreparedbyid",
+ * "hdnMulPmsdPreparedbyid"));
+ * 
+ * if (!UIUtils.isValidKeyId(existingKeyid)) {
+ * createList.add(newPlmTlStandards); createRowIds.add(rowId); } else {
+ * newPlmTlStandards.setPmsdKeyid(existingKeyid); BAL_PlmTlStandards
+ * existPlmTlStandards = (BAL_PlmTlStandards)
+ * httpSession.getAttribute("plmTlStandards" + existingKeyid);
+ * 
+ * updateNewList.add(newPlmTlStandards);
+ * updateExistList.add(existPlmTlStandards); updateRowIds.add(rowId); } }
+ * 
+ * int createdCount = 0; int updatedCount = 0;
+ * 
+ * // ---- run creates ---- if (!createList.isEmpty()) {
+ * List<BAL_PlmTlStandards> createdList =
+ * plmTlStandardsService.createMultiple(createList, formBean); createdCount =
+ * createdList.size(); for (int i = 0; i < createdList.size(); i++) {
+ * BAL_PlmTlStandards saved = createdList.get(i);
+ * httpSession.setAttribute(saved.getPmsdKeyid(), saved);
+ * 
+ * JSONObject savedRow = new JSONObject(); savedRow.put("rowid",
+ * createRowIds.get(i)); savedRow.put("hdnPmsdKeyid", saved.getPmsdKeyid());
+ * savedRows.put((Object) savedRow); } }
+ * 
+ * // ---- run updates ---- if (!updateNewList.isEmpty()) {
+ * List<BAL_PlmTlStandards> updatedList =
+ * plmTlStandardsService.updateMultiple(updateNewList, updateExistList,
+ * formBean); updatedCount = updatedList.size(); for (int i = 0; i <
+ * updatedList.size(); i++) { BAL_PlmTlStandards saved = updatedList.get(i);
+ * httpSession.setAttribute(saved.getPmsdKeyid(), saved);
+ * 
+ * JSONObject savedRow = new JSONObject(); savedRow.put("rowid",
+ * updateRowIds.get(i)); savedRow.put("hdnPmsdKeyid", saved.getPmsdKeyid());
+ * savedRows.put((Object) savedRow); } }
+ * 
+ * // ---- build success message, same convention as TrainingCalSave ---- String
+ * savemsg; if (createdCount > 0 && updatedCount > 0) { savemsg =
+ * "Data Saved Successfully"; } else if (updatedCount > 0 && createdCount == 0)
+ * { savemsg = "Data Updated Successfully"; } else { savemsg =
+ * "Data Saved Successfully"; }
+ * 
+ * JSONObject successData = new JSONObject(); successData.put("msg", savemsg);
+ * returnData.put("successData", successData); returnData.put("savedRows",
+ * savedRows);
+ * 
+ * out.print(returnData.toString());
+ * CommonFunctions.debugMsg("end of saveMultiplePmsd"); } } catch
+ * (ValidationExceptions e) { JSONObject errMessage =
+ * UIUtils.validationExceptions(e.toString(), "PmstandardException");
+ * out.print(errMessage.toString()); } catch (Exception e) {
+ * CommonFunctions.debugMsg("saveMultiplePmsd error: " + e.getMessage());
+ * e.printStackTrace(); JSONObject err = new JSONObject();
+ * err.put("tpmException", "Data Not Saved"); out.print(err.toString()); } }
+ */
+    
+  
+    
     private String trimOrEmpty(String s) {
         return s == null ? "" : s.trim();
     }

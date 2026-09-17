@@ -161,13 +161,13 @@ public class BAL_PlanConfigurationServlet extends HttpServlet {
 					"BAL_PlmTlWorespmstServiceImpl");
 
 			HttpSession httpSession = request.getSession(false);
-			
-			plmTlWorespmstService.BAL_PlmTlWorespmstServiceImplJwt(
-				    (String) (httpSession.getAttribute("tpmjwttoken") == null ? "" : httpSession.getAttribute("tpmjwttoken"))
-				);
-			plmTlPlanconfigurationService.BAL_PlmTlPlanconfigurationImplJwt(
-				    (String) (httpSession.getAttribute("tpmjwttoken") == null ? "" : httpSession.getAttribute("tpmjwttoken"))
-				);
+
+			plmTlWorespmstService
+					.BAL_PlmTlWorespmstServiceImplJwt((String) (httpSession.getAttribute("tpmjwttoken") == null ? ""
+							: httpSession.getAttribute("tpmjwttoken")));
+			plmTlPlanconfigurationService
+					.BAL_PlmTlPlanconfigurationImplJwt((String) (httpSession.getAttribute("tpmjwttoken") == null ? ""
+							: httpSession.getAttribute("tpmjwttoken")));
 
 			System.out.println(" action " + action);
 
@@ -343,18 +343,19 @@ public class BAL_PlanConfigurationServlet extends HttpServlet {
 				String cellId = request.getParameter("cellid");
 				String sectid = request.getParameter("sectid");
 				String grdmachId = request.getParameter("grdmachId");
-				String workMstKeyId = request.getParameter("workMstKeyId");   // <-- ADD THIS LINE
+				String workMstKeyId = request.getParameter("workMstKeyId"); // <-- ADD THIS LINE
 				httpSession.setAttribute("factId", factId);
 				httpSession.setAttribute("machId", machId);
 				httpSession.setAttribute("cellId", cellId);
 				httpSession.setAttribute("sectid", sectid);
 				CommonFunctions.debugMsg(" machId  ----------- " + machId);
-				CommonFunctions.debugMsg(" workMstKeyId  ----------- " + workMstKeyId);   // <-- ADD THIS LINE (for debugging)
+				CommonFunctions.debugMsg(" workMstKeyId  ----------- " + workMstKeyId); // <-- ADD THIS LINE (for
+																						// debugging)
 				request.setAttribute("machId", machId);
-				//httpSession.setAttribute("WorRespmach", request.getParameter("grdmachId"));
-				  httpSession.setAttribute("woResrowmachId", request.getParameter("grdmachId"));
-				  httpSession.setAttribute("mstKeyId", workMstKeyId);   // <-- ADD THIS LINE (the actual fix)
-				  
+				// httpSession.setAttribute("WorRespmach", request.getParameter("grdmachId"));
+				httpSession.setAttribute("woResrowmachId", request.getParameter("grdmachId"));
+				httpSession.setAttribute("mstKeyId", workMstKeyId); // <-- ADD THIS LINE (the actual fix)
+
 				dispatchUrl = "/pages/workRespPop.jsp";
 			} /*
 				 * else if (action.equals("wrkOdrResp_getCol.plnconfig")) { PrintWriter out =
@@ -372,41 +373,41 @@ public class BAL_PlanConfigurationServlet extends HttpServlet {
 				 * "com.akranta.tpm.resources.PlanConfigurationcolmodel",
 				 * "colModelWorkOrderResponibility")); }
 				 */
-			
-			
-		/*	else if (action.equals("wrkOdrResp_getCol.plnconfig")) {
+
+			/*
+			 * else if (action.equals("wrkOdrResp_getCol.plnconfig")) { PrintWriter out =
+			 * response.getWriter(); String woRespkeyId =
+			 * request.getParameter("workMstKeyId"); String wORESmachineId =
+			 * request.getParameter("parentId"); UIUtils.displayRequestParamsValue(request);
+			 * 
+			 * // Only overwrite session values if this request actually carries them if
+			 * (woRespkeyId != null && !woRespkeyId.trim().isEmpty() &&
+			 * !"undefined".equals(woRespkeyId)) { httpSession.setAttribute("woMstkeyId",
+			 * woRespkeyId); httpSession.setAttribute("mstKeyId", woRespkeyId);
+			 * request.setAttribute("keyId", woRespkeyId); }
+			 * 
+			 * // Remove the WorRespmach read/overwrite entirely - that attribute is never
+			 * set elsewhere // (previously this null value was wiping out woResrowmachId
+			 * set by wrkOdrResp_input.plnconfig)
+			 * 
+			 * out.println(UIUtils.getPropertyValue(
+			 * "com.akranta.tpm.resources.PlanConfigurationcolmodel",
+			 * "colModelWorkOrderResponibility")); }
+			 */
+
+			else if (action.equals("wrkOdrResp_getCol.plnconfig")) {
 				PrintWriter out = response.getWriter();
 				String woRespkeyId = request.getParameter("workMstKeyId");
-				String wORESmachineId = request.getParameter("parentId");
 				UIUtils.displayRequestParamsValue(request);
 
-				// Only overwrite session values if this request actually carries them
-				if (woRespkeyId != null && !woRespkeyId.trim().isEmpty() && !"undefined".equals(woRespkeyId)) {
+				if (UIUtils.isValidKeyId(woRespkeyId)) {
 					httpSession.setAttribute("woMstkeyId", woRespkeyId);
 					httpSession.setAttribute("mstKeyId", woRespkeyId);
 					request.setAttribute("keyId", woRespkeyId);
 				}
 
-				// Remove the WorRespmach read/overwrite entirely - that attribute is never set elsewhere
-				// (previously this null value was wiping out woResrowmachId set by wrkOdrResp_input.plnconfig)
-
 				out.println(UIUtils.getPropertyValue("com.akranta.tpm.resources.PlanConfigurationcolmodel",
 						"colModelWorkOrderResponibility"));
-			}*/
-			
-			else if (action.equals("wrkOdrResp_getCol.plnconfig")) {
-			    PrintWriter out = response.getWriter();
-			    String woRespkeyId = request.getParameter("workMstKeyId");
-			    UIUtils.displayRequestParamsValue(request);
-
-			    if (UIUtils.isValidKeyId(woRespkeyId)) {
-			        httpSession.setAttribute("woMstkeyId", woRespkeyId);
-			        httpSession.setAttribute("mstKeyId", woRespkeyId);
-			        request.setAttribute("keyId", woRespkeyId);
-			    }
-
-			    out.println(UIUtils.getPropertyValue("com.akranta.tpm.resources.PlanConfigurationcolmodel",
-			            "colModelWorkOrderResponibility"));
 			}
 			/*
 			 * else if(action.equals("wrkOdrResp_getData.plnconfig")){ PrintWriter out =
@@ -438,29 +439,27 @@ public class BAL_PlanConfigurationServlet extends HttpServlet {
 			 * 
 			 * }
 			 */
-			
-			
-			else if(action.equals("wrkOdrResp_getData.plnconfig")){
-			    PrintWriter out = response.getWriter();
-			    CommonFunctions.debugMsg("SESSION ID for action [" + action + "] ---> " + httpSession.getId());
-			    String workrepmstkeyid = (String)httpSession.getAttribute("mstKeyId");
-			    String workrepmachineId = (String)httpSession.getAttribute("woResrowmachId");
-			    CommonFunctions.debugMsg("wORESmachineId    ---"+workrepmachineId);
-			    CommonFunctions.debugMsg("workrepmstkeyid    ---"+workrepmstkeyid);
 
-			    if (!UIUtils.isValidKeyId(workrepmstkeyid)) {
-			        CommonFunctions.debugMsg("workrepmstkeyid invalid/null - returning empty grid, skipping DB call");
-			        JSONObject emptyGrid = UIUtils.convertToJqGridTableObject(new ArrayList<String[]>(), request, 0, 0);
-			        out.println(emptyGrid);
-			        return;
-			    }
+			else if (action.equals("wrkOdrResp_getData.plnconfig")) {
+				PrintWriter out = response.getWriter();
+				CommonFunctions.debugMsg("SESSION ID for action [" + action + "] ---> " + httpSession.getId());
+				String workrepmstkeyid = (String) httpSession.getAttribute("mstKeyId");
+				String workrepmachineId = (String) httpSession.getAttribute("woResrowmachId");
+				CommonFunctions.debugMsg("wORESmachineId    ---" + workrepmachineId);
+				CommonFunctions.debugMsg("workrepmstkeyid    ---" + workrepmstkeyid);
 
-			    List<String []> getwoRespGriddata  = plmTlPlanconfigurationService.getwoRespGriddata(workrepmstkeyid);
-			    JSONObject getGriddataPlan = UIUtils.convertToJqGridTableObject(getwoRespGriddata,request,0,0);
-			    out.println(getGriddataPlan);
-			    System.out.println(getGriddataPlan);
-			}
-			else if (action.equals("workorderRespon_save.plnconfig")) {
+				if (!UIUtils.isValidKeyId(workrepmstkeyid)) {
+					CommonFunctions.debugMsg("workrepmstkeyid invalid/null - returning empty grid, skipping DB call");
+					JSONObject emptyGrid = UIUtils.convertToJqGridTableObject(new ArrayList<String[]>(), request, 0, 0);
+					out.println(emptyGrid);
+					return;
+				}
+
+				List<String[]> getwoRespGriddata = plmTlPlanconfigurationService.getwoRespGriddata(workrepmstkeyid);
+				JSONObject getGriddataPlan = UIUtils.convertToJqGridTableObject(getwoRespGriddata, request, 0, 0);
+				out.println(getGriddataPlan);
+				System.out.println(getGriddataPlan);
+			} else if (action.equals("workorderRespon_save.plnconfig")) {
 
 				// comTxt =
 				// request.getParameter("comTxt");tradeidresponsibilitycmbPwrdtradeidcmbPwrdempid
@@ -787,10 +786,10 @@ public class BAL_PlanConfigurationServlet extends HttpServlet {
 		String tradeid = (String) httpSession.getAttribute("tradeid");
 		String responsibility = (String) httpSession.getAttribute("responsibility");
 		String overallResponsibility = (String) httpSession.getAttribute("ovrallResp");
-		//String wMstkeyId = (String) httpSession.getAttribute("woMstkeyId");
+		// String wMstkeyId = (String) httpSession.getAttribute("woMstkeyId");
 		String wMstkeyId = (String) httpSession.getAttribute("mstKeyId");
 		if (!UIUtils.isValidKeyId(wMstkeyId)) {
-		    wMstkeyId = (String) httpSession.getAttribute("woMstkeyId"); // fallback for safety
+			wMstkeyId = (String) httpSession.getAttribute("woMstkeyId"); // fallback for safety
 		}
 		// String womKeyId = (String)httpSession.getAttribute("womKeyId");//from
 		// woresponsibility pop up grid
@@ -848,17 +847,17 @@ public class BAL_PlanConfigurationServlet extends HttpServlet {
 
 			}
 			try {
-				
+
 				if (!UIUtils.isValidKeyId(wMstkeyId)) {
 
 					existplmTlWorespmst = plmTlWorespmstService.saveWorkresp(newplmTlWorespmst, existplmTlWorespmst,
 							wOResponsibilityBean);
-					
+
 				} else {
 
 					existplmTlWorespmst = plmTlWorespmstService.update(newplmTlWorespmst, existplmTlWorespmst,
 							wOResponsibilityBean);
-					
+
 					/*** end of save WORK RESP DTL **/
 					// newplmTlWorespdtl =
 					// plmTlWorespmstService.saveWorkresp(newplmTlWorespdtl,existplmTlWorespdtl);
@@ -950,82 +949,197 @@ public class BAL_PlanConfigurationServlet extends HttpServlet {
 		}
 
 	}
-
-	private void createUpdate(BAL_PlmTlPlanconfiguration newPlmTlPlanconfiguration,
-			BAL_PlmTlPlanconfiguration existPlmTlPlanconfiguration, BAL_PlanConfigurationBean planConfigurationBean,
-			HttpServletRequest request, HttpServletResponse response)
-			throws PlanConfigExceptions, SQLException, IOException, WoResponsibilityExpection {
+	
+	private void createUpdate(BAL_PlmTlPlanconfiguration newPlmTlPlanconfiguration,BAL_PlmTlPlanconfiguration existPlmTlPlanconfiguration,
+			BAL_PlanConfigurationBean planConfigurationBean, HttpServletRequest request, HttpServletResponse response) throws PlanConfigExceptions,SQLException, IOException,WoResponsibilityExpection {
 		ServletOutputStream out = response.getOutputStream();
 		HttpSession httpSession = request.getSession(false);
-		String keyId = (String) httpSession.getAttribute("TblkeyId");
-		String usrConfirmation = (String) httpSession.getAttribute("delConfirm");
-
+		String keyId = (String)httpSession.getAttribute("TblkeyId");
+		String usrConfirmation = (String)httpSession.getAttribute("delConfirm");
+		
 		// TODO Auto-generated method stub
-		// CommonFunctions.debugMsg("Inside create update function" + usrConfirmation);
-		// CommonFunctions.debugMsg( keyId+"cut key "
-		// +newPlmTlPlanconfiguration.getPplcKeyid());
-		try {
-			String saveMsg;
-
-			/*
-			 * if(!UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcKeyid())) {
-			 */
-			// System.out.println("key id is not available");
-			existPlmTlPlanconfiguration = plmTlPlanconfigurationService.create(newPlmTlPlanconfiguration,
-					existPlmTlPlanconfiguration, planConfigurationBean, usrConfirmation);
-
-			saveMsg = "Data Saved Successfully";
-//				}	
-			/*
-			 * else{
-			 * 
-			 * System.out.println("update mpdeedljdfjujdf");
-			 * newPlmTlPlanconfiguration.setPplcKeyid(keyId); //
-			 * System.out.println("key id is available" +
-			 * existPlmTlPlanconfiguration.getPplcKeyid() );
-			 * planConfigurationBean.setFormMode("update"); existPlmTlPlanconfiguration =
-			 * plmTlPlanconfigurationService.update(newPlmTlPlanconfiguration,
-			 * existPlmTlPlanconfiguration,planConfigurationBean); saveMsg =
-			 * "Data Updated Successfully"; }
-			 */
-			// System.out.println("Target date :"+newPlmTlPlanconfiguration.getPplcKeyid());
-
+		//CommonFunctions.debugMsg("Inside create update function" + usrConfirmation);
+		//CommonFunctions.debugMsg( keyId+"cut key " +newPlmTlPlanconfiguration.getPplcKeyid());
+		try{
+			String saveMsg ;
+			
+			/*if(!UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcKeyid()))
+			{*/	
+				//System.out.println("key id is not available");
+				existPlmTlPlanconfiguration =	plmTlPlanconfigurationService.create(newPlmTlPlanconfiguration,existPlmTlPlanconfiguration,planConfigurationBean,usrConfirmation);
+				
+				saveMsg = "Data Saved Successfully";
+//			}	
+				/*
+				 * else{
+				 * 
+				 * System.out.println("update mpdeedljdfjujdf");
+				 * newPlmTlPlanconfiguration.setPplcKeyid(keyId); //
+				 * System.out.println("key id is available" +
+				 * existPlmTlPlanconfiguration.getPplcKeyid() );
+				 * planConfigurationBean.setFormMode("update"); existPlmTlPlanconfiguration =
+				 * plmTlPlanconfigurationService.update(newPlmTlPlanconfiguration,
+				 * existPlmTlPlanconfiguration,planConfigurationBean); saveMsg =
+				 * "Data Updated Successfully"; }
+				 */
+			//System.out.println("Target date   :"+newPlmTlPlanconfiguration.getPplcKeyid());
+		
 			JSONObject returnData = new JSONObject();
 			JSONObject successData = new JSONObject();
 			successData.put("msg", saveMsg);
 			successData.put("mchId", newPlmTlPlanconfiguration.getPplcMachineid());
-			returnData.put("successData", successData);
+			returnData.put("successData",successData);
 			out.print(returnData.toString());
-			// out.print()
+			//out.print()	
 			System.out.println("end of save");
-
-		} catch (WoResponsibilityExpection e) {
-			System.out.println("WoResponsibilityExpection. " + e.getMessage());
-			CommonFunctions.debugMsg("usrConfirmation  " + usrConfirmation);
-			JSONObject confirmusr = new JSONObject();
-			JSONObject successData = new JSONObject();
-			successData.put("msg", "Data Saved SuccessFully");
-			confirmusr.put("successData", successData);
-			confirmusr.put("woException", e.getMessage());
-			out.print(confirmusr.toString());
-
-		} catch (PlanConfigExceptions e) {
-
-			System.out.println("PlanConfigExceptions. " + e.getMessage());
-			JSONObject confirm = new JSONObject();
-			if (!UIUtils.isValidKeyId(usrConfirmation)) {
-				confirm.put("tpmException", e.getMessage());
-				out.print(confirm.toString());
-				httpSession.removeAttribute("delConfirm");
-			}
-		} catch (Exception e) {
-			System.out.println("gete. " + e.getMessage());
-			JSONObject err = new JSONObject();
-			err.put("tpmException", e.getMessage());
-			out.print(err.toString());
+    	 	
+	}catch(WoResponsibilityExpection e){
+		System.out.println("WoResponsibilityExpection. " + e.getMessage());
+		CommonFunctions.debugMsg("usrConfirmation  "+usrConfirmation );
+		JSONObject confirmusr = new JSONObject();
+		JSONObject successData = new JSONObject();
+		successData.put("msg", "Data Saved SuccessFully");
+		confirmusr.put("successData",successData);
+		confirmusr.put("woException", e.getMessage());
+		out.print(confirmusr.toString());
+		
+	}catch(PlanConfigExceptions e)
+	{
+		
+		System.out.println("PlanConfigExceptions. " + e.getMessage());
+		JSONObject confirm = new JSONObject();
+		if(!UIUtils.isValidKeyId(usrConfirmation)) {
+			confirm.put("tpmException", e.getMessage());
+			out.print(confirm.toString());
+			httpSession.removeAttribute("delConfirm");
 		}
-
+	}catch(Exception e)
+	{
+		System.out.println("gete. " + e.getMessage());
+		JSONObject err = new JSONObject();
+		err.put("tpmException",e.getMessage());
+		out.print(err.toString());
 	}
+
+}
+
+	/*
+	 * private void createUpdate(BAL_PlmTlPlanconfiguration
+	 * newPlmTlPlanconfiguration, BAL_PlmTlPlanconfiguration
+	 * existPlmTlPlanconfiguration, BAL_PlanConfigurationBean planConfigurationBean,
+	 * HttpServletRequest request, HttpServletResponse response) throws
+	 * PlanConfigExceptions, SQLException, IOException, WoResponsibilityExpection {
+	 * ServletOutputStream out = response.getOutputStream(); HttpSession httpSession
+	 * = request.getSession(false); String keyId = (String)
+	 * httpSession.getAttribute("TblkeyId"); String usrConfirmation = (String)
+	 * httpSession.getAttribute("delConfirm");
+	 * 
+	 * // TODO Auto-generated method stub //
+	 * CommonFunctions.debugMsg("Inside create update function" + usrConfirmation);
+	 * // CommonFunctions.debugMsg( keyId+"cut key " //
+	 * +newPlmTlPlanconfiguration.getPplcKeyid());
+	 * 
+	 * // elumalai
+	 * 
+	 * try { String saveMsg;
+	 * 
+	 * if (!UIUtils.isValidKeyId(keyId)) { existPlmTlPlanconfiguration =
+	 * plmTlPlanconfigurationService.create(newPlmTlPlanconfiguration,
+	 * existPlmTlPlanconfiguration, planConfigurationBean, usrConfirmation); saveMsg
+	 * = "Data Saved Successfully"; } else { System.out.println("update mode");
+	 * newPlmTlPlanconfiguration.setPplcKeyid(keyId);
+	 * planConfigurationBean.setFormMode("update"); existPlmTlPlanconfiguration =
+	 * plmTlPlanconfigurationService.update(newPlmTlPlanconfiguration,
+	 * existPlmTlPlanconfiguration, planConfigurationBean); saveMsg =
+	 * "Data Updated Successfully"; }
+	 * 
+	 * JSONObject returnData = new JSONObject(); JSONObject successData = new
+	 * JSONObject(); successData.put("msg", saveMsg); successData.put("mchId",
+	 * newPlmTlPlanconfiguration.getPplcMachineid()); returnData.put("successData",
+	 * successData); out.print(returnData.toString());
+	 * System.out.println("end of save");
+	 * 
+	 * } catch (WoResponsibilityExpection e) {
+	 * System.out.println("WoResponsibilityExpection. " + e.getMessage());
+	 * CommonFunctions.debugMsg("usrConfirmation  " + usrConfirmation); JSONObject
+	 * confirmusr = new JSONObject(); JSONObject successData = new JSONObject();
+	 * successData.put("msg", "Data Saved SuccessFully");
+	 * confirmusr.put("successData", successData); confirmusr.put("woException",
+	 * e.getMessage()); out.print(confirmusr.toString());
+	 * 
+	 * } catch (PlanConfigExceptions e) {
+	 * System.out.println("PlanConfigExceptions. " + e.getMessage()); JSONObject
+	 * confirm = new JSONObject(); if (!UIUtils.isValidKeyId(usrConfirmation)) {
+	 * confirm.put("tpmException", e.getMessage()); out.print(confirm.toString());
+	 * httpSession.removeAttribute("delConfirm"); } } catch (Exception e) {
+	 * System.out.println("gete. " + e.getMessage()); JSONObject err = new
+	 * JSONObject(); err.put("tpmException", e.getMessage());
+	 * out.print(err.toString()); }
+	 * 
+	 * 
+	 * try { String saveMsg;
+	 * 
+	 * 
+	 * if(!UIUtils.isValidKeyId(newPlmTlPlanconfiguration.getPplcKeyid())) {
+	 * 
+	 * // System.out.println("key id is not available"); existPlmTlPlanconfiguration
+	 * = plmTlPlanconfigurationService.create(newPlmTlPlanconfiguration,
+	 * existPlmTlPlanconfiguration, planConfigurationBean, usrConfirmation);
+	 * 
+	 * saveMsg = "Data Saved Successfully";
+	 * 
+	 * 
+	 * // }
+	 * 
+	 * else{
+	 * 
+	 * System.out.println("update mpdeedljdfjujdf");
+	 * newPlmTlPlanconfiguration.setPplcKeyid(keyId); //
+	 * System.out.println("key id is available" +
+	 * existPlmTlPlanconfiguration.getPplcKeyid() );
+	 * planConfigurationBean.setFormMode("update"); existPlmTlPlanconfiguration =
+	 * plmTlPlanconfigurationService.update(newPlmTlPlanconfiguration,
+	 * existPlmTlPlanconfiguration,planConfigurationBean); saveMsg =
+	 * "Data Updated Successfully"; }
+	 * 
+	 * //
+	 * System.out.println("Target date :"+newPlmTlPlanconfiguration.getPplcKeyid());
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * JSONObject returnData = new JSONObject(); JSONObject successData = new
+	 * JSONObject(); successData.put("msg", saveMsg); successData.put("mchId",
+	 * newPlmTlPlanconfiguration.getPplcMachineid()); returnData.put("successData",
+	 * successData); out.print(returnData.toString()); // out.print()
+	 * System.out.println("end of save");
+	 * 
+	 * 
+	 * 
+	 * } catch (WoResponsibilityExpection e) {
+	 * System.out.println("WoResponsibilityExpection. " + e.getMessage());
+	 * CommonFunctions.debugMsg("usrConfirmation  " + usrConfirmation); JSONObject
+	 * confirmusr = new JSONObject(); JSONObject successData = new JSONObject();
+	 * successData.put("msg", "Data Saved SuccessFully");
+	 * confirmusr.put("successData", successData); confirmusr.put("woException",
+	 * e.getMessage()); out.print(confirmusr.toString());
+	 * 
+	 * }
+	 * 
+	 * catch (PlanConfigExceptions e) {
+	 * 
+	 * System.out.println("PlanConfigExceptions. " + e.getMessage()); JSONObject
+	 * confirm = new JSONObject(); if (!UIUtils.isValidKeyId(usrConfirmation)) {
+	 * confirm.put("tpmException", e.getMessage()); out.print(confirm.toString());
+	 * httpSession.removeAttribute("delConfirm"); } } catch (Exception e) {
+	 * System.out.println("gete. " + e.getMessage()); JSONObject err = new
+	 * JSONObject(); err.put("tpmException", e.getMessage());
+	 * out.print(err.toString()); }
+	 * 
+	 * 
+	 * }
+	 */
 
 	private List<ComboBox> generateMonth(String curMonthYear) {
 		// TODO Auto-generated method stub

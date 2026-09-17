@@ -14,14 +14,14 @@
 			if(url.indexOf('UPM') >=0 || url.indexOf('unplanned')>=0)
 				viewGrid(url,"");
 			else
-				viewGrid(url,"?q=1");
+				viewGrid(url,"&q=1");
 		}
 		else{
 			//alert("Prev data " +unescape(prevDataUrl));
 			if(prevDataUrl.indexOf('UPM') >=0 || url.indexOf('unplanned')>=0)
 				viewGrid(unescape(prevDataUrl),"");
 			else
-				viewGrid(unescape(prevDataUrl),"?q=1");
+				viewGrid(unescape(prevDataUrl),"&q=1");
 			//viewGrid(unescape(prevDataUrl),"&q=1");
 		}	
 			

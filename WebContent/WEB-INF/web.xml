@@ -256,6 +256,16 @@
     <servlet-name>BAL_preventivemaintenanceservlet</servlet-name>
     <servlet-class>com.akranta.tpm.controller.BAL_preventivemaintenanceservlet</servlet-class>
   </servlet>
+
+
+<servlet>
+    <servlet-name>BAL_sparesPickupServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_SparesPickupServlet</servlet-class>
+  </servlet>
+<servlet-mapping>
+    <servlet-name>BAL_sparesPickupServlet</servlet-name>
+    <url-pattern>*.sprpckup</url-pattern>
+  </servlet-mapping>
   
   <servlet>
     <servlet-name>ToolMonitoringServlet</servlet-name>
@@ -2891,10 +2901,10 @@
     <servlet-name>machineRnkSkllServlet</servlet-name>
     <url-pattern>*.mchrnkskl</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
+  <!-- <servlet-mapping>
     <servlet-name>sparesPickupServlet</servlet-name>
     <url-pattern>*.sprpckup</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   <servlet-mapping>
     <servlet-name>utilityServlet</servlet-name>
     <url-pattern>*.uty</url-pattern>

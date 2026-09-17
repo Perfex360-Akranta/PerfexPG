@@ -276,6 +276,7 @@ public class BAL_PlmTlStandardsServiceImpl implements BAL_PlmTlStandardsService 
 
 	            String dKeyId = plmTlStandardsFormBean.getBdmDockKey();
 	           // BAL_PlmTlStandards plmTlStandards = plmTlStandardsDao.create(newPlmTlStandards, dKeyId);
+	            //mano
 	            BAL_PlmTlStandards plmTlStandards = balpmstandards.savePlmTlStandards(newPlmTlStandards, dKeyId);
 				/*
 				 * List<BAL_PlmTlMethodsmst> methodsList = newPlmTlStandards.getMethodDetail();
@@ -366,9 +367,61 @@ public class BAL_PlmTlStandardsServiceImpl implements BAL_PlmTlStandardsService 
 	    return null;
 	}
 
+	/*
+	 * @Override
+	 * 
+	 * public List<BAL_PlmTlStandards> updateMultiple( List<BAL_PlmTlStandards>
+	 * newList,List<BAL_PlmTlStandards> existList,BAL_PlmTlStandardsFormBean
+	 * plmTlStandardsFormBean) throws ValidationExceptions, Exception {
+	 * 
+	 * CommonFunctions.debugMsg("updateMultiple CALLED, rows=" + newList.size());
+	 * List<BAL_PlmTlStandards> savedList = new ArrayList<>();
+	 * 
+	 * try { for (int i = 0; i < newList.size(); i++) { BAL_PlmTlStandards
+	 * newPlmTlStandards = newList.get(i); BAL_PlmTlStandards existPlmTlStandards =
+	 * (existList != null && existList.size() > i) ? existList.get(i) : null;
+	 * 
+	 * String validationsFor = "create";
+	 * CommonFunctions.debugMsg("Inside the ServiceImpl updateMultiple");
+	 * 
+	 * validations.validate(newPlmTlStandards, "PmstandardCreation",
+	 * validationsFor); validations.validate(newPlmTlStandards,
+	 * "PmstandardCreation", "update");
+	 * CommonFunctions.debugMsg(" after validatiop ");
+	 * 
+	 * if (newPlmTlStandards.getMethodDetail() != null &&
+	 * newPlmTlStandards.getMethodDetail().size() > 0) { List<BAL_PlmTlMethodsmst>
+	 * newPlmTlmethodsmsts = newPlmTlStandards.getMethodDetail(); for
+	 * (BAL_PlmTlMethodsmst plmTlmethodsmst : newPlmTlmethodsmsts) {
+	 * CommonFunctions.debugMsg(" methodname " + plmTlmethodsmst.getPmmsActivity());
+	 * validations.validate(plmTlmethodsmst, "PmstandardCreation", validationsFor);
+	 * } }
+	 * 
+	 * if (newPlmTlStandards.getToolsDetail() != null &&
+	 * newPlmTlStandards.getToolsDetail().size() > 0) { List<BAL_PlmTlToolsdtl>
+	 * plmTlToolsdtlList = newPlmTlStandards.getToolsDetail(); for
+	 * (BAL_PlmTlToolsdtl plmTlToolsdtl : plmTlToolsdtlList) {
+	 * CommonFunctions.debugMsg("TOOLS  " + plmTlToolsdtl.getPtldToolid());
+	 * validations.validate(plmTlToolsdtl, "PmstandardCreation", validationsFor); }
+	 * }
+	 * 
+	 * BdmTlYycountermeasurelink counterMeasurelist =
+	 * newPlmTlStandards.getCountermeasureLink(); CommonFunctions.debugMsg("After");
+	 * 
+	 * fillValues(newPlmTlStandards, existPlmTlStandards, plmTlStandardsFormBean);
+	 * String dKeyId = plmTlStandardsFormBean.getBdmDockKey();
+	 * 
+	 * //BAL_PlmTlStandards plmTlStandards =
+	 * plmTlStandardsDao.update(newPlmTlStandards, dKeyId); BAL_PlmTlStandards
+	 * plmTlStandards = balpmstandards.savePlmTlStandards(newPlmTlStandards,
+	 * dKeyId); savedList.add(plmTlStandards); } return savedList;
+	 * 
+	 * } catch (ValidationExceptions e) { e.printStackTrace();
+	 * CommonFunctions.debugMsg(e.getMessage()); throw new
+	 * ValidationExceptions(e.getMessage()); } }
+	 */
 	@Override
-	
-	public List<BAL_PlmTlStandards> updateMultiple( List<BAL_PlmTlStandards> newList,List<BAL_PlmTlStandards> existList,BAL_PlmTlStandardsFormBean plmTlStandardsFormBean) throws ValidationExceptions, Exception {
+	public List<BAL_PlmTlStandards> updateMultiple(List<BAL_PlmTlStandards> newList, List<BAL_PlmTlStandards> existList, BAL_PlmTlStandardsFormBean plmTlStandardsFormBean) throws ValidationExceptions, Exception {
 
 	    CommonFunctions.debugMsg("updateMultiple CALLED, rows=" + newList.size());
 	    List<BAL_PlmTlStandards> savedList = new ArrayList<>();
@@ -385,6 +438,21 @@ public class BAL_PlmTlStandardsServiceImpl implements BAL_PlmTlStandardsService 
 	            validations.validate(newPlmTlStandards, "PmstandardCreation", validationsFor);
 	            validations.validate(newPlmTlStandards, "PmstandardCreation", "update");
 	            CommonFunctions.debugMsg(" after validatiop ");
+
+	            // ---- ADDED: CBM validation (was present in createMultiple but missing here) ----
+	            if ("CBM".equals(newPlmTlStandards.getPmsdActivitytype())) {
+	                CommonFunctions.debugMsg("CBM Detail - update");
+	                List<BAL_PlmTlCbmstdcadtl> cbmlist = newPlmTlStandards.getCbmData();
+	                if (cbmlist != null && cbmlist.size() > 0) {
+	                    for (BAL_PlmTlCbmstdcadtl newplmTlCbmstdcadtl : cbmlist) {
+	                        validations.validate(newplmTlCbmstdcadtl, "PmstandardCreation", validationsFor);
+	                    }
+	                } else {
+	                    BAL_PlmTlCbmstdcadtl plmTlCbmstdcadtl = new BAL_PlmTlCbmstdcadtl();
+	                    validations.validate(plmTlCbmstdcadtl, "PmstandardCreation", validationsFor);
+	                }
+	            }
+	            // ---------------------------------------------------------------------------------
 
 	            if (newPlmTlStandards.getMethodDetail() != null && newPlmTlStandards.getMethodDetail().size() > 0) {
 	                List<BAL_PlmTlMethodsmst> newPlmTlmethodsmsts = newPlmTlStandards.getMethodDetail();
@@ -408,7 +476,6 @@ public class BAL_PlmTlStandardsServiceImpl implements BAL_PlmTlStandardsService 
 	            fillValues(newPlmTlStandards, existPlmTlStandards, plmTlStandardsFormBean);
 	            String dKeyId = plmTlStandardsFormBean.getBdmDockKey();
 
-	            //BAL_PlmTlStandards plmTlStandards = plmTlStandardsDao.update(newPlmTlStandards, dKeyId);
 	            BAL_PlmTlStandards plmTlStandards = balpmstandards.savePlmTlStandards(newPlmTlStandards, dKeyId);
 	            savedList.add(plmTlStandards);
 	        }
@@ -420,7 +487,6 @@ public class BAL_PlmTlStandardsServiceImpl implements BAL_PlmTlStandardsService 
 	        throw new ValidationExceptions(e.getMessage());
 	    }
 	}
-
 	@Override
 	public BAL_PlmTlStandards create(BAL_PlmTlStandards newPlmTlStandards,BAL_PlmTlStandards existPlmTlStandards,BAL_PlmTlStandardsFormBean plmTlStandardsFormBean) throws ValidationExceptions,Exception {
 		// TODO Auto-generated method stub
@@ -953,13 +1019,67 @@ public class BAL_PlmTlStandardsServiceImpl implements BAL_PlmTlStandardsService 
 	
 }
 
+/*
+ * private List<BAL_PlmTlCbmstdcadtl> fillValuesCBM(BAL_PlmTlStandards
+ * newPlmTlStandards, BAL_PlmTlStandards existPlmTlStandards) { // TODO
+ * Auto-generated method stub List<BAL_PlmTlCbmstdcadtl> plmTlCbmstdcadtlList =
+ * newPlmTlStandards.getCbmData(); List<BAL_PlmTlCbmstdcadtl>
+ * oldplmTlCbmstdcadtlList = null; BAL_PlmTlCbmstdcadtl oldplmTlPmsftpermitlink
+ * = null; String dateTime = CommonFunctions.dateTimeNow();
+ * 
+ * if( existPlmTlStandards != null) { oldplmTlCbmstdcadtlList =
+ * existPlmTlStandards.getCbmData();
+ * 
+ * if( oldplmTlCbmstdcadtlList != null && oldplmTlCbmstdcadtlList.size() > 0 )
+ * CommonFunctions.debugMsg("inside Cbmstd"); oldplmTlPmsftpermitlink =
+ * oldplmTlCbmstdcadtlList.get(0); } List<BAL_PlmTlCbmstdcadtl>
+ * newPlmTlCbmstdcadtlList = new ArrayList<BAL_PlmTlCbmstdcadtl >(); for(
+ * BAL_PlmTlCbmstdcadtl newPlmTlCbmstdcadtl : plmTlCbmstdcadtlList) {
+ * if(newPlmTlCbmstdcadtl.getCmdtKeyid() == null )
+ * newPlmTlCbmstdcadtl.setCmdtCreatedon(dateTime); else
+ * newPlmTlCbmstdcadtl.setCmdtCreatedon(dateTime);
+ * newPlmTlCbmstdcadtl.setCmdtActive("Y");
+ * newPlmTlCbmstdcadtl.setCmdtCreatedby(newPlmTlStandards.getPmsdCreatedby());
+ * CommonFunctions.debugMsg(" --- "+dateTime);
+ * newPlmTlCbmstdcadtl.setCmdtModifiedon(dateTime); if(
+ * newPlmTlCbmstdcadtl.getCmdtCbmcondition() == null )
+ * newPlmTlCbmstdcadtl.setCmdtCbmcondition("-"); if(
+ * newPlmTlCbmstdcadtl.getCmdtCorrectiveaction() == null )
+ * newPlmTlCbmstdcadtl.setCmdtCorrectiveaction("{}"); if(
+ * newPlmTlCbmstdcadtl.getCmdtDesirablereading() == null )
+ * newPlmTlCbmstdcadtl.setCmdtDesirablereading("0"); if(
+ * newPlmTlCbmstdcadtl.getCmdtInspectionid() == null )
+ * newPlmTlCbmstdcadtl.setCmdtInspectionid("{}"); if(
+ * newPlmTlCbmstdcadtl.getCmdtKeyid() == null )
+ * newPlmTlCbmstdcadtl.setCmdtKeyid("{}"); if(
+ * newPlmTlCbmstdcadtl.getCmdtLowerlimit() == null )
+ * newPlmTlCbmstdcadtl.setCmdtLowerlimit("0"); if(
+ * newPlmTlCbmstdcadtl.getCmdtMeasuringmethod() == null )
+ * newPlmTlCbmstdcadtl.setCmdtMeasuringmethod("{}"); if(
+ * newPlmTlCbmstdcadtl.getCmdtPmstandardid() == null )
+ * newPlmTlCbmstdcadtl.setCmdtPmstandardid("{}"); if(
+ * newPlmTlCbmstdcadtl.getCmdtUomid() == null )
+ * newPlmTlCbmstdcadtl.setCmdtUomid("{}"); if(
+ * newPlmTlCbmstdcadtl.getCmdtUpperlimit() == null )
+ * newPlmTlCbmstdcadtl.setCmdtUpperlimit("0"); if(
+ * newPlmTlCbmstdcadtl.getCmdtZonecolor() == null )
+ * newPlmTlCbmstdcadtl.setCmdtZonecolor("{}"); if(
+ * newPlmTlCbmstdcadtl.getCmdtZoneid() == null )
+ * newPlmTlCbmstdcadtl.setCmdtZoneid("{}");
+ * 
+ * newPlmTlCbmstdcadtlList.add(newPlmTlCbmstdcadtl); }
+ * CommonFunctions.debugMsg("end CBM FILLVALUES"); return
+ * newPlmTlCbmstdcadtlList; }
+ */
+	
+	//mano
 	private List<BAL_PlmTlCbmstdcadtl> fillValuesCBM(BAL_PlmTlStandards newPlmTlStandards,
 			BAL_PlmTlStandards existPlmTlStandards) {
 		// TODO Auto-generated method stub
 		List<BAL_PlmTlCbmstdcadtl> plmTlCbmstdcadtlList = newPlmTlStandards.getCbmData();
 		List<BAL_PlmTlCbmstdcadtl> oldplmTlCbmstdcadtlList = null;
 		BAL_PlmTlCbmstdcadtl oldplmTlPmsftpermitlink = null;
-		String dateTime = CommonFunctions.dateTimeNow();
+		String dateTime = CommonFunctions.pg_dateTimeNow();
 		
 		if( existPlmTlStandards != null)
 		{
@@ -1318,7 +1438,10 @@ public class BAL_PlmTlStandardsServiceImpl implements BAL_PlmTlStandardsService 
 	@Override
 	public List<String[]> getCBM(String pmStandardId) throws Exception {
 		// TODO Auto-generated method stub
-		return plmTlStandardsDao.getCBM(pmStandardId);
+		//return plmTlStandardsDao.getCBM(pmStandardId);
+		return balpmstandards.getCBM(pmStandardId);
+		
+		
 	}
 	
 	@Override

@@ -106,6 +106,9 @@ jQuery(document).ready(function(){
 				return false;
 			 }
 		 jQuery('#'+hdnID).val(griddata);
+		 //mano
+		     jQuery('#'+hdnID).val(griddata).trigger('change');   // <-- ADDED: .trigger('change')
+
 		 closePopUpDialoge('loadCBM');
 		// jQuery('#loadCBM').hide();		
  	 	});

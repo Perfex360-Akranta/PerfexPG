@@ -209,7 +209,7 @@ public class BAL_PlmTlPlanconfigurationDaoImpl implements BAL_PlmTlPlanconfigura
 	}
 	
 	@Override
-	public BAL_PlmTlPlanconfiguration update(BAL_PlmTlPlanconfiguration plmTlPlanconfiguration)	throws Exception { 
+	public BAL_PlmTlPlanconfiguration update(BAL_PlmTlPlanconfiguration plmTlPlanconfiguration)	throws Exception {
 		System.out.println("update Dao impl");
 		List<String> sqls = new ArrayList<String>();
 		BAL_PlmTlPlanconfigurationSql plmTlPlanconfigurationSql = new BAL_PlmTlPlanconfigurationSql();
@@ -362,6 +362,7 @@ public class BAL_PlmTlPlanconfigurationDaoImpl implements BAL_PlmTlPlanconfigura
 		// TODO Auto-generated method stub
 		BAL_PlmTlPlanconfiguration plmTlPlanconfiguration = new BAL_PlmTlPlanconfiguration();
 		String sql = BAL_PlmTlPlanconfigurationSql.getplanconfigListSql(planConfigKey);
+		System.out.println("in dao impl, planConfigKey = [" + planConfigKey + "]");
 		System.out.println("in dao impl" );
 		Object args [] = new Object [] { planConfigKey };
 		plmTlPlanconfiguration.setSaveArray(dbActionTemplate.getDataArr(sql,args));

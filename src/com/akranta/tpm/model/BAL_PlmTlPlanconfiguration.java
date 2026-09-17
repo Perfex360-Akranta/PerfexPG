@@ -5,6 +5,9 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONArray;
 import java.util.List;
 
+import com.akranta.tpm.model.AbnTlAbnormality.tableFldConstants;
+import com.akranta.tpm.utils.CommonMessage;
+
 public class BAL_PlmTlPlanconfiguration {
 	private List <BAL_PlmTlWorespmst> woRespMast;
 	private List <BAL_PlmTlWorespdtl> woRespDetail;
@@ -305,101 +308,226 @@ public class BAL_PlmTlPlanconfiguration {
 		return woRespMast;
 	}
 	
+	public void setValue(tableFldConstants field, Object value) {
+        saveArray[field.ordinal()] = value;
+    }
 	
+	/*
+	 * public String toJsonManual() { StringBuilder sb = new StringBuilder();
+	 * sb.append("{"); appendField(sb, "pplcKeyid", getPplcKeyid(), true);
+	 * appendField(sb, "pplcFactoryid", getPplcFactoryid(), false); appendField(sb,
+	 * "pplcSectionid", getPplcSectionid(), false); appendField(sb, "pplcCellid",
+	 * getPplcCellid(), false); appendField(sb, "pplcMachineid", getPplcMachineid(),
+	 * false); appendField(sb, "pplcLevel", getPplcLevel(), false); appendField(sb,
+	 * "pplcWeekno", getPplcWeekno(), false); appendField(sb, "pplcMonthly",
+	 * getPplcMonthly(), false); appendField(sb, "pplcQuarterly",
+	 * getPplcQuarterly(), false); appendField(sb, "pplcHalfyearly",
+	 * getPplcHalfyearly(), false); appendField(sb, "pplcYearly", getPplcYearly(),
+	 * false); appendField(sb, "pplcYearly2", getPplcYearly2(), false);
+	 * appendField(sb, "pplcYearly3", getPplcYearly3(), false); appendField(sb,
+	 * "pplcYearly4", getPplcYearly4(), false); appendField(sb, "pplcYearly5",
+	 * getPplcYearly5(), false); appendField(sb, "pplcYearly6", getPplcYearly6(),
+	 * false); appendField(sb, "pplcYearly7", getPplcYearly7(), false);
+	 * appendField(sb, "pplcYearly8", getPplcYearly8(), false); appendField(sb,
+	 * "pplcYearly9", getPplcYearly9(), false); appendField(sb, "pplcYearly10",
+	 * getPplcYearly10(), false); appendField(sb, "pplcFrequency",
+	 * getPplcFrequency(), false); appendField(sb, "pplcAssemblyid",
+	 * getPplcAssemblyid(), false); appendField(sb, "pplcTempfield1",
+	 * getPplcTempfield1(), false); appendField(sb, "pplcTempfield2",
+	 * getPplcTempfield2(), false); appendField(sb, "pplcTempfield3",
+	 * getPplcTempfield3(), false); appendField(sb, "pplcTempfield4",
+	 * getPplcTempfield4(), false); appendField(sb, "pplcFlid", getPplcFlid(),
+	 * false); appendField(sb, "pplcElementid", getPplcElementid(), false);
+	 * appendField(sb, "pplcActive", getPplcActive(), false); appendField(sb,
+	 * "pplcCreatedby", getPplcCreatedby(), false); appendField(sb, "pplcCreatedon",
+	 * getPplcCreatedon(), false); appendField(sb, "pplcModifiedon",
+	 * getPplcModifiedon(), false); sb.append("}"); return sb.toString(); }
+	 * 
+	 * private void appendField(StringBuilder sb, String key, String value, boolean
+	 * first) { if (!first) sb.append(",");
+	 * sb.append("\"").append(key).append("\":"); if (value == null) {
+	 * sb.append("null"); } else {
+	 * sb.append("\"").append(escapeJson(value)).append("\""); } }
+	 * 
+	 * private String escapeJson(String value) { return value.replace("\\", "\\\\")
+	 * .replace("\"", "\\\"") .replace("\n", "\\n") .replace("\r", "\\r")
+	 * .replace("\t", "\\t"); }
+	 * 
+	 * public static BAL_PlmTlPlanconfiguration fromJson(String json) { JSONObject
+	 * obj = JSONObject.fromObject(json); BAL_PlmTlPlanconfiguration result = new
+	 * BAL_PlmTlPlanconfiguration(); result.setPplcKeyid(obj.optString("keyid"));
+	 * result.setPplcFactoryid(obj.optString("factoryid"));
+	 * result.setPplcSectionid(obj.optString("sectionid"));
+	 * result.setPplcCellid(obj.optString("cellid"));
+	 * result.setPplcMachineid(obj.optString("machineid"));
+	 * result.setPplcLevel(obj.optString("level"));
+	 * result.setPplcWeekno(obj.optString("weekno"));
+	 * result.setPplcMonthly(obj.optString("monthly"));
+	 * result.setPplcQuarterly(obj.optString("quarterly"));
+	 * result.setPplcHalfyearly(obj.optString("halfyearly"));
+	 * result.setPplcYearly(obj.optString("yearly"));
+	 * result.setPplcYearly2(obj.optString("yearly2"));
+	 * result.setPplcYearly3(obj.optString("yearly3"));
+	 * result.setPplcYearly4(obj.optString("yearly4"));
+	 * result.setPplcYearly5(obj.optString("yearly5"));
+	 * result.setPplcYearly6(obj.optString("yearly6"));
+	 * result.setPplcYearly7(obj.optString("yearly7"));
+	 * result.setPplcYearly8(obj.optString("yearly8"));
+	 * result.setPplcYearly9(obj.optString("yearly9"));
+	 * result.setPplcYearly10(obj.optString("yearly10"));
+	 * result.setPplcFrequency(obj.optString("frequency"));
+	 * result.setPplcAssemblyid(obj.optString("assemblyid"));
+	 * result.setPplcTempfield1(obj.optString("tempfield1"));
+	 * result.setPplcTempfield2(obj.optString("tempfield2"));
+	 * result.setPplcTempfield3(obj.optString("tempfield3"));
+	 * result.setPplcTempfield4(obj.optString("tempfield4"));
+	 * result.setPplcFlid(obj.optString("flid"));
+	 * result.setPplcElementid(obj.optString("elementid"));
+	 * result.setPplcActive(obj.optString("active"));
+	 * result.setPplcCreatedby(obj.optString("createdby"));
+	 * result.setPplcCreatedon(obj.optString("createdon"));
+	 * result.setPplcModifiedon(obj.optString("modifiedon")); return result; }
+	 */
+	
+	//11sep
+//	public String toJsonManual() {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("{");
+// 
+//        boolean first = true;
+//        for (tableFldConstants field : tableFldConstants.values()) {
+//            int index = field.ordinal();
+//            if (index < saveArray.length) {
+//                if (!first) sb.append(",");
+//                sb.append("\"").append(field.name()).append("\":");
+//                Object val = saveArray[index];
+//                if (field.name() == "keyid" && val == null) {
+//                    sb.append("null");
+//                } else if (val == null) {
+//                    sb.append("\"{}\"");
+//                } else {
+//                    sb.append("\"").append(val.toString()).append("\"");
+//                }
+//                first = false;
+//            }
+//        }
+// 
+//        sb.append("}");
+//        return sb.toString();
+//    }
+// 
+//    public static BAL_PlmTlPlanconfiguration fromJson(String json) {
+//        CommonMessage.debugMsg("RAW JSON Response: [" + json + "]");
+// 
+//        JSONObject obj = JSONObject.fromObject(json);
+// 
+//        BAL_PlmTlPlanconfiguration mst = new BAL_PlmTlPlanconfiguration();
+//        CommonMessage.debugMsg("RAW JSON Response: :" + json);
+// 
+//        for (tableFldConstants field : tableFldConstants.values()) {
+//            String key = field.name();
+// 
+//            CommonMessage.debugMsg("JSON[" + field + "] :" + obj.get(key));
+//            String val = obj.optString(field.name(), null);
+//            if (val == null || "null".equalsIgnoreCase(val) || "{}".equals(val)) {
+//                val = "";
+//            }
+//            mst.setValue(field, val != null && val.equals("null") ? null : val);
+//        }
+//        return mst;
+//    }
+	
+	//elumalai
 	public String toJsonManual() {
 	    StringBuilder sb = new StringBuilder();
 	    sb.append("{");
-	    appendField(sb, "pplcKeyid", getPplcKeyid(), true);
-	    appendField(sb, "pplcFactoryid", getPplcFactoryid(), false);
-	    appendField(sb, "pplcSectionid", getPplcSectionid(), false);
-	    appendField(sb, "pplcCellid", getPplcCellid(), false);
-	    appendField(sb, "pplcMachineid", getPplcMachineid(), false);
-	    appendField(sb, "pplcLevel", getPplcLevel(), false);
-	    appendField(sb, "pplcWeekno", getPplcWeekno(), false);
-	    appendField(sb, "pplcMonthly", getPplcMonthly(), false);
-	    appendField(sb, "pplcQuarterly", getPplcQuarterly(), false);
-	    appendField(sb, "pplcHalfyearly", getPplcHalfyearly(), false);
-	    appendField(sb, "pplcYearly", getPplcYearly(), false);
-	    appendField(sb, "pplcYearly2", getPplcYearly2(), false);
-	    appendField(sb, "pplcYearly3", getPplcYearly3(), false);
-	    appendField(sb, "pplcYearly4", getPplcYearly4(), false);
-	    appendField(sb, "pplcYearly5", getPplcYearly5(), false);
-	    appendField(sb, "pplcYearly6", getPplcYearly6(), false);
-	    appendField(sb, "pplcYearly7", getPplcYearly7(), false);
-	    appendField(sb, "pplcYearly8", getPplcYearly8(), false);
-	    appendField(sb, "pplcYearly9", getPplcYearly9(), false);
-	    appendField(sb, "pplcYearly10", getPplcYearly10(), false);
-	    appendField(sb, "pplcFrequency", getPplcFrequency(), false);
-	    appendField(sb, "pplcAssemblyid", getPplcAssemblyid(), false);
-	    appendField(sb, "pplcTempfield1", getPplcTempfield1(), false);
-	    appendField(sb, "pplcTempfield2", getPplcTempfield2(), false);
-	    appendField(sb, "pplcTempfield3", getPplcTempfield3(), false);
-	    appendField(sb, "pplcTempfield4", getPplcTempfield4(), false);
-	    appendField(sb, "pplcFlid", getPplcFlid(), false);
-	    appendField(sb, "pplcElementid", getPplcElementid(), false);
-	    appendField(sb, "pplcActive", getPplcActive(), false);
-	    appendField(sb, "pplcCreatedby", getPplcCreatedby(), false);
-	    appendField(sb, "pplcCreatedon", getPplcCreatedon(), false);
-	    appendField(sb, "pplcModifiedon", getPplcModifiedon(), false);
+
+	    boolean first = true;
+	    for (tableFldConstants field : tableFldConstants.values()) {
+	        int index = field.ordinal();
+	        if (index < saveArray.length) {
+	            if (!first) sb.append(",");
+	            sb.append("\"").append(field.name()).append("\":");
+	            Object val = saveArray[index];
+	            if(field.name() == "keyid" && val == null) {
+	            	sb.append("null");
+	            }else if (val == null) {
+	                sb.append("\"{}\"");
+	            } else {
+	                sb.append("\"").append(val.toString()).append("\"");
+	            }
+	            first = false;
+	        }
+	    }
+
 	    sb.append("}");
 	    return sb.toString();
 	}
+  
+  public static String toJsonManualList(List<BAL_PlmTlPlanconfiguration> list) {
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("[");
 
-	private void appendField(StringBuilder sb, String key, String value, boolean first) {
-	    if (!first) sb.append(",");
-	    sb.append("\"").append(key).append("\":");
-	    if (value == null) {
-	        sb.append("null");
-	    } else {
-	        sb.append("\"").append(escapeJson(value)).append("\"");
+	    for (int i = 0; i < list.size(); i++) {
+	        if (i > 0) sb.append(",");
+	        sb.append(list.get(i).toJsonManual());
 	    }
-	}
 
-	private String escapeJson(String value) {
-	    return value.replace("\\", "\\\\")
-	                .replace("\"", "\\\"")
-	                .replace("\n", "\\n")
-	                .replace("\r", "\\r")
-	                .replace("\t", "\\t");
+	    sb.append("]");
+	    return sb.toString();
 	}
-
+	
+	
 	public static BAL_PlmTlPlanconfiguration fromJson(String json) {
-	    JSONObject obj = JSONObject.fromObject(json);
-	    BAL_PlmTlPlanconfiguration result = new BAL_PlmTlPlanconfiguration();
-	    result.setPplcKeyid(obj.optString("keyid"));
-	    result.setPplcFactoryid(obj.optString("factoryid"));
-	    result.setPplcSectionid(obj.optString("sectionid"));
-	    result.setPplcCellid(obj.optString("cellid"));
-	    result.setPplcMachineid(obj.optString("machineid"));
-	    result.setPplcLevel(obj.optString("level"));
-	    result.setPplcWeekno(obj.optString("weekno"));
-	    result.setPplcMonthly(obj.optString("monthly"));
-	    result.setPplcQuarterly(obj.optString("quarterly"));
-	    result.setPplcHalfyearly(obj.optString("halfyearly"));
-	    result.setPplcYearly(obj.optString("yearly"));
-	    result.setPplcYearly2(obj.optString("yearly2"));
-	    result.setPplcYearly3(obj.optString("yearly3"));
-	    result.setPplcYearly4(obj.optString("yearly4"));
-	    result.setPplcYearly5(obj.optString("yearly5"));
-	    result.setPplcYearly6(obj.optString("yearly6"));
-	    result.setPplcYearly7(obj.optString("yearly7"));
-	    result.setPplcYearly8(obj.optString("yearly8"));
-	    result.setPplcYearly9(obj.optString("yearly9"));
-	    result.setPplcYearly10(obj.optString("yearly10"));
-	    result.setPplcFrequency(obj.optString("frequency"));
-	    result.setPplcAssemblyid(obj.optString("assemblyid"));
-	    result.setPplcTempfield1(obj.optString("tempfield1"));
-	    result.setPplcTempfield2(obj.optString("tempfield2"));
-	    result.setPplcTempfield3(obj.optString("tempfield3"));
-	    result.setPplcTempfield4(obj.optString("tempfield4"));
-	    result.setPplcFlid(obj.optString("flid"));
-	    result.setPplcElementid(obj.optString("elementid"));
-	    result.setPplcActive(obj.optString("active"));
-	    result.setPplcCreatedby(obj.optString("createdby"));
-	    result.setPplcCreatedon(obj.optString("createdon"));
-	    result.setPplcModifiedon(obj.optString("modifiedon"));
-	    return result;
-	}
+		  //CommonMessage.debugMsg("RAW JSON Response: [" + json + "]");
+
+		  JSONObject obj = JSONObject.fromObject(json);
+
+		  BAL_PlmTlPlanconfiguration mst = new BAL_PlmTlPlanconfiguration();
+		  //CommonMessage.debugMsg("RAW JSON Response: :"+json);
+
+		    for (tableFldConstants field : tableFldConstants.values()) {
+		    	String key = field.name();
+		    	
+		    	//CommonMessage.debugMsg("JSON[" + field + "] :"+obj.get(key));
+		        String val = obj.optString(field.name(), null);
+		        if (val == null || "null".equalsIgnoreCase(val) || "{}".equals(val)) {
+	                val = "";
+	            }
+		        mst.setValue(field, val);
+		    	
+		    }
+		    return mst;
+		}
+	  
+	public static List<BAL_PlmTlPlanconfiguration> fromJsonList(String json) {
+
+		   // CommonMessage.debugMsg("RAW JSON ARRAY Response: " + json);
+
+		    JSONArray jsonArray = JSONArray.fromObject(json);
+		    List<BAL_PlmTlPlanconfiguration> list = new ArrayList<>();
+
+		    for (int i = 0; i < jsonArray.length(); i++) {
+
+		        JSONObject obj = jsonArray.getJSONObject(i);
+		        BAL_PlmTlPlanconfiguration mst = new BAL_PlmTlPlanconfiguration();
+
+		        for (tableFldConstants field : tableFldConstants.values()) {
+		            String key = field.name();
+
+		            String val = obj.optString(key, null);
+		            if (val == null || "null".equalsIgnoreCase(val) || "{}".equals(val)) {
+		                val = "";
+		            }
+
+		            mst.setValue(field, val);
+		        }
+
+		        list.add(mst);
+		    }
+
+		    return list;
+		}
 
 	
 

@@ -168,7 +168,8 @@ jQuery(document).ready(function(){
 			jQuery('#planconfig').trigger("reloadGrid");
 		}*/
 		
-		function frmwrkordrResponsibility_successsCallback(result){
+		
+		/* function frmwrkordrResponsibility_successsCallback(result){
 			
 			var workMstKeyId =result.successData.keyId;
 			alert(workMstKeyId);
@@ -190,8 +191,39 @@ jQuery(document).ready(function(){
 
 		    jQuery('#txtPwrdmasterid').val('');
 		    jQuery('#txtPwrdkeyid').val('');
+		    
+		    pjQuery("#subformPopUpId").dialog("close");
 		
-			} 
+			}  */
+			
+			//elumalai
+			function frmwrkordrResponsibility_successsCallback(result){
+	
+	var workMstKeyId =result.successData.keyId;
+	alert(workMstKeyId);
+	//jQuery('#workOResp').trigger("reloadGrid");
+	processGridnew("wrkOdrResp_input.plnconfig","?q=2&workMstKeyId="+workMstKeyId,"workOResp","workOrderResp_pager","","doubleClick","","wrkOdrResp_onloadComplete");
+	jQuery('#planconfig').trigger("reloadGrid");
+	
+	// clear dropdowns after successful save
+    clearField('cmbPwrdtradeid');
+    clearField('cmbPwrdempid');
+    clearValidationErrorMsg('cmbPwrdtradeid');
+    clearValidationErrorMsg('cmbPwrdempid');
+
+    // also reset the overall-responsibility checkbox and hidden master/detail keys
+    jQuery('#chkoverresp').attr('checked', false);
+    jQuery('#chkoverresp').val(' ');
+    enableFields('cmbPwrdtradeid');
+    jQuery('#lbltrade').addClass('mandatory-lbl');
+
+    jQuery('#txtPwrdmasterid').val('');
+    jQuery('#txtPwrdkeyid').val('');
+    
+    jQuery("#subformPopUpId").dialog("close");   // fixed typo: was pjQuery
+	
+	}
+			
 		function wOResp_sucess(result)
 		{	
 			//alert(result.successData.msg);				

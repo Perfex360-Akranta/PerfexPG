@@ -164,7 +164,7 @@ public class BAL_PlmTlStandardsDaoImpl implements BAL_PlmTlStandardsDao {
 			{//MLMM_REFDOCID
 				for(BAL_PlmTlCbmstdcadtl plmTlCbmstdcadtl:cbmlist)
 				{
-					plmTlCbmstdcadtl.setCmdtKeyid(dbActionTemplate.getSequenceNumber(BAL_PlmTlCbmstdcadtlSql.TBL_PLM_TL_CBMSTDCADTL, 12, "PCC", "MMYY", "Y")); // set the sequnce number 
+					plmTlCbmstdcadtl.setCmdtKeyid(dbActionTemplate.getSequenceNumber(BAL_PlmTlCbmstdcadtlSql.TBL_BAL_PLM_TL_CBMSTDCADTL, 12, "PCC", "MMYY", "Y")); // set the sequnce number 
 					System.out.println("before INsert");
 					plmTlCbmstdcadtl.setCmdtPmstandardid(plmTlStandards.getPmsdKeyid());
 					sqls.add(BAL_PlmTlCbmstdcadtlSql.getInsertSql(plmTlCbmstdcadtlSql.getCmdtDbFields(), plmTlCbmstdcadtl.getSaveArray())); // add insert sql for master table
@@ -273,7 +273,7 @@ public class BAL_PlmTlStandardsDaoImpl implements BAL_PlmTlStandardsDao {
 					for(BAL_PlmTlCbmstdcadtl plmTlCbmstdcadtl:cbmlist)
 					{
 						if(!UIUtils.isValidKeyId(plmTlCbmstdcadtl.getCmdtKeyid())){
-							plmTlCbmstdcadtl.setCmdtKeyid(dbActionTemplate.getSequenceNumber(BAL_PlmTlCbmstdcadtlSql.TBL_PLM_TL_CBMSTDCADTL, 12, "PCC", "MMYY", "Y")); // set the sequnce number
+							plmTlCbmstdcadtl.setCmdtKeyid(dbActionTemplate.getSequenceNumber(BAL_PlmTlCbmstdcadtlSql.TBL_BAL_PLM_TL_CBMSTDCADTL, 12, "PCC", "MMYY", "Y")); // set the sequnce number
 						System.out.println("before insert in update");
 						sqls.add(BAL_PlmTlCbmstdcadtlSql.getInsertSql(plmTlCbmstdcadtlSql.getCmdtDbFields(), plmTlCbmstdcadtl.getSaveArray())); // add insert sql for master table 
 						}	
@@ -631,7 +631,11 @@ public class BAL_PlmTlStandardsDaoImpl implements BAL_PlmTlStandardsDao {
 		{
 			System.out.println("standardId in doa imlpl"+pmStandardId);
 			List<String> paramValues = new ArrayList<String>();
+			System.out.println("isValidKeyId(" + pmStandardId + ") = " + UIUtils.isValidKeyId(pmStandardId));
+			System.out.println("paramValues = " + paramValues);
 			String sql = BAL_PlmTlStandardsSql.getCBMTbl(pmStandardId);
+			System.out.println("isValidKeyId 1(" + pmStandardId + ") = " + UIUtils.isValidKeyId(pmStandardId));
+			System.out.println("paramValues 1= " + paramValues);
 			List<String[]>cbmList = null;
 			
 			if(!UIUtils.isValidKeyId(pmStandardId))
@@ -664,7 +668,7 @@ public class BAL_PlmTlStandardsDaoImpl implements BAL_PlmTlStandardsDao {
 		
 		try{
 			System.out.println("inside DAO IMPL");
-			newPlmTlCbmstdcadtl.setCmdtKeyid(dbActionTemplate.getSequenceNumber(BAL_PlmTlCbmstdcadtlSql.TBL_PLM_TL_CBMSTDCADTL, 12, "PCC", "MMYY", "Y")); // set the sequnce number 
+			newPlmTlCbmstdcadtl.setCmdtKeyid(dbActionTemplate.getSequenceNumber(BAL_PlmTlCbmstdcadtlSql.TBL_BAL_PLM_TL_CBMSTDCADTL, 12, "PCC", "MMYY", "Y")); // set the sequnce number 
 			System.out.println("before INsert");
 			String pmsdKeyId =newPlmTlCbmstdcadtl.getCmdtKeyid(); 
 			System.out.println("dsdsds  sd  ss  ");
@@ -717,15 +721,29 @@ public class BAL_PlmTlStandardsDaoImpl implements BAL_PlmTlStandardsDao {
 		return newPlmTlCbmstdcadtl;
 	}
 
+	/*
+	 * @Override public BAL_PlmTlCbmstdcadtl getFillValueCMB(String pmsdId) throws
+	 * Exception { // TODO Auto-generated method stub BAL_PlmTlCbmstdcadtl
+	 * plmTlCbmstdcadtl = new BAL_PlmTlCbmstdcadtl(); String sql =
+	 * BAL_PlmTlCbmstdcadtlSql.getCMBListSql(pmsdId);
+	 * System.out.println("in dao impl" ); Object args [] = new Object [] { pmsdId
+	 * }; plmTlCbmstdcadtl.setSaveArray(dbActionTemplate.getDataArr(sql,args));
+	 * return plmTlCbmstdcadtl; }
+	 */
+	//mano 
 	@Override
 	public BAL_PlmTlCbmstdcadtl getFillValueCMB(String pmsdId) throws Exception {
-		// TODO Auto-generated method stub
-		BAL_PlmTlCbmstdcadtl plmTlCbmstdcadtl = new BAL_PlmTlCbmstdcadtl();
-		String sql = BAL_PlmTlCbmstdcadtlSql.getCMBListSql(pmsdId);
-		System.out.println("in dao impl" );
-		Object args [] = new Object [] { pmsdId };
-		plmTlCbmstdcadtl.setSaveArray(dbActionTemplate.getDataArr(sql,args));
-		return plmTlCbmstdcadtl;
+	    BAL_PlmTlCbmstdcadtl plmTlCbmstdcadtl = new BAL_PlmTlCbmstdcadtl();
+	    String sql = BAL_PlmTlCbmstdcadtlSql.getCMBListSql(pmsdId);
+	    Object args[] = new Object[] { pmsdId };
+	    try {
+	        plmTlCbmstdcadtl.setSaveArray(dbActionTemplate.getDataArr(sql, args));
+	    } catch (NoDataFoundException e) {
+	        // no CBM standard row yet for this pmsdId — keep the default 16-slot
+	        // empty array so every getCmdtXxx() getter stays index-safe
+	        plmTlCbmstdcadtl.setSaveArray(new Object[BAL_PlmTlCbmstdcadtl.tableFldConstants.values().length]);
+	    }
+	    return plmTlCbmstdcadtl;
 	}
 
 	@Override
@@ -1063,10 +1081,15 @@ public class BAL_PlmTlStandardsDaoImpl implements BAL_PlmTlStandardsDao {
 		      //  String tradeId = CommonFunctions.isValidKeyId(commonFilter.getTrade())   ? commonFilter.getTradea()   : "{}";
 		        String tradeVal = (commonFilter.getTrade() != null) ? commonFilter.getTrade().getId() : null;
 		        String tradeId  = CommonFunctions.isValidKeyId(tradeVal) ? tradeVal : "{}";
+		        
+		        String actVal = (commonFilter.getActType() != null) ? commonFilter.getActType().getId() : null;   // ADD
+		        String activityType = CommonFunctions.isValidKeyId(actVal) ? actVal : "{}";                                 // ADD
+
 
 		        paramValues.add(machId);
 		        paramValues.add(flId);
 		        paramValues.add(tradeId);
+		        paramValues.add(activityType);
 
 		        return dbActionTemplate.processFunctionCalls("plm_fn_getmultiplepmstandards", paramValues);
 

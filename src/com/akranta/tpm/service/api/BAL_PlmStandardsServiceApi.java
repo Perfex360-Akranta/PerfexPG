@@ -102,14 +102,7 @@ public class BAL_PlmStandardsServiceApi {
 		this.api = new Api(jwtToken);
 	}
 
-	/**
-	 * Single-row save/update — matches the old DAO-style call:
-	 *   BAL_PlmTlStandards plmTlStandards = pmsdapi.savePlmTlStandards(newPlmTlStandards, dkeyId);
-	 *
-	 * Wraps the single row as a one-element "details" list and posts to the
-	 * same /plm-tl-standards/save endpoint used for the multi-row screen.
-	 * keyid empty -> INSERT, keyid present -> UPDATE (decided server-side).
-	 */
+	
 	public BAL_PlmTlStandards savePlmTlStandards(BAL_PlmTlStandards newPlmTlStandards, String dkeyId) throws Exception {
 		List<BAL_PlmTlStandards> details = new ArrayList<>();
 		details.add(newPlmTlStandards);
@@ -246,5 +239,85 @@ public class BAL_PlmStandardsServiceApi {
 	    }
 
 	    return true;
+	}
+	/**
+	 * Fetch CBM zone data (GREEN/YELLOW/RED) for a given PM Standard.
+	 * Mirrors the legacy DAO's getCBM(pmStandardId) -> List<String[]> shape,
+	 * column order matches BAL_PlmTlStandardsSql.getCBMTbl():
+	 * [0] zonm_keyid, [1] cmdt_inspectionid, [2] zonm_name, [3] cmdt_zonecolor,
+	 * [4] cmdt_lowerlimit, [5] cmdt_upperlimit, [6] cmdt_desirablereading,
+	 * [7] cmdt_correctiveaction, [8] zonm_correctivecondition, [9] column10,
+	 * [10] cmdt_measuringmethod, [11] cmdt_pmstandardid, [12] cmdt_uomid, [13] cmdt_keyid
+	 */
+	public List<String[]> getCBM(String pmStandardId) throws Exception {
+		String apiUrl = "/plm-tl-standards/cbm/" + nullSafe(pmStandardId);
+
+		HttpResponse res = api.makeAuthRequest(apiUrl, "GET", null);
+
+		CommonMessage.debugMsg("getCBM Response Status Code: " + res.getStatusCode());
+
+		String jsonResponse = res.getBody();
+		CommonMessage.debugMsg("getCBM JSON Response: " + jsonResponse);
+
+		if (res.getStatusCode() != 200) {
+			throw new Exception("Fetching CBM data failed, status: " + res.getStatusCode());
+		}
+
+		return parseCbmResponse(jsonResponse);
+	}
+
+	/**
+	 * Parses the CBM response body — a JSON array of row objects keyed by
+	 * lowercase column alias (zonm_keyid, cmdt_inspectionid, ...) — into the
+	 * legacy List<String[]> shape, preserving column order.
+	 */
+	private List<String[]> parseCbmResponse(String json) {
+		List<String[]> cbmList = new ArrayList<>();
+
+		if (json == null || json.trim().isEmpty()) {
+			return cbmList;
+		}
+
+		JSONArray rows = JSONArray.fromObject(json);
+
+		for (int i = 0; i < rows.length(); i++) {
+			JSONObject row = rows.getJSONObject(i);
+
+			String[] rowArr = new String[] {
+					jsonStr(row, "zonm_keyid"),
+					jsonStr(row, "cmdt_inspectionid"),
+					jsonStr(row, "zonm_name"),
+					jsonStr(row, "cmdt_zonecolor"),
+					jsonStr(row, "cmdt_lowerlimit"),
+					jsonStr(row, "cmdt_upperlimit"),
+					jsonStr(row, "cmdt_desirablereading"),
+					jsonStr(row, "cmdt_correctiveaction"),
+					jsonStr(row, "zonm_correctivecondition"),
+					jsonStr(row, "column10"),
+					jsonStr(row, "cmdt_measuringmethod"),
+					jsonStr(row, "cmdt_pmstandardid"),
+					jsonStr(row, "cmdt_uomid"),
+					jsonStr(row, "cmdt_keyid")
+			};
+
+			cbmList.add(rowArr);
+		}
+
+		return cbmList;
+	}
+
+	/**
+	 * Null-safe string extraction from a JSONObject — treats JSON null and
+	 * missing keys the same way the legacy ResultSet-based code did (empty string).
+	 */
+	private String jsonStr(JSONObject row, String key) {
+		if (!row.has(key) || row.isNullObject()) {
+			return "";
+		}
+		Object val = row.get(key);
+		if (val == null || net.sf.json.JSONNull.getInstance().equals(val)) {
+			return "";
+		}
+		return String.valueOf(val);
 	}
 }

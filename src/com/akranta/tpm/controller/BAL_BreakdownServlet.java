@@ -219,7 +219,7 @@ public class BAL_BreakdownServlet extends HttpServlet {
 				// {
 				commonFilter.setIsGetCol("N");
 				List<String[]> bdMasterList = breakDownService.getAllBD(commonFilter);
-				jsonObject = UIUtils.convertToJqGridTableObject(bdMasterList, request, 2, 0,
+				jsonObject = UIUtils.convertToJqGridTableObject(bdMasterList, request, 3, 0,
 						commonFilter.getTotalRecordCnt());
 				// }
 
@@ -390,7 +390,7 @@ public class BAL_BreakdownServlet extends HttpServlet {
 				// {
 				commonFilter.setIsGetCol("N");
 				List<String[]> bdMasterList = breakDownService.getAllBD(commonFilter);
-				jsonObject = UIUtils.convertToJqGridTableObject(bdMasterList, request, 2, 0,
+				jsonObject = UIUtils.convertToJqGridTableObject(bdMasterList, request, 3, 0,
 						commonFilter.getTotalRecordCnt());
 				// }
 
