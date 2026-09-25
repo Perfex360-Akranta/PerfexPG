@@ -42,7 +42,9 @@
  	   fillComboBox("frmBDMaster","cmbbdmsFinalphenomena","combo_phenomena.Bbrdn");
  	  // fillComboBox("frmBDMaster","cbobdmsActivity","combo_activity.Bbrdn");
  	   fillComboBox("frmBDMaster","cmbbdmsBookedtrade","combo_trade.Bbrdn" );
- 	   fillComboBox("frmBDMaster","cmbbdmsAssemblyid","assembly.commonFilter?~&machineId=cmbbdmsMachineid~");
+ 	   //fillComboBox("frmBDMaster","cmbbdmsAssemblyid","assembly.commonFilter?~&machineId=cmbbdmsMachineid~");
+ 	   //CHANGED-HERE 21-SEP
+ 	   fillComboBox("frmBDMaster","cmbbdmsAssemblyid","assembly.commonFilter?machineId="+mchId);
  	  var mchId = jQuery('#cmbbdmsMachineid').combobox('getValue');
  	 var assemId = jQuery('#cmbbdmsAssemblyid').combobox('getValue');
  	   //fillComboBox("frmBDMaster","cmbbdmsSubassemblyid","combo_subassmbly.Bbrdn?~&assmId=cmbbdmsAssemblyid~&machineId=cmbbdmsMachineid~");
@@ -1139,6 +1141,20 @@ function divAsmblyLink_onClose(){
 	return true;
 	
 }
+
+// added by priyanka on 18/09/2026
+function divSubAsmblyLink_onClose(){
+    var mchId  = jQuery("#frmBDMaster input[id='machine']").val();
+    var assmId = jQuery("#cmbbdmsAssemblyid").combobox('getValue');
+    reloadCombo("frmBDMaster","cmbbdmsSubassemblyid","combo_subassmbly.Bbrdn?assmId="+assmId+"&machineId="+mchId);
+    return true;
+}
+
+function divPhenLink_onClose(){
+    reloadCombo("frmBDMaster","cmbbdmsFinalphenomena","combo_phenomena.Bbrdn");
+    return true;
+}
+// end
 //priyanka
 function divCauseLink_onClose(){
 	var phenId = jQuery("#cmbbdmsFinalphenomena").combobox('getValue');
@@ -1507,8 +1523,23 @@ function divCauseLink_onClose(){
 		//jQuery('#cmbbdmsFinalcause').combobox('clear');
 		var ds = "";
 		if( jQuery("#cmbbdmsFinalphenomena").combobox('getValue') != null && jQuery("#cmbbdmsFinalphenomena").combobox('getValue') !='' && jQuery("#cmbbdmsFinalphenomena").combobox('getValue') != ' ')
-			 ds += "&phenId="+jQuery('#cmbbdmsFinalphenomena').combobox('getValue')+"&assmId="+jQuery('#cmbbdmsAssemblyid').combobox('getValue');
-		    reloadCombo("frmBDMaster","cmbbdmsFinalcause","combo_cause.Bbrdn"+ds);
+		// added here by priyanka on 17/09/2026
+		{
+			// commented ds and secound reloadCombo
+			
+			 //ds += "&phenId="+jQuery('#cmbbdmsFinalphenomena').combobox('getValue')+"&assmId="+jQuery('#cmbbdmsAssemblyid').combobox('getValue');
+		    //reloadCombo("frmBDMaster","cmbbdmsFinalcause","combo_cause.Bbrdn"+ds);
+		    //reloadCombo("frmBDMaster","cmbbdmsFinalcause","combo_cause.Bbrdn?"+ds);
+		    
+		    // end 
+		    
+		    var assmVal = jQuery('#cmbbdmsAssemblyid').combobox('getValue');
+		    if(jQuery('#chkOtherCause').is(':checked') == true)
+		        //assmVal = "";
+		    	ds = "assmId=" + assmVal;
+		    else
+		    	//ds += "&phenId="+jQuery('#cmbbdmsFinalphenomena').combobox('getValue')+"&assmId="+assmVal;
+		    	ds = "phenId=" + jQuery('#cmbbdmsFinalphenomena').combobox('getValue') + "&assmId=" + assmVal;
 
 		   /* var finalPhenomena=jQuery('#cmbbdmsFinalphenomena').combobox('getText');
        		if( finalPhenomena.trim().toUpperCase() == 'OTHERS')
@@ -1518,6 +1549,10 @@ function divCauseLink_onClose(){
 	        	jQuery('#txtbdmsOtherPhenomena').val('');
        			readOnlyFields("txtbdmsOtherPhenomena");
 		    }*/
+    	}
+		reloadCombo("frmBDMaster", "cmbbdmsFinalcause", "combo_cause.Bbrdn?" + ds);
+		
+		// end
 	}
 	
 	function frmBDMastercmbbdmsFinalcause_onLoadSuccess()
@@ -2816,7 +2851,7 @@ function divCauseLink_onClose(){
 							 }	
 					
 							 }
-								else {alert('Enetr the Quantity'); 			 	 	
+								else {alert('Enter the Quantity'); 			 	 	
 								
 							}
 						}						
@@ -3462,10 +3497,21 @@ function divCauseLink_onClose(){
         jQuery("#frmBDMaster input[id='factory']").val(sbuVal);
         reloadCombo("frmBDMaster","cmbbdmsSpareid","combo_spare.Bbrdn?factId="+sbuVal);
     }
+    
+    var assmId = jQuery('#cmbbdmsAssemblyid').combobox('getValue');
 
     if(keyIds.machId != undefined && keyIds.machId != null && keyIds.machId != '')
     {	
-        reloadCombo("frmBDMaster","cmbbdmsAssemblyid","assembly.commonFilter?machineId="+ keyIds.machId);
+        // commented and added below on 17/09/2026
+    	
+    	//reloadCombo("frmBDMaster","cmbbdmsAssemblyid","assembly.commonFilter?machineId="+ keyIds.machId);
+    	// FIX: respect the "Others" checkbox instead of always filtering by machineId
+        if(jQuery('#chkOtherAssm').is(':checked')){
+            reloadCombo("frmBDMaster","cmbbdmsAssemblyid","assembly.commonFilter?machineNotToShown=" + keyIds.machId);
+        } else {
+            reloadCombo("frmBDMaster","cmbbdmsAssemblyid","assembly.commonFilter?machineId=" + keyIds.machId+"&combokey="+assmId);
+        }
+        // end
         fillMachineHierarchy("machineHierarchy.commonFilter",keyIds.machId,"","","","","","");	
         fnEnableDisCommon(); 
     }
@@ -3547,6 +3593,10 @@ function divCauseLink_onClose(){
 					reloadCombo("frmBDMaster","cmbbdmsSpareid","combo_spare.Bbrdn?assmId="+assmId);
 				else if(linkMode == 'Cause')
 					reloadCombo("frmBDMaster","cmbbdmsFinalcause","combo_cause.Bbrdn");
+				// added by priyanka on 18/09/2026
+				else if(linkMode == 'Trdm')
+				    reloadCombo("frmBDMaster","cmbbdmsBookedtrade","combo_trade.Bbrdn");
+				//end
 					
 			}
 
@@ -4125,8 +4175,15 @@ function divCauseLink_onClose(){
 				<span id="err_txtbdmsImmediateaction" class="tpm-errormsg"></span>
 		   </div>
 		   	<div><label class="mandatory-lbl" id="lblMaintSect">Maint. Section</label></div>
-			<div class="easyui-paddingbfpx"><input  id="cmbbdmsBookedtrade" name="cmbbdmsBookedtrade" class="easyui-combobox" value="${requestScope.bdmTlMst.bdmsBookedtrade}" style="width: 294px"  value = "${requestScope.bdFormBean.disablebdmsBookedtrade == true ? ' disabled':''}"/></div>
-			
+			<!-- changed the px and added button on 17/09/2026-->
+			<div class="easyui-paddingbfpx"><input  id="cmbbdmsBookedtrade" name="cmbbdmsBookedtrade" class="easyui-combobox" value="${requestScope.bdmTlMst.bdmsBookedtrade}" style="width: 264px"  value = "${requestScope.bdFormBean.disablebdmsBookedtrade == true ? ' disabled':''}"/>
+			<input type="button"
+         	class="easyui-button"
+         	id="btnMaintSectionLink"
+         	value="..."
+         	style="height: 22px;"/>
+         	<!-- end here -->
+			</div>
 	 </div>
 	  <div class="floatleft bdTabContent2" style="width:350px">
 	  
@@ -4256,8 +4313,8 @@ function divCauseLink_onClose(){
 		 	<!-- priyanka -->
 		 	<!-- <div><label>Cause</label></div> -->
 		 	<div><label>Cause</label>
-		 	<input type="checkbox" id="chkOtherCause" style="margin-left:140px" name="chkOtherCause" value="Y"/>
-    		<label style="margin-left:3px">Others</label>
+		 	<!-- <input type="checkbox" id="chkOtherCause" style="margin-left:140px" name="chkOtherCause" value="Y"/>
+    		<label style="margin-left:3px">Others</label> -->
 		 	</div>
 		 	<!-- end -->
 			<div class="easyui-paddingbfpx">

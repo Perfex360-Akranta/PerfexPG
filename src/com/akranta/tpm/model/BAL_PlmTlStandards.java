@@ -579,6 +579,16 @@ public class BAL_PlmTlStandards {
 	            first = false;
 	        }
 	    }
+
+	    // --- CBM child rows: append as a nested array so the Spring side's
+	    // flattened (@JsonUnwrapped) detail DTO picks it up as a sibling field ---
+	    sb.append(",\"cbmData\":");
+	    if (cbmData != null && !cbmData.isEmpty()) {
+	        sb.append(BAL_PlmTlCbmstdcadtl.toJsonManualList(cbmData));
+	    } else {
+	        sb.append("[]");
+	    }
+
 	    sb.append("}");
 	    return sb.toString();
 	}
@@ -613,6 +623,15 @@ public class BAL_PlmTlStandards {
 	        String val = obj.optString(field.name(), null);
 	        pmsd.setValue(field, val != null && val.equals("null") ? null : val);
 	    }
+
+	    // --- CBM child rows coming back from the Spring save (with generated keyids) ---
+	    if (obj.has("cbmData") && !obj.isNullObject() && obj.get("cbmData") != null) {
+	        JSONArray cbmArray = obj.getJSONArray("cbmData");
+	        if (cbmArray != null && cbmArray.length() > 0) {
+	            pmsd.setCbmData(BAL_PlmTlCbmstdcadtl.fromJsonList(cbmArray.toString()));
+	        }
+	    }
+
 	    return pmsd;
 	}
 
@@ -639,12 +658,20 @@ public class BAL_PlmTlStandards {
 	            pmsd.setValue(field, val);
 	        }
 
+	        // --- CBM child rows coming back from the Spring save (with generated keyids) ---
+	        Object cbmObj = obj.opt("cbmData");
+	        if (cbmObj != null) {
+	            JSONArray cbmArray = obj.optJSONArray("cbmData");
+	            if (cbmArray != null && cbmArray.length() > 0) {
+	                pmsd.setCbmData(BAL_PlmTlCbmstdcadtl.fromJsonList(cbmArray.toString()));
+	            }
+	        }
+
 	        list.add(pmsd);
 	    }
 
 	    return list;
 	}
-
 	
 }
 

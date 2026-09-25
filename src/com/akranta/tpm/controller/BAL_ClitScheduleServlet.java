@@ -158,7 +158,7 @@ public class BAL_ClitScheduleServlet extends HttpServlet {
 			request.setAttribute("cellId", cellId);//for jh scheduled/std report
 			request.setAttribute("machineId", machineId);//for jh scheduled/std report
 		
-			RequestDispatcher rd = request.getRequestDispatcher("/pages/jhclit/CLIT_Calendar.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("/pages/BAL_jhclit/CLIT_Calendar.jsp");
 			
 			rd.forward(request, response); 
 		}
@@ -196,6 +196,7 @@ public class BAL_ClitScheduleServlet extends HttpServlet {
 			String curDate = dateTime.substring(0, 11);
 			System.out.println("month cur  :"+curDate.substring(3));
 			System.out.println("date " + commonFilter.getFromDate());
+			commonFilter.setFromMonth(curDate.substring(3));
 			commonFilter.setFromDate("01-"+commonFilter.getFromMonth());
 			if( commonFilter.getFromDate().equals(Constants.passNullDate))
 				commonFilter.setFromMonth(curDate.substring(3));
@@ -223,7 +224,7 @@ public class BAL_ClitScheduleServlet extends HttpServlet {
 				GridColModel gridColModel = new GridColModel();
 				System.out.println("commonFilter.getTotalRecordCnt()  ----:"+commonFilter.getTotalRecordCnt());
 
-				if(jhnfnGetScheduled.size()>2){
+				if(jhnfnGetScheduled.size()>=2){
 				jqGridTableModel.setRowNumbers(true);
 				jqGridTableModel.setEnableFilter(false);
 				jqGridTableModel.setTableButton(false);
@@ -232,9 +233,10 @@ public class BAL_ClitScheduleServlet extends HttpServlet {
 				
 				String [] colHeaderCond = jhnfnGetScheduled.get(0);
 				String [] colHeader1 = jhnfnGetScheduled.get(1);
-				String [] colHeader2 = jhnfnGetScheduled.get(2);
+				//String [] colHeader2 = jhnfnGetScheduled.get(2);
 				List<String[]> headers = new ArrayList<String[]>();
 				if( shiftWise ){
+					String [] colHeader2 = jhnfnGetScheduled.get(2);
 					headers.add(colHeader1);
 					headers.add(colHeader2);
 					gridColModel.setHeaderNum(2);
@@ -267,8 +269,8 @@ public class BAL_ClitScheduleServlet extends HttpServlet {
 				
 				
 				CommonFunctions.debugMsg("colModel   "+gridColModel.getFormatter());
-				colModel.put("tableHeight", "83%%");
-				colModel.put("tableWidth", "120%%");
+				colModel.put("tableHeight", "60%%");
+				colModel.put("tableWidth", "90%%");
 				httpSession.setAttribute("clitCalendarColModel", colModel);				
 				out.println(colModel);	
 			
@@ -362,7 +364,7 @@ public class BAL_ClitScheduleServlet extends HttpServlet {
 			//request.setAttribute("refId", refId);*/
             request.setAttribute("sectionId", sectionId);
 			request.setAttribute("refId", refId);
-			RequestDispatcher rd = request.getRequestDispatcher("/pages/jhclit/MailIds.jsp");	
+			RequestDispatcher rd = request.getRequestDispatcher("/pages/BAL_jhclit/MailIds.jsp");	
 			CommonFunctions.debugMsg("observation ..."+refId);
 
 			rd.forward(request, response); 
@@ -440,6 +442,21 @@ public class BAL_ClitScheduleServlet extends HttpServlet {
 					CommonFunctions.debugMsg("insidesapsapres" + i +" "+ sendTo);
 					} 
 				}
+				
+				StringBuilder mailIds = new StringBuilder();
+				if(kznTlMailIdsBeanList.size()>=0){				
+				for(int i=0;i<kznTlMailIdsBeanList.size();i++) {
+				    mailIds.append(kznTlMailIdsBeanList.get(i).getEmpEmail());
+					mailIds.append(',');
+		
+					CommonFunctions.debugMsg("insidesapsapres" + i +" "+ mailIds);
+					
+				}
+				}
+				
+				
+				if(  mailIds.length() > 0 )
+					mailIds.deleteCharAt(mailIds.lastIndexOf(","));
 				//String sendTo = request.getParameter("sendTo");
 				String ccTo = request.getParameter("ccTo");
 				String[] recipientList = sendTo.split(";");
@@ -497,7 +514,7 @@ public class BAL_ClitScheduleServlet extends HttpServlet {
 						color="#FFC300";
 					}
 					
-					String message = " Dear Sir,<br> Following Abnormality Found at the Time Of JH Activity." +
+					String message = "<br> Following Abnormality Found at the Time Of JH Activity." +
 					
 							 " <br> Cell &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp; "+cellName +" ," +
 							 " <br> Machine &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;" +machinename +" - "+machineNo+" ,"+
@@ -510,8 +527,9 @@ public class BAL_ClitScheduleServlet extends HttpServlet {
 						CommonFunctions.debugMsg(" Before sendLotusNotesMail 2  " +machinename);
 						CommonFunctions.debugMsg(" Before sendLotusNotesMail 3  " +message);
 
-						Mail mail = new Mail(); 
+						//Mail mail = new Mail(); 
 						//mail.sendMailWithoutAttachment( from,toAdress ,subject1, message);
+						UIUtils.sendLotusNotesMail(request,response,mailIds.toString(),null,subject1,message,null);
 					CommonFunctions.debugMsg(" After sendLotusNotesMail" );			
 					
 					JSONObject succssMsg= new JSONObject();

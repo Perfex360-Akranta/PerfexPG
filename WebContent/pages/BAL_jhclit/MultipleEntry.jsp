@@ -1010,6 +1010,27 @@ function clitRemove_errorCallBack(result) {
 function ClitMultipleGrd_selectRow(rowId) {
 	 if (jQuery("#hdnClitMode").val() == "view") return;  
 	var jqGridId = "ClitMultipleGrd";
+	
+	
+	var sbuId = jQuery("#frmMultipleClitStd input[id='factory']").val();
+    if (sbuId && sbuId.trim() != "") {
+        var shiftComboId = "cmbMulClisShiftid_" + jqGridId + "_" + rowId;
+        var existingShiftId = jQuery("#ClitMultipleGrd").jqGrid('getCell', rowId, "hdnMulClisShiftid");
+
+        fillComboBox(
+            "frmMultipleClitStd",
+            shiftComboId,
+            "combo_clitShift.baljhclit?factId=" + encodeURIComponent(sbuId)
+        );
+
+        jQuery("#" + shiftComboId).combobox({
+            onLoadSuccess: function () {
+                if (existingShiftId && existingShiftId.trim() != "") {
+                    jQuery("#" + shiftComboId).combobox('setValue', existingShiftId);
+                }
+            }
+        });
+    }
 
     var detectedDateCtrl = "dteClisEffectivedate_" + jqGridId + "_" + rowId;
     setTimeout(function () {
@@ -1297,6 +1318,10 @@ function clitSave_successCallBack(result) {
     jQuery('#imgClitToolused').attr('src', 'images/tools.jpg');
     jQuery('#imgClitToolusedFilename').val('');
     jQuery('#ClitMultipleGrd').trigger("reloadGrid");
+    
+    if (jQuery("#clistdGrid").length > 0) {
+        jQuery("#clistdGrid").trigger("reloadGrid");
+    }
 
     if (result.savedRows) {
         for (var i = 0; i < result.savedRows.length; i++) {
@@ -1356,8 +1381,8 @@ function popup_OnSaveForm() {
                + "&machId="        + encodeURIComponent(machId)
                + "&elementId="     + encodeURIComponent(elementId)
                + '&cmbClisFactoryid=' + encodeURIComponent(jQuery("#frmMultipleClitStd input[id='factory']").val())
-               + "&cmbClisCellid="     + encodeURIComponent(jQuery("#cell").val())
-               + "&cmbClisSectionid="  + encodeURIComponent(jQuery("#section").val())
+               + "&cmbClisCellid="     + encodeURIComponent(cellId)
+               + "&cmbClisSectionid="  + encodeURIComponent(sectionId)
                + "&cmbClisElementid="  + encodeURIComponent(elementId)
                + "&clitToolImage="     + encodeURIComponent(jQuery("#imgClitToolusedFilename").val());
 

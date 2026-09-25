@@ -439,6 +439,7 @@ function PmMultipleGrdbtnPmsdCbm_onClick(result) {
         rowMachId = jQuery("#cmbPmsdMulMachineid").combobox("getValue");
     }
     rowMachId = (rowMachId == null) ? "" : jQuery.trim(rowMachId);
+    window.pmsdMulCbmMachId = rowMachId;
 
     var proxyMachCombo = jQuery("#cmbPmsdMachineid");
     if (proxyMachCombo.length && proxyMachCombo.data('combobox')) {
@@ -624,35 +625,31 @@ function pmsdMulCbmResult_successCallBack() {
 	   function pmsdMulSpareDataResult_successCallBack() {
 	    console.log("[SpareData] view popup closed");
 	}
-function PmMultipleGrdbtnPmsdSpares_onClick(result) {
-    var rowid = result.rowId;
+	   function PmMultipleGrdbtnPmsdSpares_onClick(result) {
+		    var rowid = result.rowId;
 
-    var pmsdkey = jQuery("#PmMultipleGrd").jqGrid('getCell', rowid, 'hdnPmsdKeyid');
-    pmsdkey = (pmsdkey == null) ? "" : jQuery.trim(pmsdkey);
+		    // Save-la CHECKED rows mattum thaan pogum, so row checkbox tick illana stop pannuvom
+		    if (!jQuery('#jqg_PmMultipleGrd_' + rowid).is(':checked')) {
+		        alert("Select the row (checkbox) first");
+		        return;
+		    }
 
-    pmsdMulSparesTargetRow = rowid;
+		    pmsdMulSparesTargetRow   = rowid;
+		    pmsdMulSparesPendingOpen = true;   // save success aana aprom thaan popup open aagum
+		    popup_OnSavePmsdForm();            // popup inga open aagaadhu, callback-la thaan
+		}
 
-    if (pmsdkey.length == 0) {
-        console.log("[Spares] row", rowid, "not saved yet - saving standard first, then opening Spares popup");
-        pmsdMulSparesPendingOpen = true;
-        popup_OnSavePmsdForm();
-    } else {
-        openPmsdMulSparesPopup(rowid, pmsdkey);
-    }
-}
+	   function openPmsdMulSparesPopup(rowid, pmsdkey) {
+		    var dataString = "standardId=" + encodeURIComponent(pmsdkey);
 
-function openPmsdMulSparesPopup(rowid, pmsdkey) {
-
-    var dataString = "standardId=" + encodeURIComponent(pmsdkey);
-
-    if (pmsdMulSparesAlreadyLoad[rowid] == 'Y') {
-        jQuery('#loadSpares').show();
-    } else {
-        LoadPopUp("loadSpares", "Sparepickup_input.sprpckup?" + dataString, true, "70%", "550px", "-1%", "7%",
-            "pmsdMulSparesResult_successCallBack", "Spares Pickup", false, true);
-        pmsdMulSparesAlreadyLoad[rowid] = 'Y';
-    }
-}
+		    if (pmsdMulSparesAlreadyLoad[pmsdkey] == 'Y') {
+		        jQuery('#loadSpares').show();
+		    } else {
+		        LoadPopUp("loadSpares", "Sparepickup_input.sprpckup?" + dataString, true, "70%", "550px", "-1%", "7%",
+		            "pmsdMulSparesResult_successCallBack", "Spares Pickup", false, true);
+		        pmsdMulSparesAlreadyLoad[pmsdkey] = 'Y';
+		    }
+		}
 
 function pmsdMulSparesResult_successCallBack() {
     console.log("[Spares] popup closed for row", pmsdMulSparesTargetRow);
@@ -874,18 +871,151 @@ function PmMultipleGrdcmbMulPmsdActivitytype_onSelect(record)
     jQuery("#cmbMulPmsdActivitytype_PmMultipleGrd_"+rowId).combobox('disable');
     pmsdMulApplyCbmButtonState(rowId);   // mano - refresh CBM button state
 }
+
+/* Point this row's Assembly combo at the machine-filtered url.
+Skipped when the row's Others checkbox is ticked (that row intentionally
+uses machineNotToShown) or when the combo is already on the filtered url. */
+function pmsdApplyAssemblyMachineFilter(rowId) {
+ var jqGridId = "PmMultipleGrd";
+
+ var othersChk = jQuery("#chkMulPmsdOthers_" + jqGridId + "_" + rowId);
+ if (othersChk.is(':checked')) return;
+
+ var machId = jQuery("#cmbPmsdMulMachineid").combobox("getValue");
+ if (!machId || jQuery.trim(machId) === "") {
+     machId = jQuery("#hdnPmsdMachId").val();
+ }
+ machId = machId ? jQuery.trim(machId) : "";
+ if (machId === "") return;
+
+ // delay so the grid framework has finished building the combobox widget
+ setTimeout(function () {
+     var assmInput = jQuery("#cmbMulPmsdAssemblyid_" + jqGridId + "_" + rowId);
+     if (!assmInput.length || !assmInput.data('combobox')) return;
+
+     var opts = assmInput.combobox('options');
+     if (opts.url && opts.url.indexOf('machineId=' + encodeURIComponent(machId)) > -1) return;
+
+     assmInput.combobox('reload', 'assembly.commonFilter?machineId=' + encodeURIComponent(machId));
+     console.log("[Assembly] reloaded with machineId:", machId);
+ }, 1000);
+}
+
+/* Always send the top-level Equipment's machineId to assembly.commonFilter.
+Grid comboboxes are built by the framework with the bare colModel url
+(assembly.commonFilter), which returns ALL assemblies. Requests that already
+carry machineId / machineNotToShown (Others checkbox, page-load reloadCombo)
+are left untouched. */
+(function () {
+ // bind only once even if this JSP is loaded several times
+ if (jQuery(document).data('pmsdAssmFilterBound')) return;
+ jQuery(document).data('pmsdAssmFilterBound', true);
+
+ jQuery.ajaxPrefilter(function (options) {
+     var url = options.url;
+     if (!url || url.indexOf('assembly.commonFilter') === -1) return;
+     if (/[?&](machineId|machineNotToShown)=/i.test(url)) return;
+
+     // only while the PM Standards multiple-entry grid is on screen,
+     // so other screens' assembly combos are not affected
+     var grid = jQuery('#PmMultipleGrd');
+     if (!grid.length || !grid.is(':visible')) return;
+
+     var machId = '';
+     var topCombo = jQuery('#cmbPmsdMulMachineid');
+     if (topCombo.length && topCombo.data('combobox')) {
+         machId = topCombo.combobox('getValue');
+     }
+     if (!machId || jQuery.trim(machId) === '') {
+         machId = jQuery('#hdnPmsdMachId').val();
+     }
+     if (!machId || jQuery.trim(machId) === '') return;
+
+     options.url = url + (url.indexOf('?') > -1 ? '&' : '?')
+                 + 'machineId=' + encodeURIComponent(jQuery.trim(machId));
+ });
+})();
+
+function pmsdInitAssemblyForRow(rowId) {
+    var jqGridId  = "PmMultipleGrd";
+    var assmInput = jQuery("#cmbMulPmsdAssemblyid_" + jqGridId + "_" + rowId);
+    var othersChk = jQuery("#chkMulPmsdOthers_" + jqGridId + "_" + rowId);
+
+    if (!assmInput.length || !assmInput.data('combobox')) {
+        console.warn("[AssmInit] combobox not ready, row", rowId);
+        return;
+    }
+    if (assmInput.data('assmInitDone')) return;          // oru row-ku oru thadavai mattum
+
+    var savedAssmId = jQuery.trim(assmInput.combobox('getValue') || "");
+    if (!savedAssmId) return;                            // new row
+    if (othersChk.is(':checked')) return;
+
+    assmInput.data('assmInitDone', true);
+
+    var machId = jQuery("#cmbPmsdMulMachineid").combobox("getValue");
+    if (!machId || jQuery.trim(machId) === "") machId = jQuery("#hdnPmsdMachId").val();
+    machId = machId ? jQuery.trim(machId) : "";
+
+    var opts = assmInput.combobox('options');
+    var vf   = opts.valueField || 'id';
+
+    function restoreOthers() {
+        console.log("[AssmInit] not in machine list => Others ticked, row", rowId);
+        othersChk.prop('checked', true);     // programmatic, click handler fire aagaadhu
+        var prevLoad = opts.onLoadSuccess;
+        opts.onLoadSuccess = function () {
+            opts.onLoadSuccess = prevLoad;   // one-time
+            assmInput.combobox('setValue', savedAssmId);
+            console.log("[AssmInit] Others list loaded, value restored:", savedAssmId);
+            if (prevLoad) prevLoad.apply(this, arguments);
+        };
+        assmInput.combobox('reload',
+            'assembly.commonFilter?machineNotToShown=' + encodeURIComponent(machId));
+    }
+
+    jQuery.ajax({
+        type: 'GET',
+        url: 'assembly.commonFilter?machineId=' + encodeURIComponent(machId),
+        dataType: 'text',                    // empty response-um error aagaadhu
+        success: function (txt) {
+            var data = [];
+            txt = jQuery.trim(txt || "");
+            if (txt) {
+                try { data = JSON.parse(txt); }
+                catch (e) { console.warn("[AssmInit] JSON parse failed:", txt.substring(0, 100)); }
+            }
+            var found = false;
+            for (var i = 0; i < data.length; i++) {
+                if (String(data[i][vf]) === savedAssmId) { found = true; break; }
+            }
+            console.log("[AssmInit] row", rowId, "| saved:", savedAssmId,
+                        "| machine list size:", data.length, "| found:", found);
+            if (found) {
+                assmInput.combobox('loadData', data);
+                assmInput.combobox('setValue', savedAssmId);
+            } else {
+                restoreOthers();
+            }
+        },
+        error: function (x, s, e) {
+            console.error("[AssmInit] machine list call failed:", s, e, x.status);
+        }
+    });
+}
 function PmMultipleGrd_selectRow(rowId) {
     console.log("=== PmMultipleGrd_selectRow START, rowId:", rowId);
     var jqGridId = "PmMultipleGrd";
+   // pmsdApplyAssemblyMachineFilter(rowId); 
 
-    var assemblyInput = jQuery("#cmbMulPmsdAssemblyid_" + jqGridId + "_" + rowId);
+   /*  var assemblyInput = jQuery("#cmbMulPmsdAssemblyid_" + jqGridId + "_" + rowId);
 
     var sweMachine = jQuery("#cmbPmsdMulMachineid").combobox("getValue");
 
     console.log("[Assembly] element found:", assemblyInput.length);
     console.log("[Assembly] machineId:", sweMachine);
-
-    setTimeout(function () {
+ */
+   /*  setTimeout(function () {
         if (assemblyInput.length) {
             assemblyInput.combobox(
                 'reload',
@@ -898,7 +1028,8 @@ function PmMultipleGrd_selectRow(rowId) {
             );
         }
     }, 1000);
-
+ */
+ setTimeout(function () { pmsdInitAssemblyForRow(rowId); }, 1000);
     console.log("[FreqUnit] looking for #cmbMulPmsdFrequencyunit_" + jqGridId + "_" + rowId,
         jQuery("#cmbMulPmsdFrequencyunit_" + jqGridId + "_" + rowId).length, "element(s) found");
     /* jQuery("#cmbMulPmsdFrequencyunit_" + jqGridId + "_" + rowId).combobox({
@@ -1101,6 +1232,11 @@ function PmMultipleGrd_selectRow(rowId) {
 
     var sparesChk = jQuery("#chkMulPmsdIssparesreq_" + jqGridId + "_" + rowId);
     console.log("[Spares] checkbox found:", sparesChk.length);
+    sparesChk.off('click.pmsdSpares').on('click.pmsdSpares', function () {
+        pmsdMulApplySparesButtonState(rowId);
+    });
+    pmsdMulApplySparesButtonState(rowId);
+    setTimeout(function () { pmsdMulApplySparesButtonState(rowId); }, 1000); 
     sparesChk.click(function () {
         var isChecked = jQuery(this).is(':checked');
         console.log("[Spares] click fired, checked:", isChecked);
@@ -1447,20 +1583,22 @@ function frmMultiplePmStd_beforeSubmit() {
 	} */
 	function frmMultiplePmStd_successsCallback(result) {
 	    console.log("[pmsdSave_successCallBack] FIRED. typeof result:", typeof result, "| raw:", result);
-
+	    const resultMachineId = result.savedRows[0].hdnMachineId;
+	    
+	    console.log(resultMachineId);
 	    try {
 	        if (typeof result === "string") {
 	            result = JSON.parse(result);
 	        }
 
 	        if (!result) {
-	            console.error("[pmsdSave_successCallBack] result is null/undefined");
+	            pmsdMulSparesPendingOpen = false;                       // add
 	            pmsdShowMessage("Error", "Data Not Saved", true);
 	            return;
 	        }
 
 	        if (result.tpmException) {
-	            console.log("[pmsdSave_successCallBack] tpmException:", result.tpmException);
+	            pmsdMulSparesPendingOpen = false;                       // add
 	            pmsdShowMessage("Error", result.tpmException, true);
 	            return;
 	        }
@@ -1485,42 +1623,53 @@ function frmMultiplePmStd_beforeSubmit() {
 	            }
 	        }
 
+	        // ---- Save mudinjachu, ippo thaan Spares popup ----
 	        if (pmsdMulSparesPendingOpen && pmsdMulSparesTargetRow != null) {
 	            var sparesRowId = pmsdMulSparesTargetRow;
-	            var freshKeyId = jQuery("#PmMultipleGrd").jqGrid('getCell', sparesRowId, 'hdnPmsdKeyid');
+	            var freshKeyId  = jQuery("#PmMultipleGrd").jqGrid('getCell', sparesRowId, 'hdnPmsdKeyid');
 	            pmsdMulSparesPendingOpen = false;
+
 	            if (freshKeyId != null && jQuery.trim(freshKeyId).length > 0) {
 	                openPmsdMulSparesPopup(sparesRowId, jQuery.trim(freshKeyId));
-	                return;
+	                return;   // grid reload popup close-la nadakkum
 	            } else {
 	                console.warn("[Spares] save completed but no keyid found for row", sparesRowId);
+	                alert("Unable to open Spares. Please try again.");
 	            }
 	        }
 
-	        console.log("[pmsdSave_successCallBack] reloading grid...");
 	        jQuery("#PmMultipleGrd").trigger("reloadGrid");
-
 	        
-	        setTimeout(function () {
-	            if (pmsdLastMachId) {
-	                jQuery("#cmbPmsdMulMachineid").combobox('setValue', pmsdLastMachId);
-	            }
-	            if (pmsdLastCostCtr) {
-	                jQuery("#cmbPmsdMulCostCenter").combobox('setValue', pmsdLastCostCtr);
-	            }
-	            console.log("[pmsdSave_successCallBack] Equipment/Cost Center restored:",
-	                pmsdLastMachId, pmsdLastCostCtr);
-	        }, 200);
 
-	        console.log("[pmsdSave_successCallBack] showing success message...");
-	        pmsdShowMessage("Success", "Data Saved Successfully", false);
+	        /* setTimeout(function () {
+	          //  if (resultMachineId)  jQuery("#cmbPmsdMulMachineid").combobox('setValue', resultMachineId);
+	          
+	            if (pmsdLastCostCtr) jQuery("#cmbPmsdMulCostCenter").combobox('setValue', pmsdLastCostCtr);
+	        }, 200); */
+	        //jQuery("#cmbPmsdMulMachineid").combobox('setValue', resultMachineId);
+	         /*  jQuery("#frmMultiplePmStd input[id='cmbPmsdMulMachineid']").combobox("setValue", resultMachineId);
+	        var topMachId  = jQuery("#cmbPmsdMulMachineid").combobox("getValue");
+	        console.log(topMachId+"atsave"); */
+	       // setFieldValue('cmbPmsdMulMachineid',resultMachineId);
+	//        pmsdShowMessage("Success", "Data Saved Successfully", false);
+	        setTimeout(function () {
+	            jQuery("#frmMultiplePmStd input[id='cmbPmsdMulMachineid']")
+	                .combobox("setValue", resultMachineId);
+
+	            var topMachId = jQuery("#cmbPmsdMulMachineid").combobox("getValue");
+
+	            console.log("AFTER RELOAD MACHINE =", topMachId);
+	        }, 300);
 
 	    } catch (e) {
+	        pmsdMulSparesPendingOpen = false;                           // add
 	        console.error("[pmsdSave_successCallBack] EXCEPTION:", e);
 	        pmsdShowMessage("Error", "Data Not Saved", true);
 	    }
 	}
+
 	function pmsdSave_errorCallBack(result) {
+	    pmsdMulSparesPendingOpen = false;                               // add
 	    console.error("[pmsdSave_errorCallBack] FIRED. raw result:", result);
 	    pmsdShowMessage("Error", "Data Not Saved", true);
 	}
@@ -1656,6 +1805,7 @@ function frmMultiplePmStd_beforeSubmit() {
 	    );
 	} */
 	
+	
 	function bindPmsdCbmCaptureDelegation() {
 	    jQuery(document)
 	        .off('change.pmsdCbmCapture')
@@ -1720,16 +1870,21 @@ function frmMultiplePmStd_beforeSubmit() {
 
 	    if (topMachId == null || topMachId.trim() == '') {
 	        alert("Select Equipment");
+	        pmsdMulSparesPendingOpen = false;   
 	        return;
 	    }
 
 	   // var gridval = getGridSelectArray('PmMultipleGrd');
 	    if (gridval == "" || gridval == "[]") {
 	        alert("Please add at least one row.");
+	        pmsdMulSparesPendingOpen = false;
 	        return;
 	    }
 
-	    if (!validatePmsdMandatory(gridval)) return;
+	    if (!validatePmsdMandatory(gridval)) {
+	        pmsdMulSparesPendingOpen = false;      // add
+	        return;
+	    }
 
 	    var params = "pmsdStdDetails=" + encodeURIComponent(gridval)
 	        + "&flId="          + encodeURIComponent(flId)
@@ -1861,7 +2016,7 @@ function frmMultiplePmStd_beforeSubmit() {
 </div>
 <div id="loadSpareDataMask" class="popup-mask" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:999;"></div>
 <input type="hidden" id="mode" name="mode"/>
-<input type="hidden" id="hdnPmsdMachId" name="hdnPmsdMachId" value="${requestScope.machineId}"/>
+<input type="hidden" id="hdnPmsdMachId" name="hdnPmsdMachId" value="${requestScope.machineId}"/> 
 <input type="hidden" id="hdnPmsdFlid"   name="hdnPmsdFlid"   value="${requestScope.plmTlStandards.pmsdFlid}"/>
 <input type="hidden" id="hdnPmsdKeyid"  name="hdnPmsdKeyid"  value="${requestScope.plmTlStandards.pmsdKeyid}"/>
 
@@ -1873,7 +2028,7 @@ function frmMultiplePmStd_beforeSubmit() {
     <input type="hidden" id="factory" name="cmbPmsdFactoryid" value="${requestScope.plmTlStandards.pmsdFactoryid}"/>
     <input type="hidden" id="section" name="cmbPmsdSectionid" value="${requestScope.plmTlStandards.pmsdSectionid}"/>
     <input type="hidden" id="cell"    name="cmbPmsdCellid"    value="${requestScope.plmTlStandards.pmsdCellid}"/>
-    <input type="hidden" id="machine" name="cmbPmsdMachineid" value="${requestScope.plmTlStandards.pmsdMachineid}"/>
+     <input type="hidden" id="machine" name="cmbPmsdMachineid" value="${requestScope.plmTlStandards.pmsdMachineid}"/> 
     
     <input type="hidden" id="flid"    name="cmbPmsdFlid"      value="${requestScope.plmTlStandards.pmsdFlid}"/>
     <input type="hidden" id="elementId" name="cmbPmsdElementid" value="${requestScope.plmTlStandards.pmsdElementid}"/>
@@ -1884,6 +2039,7 @@ function frmMultiplePmStd_beforeSubmit() {
     <input type="hidden" id="hdnPmsdPreparedbyid" name="hdnPmsdPreparedbyid" value="${requestScope.plmTlStandards.pmsdPreparedbyid}"/>
     <input type="hidden" id="hdnCBMData" name="hdnCBMData" value=""/>
     <input type="hidden" id="hdnSparesData" name="hdnSparesData" value=""/>
+   <!--  <input id="cmbPmsdMachineid" name="cmbPmsdProxyMachineid" class="easyui-combobox" style="display:none;" value=""/> -->
    <!--  <input id="cmbPmsdMachineid" name="cmbPmsdMachineid" class="easyui-combobox" style="display:none;" value=""/> -->
 
 

@@ -30,11 +30,11 @@
 				  <span id="tpm_logo" style="" class="cred_logo">
 					<label class="lblfot">Licensed To</label>
 					<span class="imgFotComp">
-					<img alt="ITC" src="images/logo/clientlogo.png" style="scroll 0 0;height:22px">
+					<img alt="TPM" src="images/logo/${sessionScope.logo}.png" style="scroll 0 0;height:22px">
 					</span>
 					<span class="lblfot" style="font-size:11px;margin-left:30px;">
 					<label style="font-weight:bold;color:#32AAF2;font-size:11px;margin-right:5px;">Loc. :  </label>
-					<label style="color:#8E6201;font-size: 11px;margin-right:5px;">ITC-PSPD</label><%--	${sessionScope.admDbLocation} --%> 
+					<label style="color:#8E6201;font-size: 11px;margin-right:5px;">${sessionScope.Location}</label><%--	${sessionScope.admDbLocation} --%> 
 
 					<label style="font-weight:bold;color:#32AAF2;font-size:12px;margin-right:5px;">Conn. :</label><label style="color:#8E6201;font-size:11px;padding-right:5px;">${sessionScope.dbUser}</label>  <label style="font-weight:bold;color:#32AAF2;font-size:11px;">Rel. :  </label><label style="color:#8E6201;font-size: 11px;">${sessionScope.createdDate}</label></span>
 				<div style="" class="fotrAkaLogo">

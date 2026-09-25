@@ -86,6 +86,7 @@
 package com.akranta.tpm.service.api;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.akranta.tpm.model.BAL_PlmTlStandards;
@@ -226,6 +227,10 @@ public class BAL_PlmStandardsServiceApi {
 	private String nullSafe(String value) {
 		return value == null ? "" : value;
 	}
+	
+	private String nullSafe1(String value) {
+		return value == null ? "null" : value;
+	}
 
 	public boolean deletePlmTlStandards(String keyId) throws Exception {
 	    String apiUrl = "/plm-tl-standards/delete/" + keyId;
@@ -250,7 +255,8 @@ public class BAL_PlmStandardsServiceApi {
 	 * [10] cmdt_measuringmethod, [11] cmdt_pmstandardid, [12] cmdt_uomid, [13] cmdt_keyid
 	 */
 	public List<String[]> getCBM(String pmStandardId) throws Exception {
-		String apiUrl = "/plm-tl-standards/cbm/" + nullSafe(pmStandardId);
+		
+		String apiUrl = "/plm-tl-standards/cbm/" + nullSafe1(pmStandardId);
 
 		HttpResponse res = api.makeAuthRequest(apiUrl, "GET", null);
 

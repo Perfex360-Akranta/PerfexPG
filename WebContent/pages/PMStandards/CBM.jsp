@@ -14,10 +14,35 @@ jQuery(document).ready(function(){
  		jQuery('#frmCBM .easyui-text').css('text-transform', 'uppercase');
  	    jQuery('#frmCBM textarea').css('text-transform', 'uppercase');	
  	    jQuery('#frmCBM .easyui-datebox').css('text-transform', 'lowercase');	
- 	    var mchId = jQuery("#cmbPmsdMachineid").combobox("getValue");
- 		fillComboBox("frmCBM","cmbcmAssemblyid","assembly.commonFilter?machineId="+mchId);
- 		var assmId =   getFieldValue('cmbcmAssemblyid',"frmCBM");
- 		
+ 	   var mchId  = pmsdCbmGetMachineId();
+ 	  var assmId = jQuery.trim("${requestScope.assmId}");
+
+ 	  // Assembly first machine list-la irukka nu paakkum; illana Others list-la load pannum
+ 	  jQuery.ajax({
+ 	      type: 'GET',
+ 	      url: 'assembly.commonFilter?machineId=' + encodeURIComponent(mchId),
+ 	      dataType: 'text',
+ 	      success: function (txt) {
+ 	          var data = [];
+ 	          txt = jQuery.trim(txt || "");
+ 	          if (txt) {
+ 	              try { data = JSON.parse(txt); } catch (e) { console.warn("[CBM Assm] parse failed"); }
+ 	          }
+ 	          var found = false;
+ 	          for (var i = 0; i < data.length; i++) {
+ 	              if (String(data[i].id) === assmId) { found = true; break; }
+ 	          }
+ 	          var assmUrl = found
+ 	              ? 'assembly.commonFilter?machineId=' + encodeURIComponent(mchId)
+ 	              : 'assembly.commonFilter?machineNotToShown=' + encodeURIComponent(mchId);
+ 	          console.log("[CBM Assm] found in machine list:", found, "->", assmUrl);
+ 	          fillComboBox("frmCBM", "cmbcmAssemblyid", assmUrl);
+ 	      },
+ 	      error: function () {
+ 	          // fallback: pazhaya behaviour
+ 	          fillComboBox("frmCBM", "cmbcmAssemblyid", "assembly.commonFilter?machineId=" + mchId);
+ 	      }
+ 	  });
  		//fillComboBox("frmCBM","cmbcmSubassemblyid","Pmsd_SubassemblyId.prv");
  		//Sub Assembly changed by Team
  		//fillComboBox("frmCBM","cmbcmSubassemblyid","combo_subassmbly.brdn?assmId="+assmId+"&machineId="+mchId);
@@ -63,7 +88,37 @@ jQuery(document).ready(function(){
  			LoadPopUp("divDefineZone","keyId=", true,"24%","208px","100px","58%", "zoneOk_Callback","Define Zone" );
        	 jQuery('#loadPopUpdivDefineZone').append(htmlDiv);
  		});
+ 		
+ 		
+ 		function pmsdCbmGetMachineId() {
+ 		    var id = "";
+
+ 		    // 1) proxy combo (single-entry screen, or multi screen once restored)
+ 		    var proxy = jQuery("#cmbPmsdMachineid");
+ 		    if (proxy.length && proxy.data('combobox')) {
+ 		        id = proxy.combobox("getValue");
+ 		    }
+ 		    // 2) value stashed by the multi-entry CBM button click
+ 		    if (!id || jQuery.trim(id) === "") {
+ 		        id = window.pmsdMulCbmMachId || "";
+ 		    }
+ 		    // 3) top-level Equipment combo on the multi screen
+ 		    if (!id || jQuery.trim(id) === "") {
+ 		        var top = jQuery("#cmbPmsdMulMachineid");
+ 		        if (top.length && top.data('combobox')) id = top.combobox("getValue");
+ 		    }
+ 		    // 4) hidden machine id
+ 		    if (!id || jQuery.trim(id) === "") {
+ 		        id = jQuery("#hdnPmsdMachId").val() || "";
+ 		    }
+ 		    return jQuery.trim(id || "");
+ 		}
 /***CLICKING BUTTON OK**/
+ 		
+ 		
+ 		
+ 		
+ 		
  		jQuery('#btnCbmOk').click(function(){
  			var Uomval =  jQuery("#cmbCmdtUomid").combobox("getValue");//getFieldValue('cmbCmdtUomid',"frmCBM");
  			

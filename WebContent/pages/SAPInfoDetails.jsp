@@ -14,7 +14,7 @@ jQuery(document).ready(function(){
 	//}
 	var bdId =jQuery('#hdnbdkeyId').val();
 	
-	processGridnew("sapInfo_input.brdn","&bdId="+bdId,"sapInfoGrid","sapinfopager","","dbl","","loadSuccess");
+	processGridnew("sapInfo_input.Bbrdn","&bdId="+bdId,"sapInfoGrid","sapinfopager","","dbl","","loadSuccess");
 	//alert(2);
 
 	
@@ -35,13 +35,16 @@ jQuery(document).ready(function(){
 	
 	      jQuery("#btnSpareshReplaced").click(function(){
 	     	 if(docType=="PM"){		
-        	 	plantName = jQuery('#linfrmWOGenFactory > u > b').html();        	 	
-        		fact = jQuery("#frmWOGen input[id='factory']").val();
-        		
+        	 	//plantName = jQuery('#linfrmWOGenFactory > u > b').html();        	 	
+        		//fact = jQuery("#frmWOGen input[id='factory']").val();
+        		plantName = jQuery('#linfrmWOGenSbu > u > b').html();        	 	
+        		fact = jQuery("#frmWOGen input[id='sbu']").val();
         	}
          else{       		
-            	 plantName = jQuery('#linfrmBDMasterFactory > u > b').html();
-                 fact = jQuery("#frmBDMaster input[id='factory']").val();
+            	 //plantName = jQuery('#linfrmBDMasterFactory > u > b').html();
+                // fact = jQuery("#frmBDMaster input[id='factory']").val();
+                 plantName = jQuery('#linfrmBDMasterSbu > u > b').html();
+                 fact = jQuery("#frmBDMaster input[id='sbu']").val();
                 
 	 		}
          //alert(fact);

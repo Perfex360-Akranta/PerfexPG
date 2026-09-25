@@ -976,11 +976,19 @@ public List<String[]> getSapInfoList(CommonFilter commFilter) throws Exception {
 	String sql1="";
 	String keyid = commFilter.getKey();
 	System.out.println("keyid.."+keyid);
-	sql.append(" select * from ( " );//'Model','Quantity'
-	sql.append(" select 'KeyId','Select','Part No','Spare Name','Spare Loc','Planned Quantity','Actual Quantity','Rate','Avl Stock','hdnCheckSel',0 as dataorder from dual ");
-	sql.append(" UNION ALL SELECT SSPM_KEYID,'',TO_CHAR(SSPM_SPARENO),SSPM_SPARENAME,SSPM_STORAGELOCATION,SPRM_MODEL,TO_CHAR(SSPM_QUANTITY),TO_CHAR(SSPM_RATE),SSPM_AVAILABLESTOCK ");
-	sql.append(" ,'',1 as dataorder FROM  SAP_TL_SPARESREPLACED,gen_tl_sparesmst ");//gen_tl_sparesmst
-    sql.append(" WHERE 1=1  AND TO_CHAR(SSPM_SPARENO) = SPRM_PARTNO (+) ");
+//	sql.append(" select * from ( " );//'Model','Quantity'
+//	sql.append(" select 'KeyId','Select','Part No','Spare Name','Spare Loc','Planned Quantity','Actual Quantity','Rate','Avl Stock','hdnCheckSel',0 as dataorder from dual ");
+//	sql.append(" UNION ALL SELECT SSPM_KEYID,'',TO_CHAR(SSPM_SPARENO),SSPM_SPARENAME,SSPM_STORAGELOCATION,SPRM_MODEL,TO_CHAR(SSPM_QUANTITY),TO_CHAR(SSPM_RATE),SSPM_AVAILABLESTOCK ");
+//	sql.append(" ,'',1 as dataorder FROM  SAP_TL_SPARESREPLACED,gen_tl_sparesmst ");//gen_tl_sparesmst
+//    sql.append(" WHERE 1=1  AND TO_CHAR(SSPM_SPARENO) = SPRM_PARTNO (+) ");
+//    sql.append(" AND SSPM_DOCNUMBER = '"+keyid+"' ");
+//    sql.append(" ) order by dataorder ");
+    
+    sql.append(" select * from ( " );//'Model','Quantity'
+	sql.append(" select 'KeyId','Select','Part No','Spare Name','Spare Loc','Planned Quantity','Actual Quantity','Rate','Avl Stock','hdnCheckSel',0 as dataorder  ");
+	sql.append(" UNION ALL SELECT SSPM_KEYID,'',SSPM_SPARENO::TEXT,SSPM_SPARENAME,SSPM_STORAGELOCATION,SPRM_MODEL,SSPM_QUANTITY::TEXT,SSPM_RATE::TEXT,SSPM_AVAILABLESTOCK ");
+	sql.append(" ,'',1 as dataorder FROM  BAL_SAP_TL_SPARESREPLACED LEFT JOIN gen_tl_sparesmst ON  SSPM_SPARENO::TEXT = SPRM_PARTNO   ");//gen_tl_sparesmst
+    sql.append(" WHERE 1=1 ");
     sql.append(" AND SSPM_DOCNUMBER = '"+keyid+"' ");
     sql.append(" ) order by dataorder ");
     

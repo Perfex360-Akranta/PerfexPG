@@ -299,40 +299,93 @@
 
 
 	/** FOR DELETE BUTTON **/		
-	jQuery('#btnDelete').click( function()
-	{
-		var rowid=jQuery('#hdnPspdSpareid').val();
-		if( rowid != null && rowid != "")
-		   show_confirm(rowid);
-		else
-		   alert("Select Spare to delete");   
-		
-	});
+	/** CHECKBOX CLICK - keeps a comma separated list of ticked row ids **/
+function checkBoxClick(rowId)
+{
+	var selRowIds = jQuery("#hdnSltedRowIds").val();
 
-	function show_confirm(rowid)
+	if (selRowIds == null || jQuery.trim(selRowIds) == "")
+		selRowIds = rowId + ',';
+	else
+		selRowIds += rowId + ',';
+
+	jQuery("#hdnSltedRowIds").val(selRowIds);
+
+	var value = jQuery('#txtpspdStandardid').val();
+	jQuery("#sprspickupGrid").setCell(rowId, "txtPspdStandardid", value);
+}
+
+function checkBoxUnchecked(id)
+{
+	var selRowIds = jQuery("#hdnSltedRowIds").val();
+	selRowIds = selRowIds.replace(id + ',', '');
+	jQuery("#hdnSltedRowIds").val(selRowIds);
+	clear();
+}
+
+/** RETURNS ALL ROWS WHOSE "Select" CHECKBOX IS TICKED **/
+function getCheckedSpareRows()
+{
+	var rows = [];
+	jQuery('#sprspickupGrid tr.jqgrow').each(function()
 	{
-		
-		var r=confirm("Are you Sure you want to Delete the Selected Spare");
-		if (r==true)
-  		{
-   		 	var pspdKeyid =jQuery('#hdnPspdKeyid').val();
-   		 	//alert("pspdKeyid="+pspdKeyid);
-   		 	if( pspdKeyid != null && pspdKeyid != "")
-   	   	 	{
-				processAjaxCalls("sparespickup_delete.sprpckup","pspdKeyid="+ pspdKeyid,"Sprpickupdelete_onSuccess","Sprpickupdelete_onError");
-   	   	 	}
-	   	 	else
-			{	
-	   	   		jQuery("#sprspickupGrid").delRowData(rowid);
-	   	   		clear();	
-			}
-   		}
+		// attribute selector is used because every row's checkbox has the same id
+		if (jQuery(this).find('input[id="sprpkup_checkbox"]').is(':checked'))
+		{
+			var rid  = this.id;
+			var data = jQuery('#sprspickupGrid').getRowData(rid);
+			rows.push({ rowid: rid, keyid: data.txtPspdKeyid, spareid: data.txtPspdSpareid });
+		}
+	});
+	return rows;
+}
+
+/** FOR DELETE BUTTON **/
+jQuery('#btnDelete').click(function()
+{
+	var rowsToDelete = [];
+	var spareId = jQuery('#hdnPspdSpareid').val();
+
+	if (spareId != null && spareId != "")
+	{
+		// row was double-clicked and loaded into the form
+		rowsToDelete.push({ rowid: spareId, keyid: jQuery('#hdnPspdKeyid').val() });
+	}
+	else
+	{
+		// otherwise use the ticked checkboxes
+		rowsToDelete = getCheckedSpareRows();
+	}
+
+	if (rowsToDelete.length == 0)
+		alert("Select Spare to delete");
+	else
+		show_confirm(rowsToDelete);
+});
+
+function show_confirm(rowsToDelete)
+{
+	if (!confirm("Are you Sure you want to Delete the Selected Spare"))
+		return;
+
+	jQuery.each(rowsToDelete, function(i, r)
+	{
+		if (r.keyid != null && r.keyid != "")
+		{
+			// saved row - delete from DB
+			processAjaxCalls("sparespickup_delete.sprpckup", "pspdKeyid=" + r.keyid,
+							 "Sprpickupdelete_onSuccess", "Sprpickupdelete_onError");
+		}
 		else
 		{
-		  	//alert()	
+			// newly added row (not saved yet) - remove from grid only
+			jQuery("#sprspickupGrid").delRowData(r.rowid);
 		}
-	}
-	
+	});
+
+	jQuery("#hdnSltedRowIds").val('');
+	clear();
+}
 	//DELETE SUCCESS
 	function Sprpickupdelete_onSuccess(result)
 	{

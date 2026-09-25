@@ -28,7 +28,7 @@ public class BAL_PlmTlGenmaintenance {
 		    , tempfield5, tempfield6, tempfield7, tempfield8, tempfield9
 		    , tempfield10, elementid, flid, active, createdby, createdon, modifiedon
 	}
-
+//cmbGmntStatus
 	public BAL_PlmTlGenmaintenance()
 	{
 		saveArray = new  Object [ 64 ];
@@ -610,21 +610,69 @@ public class BAL_PlmTlGenmaintenance {
 	    return sb.toString();
 	}
 
+	/*
+	 * public static BAL_PlmTlGenmaintenance fromJson(String json) {
+	 * CommonMessage.debugMsg("RAW JSON Response: [" + json + "]");
+	 * 
+	 * JSONObject obj = JSONObject.fromObject(json);
+	 * 
+	 * BAL_PlmTlGenmaintenance bdm = new BAL_PlmTlGenmaintenance();
+	 * CommonMessage.debugMsg("RAW JSON Response: :"+json);
+	 * 
+	 * for (tableFldConstants field : tableFldConstants.values()) { String key =
+	 * field.name();
+	 * 
+	 * CommonMessage.debugMsg("JSON[" + field + "] :"+obj.get(key)); String val =
+	 * obj.optString(field.name(), null); bdm.setValue(field, val != null &&
+	 * val.equals("null") ? null : val);
+	 * 
+	 * } return bdm; }
+	 */
+	/*
+	 * public static List<BAL_PlmTlGenmaintenance> fromJsonList(String json) {
+	 * 
+	 * CommonMessage.debugMsg("RAW JSON ARRAY Response: " + json);
+	 * 
+	 * JSONArray jsonArray = JSONArray.fromObject(json);
+	 * List<BAL_PlmTlGenmaintenance> list = new ArrayList<>();
+	 * 
+	 * for (int i = 0; i < jsonArray.length(); i++) {
+	 * 
+	 * JSONObject obj = jsonArray.getJSONObject(i); BAL_PlmTlGenmaintenance bdm =
+	 * new BAL_PlmTlGenmaintenance();
+	 * 
+	 * for (tableFldConstants field : tableFldConstants.values()) { String key =
+	 * field.name();
+	 * 
+	 * Object valueObj = obj.opt(key); String val = (valueObj == null ||
+	 * "null".equals(valueObj.toString())) ? null : valueObj.toString();
+	 * 
+	 * bdm.setValue(field, val); }
+	 * 
+	 * list.add(bdm); }
+	 * 
+	 * return list; }
+	 * 
+	 */
 	public static BAL_PlmTlGenmaintenance fromJson(String json) {
-	  CommonMessage.debugMsg("RAW JSON Response: [" + json + "]");
+	    CommonMessage.debugMsg("RAW JSON Response: [" + json + "]");
 
-	  JSONObject obj = JSONObject.fromObject(json);
+	    JSONObject obj = JSONObject.fromObject(json);
 
-	  BAL_PlmTlGenmaintenance bdm = new BAL_PlmTlGenmaintenance();
-	  CommonMessage.debugMsg("RAW JSON Response: :"+json);
+	    BAL_PlmTlGenmaintenance bdm = new BAL_PlmTlGenmaintenance();
+	    CommonMessage.debugMsg("RAW JSON Response: :" + json);
 
 	    for (tableFldConstants field : tableFldConstants.values()) {
-	    	String key = field.name();
+	        String key = field.name();
 
-	    	CommonMessage.debugMsg("JSON[" + field + "] :"+obj.get(key));
-	        String val = obj.optString(field.name(), null);
+	        CommonMessage.debugMsg("JSON[" + field + "] :" + obj.opt(key));
+	        String val = obj.optString(key, null);
+
+	        if (val == null || "null".equalsIgnoreCase(val) || "{}".equals(val)) {
+	            val = "";
+	        }
+
 	        bdm.setValue(field, val != null && val.equals("null") ? null : val);
-
 	    }
 	    return bdm;
 	}
@@ -644,12 +692,14 @@ public class BAL_PlmTlGenmaintenance {
 	        for (tableFldConstants field : tableFldConstants.values()) {
 	            String key = field.name();
 
-	            Object valueObj = obj.opt(key);
-	            String val = (valueObj == null || "null".equals(valueObj.toString()))
-	                         ? null
-	                         : valueObj.toString();
+	            CommonMessage.debugMsg("JSON[" + field + "] :" + obj.opt(key));
+	            String val = obj.optString(key, null);
 
-	            bdm.setValue(field, val);
+	            if (val == null || "null".equalsIgnoreCase(val) || "{}".equals(val)) {
+	                val = "";
+	            }
+
+	            bdm.setValue(field, val != null && val.equals("null") ? null : val);
 	        }
 
 	        list.add(bdm);
@@ -657,7 +707,8 @@ public class BAL_PlmTlGenmaintenance {
 
 	    return list;
 	}
-
+	
+	
 }
 
 

@@ -1707,7 +1707,7 @@ public class BAL_BreakdownServlet extends HttpServlet {
 			// List<String []> KpivReportList = kpivservice.getAllGeneral(commonFilter);
 			JSONObject colModel = getTableModelSapInfo(Grid, commonFilter);
 			colModel.set("tableHeight", "40%%");
-			colModel.set("tableWidth", "120%%");
+			colModel.set("tableWidth", "90%%");
 			httpSession.setAttribute("ColModel", colModel);
 			System.out.println("before");
 			out.println(colModel);
@@ -3340,7 +3340,7 @@ public class BAL_BreakdownServlet extends HttpServlet {
 			else if (i == 1) {
 				jqGridColModel.setWidth(50);
 				jqGridColModel.setAlign("center");
-				jqGridColModel.setFormatter("txtSelect");
+				jqGridColModel.setFormatter("Select");
 
 			} else if (i == 2 || i == 4 || i == 5) {
 				jqGridColModel.setWidth(80);

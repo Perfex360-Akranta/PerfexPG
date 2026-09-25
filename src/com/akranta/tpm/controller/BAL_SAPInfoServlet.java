@@ -268,7 +268,7 @@ private static final long serialVersionUID = 1L;
 	    	    request.setAttribute("plantName", plantName);
 	    	    request.setAttribute("plantId", plantId);
 	    	    
-				RequestDispatcher rd = request.getRequestDispatcher("/pages/SapStackInformation.jsp");					
+				RequestDispatcher rd = request.getRequestDispatcher("/pages/BAL_SapStackInformation.jsp");					
 				rd.forward(request, response);
 				
 			}

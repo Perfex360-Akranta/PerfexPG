@@ -806,7 +806,7 @@ public List<String[]> getSapInfoList(java.lang.String wwNo) throws Exception {
 	// TODO Auto-generated method stub
 	StringBuffer sql = new StringBuffer();
 	String sql1="";
-	sql.append("select 'Sl.No','Part No','Spare Name','Spare Loc','Model','Qty','Rate','Avl Stock' from dual UNION ");
+	sql.append("select 'Sl.No','Part No','Spare Name','Spare Loc','Model','Qty','Rate','Avl Stock'  UNION ");
 	sql.append(" SELECT 'Sl.No',SSPM_SPARENO,SPRM_PARTNAME,SSPM_STORAGELOCATION,SPRM_MODEL,TO_CHAR(SSPM_QUANTITY),TO_CHAR(SSPM_RATE),'' as AvailStock ");
 	sql.append(" FROM  SAP_TL_SPARESREPLACED,GEN_TL_SPARESMST ");
     sql.append(" WHERE 1=1 AND SSPM_SPARENO  = SPRM_PARTNO ");	

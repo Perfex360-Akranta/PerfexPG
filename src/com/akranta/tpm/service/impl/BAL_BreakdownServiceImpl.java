@@ -2025,8 +2025,19 @@ public class BAL_BreakdownServiceImpl implements BAL_BreakdownService {
 		if (Integer.parseInt(strAPstatus) > 0)
 			throw new BusinessApplicationExceptions("ActionPlan");
 		else {
-			return bdmTlMstDao.updatepcsBd(newBdmTlMst, womTlWomst);
+			// commented and added here by priyanka on 18/09/2026
+			//return bdmTlMstDao.updatepcsBd(newBdmTlMst, womTlWomst);
+			//return bdmTlMstDao.update(newBdmTlMst, womTlWomst);
+			
+			if (newBdmTlMst.getbdmTlMultipleResp() != null) {
+		        for (BAL_BdmTlMultipleResp resp : newBdmTlMst.getbdmTlMultipleResp()) {
+		            resp.setBdrsRefid(newBdmTlMst.getBdmsKeyid()); // "BDM--00110"
+		        }
+		    }
+			// end 
+			return bdmServiceApi.saveRecord(newBdmTlMst);
 		}
+		
 	}
 
 	@Override

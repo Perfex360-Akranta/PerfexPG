@@ -75,7 +75,7 @@ public class UserServlet extends HttpServlet {
 		
 		appDeployedTime =UIUtils.convertTime(new File(appFolder).lastModified());
 		
-		String loginSlideDirPath = appFolder+"\\images\\loginslide";
+		String loginSlideDirPath = appFolder+"\\images\\loginslidebajaj";
 		File loginSlidFolder =  new File(loginSlideDirPath);
 		if(loginSlidFolder.isDirectory()){
 			for (final File fileEntry : loginSlidFolder.listFiles()) {
@@ -776,9 +776,13 @@ public class UserServlet extends HttpServlet {
 //			out.println("tpmUser : "+tpmUser);
 		    userServices.UserServiceImplJwt(jwtToken);
 		    out.println(tpmUser);
+		    String Location = UIUtils.getPropertyValue("com.akranta.tpm.resources.ApplicationDtl", "LOCATION");
+		    String logo = UIUtils.getPropertyValue("com.akranta.tpm.resources.ApplicationDtl", "LOGO");
 			dbUser = getSchema();
 			s.setAttribute("createdDate", this.appDeployedTime);
 			s.setAttribute("dbUser", this.dbUser);
+			s.setAttribute("Location", Location);
+			s.setAttribute("logo", logo);
 			userServices.insertUserSession(admTlUsersessions);
 			CommonMessage.debugMsg("validateUserLogin 7 ");
 			
@@ -921,12 +925,13 @@ public class UserServlet extends HttpServlet {
 	
 	private void disaplyLoginPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		String company = UIUtils.getPropertyValue("com.akranta.tpm.resources.ApplicationDtl", "OWNER");
 		try{
 			String reqUser = request.getParameter("tpmuser");
 			HttpSession userSession = request.getSession();
 			String curUser =(String)userSession.getAttribute("tpmuser"); 
 			AdmTlUsermst userDetails = (AdmTlUsermst )userSession.getAttribute("user");
-		
+			
 			if( reqUser == null || reqUser.isEmpty())
 				reqUser = UIUtils.getCookieValue(request, "tpmuser");
 			
@@ -973,7 +978,12 @@ public class UserServlet extends HttpServlet {
 				String encptCnt = setEncryptCount(request,response,"0");
 				request.setAttribute("encriptCount", encptCnt);
 				request.setAttribute("loginSlideImgs",loginSldImgs);
+				if("ITC".equals(company))
 				UIUtils.forwardRequest(request, response, "/pages/login.jsp");
+				
+				if("BAJAJ".equals(company))
+					UIUtils.forwardRequest(request, response, "/pages/loginBajaj.jsp");
+				
           
 			    if( userSession != null )
 					 userSession.setMaxInactiveInterval(30);
@@ -989,7 +999,12 @@ public class UserServlet extends HttpServlet {
 	        e.printStackTrace();
 			request.getSession().setMaxInactiveInterval(60);
 			request.setAttribute("loginSlideImgs",loginSldImgs);
-			UIUtils.forwardRequest(request, response, "/pages/login.jsp");
+			//UIUtils.forwardRequest(request, response, "/pages/login.jsp");
+			if("ITC".equals(company))
+				UIUtils.forwardRequest(request, response, "/pages/login.jsp");
+				
+				if("BAJAJ".equals(company))
+					UIUtils.forwardRequest(request, response, "/pages/loginBajaj.jsp");
 			return;
 		}
 	}
@@ -1012,6 +1027,7 @@ public class UserServlet extends HttpServlet {
 	private void logoutUser(HttpServletRequest request,HttpServletResponse response)  throws ServletException, IOException{
 		HttpSession userSession = request.getSession(true);
 
+		String company = UIUtils.getPropertyValue("com.akranta.tpm.resources.ApplicationDtl", "OWNER");
 		try{
 			Cookie tpmUserCookie = UIUtils.getCookie(request, "tpmuser");
 			Cookie delCookie = new Cookie(tpmUserCookie.getName(), tpmUserCookie.getValue());
@@ -1033,8 +1049,14 @@ public class UserServlet extends HttpServlet {
 			userSession.removeAttribute("admDbLocation");
 		}
 		request.setAttribute("loginSlideImgs",loginSldImgs);
-		UIUtils.forwardRequest(request, response, "/pages/login.jsp");
-		return;
+		//UIUtils.forwardRequest(request, response, "/pages/login.jsp");
+		if("ITC".equals(company))
+			UIUtils.forwardRequest(request, response, "/pages/login.jsp");
+			
+	   if("BAJAJ".equals(company))
+		   UIUtils.forwardRequest(request, response, "/pages/loginBajaj.jsp");
+		
+	   return;
 		//response.sendRedirect("/perfex");
 	}
 	

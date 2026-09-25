@@ -40,21 +40,21 @@ public class BAL_ClitCalValidations {
 			
 			System.out.println("query query  " +sql.toString());
 			
-			String tempId = commonFilter.getFactory().getId();
+			String tempId = commonFilter.getFactoryId();//  commonFilter.getFactory().getId();
 			
 			
 			if( CommonFunctions.isValidKeyId(tempId))
 				sql.append(" AND CLCA_FACTORYID = '" + tempId + "'");
 			
-			tempId =commonFilter.getSection().getId();
+			tempId = commonFilter.getSectionId(); // commonFilter.getSection().getId();
 			if( CommonFunctions.isValidKeyId(tempId))
 				sql.append(" AND CLCA_SECTIONID = '" + tempId + "'");
 			
-			tempId =commonFilter.getCell().getId();
+			tempId = commonFilter.getCellId(); // commonFilter.getCell().getId();
 			if( CommonFunctions.isValidKeyId(tempId))
 				sql.append(" AND CLCA_CELLID = '" + tempId + "'");
 			
-			tempId =commonFilter.getMachine().getId();
+			tempId = commonFilter.getMachineId(); // commonFilter.getMachine().getId();
 			if( CommonFunctions.isValidKeyId(tempId))
 				sql.append(" AND CLCA_MACHINEID = '" + tempId + "'");
 			
@@ -85,17 +85,26 @@ public class BAL_ClitCalValidations {
 		List<String> paramValues = new ArrayList<String>();
 		Object[] outParam    = null;
 		paramValues.add("01-"+commonFilter.getFromMonth());
-		paramValues.add(commonFilter.getFactory()!=null ?( commonFilter.getFactory().getId() != null ? commonFilter.getFactory().getId():"{}") :"{}");
-		paramValues.add(commonFilter.getSection()!= null ?( commonFilter.getSection().getId() !=null ? commonFilter.getSection().getId():"{}"):"{}");
-		paramValues.add(commonFilter.getCell() != null ? (commonFilter.getCell().getId() != null?commonFilter.getCell().getId():"{}"):"{}");
-		paramValues.add(commonFilter.getMachine()!= null ? (commonFilter.getMachine().getId()!=null?commonFilter.getMachine().getId():"{}"):"{}");
+		
+//		paramValues.add(commonFilter.getFactory()!=null ?( commonFilter.getFactory().getId() != null ? commonFilter.getFactory().getId():"{}") :"{}");
+//		paramValues.add(commonFilter.getSection()!= null ?( commonFilter.getSection().getId() !=null ? commonFilter.getSection().getId():"{}"):"{}");
+//		paramValues.add(commonFilter.getCell() != null ? (commonFilter.getCell().getId() != null?commonFilter.getCell().getId():"{}"):"{}");
+//		paramValues.add(commonFilter.getMachine()!= null ? (commonFilter.getMachine().getId()!=null?commonFilter.getMachine().getId():"{}"):"{}");
+//		paramValues.add(commonFilter.getAssembly()!= null ? (commonFilter.getAssembly().getId()!=null?commonFilter.getAssembly().getId():"{}"):"{}");
+		
+		paramValues.add(commonFilter.getFactoryId()!=null ? commonFilter.getFactoryId() :"{}");
+		paramValues.add(commonFilter.getSectionId()!= null ? commonFilter.getSectionId():"{}");
+		paramValues.add(commonFilter.getCellId() != null ? commonFilter.getCellId():"{}");
+		paramValues.add(commonFilter.getMachineId()!= null ? commonFilter.getMachineId():"{}");
 		paramValues.add(commonFilter.getAssembly()!= null ? (commonFilter.getAssembly().getId()!=null?commonFilter.getAssembly().getId():"{}"):"{}");
 		paramValues.add("X");
 		//outParam.add("null");
 		System.out.println("paramValues  :"+paramValues);
 		System.out.println("procedure before calling procedure");
 		
-		dbActionTemplate.processPLSQLProcedures("CLI_PC_CALENDARINSERT.CLI_PR_RUNCLICALENDAR",paramValues,outParam);
+		//dbActionTemplate.processPLSQLProcedures("CLI_PC_CALENDARINSERT.CLI_PR_RUNCLICALENDAR",paramValues,outParam);
+		dbActionTemplate.processPLSQLProceduresNew("CLI_PR_RUNCLICALENDAR",paramValues,outParam);
+		
 		System.out.println("procedure returned");
 		
 	

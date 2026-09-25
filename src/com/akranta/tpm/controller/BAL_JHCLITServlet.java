@@ -177,11 +177,14 @@ public class BAL_JHCLITServlet extends HttpServlet {
 			}
 			else if (action.equals("jhClitModification_input.baljhclit")){
 				FormModes mode = FormModes.modify; 
+				//mano
+				httpSession.setAttribute("clitFormMode", FormModes.modify);   // NEW
 				initilizeInputMode(mode, request, httpSession);	
 			}
 			else if (action.equals("jhClit_input.baljhclit")){
 				FormModes mode = FormModes.create; 	
-			
+			//mano
+				httpSession.setAttribute("clitFormMode", FormModes.create);   // NEW
 			}
 			//CommonFunctions.debugMsg("input the jsp");
 			// there is nothing to be done
@@ -500,8 +503,15 @@ public class BAL_JHCLITServlet extends HttpServlet {
 		{
 		    String machId = request.getParameter("machId");
 		    String flid   = request.getParameter("flid");
+		    String mode   = request.getParameter("mode"); 
+		    
+		    if (mode == null || mode.trim().isEmpty()) {
+		        FormModes formMode = (FormModes) httpSession.getAttribute("clitFormMode");
+		        mode = (formMode != null) ? formMode.toString() : "modify";
+		    }
 		    request.setAttribute("machId",   machId);
 		    request.setAttribute("flid",     flid);
+		    request.setAttribute("mode",     mode);  
 		    request.setAttribute("currentDate", CommonFunctions.getDate());
 		    
 		    request.setAttribute("saveUrl", "MultipleClitStd_save.baljhclit");
@@ -510,30 +520,52 @@ public class BAL_JHCLITServlet extends HttpServlet {
 		    rd.forward(request, response);
 		}
 		//Hari-18/06/2026
+		/*
+		 * else if( action.equals("multipleClitStd_getCol.baljhclit") ) {
+		 * CommonFunctions.debugMsg("inside getcol");
+		 * 
+		 * PrintWriter out = response.getWriter(); String flid
+		 * =request.getParameter("flid"); String mchId
+		 * =request.getParameter("machineID"); String grid =
+		 * request.getParameter("grid"); String mode = request.getParameter("mode");
+		 * CommonFunctions.debugMsg("flid : "+flid);
+		 * CommonFunctions.debugMsg("grid : "+grid);
+		 * 
+		 * CommonFunctions.debugMsg("grid : "+grid);
+		 * 
+		 * 
+		 * String propertyKey = "MultipleClitStd"; if ("view".equals(mode)) {
+		 * propertyKey = "MultipleClitStdView"; // NEW read-only colModel }
+		 * 
+		 * if(UIUtils.isValidKeyId(grid) && "clit".equals(grid)) {
+		 * out.println(UIUtils.getPropertyValue(
+		 * "com.akranta.tpm.resources.Jhgetclitstandards", "MultipleClitStd"));
+		 * populateCommonFilter(request,"clitStandardCommonFilter",true); } else {
+		 * out.println(UIUtils.getPropertyValue(
+		 * "com.akranta.tpm.resources.Jhgetclitstandards", "MultipleClitStd")); }
+		 * 
+		 * }
+		 */
+		
 		else if( action.equals("multipleClitStd_getCol.baljhclit") )
-		{	
-			CommonFunctions.debugMsg("inside getcol");
-			
-			PrintWriter out = response.getWriter();
-			String flid =request.getParameter("flid");
-			String mchId =request.getParameter("machineID");
-			String grid = request.getParameter("grid");
-			CommonFunctions.debugMsg("flid : "+flid);
-			CommonFunctions.debugMsg("grid : "+grid);
-			       
-					CommonFunctions.debugMsg("grid : "+grid);
-					
-					if(UIUtils.isValidKeyId(grid) && "clit".equals(grid))
-					{
-					 out.println(UIUtils.getPropertyValue("com.akranta.tpm.resources.Jhgetclitstandards", "MultipleClitStd"));
-					 populateCommonFilter(request,"clitStandardCommonFilter",true);
-					}
-					else
-					{
-						out.println(UIUtils.getPropertyValue("com.akranta.tpm.resources.Jhgetclitstandards", "MultipleClitStd"));
-					}
-					
-			}
+		{
+		    CommonFunctions.debugMsg("inside getcol");
+
+		    PrintWriter out = response.getWriter();
+		    String flid  = request.getParameter("flid");
+		    String mchId = request.getParameter("machineID");
+		    String grid  = request.getParameter("grid");
+
+		    if(UIUtils.isValidKeyId(grid) && "clit".equals(grid))
+		    {
+		        out.println(UIUtils.getPropertyValue("com.akranta.tpm.resources.Jhgetclitstandards", "MultipleClitStd"));
+		        populateCommonFilter(request,"clitStandardCommonFilter",true);
+		    }
+		    else
+		    {
+		        out.println(UIUtils.getPropertyValue("com.akranta.tpm.resources.Jhgetclitstandards", "MultipleClitStd"));
+		    }
+		}
 		else if (action.equals("multipleClitStd_getData.baljhclit")) {
 		    try {
 		        String machId = request.getParameter("machId");
@@ -576,40 +608,45 @@ public class BAL_JHCLITServlet extends HttpServlet {
 			  
 		    }
 //for loading third grid
-		 else if( action.equals("jhClit_grid3.baljhclit"))
-			{	
-			 CommonFunctions.debugMsg("Out the jsp");
-			
-			 String assemblyID=request.getParameter("cmbAssmbid");
-			 String machAreaName = request.getParameter("machAreaName");
-			 String mchId = request.getParameter("machineId");
-			 String grid = request.getParameter("grid");
-			 String flid = request.getParameter("flid");
-			 CommonFilter commonFilter = new CommonFilter();
-			 
-			 CommonFunctions.debugMsg("machAreaName  :"+mchId );
-			 httpSession.setAttribute("jhclitassemblyID", assemblyID);
-		     request.setAttribute("assemblyID", assemblyID);
-		     request.setAttribute("machAreaName", machAreaName);
-		     request.setAttribute("machineId", mchId);
-		     request.setAttribute("grid", grid);
-		     request.setAttribute("flid", flid);
-		     httpSession.setAttribute("machAreaName", machAreaName);
-		     String AssId= (String) httpSession.getAttribute("jhclitassemblyID");
-		     CommonFunctions.debugMsg("test assm iD  :" +flid);
-		     if (UIUtils.isValidKeyId(mchId)) {
-//		         String fileDir = UIUtils.TPM_TEMPIMG_DIR;
-		    	 String fileDir = getServletContext().getRealPath("/tmp/images/") + File.separator;
-		         String imagePath = UIUtils.getImagePath(request);
-		         List<GenTlAllmoduleimgfile> clitEqpImages = cliTlStandardsService.getClitEqpImages(mchId, fileDir, imagePath);
-		         request.setAttribute("clitEqpImages", clitEqpImages);
-		         request.setAttribute("imagePath", imagePath);
-		     }
-		     RequestDispatcher rd = request.getRequestDispatcher("/pages/BAL_jhclit/JH_CLIT_Standard3.jsp"); 
-			 rd.forward(request, response); 
-			// request.removeAttribute("machAreaName");
-			 
-			 }
+			/*
+			 * else if( action.equals("jhClit_grid3.baljhclit")) {
+			 * CommonFunctions.debugMsg("Out the jsp");
+			 * 
+			 * String assemblyID=request.getParameter("cmbAssmbid"); String machAreaName =
+			 * request.getParameter("machAreaName"); String mchId =
+			 * request.getParameter("machineId"); String grid =
+			 * request.getParameter("grid"); String flid = request.getParameter("flid");
+			 * //mano // NEW — "view" / "modify" vandhutu varum menu link la irundhu
+			 * 
+			 * CommonFilter commonFilter = new CommonFilter(); //mano // NEW — session la
+			 * irundhu form mode edukurathu FormModes formMode = (FormModes)
+			 * httpSession.getAttribute("clitFormMode"); String mode = (formMode != null) ?
+			 * formMode.toString() : "modify"; request.setAttribute("mode", mode);
+			 * CommonFunctions.debugMsg("jhClit_grid3 resolved mode :"+mode);
+			 * 
+			 * CommonFunctions.debugMsg("machAreaName  :"+mchId );
+			 * httpSession.setAttribute("jhclitassemblyID", assemblyID);
+			 * request.setAttribute("assemblyID", assemblyID);
+			 * request.setAttribute("machAreaName", machAreaName);
+			 * request.setAttribute("machineId", mchId); request.setAttribute("grid", grid);
+			 * request.setAttribute("flid", flid); //mano
+			 * 
+			 * httpSession.setAttribute("machAreaName", machAreaName); //mano
+			 * httpSession.setAttribute("jhclitMode", mode); String AssId= (String)
+			 * httpSession.getAttribute("jhclitassemblyID");
+			 * CommonFunctions.debugMsg("test assm iD  :" +flid); if
+			 * (UIUtils.isValidKeyId(mchId)) { // String fileDir = UIUtils.TPM_TEMPIMG_DIR;
+			 * String fileDir = getServletContext().getRealPath("/tmp/images/") +
+			 * File.separator; String imagePath = UIUtils.getImagePath(request);
+			 * List<GenTlAllmoduleimgfile> clitEqpImages =
+			 * cliTlStandardsService.getClitEqpImages(mchId, fileDir, imagePath);
+			 * request.setAttribute("clitEqpImages", clitEqpImages);
+			 * request.setAttribute("imagePath", imagePath); } RequestDispatcher rd =
+			 * request.getRequestDispatcher("/pages/BAL_jhclit/JH_CLIT_Standard3.jsp");
+			 * rd.forward(request, response); // request.removeAttribute("machAreaName");
+			 * 
+			 * }
+			 */
 		//excel for third grid
 		/*	else if( action.equals("jhClit_getExcel.jhclit")){
 					CommonFilter commonFilter = (CommonFilter)httpSession.getAttribute("clitStandardCommonFilter");
@@ -632,7 +669,65 @@ public class BAL_JHCLITServlet extends HttpServlet {
 					
 				}
 			*/
-		
+		 else if (action.equals("jhClit_grid3.baljhclit"))
+		 {
+		     CommonFunctions.debugMsg("Out the jsp");
+
+		     String assemblyID   = request.getParameter("cmbAssmbid");
+		     String machAreaName = request.getParameter("machAreaName");
+		     String mchId        = request.getParameter("machineId");
+		     String grid         = request.getParameter("grid");
+		     String flid         = request.getParameter("flid");
+
+		     CommonFilter commonFilter = new CommonFilter();
+
+		     // NEW — allow the caller (menu link / view button) to force the mode
+		     // explicitly via a request param, e.g. ...&mode=view
+		     String modeParam = request.getParameter("mode");
+
+		     String mode;
+		     if (modeParam != null && !modeParam.trim().isEmpty()) {
+		         // explicit request param wins — normalize to lowercase so it
+		         // matches the JS check: pageMode == "view"
+		         mode = modeParam.trim().toLowerCase();
+		         // keep session in sync so subsequent requests in this flow
+		         // (that don't pass ?mode=) still resolve correctly
+		         httpSession.setAttribute("clitFormMode", FormModes.valueOf(mode.toUpperCase()));
+		     } else {
+		         // fall back to whatever is in session
+		         FormModes formMode = (FormModes) httpSession.getAttribute("clitFormMode");
+		         mode = (formMode != null) ? formMode.toString().toLowerCase() : "modify";
+		     }
+
+		     request.setAttribute("mode", mode);
+		     CommonFunctions.debugMsg("jhClit_grid3 resolved mode :" + mode);
+
+		     CommonFunctions.debugMsg("machAreaName  :" + mchId);
+		     httpSession.setAttribute("jhclitassemblyID", assemblyID);
+		     request.setAttribute("assemblyID", assemblyID);
+		     request.setAttribute("machAreaName", machAreaName);
+		     request.setAttribute("machineId", mchId);
+		     request.setAttribute("grid", grid);
+		     request.setAttribute("flid", flid);
+
+		     httpSession.setAttribute("machAreaName", machAreaName);
+		     httpSession.setAttribute("jhclitMode", mode);
+
+		     String AssId = (String) httpSession.getAttribute("jhclitassemblyID");
+		     CommonFunctions.debugMsg("test assm iD  :" + flid);
+
+		     if (UIUtils.isValidKeyId(mchId)) {
+		         String fileDir   = getServletContext().getRealPath("/tmp/images/") + File.separator;
+		         String imagePath = UIUtils.getImagePath(request);
+		         List<GenTlAllmoduleimgfile> clitEqpImages =
+		                 cliTlStandardsService.getClitEqpImages(mchId, fileDir, imagePath);
+		         request.setAttribute("clitEqpImages", clitEqpImages);
+		         request.setAttribute("imagePath", imagePath);
+		     }
+
+		     RequestDispatcher rd = request.getRequestDispatcher("/pages/BAL_jhclit/JH_CLIT_Standard3.jsp");
+		     rd.forward(request, response);
+		 }
 		 else if( action.equals("jhClit_getExcel.baljhclit") )
 			{	
 		    	httpSession = request.getSession(false);
@@ -895,7 +990,7 @@ public class BAL_JHCLITServlet extends HttpServlet {
  				
  				FunctLocFieldNameBean functLocFieldNameBean = new FunctLocFieldNameBean();
 // 				functLocFieldNameBean.setFactory("cmbClisFactory");
- 				functLocFieldNameBean.setSbu("cmbClisFactory");
+ 				functLocFieldNameBean.setSbu("cmbClisFactoryid");
  				functLocFieldNameBean.setPbu("cmbClisPbu");
  				functLocFieldNameBean.setSection("cmbClisSectionid");
  				functLocFieldNameBean.setCell("cmbClisClisid");

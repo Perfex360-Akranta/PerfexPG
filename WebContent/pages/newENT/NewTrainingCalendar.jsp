@@ -100,60 +100,67 @@ jQuery(document).ready(function(){
 			 
 			 if(empattnd > 0)
 				 {
-				 jQuery('#chkEtcmMarksBasedY').attr('disabled',true);
+				/*  jQuery('#chkEtcmMarksBasedY').attr('disabled',true);
 		 		 jQuery('#chkEtcmMarksBasedN').attr('disabled',true);
 		 		jQuery('#chkEtcmAssessmentReqY').attr('disabled', true); 
-		 		jQuery('#chkEtcmAssessmentReqN').attr('disabled', true); 
+		 		jQuery('#chkEtcmAssessmentReqN').attr('disabled', true); */
+		 		readOnlyFields('chkEtcmMarksBasedY');
+		 		readOnlyFields('chkEtcmMarksBasedN');
+		 		readOnlyFields('chkEtcmAssessmentReqY');
+		 		readOnlyFields('chkEtcmAssessmentReqN');
 				 }
 		    if(general=="Y")
 			   {
-			   jQuery('#chkEtcmGeneral').attr('checked', true);
+			   jQuery('#chkEtcmGeneral').prop('checked', true);
 			   }
 		   if(uniqe=="Y")
 		   {
-		   jQuery('#chkEtcmUniqueposition').attr('checked', true);
+		   jQuery('#chkEtcmUniqueposition').prop('checked', true);
 		   }
 		   
 		   if(MSD=="Y")
 		   {
-		   jQuery('#chkEtcmMSD').attr('checked', true);
+		   jQuery('#chkEtcmMSD').prop('checked', true);
 		   }
 		   
 		   if(Mark=="Y")
 		   {
-			   jQuery('#chkEtcmMarksBasedY').attr('checked',true);
+			   jQuery('#chkEtcmMarksBasedY').prop('checked',true);
 			   jQuery('#chkEtcmMarksBasedY').val("Y");
 		   }
 		   else{
-			   jQuery('#chkEtcmMarksBasedN').attr('checked',true);
+			   jQuery('#chkEtcmMarksBasedN').prop('checked',true);
 			   jQuery('#chkEtcmMarksBasedN').val("N");
 		   }
 		   
 		   if(assess=="Y")
 		   {
-		   jQuery('#chkEtcmAssessmentReqY').attr('checked', true);
+		   jQuery('#chkEtcmAssessmentReqY').prop('checked', true);
 		   jQuery('#chkEtcmAssessmentReqY').val("Y");
 		   }
 		   else{
-			  jQuery('#chkEtcmAssessmentReqN').attr('checked', true); 
+			  jQuery('#chkEtcmAssessmentReqN').prop('checked', true); 
 			  jQuery('#chkEtcmAssessmentReqN').val("N");
-			  jQuery("#chkEtcmMarksBasedY").attr('disabled',true);
-			  jQuery("#chkEtcmMarksBasedN").attr('disabled',true);
+			  //jQuery("#chkEtcmMarksBasedY").attr('disabled',true);
+			 //jQuery("#chkEtcmMarksBasedN").attr('disabled',true);
+			  readOnlyFields('chkEtcmMarksBasedY');
+			  readOnlyFields('chkEtcmMarksBasedN');
 		   }
 		  
 		   if(materail=="Y")
 		   {
-		   jQuery('#chkEtcmMaterialsReadyY').attr('checked', true);
+		   jQuery('#chkEtcmMaterialsReadyY').prop('checked', true);
 		   jQuery('#chkEtcmMaterialsReadyY').val("Y");
 		   }
 		   else{
-			   jQuery('#chkEtcmMaterialsReadyN').attr('checked', true); 
+			   jQuery('#chkEtcmMaterialsReadyN').prop('checked', true); 
 			   jQuery('#chkEtcmMaterialsReadyN').val("N");
 		   }
 		  if(iscompleted=="Y")
 			  {
-			  jQuery("#chkEtcmChkCompleted").attr('disabled',true);
-			  jQuery("#chkEtcmChkCompleted").attr('checked',true);
+			  //jQuery("#chkEtcmChkCompleted").attr('disabled',true);
+			  readOnlyFields('chkEtcmChkCompleted');
+			  jQuery("#chkEtcmChkCompleted").prop('checked',true);
 			  jQuery("#dteEtcmCompletedDate").datebox('setValue',completeddate.substring(0,11));
 		
 			  if(completedby.length > 1)
@@ -187,14 +194,17 @@ jQuery(document).ready(function(){
 		 }
 	 else{
 		 fillWithCurrentDate('dteEtcmCalendarDate');	
-		 jQuery('#chkEtcmMaterialsReadyN').attr('checked',true);
-		 jQuery('#chkEtcmAssessmentReqN').attr('checked',true);
-		 jQuery('#chkEtcmMarksBasedN').attr('checked',true);
-		 jQuery('#chkEtcmGeneral').attr('checked', true);
+		 jQuery('#chkEtcmMaterialsReadyN').prop('checked',true);
+		 jQuery('#chkEtcmAssessmentReqN').prop('checked',true);
+		 jQuery('#chkEtcmMarksBasedN').prop('checked',true);
+		 jQuery('#chkEtcmGeneral').prop('checked', true);
 		 jQuery('#chkEtcmGeneral').val("Y");
-		 jQuery('#chkEtcmChkCompleted').attr('disabled', true);
-		 jQuery("#chkEtcmMarksBasedY").attr('disabled',true);
-		 jQuery("#chkEtcmMarksBasedN").attr('disabled',true);
+		 //jQuery('#chkEtcmChkCompleted').attr('disabled', true);
+		 //jQuery("#chkEtcmMarksBasedY").attr('disabled',true);
+		 //jQuery("#chkEtcmMarksBasedN").attr('disabled',true);
+		 readOnlyFields('chkEtcmChkCompleted');
+		 readOnlyFields('chkEtcmMarksBasedY');
+		 readOnlyFields('chkEtcmMarksBasedN');
 	 }
 	var funclocn="";
 	 funclocn= "functionalLoc.ntrc";
@@ -242,10 +252,12 @@ jQuery(document).ready(function(){
 			 var serverAssessCom = jQuery("#chkEtcaAssessmentCom").val();
 			 if(serverAssessCom == "Y"){
 			     jQuery('#chkEtcaAssessmentCom').prop('checked', true);
-			     jQuery('#chkEtcaAssessmentCom').prop('disabled', true);
+			     //jQuery('#chkEtcaAssessmentCom').prop('disabled', true);
+			     readOnlyFields('chkEtcaAssessmentCom');
 			 } else {
 			     jQuery('#chkEtcaAssessmentCom').prop('checked', false);
-			     jQuery('#chkEtcaAssessmentCom').prop('disabled', false);
+			     //jQuery('#chkEtcaAssessmentCom').prop('disabled', false);
+			     enableFields('chkEtcaAssessmentCom');
 			 }
 			 //-----------------------------------gopi----------------------------------
 
@@ -381,12 +393,12 @@ function Chkcompleted_onsuccessCallBack(result)
  //  alert ("completed by " + completedby );
    if(chkvalue=="N")
 	   {
-	   jQuery('#chkEtcmChkCompleted').attr('checked',false);
+	   jQuery('#chkEtcmChkCompleted').prop('checked',false);
 	     popupCommonErrorMsg("Training is not Completed");
 	     return false;
 	   }
    else{
-	   jQuery('#chkEtcmChkCompleted').attr('checked',true);
+	   jQuery('#chkEtcmChkCompleted').prop('checked',true);
 	   jQuery('#chkEtcmChkCompleted').val('Y');
 	   enableFields("dteEtcmCompletedDate");
 	   setTimeout(function () {fillWithCurrentDate('dteEtcmCompletedDate');},300);
@@ -517,12 +529,12 @@ function chkAssessmentCompleted_onsuccessCallBack(result)
 	   var chkvalue=result.cnt;
 	   if(chkvalue=="0")
 		   {
-		   jQuery('#chkEtcaAssessmentCom').attr('checked',false);
+		   jQuery('#chkEtcaAssessmentCom').prop('checked',false);
 		     popupCommonErrorMsg("Assessment is not Completed");
 		     return false;
 		   }
 	   else{
-		   jQuery('#chkEtcaAssessmentCom').attr('checked',true);
+		   jQuery('#chkEtcaAssessmentCom').prop('checked',true);
 		   jQuery('#chkEtcaAssessmentCom').val("Y");
 	   }
 }
@@ -647,11 +659,13 @@ jQuery("#tabTrainingCalendar").tabs(
  				   
  				  var mode=jQuery("#mode").val();
  				  if(mode=="view"){
- 					 jQuery("#chkEtcmChkCompleted").attr('disabled',true);
+ 					// jQuery("#chkEtcmChkCompleted").attr('disabled',true);
+ 					readOnlyFields('chkEtcmChkCompleted');
  				  }
  				  
  				  else{
- 					 jQuery("#chkEtcmChkCompleted").attr('disabled',false);	  
+ 					 //jQuery("#chkEtcmChkCompleted").attr('disabled',false);	 
+ 					enableFields('chkEtcmChkCompleted');
  				  }
  				// ------------------------Vignesh 17Mar2026 --------------------------------------------//	  
  				 	 
@@ -1842,21 +1856,21 @@ jQuery('#chkUniquePosition').click(function(){
 
       jQuery('#chkEtcmMaterialsReadyY').click(function(){
 		if(jQuery('#chkEtcmMaterialsReadyY').is(':checked') == true){
-			jQuery('#chkEtcmMaterialsReadyN').attr('checked',false);	
+			jQuery('#chkEtcmMaterialsReadyN').prop('checked',false);	
 		}
 		else{
 			
-			jQuery('#chkEtcmMaterialsReadyN').attr('checked',true);
+			jQuery('#chkEtcmMaterialsReadyN').prop('checked',true);
 		}
 });
 
      jQuery('#chkEtcmMaterialsReadyN').click(function(){
 	if(jQuery('#chkEtcmMaterialsReadyN').is(':checked') == true){
-		jQuery('#chkEtcmMaterialsReadyY').attr('checked',false);	
+		jQuery('#chkEtcmMaterialsReadyY').prop('checked',false);	
 	}
 	else{
 		
-		jQuery('#chkEtcmMaterialsReadyY').attr('checked',true);
+		jQuery('#chkEtcmMaterialsReadyY').prop('checked',true);
 	}
 	
 });
@@ -1865,21 +1879,21 @@ jQuery('#chkUniquePosition').click(function(){
      
      jQuery('#chkEtcmMarksBasedY').click(function(){
  		if(jQuery('#chkEtcmMarksBasedY').is(':checked') == true){
- 			jQuery('#chkEtcmMarksBasedN').attr('checked',false);	
+ 			jQuery('#chkEtcmMarksBasedN').prop('checked',false);	
  		}
  		else{
  			
- 			jQuery('#chkEtcmMarksBasedN').attr('checked',true);
+ 			jQuery('#chkEtcmMarksBasedN').prop('checked',true);
  		}
  });
 
       jQuery('#chkEtcmMarksBasedN').click(function(){
  	if(jQuery('#chkEtcmMarksBasedN').is(':checked') == true){
- 		jQuery('#chkEtcmMarksBasedY').attr('checked',false);	
+ 		jQuery('#chkEtcmMarksBasedY').prop('checked',false);	
  	}
  	else{
  		
- 		jQuery('#chkEtcmMarksBasedY').attr('checked',true);
+ 		jQuery('#chkEtcmMarksBasedY').prop('checked',true);
  	}
  	
  });
@@ -1889,15 +1903,19 @@ jQuery('#chkUniquePosition').click(function(){
      
        jQuery('#chkEtcmAssessmentReqY').click(function(){
    		if(jQuery('#chkEtcmAssessmentReqY').is(':checked') == true){
-   			jQuery('#chkEtcmAssessmentReqN').attr('checked',false);
-   			jQuery("#chkEtcmMarksBasedY").attr('disabled',false);
-   			jQuery("#chkEtcmMarksBasedN").attr('disabled',false);
+   			jQuery('#chkEtcmAssessmentReqN').prop('checked',false);
+   			//jQuery("#chkEtcmMarksBasedY").attr('disabled',false);
+   			//jQuery("#chkEtcmMarksBasedN").attr('disabled',false);
+   			enableFields('chkEtcmMarksBasedY');
+   			enableFields('chkEtcmMarksBasedN');
    		}
    		else{
    			
-   			jQuery('#chkEtcmAssessmentReqN').attr('checked',true);
-   			jQuery("#chkEtcmMarksBasedY").attr('disabled',true);
-   			jQuery("#chkEtcmMarksBasedN").attr('disabled',true);
+   			jQuery('#chkEtcmAssessmentReqN').prop('checked',true);
+   			//jQuery("#chkEtcmMarksBasedY").attr('disabled',true);
+   			//jQuery("#chkEtcmMarksBasedN").attr('disabled',true);
+   			readOnlyFields('chkEtcmMarksBasedY');
+   			readOnlyFields('chkEtcmMarksBasedN');
    		}
    });
        
@@ -1906,28 +1924,34 @@ jQuery('#chkUniquePosition').click(function(){
      
      jQuery('#chkEtcmAssessmentReqN').click(function(){
  		if(jQuery('#chkEtcmAssessmentReqN').is(':checked') == true){
- 			jQuery('#chkEtcmAssessmentReqY').attr('checked',false);
- 			jQuery("#chkEtcmMarksBasedY").attr('disabled',true);
-   			jQuery("#chkEtcmMarksBasedN").attr('disabled',true);
+ 			jQuery('#chkEtcmAssessmentReqY').prop('checked',false);
+ 			//jQuery("#chkEtcmMarksBasedY").attr('disabled',true);
+   			//jQuery("#chkEtcmMarksBasedN").attr('disabled',true);
+   			readOnlyFields('chkEtcmMarksBasedY');
+   			readOnlyFields('chkEtcmMarksBasedN');
  		}
  		else{
  			
- 			jQuery('#chkEtcmAssessmentReqN').attr('checked',true);
- 			jQuery("#chkEtcmMarksBasedY").attr('disabled',false);
- 		   jQuery("#chkEtcmMarksBasedN").attr('disabled',false);
+ 			jQuery('#chkEtcmAssessmentReqN').prop('checked',true);
+ 			//jQuery("#chkEtcmMarksBasedY").attr('disabled',false);
+ 		   //jQuery("#chkEtcmMarksBasedN").attr('disabled',false);
+ 		  enableFields('chkEtcmMarksBasedY');
+ 			enableFields('chkEtcmMarksBasedN');
  		}
  });
 
       jQuery('#chkProgAssessmentReqN').click(function(){
  	if(jQuery('#chkProgAssessmentReqN').is(':checked') == true){
- 		jQuery('#chkProgAssessmentReqY').attr('checked',false);	
- 		jQuery('#chkEtcmMarksBasedY').attr('checked',false);
+ 		jQuery('#chkProgAssessmentReqY').prop('checked',false);	
+ 		jQuery('#chkEtcmMarksBasedY').prop('checked',false);
  	}
  	else{
  		
- 		jQuery('#chkProgAssessmentReqY').attr('checked',true);
- 		jQuery("#chkEtcmMarksBasedY").attr('disabled',false);
-	   jQuery("#chkEtcmMarksBasedN").attr('disabled',false);
+ 		jQuery('#chkProgAssessmentReqY').prop('checked',true);
+ 		//jQuery("#chkEtcmMarksBasedY").attr('disabled',false);
+	   //jQuery("#chkEtcmMarksBasedN").attr('disabled',false);
+	   enableFields('chkEtcmMarksBasedY');
+	   enableFields('chkEtcmMarksBasedN');
  	}
  	
  });
@@ -2402,6 +2426,47 @@ function frmNewTraCal_beforeSubmit(){
            var topicid=jQuery("#cmbEtcmTopicid").combobox('getValue');
            var locnId = jQuery("#frmNewTraCal input[id='location']").val();           
            var chkcompl=jQuery("#chkEtcmChkCompleted").is(':checked');
+           
+           var marksbsd     = jQuery("#hdnmark").val();
+           var assessment   = jQuery("#hdnassessment").val();
+           
+           
+           if (marksbsd == "Y" && assessment == "Y") {
+               if (!((cut.length > 0) && (marks.length > 0))) {
+            	   popupCommonErrorMsg("Please enter Cut Off & Max Marks");
+                  
+                   return false;
+               } 
+           }
+           
+           var row       = jQuery("#EmpAttenGrid").jqGrid('getDataIDs');
+
+           for (var i = 0; i < row.length; i++) {
+        	   if(jQuery("#jqg_EmpAttenGrid_" + row[i]).is(':disabled')){
+        		   //check
+        	   }else{
+               if (jQuery("#jqg_EmpAttenGrid_" + row[i]).is(':checked') ) {
+            	   //alert("row["+i+"]:"+row[i]);
+            	   var score = jQuery("textarea#txtEtcaScore_EmpAttenGrid_" + row[i]).val();
+                 // alert("Score:"+score);
+                  //return false;
+            	   if (marksbsd == "Y" && assessment == "Y") {
+                       if ((cut.length > 0) && (marks.length > 0)) {
+                    	   if (score.trim() === '' || score == null) {
+                               popupCommonErrorMsg("Enter Score");
+                               return false;
+                           }
+                    	   
+                       } else {
+                           popupCommonErrorMsg("Please enter Cut Off & Max Marks");
+                           return false;
+                       }
+                   }
+               } 
+        	   }
+           }
+          
+           
            if(chkcompl==true)
         	   {
         	          var completedby=jQuery("#cmbEtcmCompletedBy").combobox('getValue');
@@ -2515,10 +2580,14 @@ function frmNewTraCal_successsCallback(result){
  	 if(attendid!=0)
  		 {
 
- 		 jQuery('#chkEtcmMarksBasedY').attr('disabled',true);
- 		 jQuery('#chkEtcmMarksBasedN').attr('disabled',true);
- 		jQuery('#chkEtcmAssessmentReqY').attr('disabled', true); 
- 		jQuery('#chkEtcmAssessmentReqN').attr('disabled', true); 
+ 		 //jQuery('#chkEtcmMarksBasedY').attr('disabled',true);
+ 		 //jQuery('#chkEtcmMarksBasedN').attr('disabled',true);
+ 		//jQuery('#chkEtcmAssessmentReqY').attr('disabled', true); 
+ 		//jQuery('#chkEtcmAssessmentReqN').attr('disabled', true); 
+ 		readOnlyFields('chkEtcmMarksBasedY');
+ 		readOnlyFields('chkEtcmMarksBasedN');
+ 		readOnlyFields('chkEtcmAssessmentReqY');
+ 		readOnlyFields('chkEtcmAssessmentReqN');
  		var marks=jQuery('#chkEtcmMarksBasedY').is(':checked');
  		var assess=jQuery('#chkEtcmAssessmentReqY').is(':checked');
  		if(marks==true)
@@ -3085,12 +3154,13 @@ function toggleDmtJhMandatory(isMandatory) {
 		 		<div style="margin-top:140px;margin-left:-120px;"><label>Marks Required?</label></div>
 	 			  <div style="margin-left:-120px;">
 					
-					<input type="checkbox" id="chkEtcmMarksBasedY"   name="chkEtcmMarksBased" value="Y"/>
-					<c:out value = "${requestScope.entTlTragcalmst.etcmMarksBased == 'Y' ? ' checked':' '}"/>
+					<input type="checkbox" id="chkEtcmMarksBasedY"   name="chkEtcmMarksBased" value="Y" ${requestScope.entTlTragcalmst.etcmMarksBased == 'Y' ? ' checked':' '} />
+					<input type="hidden" id="hdnEtcmMarksBasedY" name="hdnEtcmMarksBased" value="${ requestScope.entTlTragcalmst.etcmMarksBased == 'Y' ? 'Y':''}" disabled="disabled"    />
 					<label style="margin-left:3px;">Yes</label>
 					<span style="margin-left:3px;">					
-					<input type="checkbox" id="chkEtcmMarksBasedN"   name="chkEtcmMarksBased"  value="N">
-					<c:out value = "${requestScope.entTlTragcalmst.etcmMarksBased == 'N' ? ' checked':' '}"/>
+					<input type="checkbox" id="chkEtcmMarksBasedN"   name="chkEtcmMarksBased"  value="N" ${requestScope.entTlTragcalmst.etcmMarksBased == 'N' ? ' checked':' '}>
+					<input type="hidden" id="hdnEtcmMarksBasedN" name="hdnEtcmMarksBased" value="${ requestScope.entTlTragcalmst.etcmMarksBased == 'N' ? 'N':''}" disabled="disabled"    />
+					
 					<label style="margin-left:3px;">No</label>
 				</span>
 				</div>
@@ -3100,12 +3170,12 @@ function toggleDmtJhMandatory(isMandatory) {
 	 		     <td>
 		 		 <div style="margin-left:-380px;margin-top:150px;"><label>Assessment Required?</label></div>
 	 			  <div style="margin-left:-380px;">
-					<input type="checkbox" id="chkEtcmAssessmentReqY"   name="chkEtcmAssessmentReq"  value="Y">
-				    <c:out value = "${requestScope.entTlTragcalmst.etcmAssessmentReq == 'Y' ? ' checked':' '}"/>
+					<input type="checkbox" id="chkEtcmAssessmentReqY"   name="chkEtcmAssessmentReq"  value="Y" ${requestScope.entTlTragcalmst.etcmAssessmentReq == 'Y' ? ' checked':' '}>
+				     <input type="hidden" id="hdnEtcmAssessmentReqY" name="hdnEtcmAssessmentReq" value="${ requestScope.entTlTragcalmst.etcmAssessmentReq == 'Y' ? 'Y':''}" disabled="disabled"   />
 					<label style="margin-left:3px;">Yes</label>
 					<span style="margin-left:3px;">
-					<input type="checkbox" id="chkEtcmAssessmentReqN" value="N" name="chkEtcmAssessmentReq">
-			        <c:out value = "${requestScope.entTlTragcalmst.etcmAssessmentReq == 'N' ? ' checked':' '}"/>
+					<input type="checkbox" id="chkEtcmAssessmentReqN" value="N" name="chkEtcmAssessmentReq" ${requestScope.entTlTragcalmst.etcmAssessmentReq == 'N' ? ' checked':' '} >
+			        <input type="hidden" id="hdnEtcmAssessmentReqN" name="hdnEtcmAssessmentReq" value="${ requestScope.entTlTragcalmst.etcmAssessmentReq == 'N' ? 'N':''}" disabled="disabled"    />
 					<label style="margin-left:3px;">No</label>
 				    </span>
 				    </div>

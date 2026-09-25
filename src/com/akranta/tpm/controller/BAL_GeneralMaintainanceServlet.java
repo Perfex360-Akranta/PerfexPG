@@ -217,54 +217,103 @@ public class BAL_GeneralMaintainanceServlet extends HttpServlet {
 				UIUtils.forwardRequest(request, response, "/tiles/xml/generalMaintaince.xml") ;
 			 }
 	 		
-	 		else if(action.equals("generalMaintcreat_input.balgenmain")||action.equals("generalMaintMould_input.balgenmain")) 
-			{
-				//FormModes mode = (FormModes) httpSession.getAttribute("GeneralMainFormMode");
-				
-				String modeStr = request.getParameter(ReqtParamNameConst.FORM_MODE);
-				String orderType=request.getParameter("orderType");
-				System.out.println("dsd"+modeStr);
-				String sapSts=request.getParameter("sapsts");
-				
-				CommonFunctions.debugMsg("sap status"+sapSts);
-				httpSession.removeAttribute("GeneralMainFormMode");
-				String menumode = request.getParameter("menumode");
-				if(UIUtils.isValidKeyId(menumode))
-					request.setAttribute("menumode", "setupandadjustment");
-				FormModes mode = FormModes.create; 			
-				
-				if(modeStr == null || ( modeStr != null && modeStr.equals(FormModeConsts.create ) )) 
-					mode=FormModes.create;
-				else if(modeStr.equals(FormModeConsts.modify) )
-					mode=FormModes.modify;
-				else 
-					mode=FormModes.view;
-				
-				httpSession.setAttribute("GeneralMainFormMode",mode);
-				initilizeInputMode(mode, request, httpSession);	
-				BAL_PlmTlGenmaintenance plmTlGenmaintenance = new BAL_PlmTlGenmaintenance();
-				//String statussap=plmTlGenmaintenance.getErrppostStatus();
-				if("C".equals(sapSts) && "C".equals(plmTlGenmaintenance.getGmntStatus())){
-					
-					CommonFunctions.debugMsg("sap Status........"+plmTlGenmaintenance.getErrppostStatus());
-					
-					
-					request.setAttribute("Status","Completed in SAP");
-				}
-				else if("P".equals(plmTlGenmaintenance.getGmntStatus()) && "X".equals(plmTlGenmaintenance.getErrppostStatus()))
-					{
-					CommonFunctions.debugMsg("sap Status........"+plmTlGenmaintenance.getErrppostStatus());
-					request.setAttribute("Status","Completed in Perfex Not In SAP");
-				}
-				request.setAttribute(ReqtParamNameConst.FORM_MODE, mode);
-				
-				request.setAttribute("orderType",orderType);
-				//request.setAttribute("url", action);
-				request.setAttribute("url", "generalMaint_modify.balgenmain");
-				request.setAttribute("stats", "P");
-				dispatchUrl="/pages/GeneralMaintainence.jsp"; 
-			
-			}
+				/*
+				 * else if(action.equals("generalMaintcreat_input.balgenmain")||action.equals(
+				 * "generalMaintMould_input.balgenmain")) { //FormModes mode = (FormModes)
+				 * httpSession.getAttribute("GeneralMainFormMode");
+				 * 
+				 * String modeStr = request.getParameter(ReqtParamNameConst.FORM_MODE); String
+				 * orderType=request.getParameter("orderType");
+				 * System.out.println("dsd"+modeStr); String
+				 * sapSts=request.getParameter("sapsts");
+				 * 
+				 * CommonFunctions.debugMsg("sap status"+sapSts);
+				 * httpSession.removeAttribute("GeneralMainFormMode"); String menumode =
+				 * request.getParameter("menumode"); if(UIUtils.isValidKeyId(menumode))
+				 * request.setAttribute("menumode", "setupandadjustment"); FormModes mode =
+				 * FormModes.create;
+				 * 
+				 * if(modeStr == null || ( modeStr != null &&
+				 * modeStr.equals(FormModeConsts.create ) )) mode=FormModes.create; else
+				 * if(modeStr.equals(FormModeConsts.modify) ) mode=FormModes.modify; else
+				 * mode=FormModes.view;
+				 * 
+				 * httpSession.setAttribute("GeneralMainFormMode",mode);
+				 * initilizeInputMode(mode, request, httpSession); BAL_PlmTlGenmaintenance
+				 * plmTlGenmaintenance = new BAL_PlmTlGenmaintenance(); //String
+				 * statussap=plmTlGenmaintenance.getErrppostStatus(); if("C".equals(sapSts) &&
+				 * "C".equals(plmTlGenmaintenance.getGmntStatus())){
+				 * 
+				 * CommonFunctions.debugMsg("sap Status........"+plmTlGenmaintenance.
+				 * getErrppostStatus());
+				 * 
+				 * 
+				 * request.setAttribute("Status","Completed in SAP"); } else
+				 * if("P".equals(plmTlGenmaintenance.getGmntStatus()) &&
+				 * "X".equals(plmTlGenmaintenance.getErrppostStatus())) {
+				 * CommonFunctions.debugMsg("sap Status........"+plmTlGenmaintenance.
+				 * getErrppostStatus());
+				 * request.setAttribute("Status","Completed in Perfex Not In SAP"); }
+				 * request.setAttribute(ReqtParamNameConst.FORM_MODE, mode);
+				 * 
+				 * request.setAttribute("orderType",orderType); //request.setAttribute("url",
+				 * action); request.setAttribute("url", "generalMaint_modify.balgenmain");
+				 * request.setAttribute("stats", "P");
+				 * dispatchUrl="/pages/GeneralMaintainence.jsp";
+				 * 
+				 * }
+				 */
+	 		else if(action.equals("generalMaintcreat_input.balgenmain")||action.equals("generalMaintMould_input.balgenmain"))
+	 		{
+	 		    String modeStr   = request.getParameter(ReqtParamNameConst.FORM_MODE);
+	 		    String orderType = request.getParameter("orderType");
+	 		    String sapSts    = request.getParameter("sapsts");
+	 		    String vurl      = request.getParameter("vurl");
+	 		    String menumode  = request.getParameter("menumode");
+
+	 		    httpSession.removeAttribute("GeneralMainFormMode");
+	 		    if(UIUtils.isValidKeyId(menumode))
+	 		        request.setAttribute("menumode", "setupandadjustment");
+
+	 		    // 1. requested mode - case-insensitive
+	 		    FormModes mode;
+	 		    if(modeStr == null || modeStr.trim().length() == 0 || modeStr.equalsIgnoreCase(FormModeConsts.create))
+	 		        mode = FormModes.create;
+	 		    else if(modeStr.equalsIgnoreCase(FormModeConsts.modify))
+	 		        mode = FormModes.modify;
+	 		    else
+	 		        mode = FormModes.view;
+
+	 		    initilizeInputMode(mode, request, httpSession);
+
+	 		    // 2. record-oda actual state (JSP idhey attribute-a dhaan use pannudhu)
+	 		    BAL_PlmTlGenmaintenance gm = (BAL_PlmTlGenmaintenance) request.getAttribute("plmTlGenmaintenance");
+	 		    boolean lockedInSap = gm != null
+	 		            && "C".equals(gm.getGmntStatus())
+	 		            && "C".equals(gm.getErrppostStatus());
+
+	 		    // 3. Modification list-la irundhu vandhu, SAP-la lock aagala na -> modify
+	 		    boolean fromModifyList = vurl != null && vurl.startsWith("generalMaint_modify");
+	 		    if(mode == FormModes.view && fromModifyList && !lockedInSap)
+	 		    {
+	 		        mode = FormModes.modify;
+	 		        initilizeInputMode(mode, request, httpSession);   // modify-ku thirumba init
+	 		    }
+
+	 		    httpSession.setAttribute("GeneralMainFormMode", mode);
+
+	 		    // (dead code irundhadhu: new BAL_PlmTlGenmaintenance() eppovum empty, adhaala condition eppovum false)
+	 		    if(gm != null && "C".equals(sapSts) && "C".equals(gm.getGmntStatus()))
+	 		        request.setAttribute("Status", "Completed in SAP");
+	 		    else if(gm != null && "P".equals(gm.getGmntStatus()) && "X".equals(gm.getErrppostStatus()))
+	 		        request.setAttribute("Status", "Completed in Perfex Not In SAP");
+
+	 		    request.setAttribute(ReqtParamNameConst.FORM_MODE, mode);
+	 		    request.setAttribute("orderType", orderType);
+	 		    request.setAttribute("url", "generalMaint_modify.balgenmain");
+	 		    request.setAttribute("stats", "P");
+	 		    dispatchUrl = "/pages/GeneralMaintainence.jsp";
+	 		}
 			/*
 			 * else if(action.equals("generalMaint_modify.balgenmain")
 			 * ||action.equals("generalMaintMould_modify.balgenmain")||action.equals(

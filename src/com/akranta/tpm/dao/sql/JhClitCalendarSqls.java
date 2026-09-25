@@ -1,8 +1,8 @@
 package com.akranta.tpm.dao.sql;
 import com.akranta.tpm.utils.CommonMessage;
 public class JhClitCalendarSqls {
-	public static final String TBL_CLI_TL_CALENDAR = "CLI_TL_CALENDAR";  
-
+	//public static final String TBL_CLI_TL_CALENDAR = "CLI_TL_CALENDAR";  
+	public static final String TBL_CLI_TL_CALENDAR = "BAL_CLI_TL_CALENDAR";
 	TableFieldType [] clcaDbFields = null;
 
 	public enum   tableFldConstants

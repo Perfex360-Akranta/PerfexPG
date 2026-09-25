@@ -267,6 +267,16 @@
     <url-pattern>*.sprpckup</url-pattern>
   </servlet-mapping>
   
+  
+  <servlet>
+    <servlet-name>BAL_ClitScheduleServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_ClitScheduleServlet</servlet-class>
+  </servlet>
+   <servlet-mapping>
+    <servlet-name>BAL_ClitScheduleServlet</servlet-name>
+    <url-pattern>*.clitcal</url-pattern>
+  </servlet-mapping>
+  
   <servlet>
     <servlet-name>ToolMonitoringServlet</servlet-name>
     <servlet-class>com.akranta.tpm.controller.ToolMonitoringServlet</servlet-class>

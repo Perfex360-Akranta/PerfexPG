@@ -442,9 +442,11 @@ public class BAL_PlmTlPlanconfigurationDaoImpl implements BAL_PlmTlPlanconfigura
 			  Object [] outParams = new Object[ 1 ];
 				System.out.println("outParams   :"+outParams);
 				if(string.equals("M"))
-					dbActionTemplate.processPLSQLProcedures("PLM_PC_PLANNEDMAINT.PLM_PR_PLANCONFIGBULKINS",inParamValues,outParams);
+					//dbActionTemplate.processPLSQLProcedures("PLM_PC_PLANNEDMAINT.PLM_PR_PLANCONFIGBULKINS",inParamValues,outParams);
+					dbActionTemplate.processPLSQLProceduresNew("bal_plm_pr_planconfigbulkins",inParamValues,outParams);
 				else if(string.equals("A"))
-					dbActionTemplate.processPLSQLProcedures("PLM_PC_PLANNEDMAINT.PLM_PR_PLANCONFIGBULKINSASM",inParamValues,outParams);
+					//dbActionTemplate.processPLSQLProcedures("PLM_PC_PLANNEDMAINT.PLM_PR_PLANCONFIGBULKINSASM",inParamValues,outParams);
+					dbActionTemplate.processPLSQLProceduresNew("bal_plm_pr_planconfigbulkinsasm",inParamValues,outParams);
 				System.out.println("outParamsAfter   :"+outParams.length);
                 if(outParams.length>0){
                 	throw new Exception(" Data Saved Successfully ");

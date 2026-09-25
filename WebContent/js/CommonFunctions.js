@@ -4953,10 +4953,12 @@ function readOnlyFields(fieldId)
 		
 		if (jQuery("#"+fieldId).is(":checked")) {
 		    hidden.val(jQuery("#"+fieldId).val());
+			hidden.prop("disabled", false);
 		} else {
 		    hidden.val("");
+			hidden.prop("disabled", true);
 		}
-	hidden.prop("disabled", false);
+	//hidden.prop("disabled", false);
 	jQuery("#"+fieldId).prop("disabled",true);
 	}	
 	else if(fieldId.substring(0,3) == "chb")

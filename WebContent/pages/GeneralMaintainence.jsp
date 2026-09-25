@@ -9,9 +9,11 @@ jQuery(document).ready(function(){
 	initialiseForm("frmGenralMaintenance");
 	jQuery('#submitForm').val('frmGenralMaintenance');
 	
-	
+	var mode = (getFilterValue(url+'&',"mode") || '').toLowerCase();
 	jQuery('#btnGmntEstimation').click(function(){
-		alert(1234);
+		//alert(1234);
+		
+		
 var wsDate = jQuery('#dteGmntWostartdate').datebox('getValue');
 var wsTime = jQuery('#spnWorkstartTime').spinner('getValue');
 var weDate = jQuery('#dteGmntWoenddate').datebox('getValue');
@@ -59,6 +61,7 @@ saveForm('frmGenralMaintenance','costinfo.balgenmain?q=2&repType=Actual&refDocTy
     jQuery('#txtErrppostStatus').val(statusSap);
 	//*/
     var url = jQuery('#hiddenUrl').val();
+	//alert("url "+url);
     
 	var mode= getFilterValue(url+'&',"mode");
 	//setFieldValue('ldmode',mode);
@@ -81,7 +84,8 @@ saveForm('frmGenralMaintenance','costinfo.balgenmain?q=2&repType=Actual&refDocTy
 		}else
 		fillComboBox("frmGenralMaintenance","cmbGmntMachineid","machineCombo.commonFilter");
 
-	fillComboBox("frmGenralMaintenance","cmbGmntStationid","assembly.commonFilter?relatedto=MCH");
+	//fillComboBox("frmGenralMaintenance","cmbGmntStationid","assembly.commonFilter?relatedto=MCH");
+	gmntSetupAssembly(machId);
 	/*readOnlyFields('dteGmntShiftdate');*/
 	formatDateBox('dteGmntStartdate','dd-MMM-yyyy');
 	formatDateBox('dteGmntWostartdate','dd-MMM-yyyy');
@@ -97,15 +101,24 @@ saveForm('frmGenralMaintenance','costinfo.balgenmain?q=2&repType=Actual&refDocTy
 	//	fillWithCurrentDate("dteGmntOccureddate");
 	//fillWithCurrentDate("spnoccuredTime");
 	var keyId=getFieldValue('cmbGmntKeyid');
-	var vurl = url.substring(0,url.indexOf('?'));
+	
+	//var vurl = url.substring(0,url.indexOf('?'));
+	var qIdx = url.indexOf('?');
+	var vurl = (qIdx === -1) ? url : url.substring(0, qIdx);
+	
+	//alert("vurl "+vurl);
+	//alert("keyId"+keyId);
+	//generalMaintcreat_input.balgenmain
 		if(vurl == "generalMaintcreat_input.balgenmain"&&keyId==""||keyId==null){
 			
 		//jQuery('#cmbGmntKeyid').combobox('disable');
 		fillWithCurrentDate('dteGmntShiftdate');
 		//fillWithCurrentDate('dteGmntOccureddate');//filling Current Date
-		//fillWithCurrentDate('spnoccuredTime');//filling Current Time
+		fillWithCurrentDate('spnoccuredTime');//filling Current Time
 		fillWithCurrentDate('dteGmntTargetdate');
 		fillWithCurrentDate('dteGmntBookeddate');
+		
+		
 		//fillWithCurrentDate('dteGmntWostartdate');
 		//fillWithCurrentDate('dteGmntWoenddate');
 		// Occured Date + Time ku konjam delay kudukanum,
@@ -116,6 +129,7 @@ saveForm('frmGenralMaintenance','costinfo.balgenmain?q=2&repType=Actual&refDocTy
 
 	        var fctid = getFieldValue('cmbGmntFactoryid');
 	        var time  = jQuery("#spnoccuredTime").spinner('getValue');
+	        //alert("time"+time);
 	        txt_shift(fctid,"","",time);
 	    }, 500);
 	}
@@ -129,6 +143,8 @@ saveForm('frmGenralMaintenance','costinfo.balgenmain?q=2&repType=Actual&refDocTy
 			jQuery('#dteGmntBookeddate').val(jQuery('#hdndteGmntBookeddate').val());
 			jQuery('#dteGmntWostartdate').val(jQuery('#hdndteGmntWostartdate').val());
 			jQuery('#dteGmntWoenddate').val(jQuery('#hdndteGmntWoenddate').val());
+			
+			
 			}
 		var sts=jQuery('#hdnStatus').val();
 		//alert(sts+"       stst");
@@ -140,6 +156,8 @@ saveForm('frmGenralMaintenance','costinfo.balgenmain?q=2&repType=Actual&refDocTy
 		//jQuery("#chkbdSubmittoSap").prop('disabled',false);
 		jQuery("#chkbdSubmittoSap").prop('disabled',true);			
 		}
+		
+		checkSave();
 		
 	//jQuery('#dteGmntShiftdate').datebox('disable');
 	//jQuery("#dteGmntOccureddate").datebox('disable');
@@ -325,7 +343,7 @@ saveForm('frmGenralMaintenance','costinfo.balgenmain?q=2&repType=Actual&refDocTy
         txt_shift(fctid,"","",time);
         }, 1000);
 
-		jQuery("#chkGenOtherAssm").click(function(){
+		/* jQuery("#chkGenOtherAssm").click(function(){
 			if(jQuery("#chkGenOtherAssm").is("checked")){
 				reloadCombo("frmGenralMaintenance","cmbGmntStationid","assembly.commonFilter" );			
 			}
@@ -333,7 +351,7 @@ saveForm('frmGenralMaintenance','costinfo.balgenmain?q=2&repType=Actual&refDocTy
 				var machId = jQuery("#frmGenralMaintenance input[id='machine']").val();
 				reloadCombo("frmGenralMaintenance","cmbGmntStationid","assembly.commonFilter?machineId="+ machId );
 			}
-		});
+		}); */
 		//mano start
 		
 		
@@ -355,60 +373,35 @@ if(ldModeCheck == 'view' || ldModeCheck == 'VIEW'){
 
 		function lodFuncLoc(datStr){
 			var compId = getFieldValue('company','frmGenralMaintenance');
-	
 			var locnId = getFieldValue('location','frmGenralMaintenance');
-	
 			var factId = getFieldValue('factory','frmGenralMaintenance');
-	
 			var sectId = getFieldValue('section','frmGenralMaintenance');
-	
 			var cellId = getFieldValue('cell','frmGenralMaintenance');
-	
 			var machId = getFieldValue('machine','frmGenralMaintenance');	
-	
-			var relTo = '';
-	
-			var dataStr = "&factId="+factId+"&sectionId="+sectId+"&cellId="+cellId +"&machId="+machId;
-	
-	//alert(dataStr);
-			var url = jQuery('#hiddenUrl').val();
-	
-			var vurl = url.substring(0,url.indexOf('?'));
-	
-	
-	if(datStr !=' ' && datStr !='' && datStr != null){
-		if(vurl  == "generalMaint_modify.balgenmain"){
-			relTo = "?relTo=MCH";
-			reloadCombo("frmGenralMaintenance","cmbGmntStationid","assembly.commonFilter?mchId="+machId);
-			reloadCombo("frmGenralMaintenance","cmbGmntOrederType","sapOrderType.sapinfo?docType=GEN");
-		}
-		else
-			relTo = "?relTo="+datStr;
 
-		
-		if(datStr.substring(0,5) == "onsel"){
-			dataStr = removeValueFromUrl(dataStr,"machId"); 
-		 	dataStr += "&machId="+datStr.substring(5,datStr.length);
-		}	
-		 //alert(url.substring(url.indexOf('&vurl')+6,url.indexOf('&closeOnSave')));
-		/*	var relatedTO = getFieldValue("cmbGmntRelatedto","frmGenralMaintenance");
-		if("MLD" == relatedTO){
-			//alert('sds');
-				fillComboBox("frmGenralMaintenance","cmbGmntStationid","assembly.commonFilter?relatedto=MLD");
+			var relTo = '';
+			var dataStr = "&factId="+factId+"&sectionId="+sectId+"&cellId="+cellId +"&machId="+machId;
+
+			var url = jQuery('#hiddenUrl').val();
+			var vurl = url.substring(0,url.indexOf('?'));
+
+			if(datStr !=' ' && datStr !='' && datStr != null){
+				if(vurl == "generalMaint_modify.balgenmain"){
+					relTo = "?relTo=MCH";
+					// assembly list for modify mode is handled by gmntSetupAssembly()
+					reloadCombo("frmGenralMaintenance","cmbGmntOrederType","sapOrderType.sapinfo?docType=GEN");
+				}
+				else
+					relTo = "?relTo="+datStr;
+
+				if(datStr.substring(0,5) == "onsel"){
+					dataStr = removeValueFromUrl(dataStr,"machId"); 
+				 	dataStr += "&machId="+datStr.substring(5,datStr.length);
+				}	
+			}
+
+			loadFunctionalLocation("gmntfunLocation","functionalLoc.balgenmain"+relTo,"gmntfunLocationValues","frmGenralMaintenance",dataStr);
 		}
-		else*/
-			
-		// alert(datStr.substring(5,datStr.length));
-	}
-	
-	
-	
-		//alert(relTo+"----------"+datStr+"----------"+dataStr);	
-		//var flid = jQuery("#frmGenralMaintenance input[id='flid']").val();
-		//dataStr += "&flid="+flid;
-		loadFunctionalLocation("gmntfunLocation","functionalLoc.balgenmain"+relTo,"gmntfunLocationValues","frmGenralMaintenance",dataStr);
-	
-	}
 		//var status =jQuery('#cmbGmntStatus').combobox('getValue');
 		var status = jQuery('#cmbGmntStatus').val();
 			if(status=="P"||status==null){		
@@ -537,7 +530,7 @@ if(ldModeCheck == 'view' || ldModeCheck == 'VIEW'){
         }
     } */
     
-    function occuredTimeEvt()
+   /*  function occuredTimeEvt()
     {   
         if(!validateOccurredDateTime())
             return;
@@ -578,7 +571,16 @@ if(ldModeCheck == 'view' || ldModeCheck == 'VIEW'){
             displayText('txtGmntWorkhours', 0);
             displayText('txtGmntDowntime', 0);
         }
-    }
+    } */
+    //mano 199
+    function occuredTimeEvt()
+{
+    if(!validateOccurredDateTime()) return;
+    var fctid = jQuery("#frmGenralMaintenance input[id='factory']").val();
+    var time  = jQuery("#spnoccuredTime").spinner('getValue');
+    txt_shift(fctid,"","",time);
+    gmntCalcTimes();
+}
 	
 	/*function woStartEvt()
 	{
@@ -595,7 +597,7 @@ if(ldModeCheck == 'view' || ldModeCheck == 'VIEW'){
 		var time  = jQuery("#spnWorkstartTime").spinner('getValue');
 		//txt_shift(fctid,"","",time);
 	}*/
-	function woStartEvt()
+	/* function woStartEvt()
 	{
 	    if(!validateNotFutureDateTime('dteGmntWostartdate','spnWorkstartTime'))
 	        return;
@@ -617,7 +619,9 @@ if(ldModeCheck == 'view' || ldModeCheck == 'VIEW'){
 
 	    var fctid = getFieldValue('cmbGmntFactoryid');
 	    var time  = jQuery("#spnWorkstartTime").spinner('getValue');
-	}
+	} */
+	//mano199
+	function woStartEvt(){ dteGmntWostartdate_onSelect(); }
 	/*function woStartEvt()
 	{
 	    dteGmntWostartdate_onSelect(new Date());
@@ -663,7 +667,7 @@ if(ldModeCheck == 'view' || ldModeCheck == 'VIEW'){
 		}
 		enableUIButton('btnsubLoss');
  }*/
- function woEndEvt()
+ /* function woEndEvt()
  {
      if(!validateNotFutureDateTime('dteGmntWoenddate','spnWorkendTime'))
          return;
@@ -692,7 +696,9 @@ if(ldModeCheck == 'view' || ldModeCheck == 'VIEW'){
          displayText('txtGmntDowntime', 0);
      }
      enableUIButton('btnsubLoss');
- }
+ } */
+ //mano199
+ function woEndEvt(){ dteGmntWoenddate_onSelect(); }
  /*function woEndEvt()
  {    
      dteGmntWoenddate_onSelect(new Date());
@@ -729,6 +735,123 @@ if(ldModeCheck == 'view' || ldModeCheck == 'VIEW'){
      }
      enableUIButton('btnsubLoss');
  }*/
+ 
+ /* ===== Assembly filter (same behaviour as PM Standards) ===== */
+
+ function gmntGetMachineId()
+ {
+     var m = '';
+     var cmb = jQuery('#cmbGmntMachineid');
+     if (cmb.length && cmb.data('combobox')) {
+         m = cmb.combobox('getValue');
+     }
+     if (!m || jQuery.trim(m) === '') {
+         m = jQuery("#frmGenralMaintenance input[id='machine']").val();
+     }
+     return m ? jQuery.trim(m) : '';
+ }
+
+ /* Reload Assembly/Station respecting the "Others" checkbox:
+    Others unticked -> assemblies of the selected machine
+    Others ticked   -> assemblies NOT belonging to the selected machine */
+ function gmntReloadAssembly(machId, clearFirst)
+ {
+     machId = machId ? jQuery.trim(machId) : '';
+
+     if (clearFirst) {
+         jQuery('#cmbGmntStationid').combobox('clear');
+     }
+
+     var url;
+     if (jQuery('#chkGenOtherAssm').is(':checked')) {
+         url = 'assembly.commonFilter' + (machId ? '?machineNotToShown=' + encodeURIComponent(machId) : '');
+     } else {
+         url = machId ? 'assembly.commonFilter?machineId=' + encodeURIComponent(machId)
+                      : 'assembly.commonFilter?relatedto=MCH';
+     }
+     reloadCombo("frmGenralMaintenance", "cmbGmntStationid", url);
+ }
+
+ function gmntFetchAssemblies(url, callback)
+ {
+     jQuery.ajax({
+         type: 'GET',
+         url: url,
+         dataType: 'text',                       // empty response should not raise an error
+         success: function (txt) {
+             var data = [];
+             txt = jQuery.trim(txt || '');
+             if (txt) {
+                 try { data = JSON.parse(txt); }
+                 catch (e) { console.warn("[GM Assembly] JSON parse failed:", txt.substring(0, 100)); }
+             }
+             callback(data);
+         },
+         error: function (x, s, e) {
+             console.error("[GM Assembly] call failed:", url, s, e, x.status);
+         }
+     });
+ }
+
+ /* Modify/View mode: if the saved assembly is not in this machine's list,
+    it was saved with "Others" ticked -> tick Others and load that list. */
+ function gmntInitSavedAssembly(savedId, machId)
+ {
+     var stn = jQuery('#cmbGmntStationid');
+     if (!savedId || !machId || !stn.length || !stn.data('combobox')) return;
+     if (jQuery('#chkGenOtherAssm').is(':checked')) return;
+
+     var vf  = stn.combobox('options').valueField || 'id';
+     var enc = encodeURIComponent(machId);
+
+     function hasId(data) {
+         for (var i = 0; i < data.length; i++) {
+             if (String(data[i][vf]) === savedId) return true;
+         }
+         return false;
+     }
+
+     gmntFetchAssemblies('assembly.commonFilter?machineId=' + enc, function (machData) {
+         if (hasId(machData)) {
+             stn.combobox('loadData', machData);
+             stn.combobox('setValue', savedId);
+         } else {
+             gmntFetchAssemblies('assembly.commonFilter?machineNotToShown=' + enc, function (otherData) {
+                 if (hasId(otherData)) {
+                     jQuery('#chkGenOtherAssm').prop('checked', true);   // programmatic - click handler does not fire
+                     stn.combobox('loadData', otherData);
+                     stn.combobox('setValue', savedId);
+                 }
+             });
+         }
+     });
+ }
+
+ /* One-time setup, called from document.ready */
+ function gmntSetupAssembly(machId)
+ {
+     machId = machId ? jQuery.trim(machId) : '';
+
+     var stn = jQuery('#cmbGmntStationid');
+     var savedId = '';
+     try { savedId = jQuery.trim(stn.combobox('getValue') || ''); } catch (e) {}
+     if (savedId === '') savedId = jQuery.trim(stn.val() || '');
+
+     if (machId !== '') {
+         fillComboBox("frmGenralMaintenance", "cmbGmntStationid",
+                      "assembly.commonFilter?machineId=" + encodeURIComponent(machId));
+     } else {
+         fillComboBox("frmGenralMaintenance", "cmbGmntStationid", "assembly.commonFilter?relatedto=MCH");
+     }
+
+     jQuery('#chkGenOtherAssm').off('click').on('click', function () {
+         gmntReloadAssembly(gmntGetMachineId(), true);
+     });
+
+     if (savedId !== '' && machId !== '') {
+         setTimeout(function () { gmntInitSavedAssembly(savedId, machId); }, 1000);
+     }
+ }
  
  function dteGmntWoenddate_onSelect(date)
  {
@@ -804,7 +927,7 @@ if(ldModeCheck == 'view' || ldModeCheck == 'VIEW'){
 		var time  = jQuery("#spnWorkstartTime").spinner('getValue');
 	//	txt_shift(fctid,"","",time);
 	}*/
-	function dteGmntWostartdate_onSelect(date)
+	/* function dteGmntWostartdate_onSelect(date)
 	{
 	    if(!validateNotFutureDateTime('dteGmntWostartdate','spnWorkstartTime', date))
 	        return;
@@ -823,8 +946,8 @@ if(ldModeCheck == 'view' || ldModeCheck == 'VIEW'){
 	    var fctid = getFieldValue('cmbGmntFactoryid');
 	    var time  = jQuery("#spnWorkstartTime").spinner('getValue');
 	}
-	
-	function dteGmntWostartdate_onChange(date)
+	 */
+	/* function dteGmntWostartdate_onChange(date)
   	{
 		//fillWithCurrentDate('spnWorkstartTime');
 		//compareDates('dteGmntWostartdate','spnWorkstartTime','dteGmntOccureddate','spnoccuredTime','Start Date should not be lesser than Allotted Date/time');
@@ -837,13 +960,26 @@ if(ldModeCheck == 'view' || ldModeCheck == 'VIEW'){
 			displayText('txtGmntResponsetime',respTime.minutes);
 		}
 		/*to get shift based on Time**/
-		var fctid = getFieldValue('cmbGmntFactoryid');
+		/*var fctid = getFieldValue('cmbGmntFactoryid');
 		var time  = jQuery("#spnWorkstartTime").spinner('getValue');
 	//	txt_shift(fctid,"","",time);
-	}
+	} */
+	//mano199
+	function dteGmntWostartdate_onSelect(date)
+{
+    if(!validateNotFutureDateTime('dteGmntWostartdate','spnWorkstartTime', date)) return;
+    compareDates('dteGmntOccureddate','spnoccuredTime','dteGmntWostartdate','spnWorkstartTime','Work start should be equal Greater than  occurred date');
+    gmntCalcTimes();
+}
+function dteGmntWostartdate_onChange(date)
+{
+    compareDates('dteGmntOccureddate','spnoccuredTime','dteGmntWostartdate','spnWorkstartTime','Work start should be equal Greater than  occurred date');
+    gmntCalcTimes();
+}
+
 	//mano start
 	
-	function dteGmntWoenddate_onChange(date)
+	/* function dteGmntWoenddate_onChange(date)
   	{
 		compareDates('dteGmntWostartdate','spnWorkstartTime','dteGmntWoenddate','spnWorkendTime','Work end should be equal to or greater than workstart');
 		if(jQuery("#spnWorkstartTime").spinner('getValue') != null && jQuery("#spnWorkendTime").spinner('getValue')!= null && jQuery("#spnoccuredTime").spinner('getValue') != null)
@@ -860,13 +996,19 @@ if(ldModeCheck == 'view' || ldModeCheck == 'VIEW'){
 			respTime =timeDifference(occDate,wsDate);	
 			downTime = timeDifference(occDate,weDate);
 			displayText('txtGmntDowntime',downTime.minutes);*/
-			displayText('txtGmntWorkhours', (isNaN(actualMins.minutes) ? 0 : Math.max(0, Math.round(actualMins.minutes))));										
+			/*displayText('txtGmntWorkhours', (isNaN(actualMins.minutes) ? 0 : Math.max(0, Math.round(actualMins.minutes))));										
 			respTime = timeDifference(occDate,wsDate);	
 			downTime = timeDifference(occDate,weDate);
 			displayText('txtGmntDowntime', (isNaN(downTime.minutes) ? 0 : Math.max(0, Math.round(downTime.minutes))));
 			
 		}
-    }	
+    }	 */
+    //mano199
+    function dteGmntWoenddate_onChange(date)
+{
+    compareDates('dteGmntWostartdate','spnWorkstartTime','dteGmntWoenddate','spnWorkendTime','Work end should be equal to or greater than workstart');
+    gmntCalcTimes();
+}
 	/* function dteGmntWoenddate_onSelect(date)
   	{    
 		checkFutureDate('dteGmntWoenddate');
@@ -911,7 +1053,7 @@ if(ldModeCheck == 'view' || ldModeCheck == 'VIEW'){
     }
     enableUIButton('btnsubLoss');
 }*/
-function dteGmntWoenddate_onSelect(date)
+/* function dteGmntWoenddate_onSelect(date)
 {    
     checkFutureDate('dteGmntWoenddate', date);
     compareDates('dteGmntWostartdate','spnWorkstartTime','dteGmntWoenddate','spnWorkendTime','Work end should be equal to or greater than workstart');
@@ -933,7 +1075,15 @@ function dteGmntWoenddate_onSelect(date)
     }
     enableUIButton('btnsubLoss');
 }
-
+ */
+ //mano199
+ function dteGmntWoenddate_onSelect(date)
+{
+    if(!validateNotFutureDateTime('dteGmntWoenddate','spnWorkendTime', date)) return;
+    compareDates('dteGmntWostartdate','spnWorkstartTime','dteGmntWoenddate','spnWorkendTime','Work end should be equal to or greater than workstart');
+    gmntCalcTimes();
+    enableUIButton('btnsubLoss');
+}
 	/* function compareDates(fromDateId,fromTimeId,toDateId,toTimeId,errMsg)
 	    {
 			var currentDate = new Date();
@@ -1000,58 +1150,32 @@ function dteGmntWoenddate_onSelect(date)
 		} */
 		function compareDates(fromDateId,fromTimeId,toDateId,toTimeId,errMsg)
 		{
-		   clearValidationErrorMsg(fromDateId);
-		   clearValidationErrorMsg(toDateId);
-		    var fromDate = jQuery('#'+fromDateId).datebox('getValue') + jQuery('#'+fromTimeId).spinner('getValue');
-		    var toDate = jQuery('#'+toDateId).datebox('getValue') + jQuery('#'+toTimeId).spinner('getValue');
-		    var fDt = jQuery('#'+fromDateId).datebox('getValue');
-		    var fTi = jQuery('#'+fromTimeId).spinner('getValue');
-		    var tDt = jQuery('#'+toDateId).datebox('getValue') ;
-		    var tTi = jQuery('#'+toTimeId).spinner('getValue') ;
-		    if( fDt == ""  || fTi == "" || tDt == ""  || tTi == "")
-			    return ;
+		    clearValidationErrorMsg(fromDateId);
+		    clearValidationErrorMsg(toDateId);
 
-			var currentDate = getServerDateTime();
-			if(convertStringToDate(toDate) > currentDate)
-				{
-					showValidationErrorMsg(toDateId,'Should Not Exceed Current Date/Time');
-		        	fillWithCurrentDate(toDateId);			
-					fillWithCurrentDate(toTimeId);
-					return ;
-				}
-			else if( compareDateTime(toDate,fromDate) > 0 )
+		    var fDt = jQuery('#'+fromDateId).datebox('getValue');
+		    var fTi = getPaddedSpinnerValue(fromTimeId);
+		    var tDt = jQuery('#'+toDateId).datebox('getValue');
+		    var tTi = getPaddedSpinnerValue(toTimeId);
+
+		    if(!fDt || !fTi || !tDt || !tTi) return;
+
+		    var fromDate = fDt + fTi;
+		    var toDate   = tDt + tTi;
+
+		    if(convertStringToDate(toDate) > getServerDateTime())
 		    {
-		        // mano: pop the same alert box as the General Maintenance form,
-		        // but only for Work Start / Work End - other date pairs stay
-		        // inline-only as before
-		        if(toDateId == 'dtebdmsWostarttime' || toDateId == 'dtebdmsWoendtime'){
-		            alert(errMsg);
-		        }
-		    	showValidationErrorMsg(toDateId,errMsg);
-		    	displayText(toDateId,fDt);
-		    	displayText(toTimeId,fTi);
-				return ;
+		        showValidationErrorMsg(toDateId,'Should Not Exceed Current Date/Time');
+		        fillWithCurrentDate(toDateId);
+		        fillWithCurrentDate(toTimeId);
+		        return;
 		    }
-		    else if(toDateId == 'dtebdmsWostarttime')
+		    if(compareDateTime(toDate,fromDate) > 0)
 		    {
-			    var woEndDate = jQuery('#dtebdmsWoendtime').datebox('getValue'); 
-			    var woEndTime = jQuery('#spnbdmsWoend').spinner('getValue');
-			    if(jQuery('#chbbdmsWoendflag').is(':checked') == true)
-			    {
-				    if(woEndDate != null && woEndDate != ' ' && woEndDate != '')
-					{
-			    			woEndDate = woEndDate + woEndTime;
-			    			if( compareDateTime(woEndDate,toDate) > 0 )
-					    {
-				        	showValidationErrorMsg('dtebdmsWostarttime','Work Start Date Should not be greater than Work end Date');
-						}
-				        else
-				        	clearValidationErrorMsg('dtebdmsWostarttime');
-					}
-			    }
+		        showValidationErrorMsg(toDateId,errMsg);
+		        displayText(toDateId,fDt);
+		        displayText(toTimeId,fTi);
 		    }
-			else
-		    	clearValidationErrorMsg(toDateId);
 		}
 	
 /*end of calculate time diff
@@ -1147,24 +1271,11 @@ function frmGenralMaintenancecmbGmntCompletedby_onLoadSuccess()
 	if(relatedTO == 'MLD')
 		lodFuncLoc(relatedTO); */
 //}
-function  frmGenralMaintenancecmbGmntMachineid_onSelect(record)
+
+	function  frmGenralMaintenancecmbGmntMachineid_onSelect(record)
 { 
-	/*var relatedToValue=getFieldValue('cmbGmntRelatedto');
-	if(relatedToValue == "MCH"){ */
-		reloadCombo("frmGenralMaintenance","cmbGmntStationid","assembly.commonFilter?machineId="+record.id);
-	//	reloadCombo("frmGenralMaintenance","cmbGmntMouldid","mould.commonFilter?machineId="+record.id);
-	//}
-	//fillMachineHierarchy("machineHierarchy.commonFilter",record.id,"cmbGmntLineid","cmbGmntSectionid","cmbGmntFactoryid","cmbComp");
+	gmntReloadAssembly(record.id, true);
 	lodFuncLoc("onsel"+record.id);
-	//loadFunctionalLocation("gmntfunLocation","functionalLoc.genmain","gmntfunLocationValues","frmGenralMaintenance","&machId="+record.id);
-	var fctid = getFieldValue('cmbGmntFactoryid');
-	var linid = getFieldValue('cmbGmntLineid');
-	var secid = getFieldValue('cmbGmntSectionid');
-	/*readOnlyFields('cmbGmntFactoryid');
-	readOnlyFields('cmbGmntLineid');
-	readOnlyFields('cmbGmntSectionid');*/
-//	readOnlyFields('cmbGmntMachineid');
-	//fill_shift(fctid,secid,linid,"");
 }
 function  frmGenralMaintenancecmbGmntLineid_onSelect(record)
 {
@@ -1583,7 +1694,7 @@ fillComboBox("frmGenralMaintenance","cmbGmntOrederType","sapOrderType.sapinfo?do
     readOnlyFields('cmbGmntOrederType');
     
 } */
-function frmGenralMaintenancecmbGmntOrederType_onLoadSuccess()
+/* function frmGenralMaintenancecmbGmntOrederType_onLoadSuccess()
 {
     var mode = jQuery('#ldmode').val();
     var savedValue = jQuery('#hdnorderType').val();
@@ -1593,12 +1704,70 @@ function frmGenralMaintenancecmbGmntOrederType_onLoadSuccess()
     // actual saved order type field value ah fallback ah use pannunga
     if(savedValue == null || savedValue == '' || savedValue == ' ' || savedValue == undefined){
         savedValue = jQuery("#frmGenralMaintenance input[name='cmbGmntOrederType']").attr('value');
+        alert("saved Value "+savedValue);
     }
     
     jQuery('#cmbGmntOrederType').combobox('setValue', savedValue);
     readOnlyFields('cmbGmntOrederType');
+} */
+function frmGenralMaintenancecmbGmntOrederType_onLoadSuccess()
+{
+    var mode = jQuery('#ldmode').val();
+    var savedValue = jQuery('#hdnorderType').val();
+
+    if(savedValue == null || savedValue == '' || savedValue == ' ' || savedValue == undefined){
+        // hidden field la value illa na, combo-kku already fetch aana
+        // data-oda first/only row-a fallback ah edukkurom (e.g. SMT004)
+        var comboData = jQuery('#cmbGmntOrederType').combobox('getData');
+        if(comboData != null && comboData.length > 0){
+            savedValue = comboData[0].id;
+        }
+    }
+
+    jQuery('#cmbGmntOrederType').combobox('setValue', savedValue);
+    readOnlyFields('cmbGmntOrederType');   // readonly stays as before
 }
 //mano 
+// ===== GM date/time helpers (BD JSP mathiri, no space, padded) =====
+function getPaddedSpinnerValue(spinnerId)
+{
+    var val = jQuery('#'+spinnerId).spinner('getValue');
+    if(val && val.indexOf(':') == 1){      // "8:28" -> "08:28"
+        val = '0' + val;
+    }
+    return val;
+}
+
+function gmntGetDT(dateId, spinnerId)
+{
+    var d = jQuery('#'+dateId).datebox('getValue');
+    var t = getPaddedSpinnerValue(spinnerId);
+    if(!d || !t) return null;
+    return d + t;                          // dd-MMM-yyyyHH:mm
+}
+
+function gmntMins(fromStr, toStr)
+{
+    if(!fromStr || !toStr) return null;
+    var r = timeDifference(fromStr, toStr);
+    var m = r ? parseFloat(r.minutes) : NaN;
+    return isNaN(m) ? null : Math.max(0, Math.round(m));
+}
+
+function gmntCalcTimes()
+{
+    var occ = gmntGetDT('dteGmntOccureddate','spnoccuredTime');
+    var ws  = gmntGetDT('dteGmntWostartdate','spnWorkstartTime');
+    var we  = gmntGetDT('dteGmntWoenddate','spnWorkendTime');
+
+    var resp = gmntMins(occ, ws);   // Occurred -> Work Start
+    var work = gmntMins(ws,  we);   // Work Start -> Work End
+    var down = gmntMins(occ, we);   // Occurred -> Work End
+
+    displayText('txtGmntResponsetime', resp == null ? 0 : resp);
+    displayText('txtGmntWorkhours',    work == null ? 0 : work);
+    displayText('txtGmntDowntime',     down == null ? 0 : down);
+}
 function gmntToPgTimestamp(dateStr, timeStr)
 {
     if(dateStr == null || dateStr == '' || timeStr == null || timeStr == '')
@@ -2357,10 +2526,32 @@ function validateNotFutureDateTime(dateboxId, spinnerId, selDateObj)
 
 		    return 'SetupandLoss='+convertGridToJSONArr('subLossGrid');
 		}
+		
+		function checkSave(){
+			
+			var genKeyid=jQuery('#cmbGmntKeyid').combobox('getValue');
+			var machine =jQuery('#cmbGmntMachineid').combobox('getText');
+			
+			if(genKeyid!=null||genKeyid!=undefined||genKeyid!=""){
+
+				//	alert(genKeyid+"KeyId in If");
+			jQuery("#tabGenMain").tabs({ onSelect:function(title){  
+			if(title == "SAP Information")
+				{
+				//	alert("tab function Title"); 
+				
+				LoadForm("loadSapInfo","prevloadSapInfo","sapInfo_input.balgenmain?keyId="+genKeyid+"&isSpares="+checkY+"&refDocType=GEN&machine="+machine+"&sapsts="+sapsts,"","sapInfoComplete","sapInfoErr");//?formMode="+mode+"&isSpres="+isSpres+"&flid="+flid+"&bdkeyId="+bdkeyId+"&refDocType=BDM&woId="+woId+"&functionalloc="+cell+"&costCenter="+costCenter+"&machine="+machine,"","sapInfoComplete","sapInfoErr");
+
+				}
+			}
+		});
+	}
+	
+}
 
 	function sapInfoComplete(){}
 	function sapInfoErr(){}
-	var checkY=jQuery('#hdnSpares').val();;
+	var checkY=jQuery('#hdnSpares').val();
 		var genKeyId=jQuery('#cmbGmntKeyid').combobox('getValue');
 		var sapsts=jQuery('#hdnErrppostStatus').val();
 //var machine=jQuery('#cmbGmntKeyid').text();
@@ -2431,7 +2622,7 @@ else
 		var sapsts=jQuery('#hdnErrppostStatus').val();
 		var status=jQuery('#hdngmntStatus').val();
 		if(sapsts=="C" && status=="C"){
-			jQuery("#chkbdSubmittoSap").attr('checked', true);
+			jQuery("#chkbdSubmittoSap").prop('checked', true);
 			//jQuery('#chkbdSubmittoSap').attr('checked',true);
 			disableForm('frmGenralMaintenance');
 			jQuery('#cmbGmntTrade').combobox('disable');

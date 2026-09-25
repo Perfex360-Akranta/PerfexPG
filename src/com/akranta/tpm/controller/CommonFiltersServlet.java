@@ -1704,7 +1704,12 @@ public class CommonFiltersServlet extends HttpServlet {
 					currentFilter = UIUtils.fillComboFilter(request);
 					commonFilter.setPhenomena(currentFilter);
 					comboList = commonFilterService.getPhenomenaComboList(commonFilter);
-				} else if (action.equals("productiongrpp.commonFilter")) { // CommonMessage.debugMsg(" :::"+comboList);
+				}
+				else if (action.equals("phenomenabajaj.commonFilter")) { // CommonMessage.debugMsg(" :::"+comboList);
+					currentFilter = UIUtils.fillComboFilter(request);
+					commonFilter.setPhenomena(currentFilter);
+					comboList = commonFilterService.getPhenomenaBajajComboList(commonFilter);
+				}else if (action.equals("productiongrpp.commonFilter")) { // CommonMessage.debugMsg(" :::"+comboList);
 					currentFilter = UIUtils.fillComboFilter(request);
 					commonFilter.setCmbprodcngroup(currentFilter);
 					comboList = commonFilterService.getProdcngroupComboList(commonFilter);
@@ -1713,6 +1718,11 @@ public class CommonFiltersServlet extends HttpServlet {
 					String phenomena = request.getParameter("Phenomena");
 					commonFilter.setCmbcause(currentFilter);
 					comboList = commonFilterService.getCauseComboList(commonFilter, phenomena);
+				}else if (action.equals("causebajaj.commonFilter")) { // CommonMessage.debugMsg(" :::"+comboList);
+					currentFilter = UIUtils.fillComboFilter(request);
+					String phenomena = request.getParameter("Phenomena");
+					commonFilter.setCmbcause(currentFilter);
+					comboList = commonFilterService.getCauseBajajComboList(commonFilter, phenomena);
 				} else if (action.equals("shiftincharge.commonFilter")) { // CommonMessage.debugMsg(" :::"+comboList);
 					currentFilter = UIUtils.fillComboFilter(request);
 					commonFilter.setCmbshiftIncharge(currentFilter);

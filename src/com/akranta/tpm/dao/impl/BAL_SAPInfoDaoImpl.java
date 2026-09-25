@@ -134,7 +134,7 @@ public class BAL_SAPInfoDaoImpl implements BAL_SAPInfoDao{
 		// TODO Auto-generated method stub
 		StringBuffer sql = new StringBuffer();
 		String sql1 ="";//select '1','Area 1' from dual union all  select '1','Area 1' from dual;
-		sql.append(" select ' ','' from dual ");
+		sql.append(" select ' ',''  ");
 		
 	    
 		sql1 = sql.toString();
@@ -147,7 +147,7 @@ public class BAL_SAPInfoDaoImpl implements BAL_SAPInfoDao{
 		// TODO Auto-generated method stub
 		StringBuffer sql = new StringBuffer();
 		String sql1 ="";//select '1','Area 1' from dual union all  select '1','Area 1' from dual;
-		sql.append(" select ' ','',' ',' ' from dual ");
+		sql.append(" select ' ','',' ',' '  ");
 		
 	    
 		sql1 = sql.toString();
@@ -162,16 +162,16 @@ public class BAL_SAPInfoDaoImpl implements BAL_SAPInfoDao{
 		String sql1 ="";
 		if("sap".equals(type)){
 	 sql.append("select ' ', ' '  ,'1','Plant 1','MC 1','Material Description 1','Storage1','5','50','250','Bin 1'" +
-	 		" from dual union all" +
+	 		"  union all" +
 	 		" select ' ', ' '  ,'1','Plant 2','MC 2','Material Description 2','Storage2','10','100','1000','Bin 2'" +
-	 		" from dual union all"+
+	 		"  union all"+
 	 		" select ' ', ' '  ,'1','Plant 3','MC 3','Material Description 3','Storage3','4','80','320','Bin 3'" +
-	 		" from dual union all"+
+	 		"  union all"+
 	 		
 	 		" select ' ', ' '  ,'1','Plant 4','MC 4','Material Description 4','Storage4','8','60','480','Bin 4'" +
-	 		" from dual union all"+
+	 		"  union all"+
 	 		" select ' ', ' '  ,'1','Plant 5','MC 5','Material Description 5','Storage5','2','40','80','Bin 5'" +
-	 		" from dual ");
+	 		"  ");
 	// sql.append("");
 		}
 	sql1 = sql.toString();

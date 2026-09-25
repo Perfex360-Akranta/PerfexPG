@@ -1,4 +1,4 @@
- <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
+<%--  <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %> --%>
 
  
 <script type="text/javascript">
@@ -25,7 +25,7 @@ jQuery(document).ready(function(){
 	fillComboBox("frmclitCal","cmbClitShift","shift.commonFilter" );
 	//fillComboBox("frmclitCal","cmbAbnmTagclassid","Combo_TagClass.abnForm?frmType=JH");
 
-	loadFunctionalLocation("clisfunLocation","functionalLoc.jhclit","clisfunLocationValues","frmclitCal","&machId="+clismchId);
+	loadFunctionalLocation("clisfunLocation","functionalLoc.baljhclit","clisfunLocationValues","frmclitCal","&machId="+clismchId);
 	
 	var machineHirerachyId = null;
 	/*for opening from Breakdownmst*/
@@ -35,7 +35,7 @@ jQuery(document).ready(function(){
 	{
 		jQuery('#hien').val(clismchId);
 		//viewbtncall(clismchId);
-		loadFunctionalLocation("clisfunLocation","functionalLoc.jhclit","clisfunLocationValues","frmJhClitStd","&machId="+clismchId);
+		loadFunctionalLocation("clisfunLocation","functionalLoc.baljhclit","clisfunLocationValues","frmJhClitStd","&machId="+clismchId);
 		readOnlyFields('cmbClisMachineid');
 		var frmName = jQuery('#hdnFrmName').val();
 		navigateToNextForm("jhClit_mcharea.jhclit?q=2&loadContentDivId=jhclitgrid2&preLoadContentDivId=preloadDIVid2&mchId="+clismchId,frmName);
@@ -54,7 +54,7 @@ jQuery(document).ready(function(){
 		
 		var dataStr = "&factId="+factId+"&sectionId="+sectionId+"&cellId="+cellId +"&machId="+machId+"&flid="+flid;
 		//alert("flid "+dataStr);
-		loadFunctionalLocation("clisfunLocation","functionalLoc.jhclit","clisfunLocationValues","frmJhClitStd",dataStr);
+		loadFunctionalLocation("clisfunLocation","functionalLoc.baljhclit","clisfunLocationValues","frmJhClitStd",dataStr);
 		
 	/*---------*/
 	}
@@ -160,7 +160,7 @@ function jhCalLoadComplete(){
 function frmclitCal_FuntLocHierarchy_SuccessCallBack(keyIds)
 {	
 	var dataString="";
-	var factId=keyIds.factId;
+	var factId=keyIds.sbuId;
 	var sectId = keyIds.sectId;	
 	var cellId=keyIds.cellId;
 	var flid=keyIds.flId;
@@ -170,7 +170,7 @@ function frmclitCal_FuntLocHierarchy_SuccessCallBack(keyIds)
 		setFieldValue('cmbClitCellid',keyIds.cellId);			
 	reloadCombo("frmclitCal","cmbClitShift","shift.commonFilter?frmRfilter=yes&factId="+factId);
 	reloadCombo("frmclitCal","cmbClitEquipment","machineCombo.commonFilter?cellId="+cellId);//+"&flid="+flId);
-	aler(factId +"factId ");
+	//alert(factId +"factId ");
 	
 	
 	var serverTime = srvTime();
@@ -193,13 +193,13 @@ function frmclitCalcmbClitCellid_onSelect(record) 	{
 
 	jQuery("#cmbClitEquipment").combobox('clear');
 
-  var cellId=jQuery("#cmbClitCellid").combobox('getValue');
+  var cellId=record.id;//jQuery("#cmbClitCellid").combobox('getValue');
 	reloadCombo("frmclitCal","cmbClitEquipment","machineCombo.commonFilter?cellId="+cellId);//+"&flid="+flId);
 }
 function frmclitCalcmbClitEquipment_onSelect(record) 	{
-	var clismchId=jQuery("#cmbClitEquipment").combobox('getValue');
+	var clismchId=record.id;//jQuery("#cmbClitEquipment").combobox('getValue');
 	
-loadFunctionalLocation("clisfunLocation","functionalLoc.jhclit","clisfunLocationValues","frmclitCal","&machId="+clismchId);
+loadFunctionalLocation("clisfunLocation","functionalLoc.baljhclit","clisfunLocationValues","frmclitCal","&machId="+clismchId);
 //reloadCombo("frmclitCal","cmbClitShift","shift.commonFilter?factId="+factId);
 
 var serverTime = srvTime();
@@ -229,7 +229,8 @@ processAjaxCalls('cmb_shift.clitcal',dataString,'getShift','getShiftErr');
 
 function  getShift(record)
 	{  
-  	reloadCombo("frmclitCal","cmbClitShift","combo_shift.brdn" );
+  	//reloadCombo("frmclitCal","cmbClitShift","combo_shift.brdn" );
+  	
 	//jQuery('#cmbClitShift').combobox('setValue',record.shift); 
 	//readOnlyFields("cmbClitShift");
 	//	if( record.shift == undefined || record.shift == "" )  
@@ -244,7 +245,8 @@ jQuery("#btnExcel").click(function(){
 jQuery("#view_Data").click(function(){
 
 
-	var fact = jQuery("#frmclitCal input[id='factory']").val();
+	//var fact = jQuery("#frmclitCal input[id='factory']").val();
+	var sbuId = jQuery("#frmclitCal input[id='sbu']").val();
 	var sect = jQuery("#frmclitCal input[id='section']").val();
 	var cellId = jQuery("#frmclitCal input[id='cell']").val();
 	var machId = jQuery("#frmclitCal input[id='machine']").val();
@@ -252,7 +254,7 @@ jQuery("#view_Data").click(function(){
 	
 //	alert(machId+" machId "+fact +" fact " +sect +" cell "+cellId);
 
-	var factId = jQuery("#frmclitCal input[id='factory']").val();
+	//var factId = jQuery("#frmclitCal input[id='factory']").val();
 	var sectionId = jQuery("#frmclitCal input[id='section']").val();
 	//var cellId = jQuery("#frmclitCal input[id='cell']").val();
 	var machId = jQuery("#frmclitCal input[id='machine']").val();
@@ -280,7 +282,7 @@ jQuery("#view_Data").click(function(){
 		}
 	else
 
-		processGridnew('clitCalendar_input.clitcal','?q=2&factId='+factId+'&sectionId='+sectionId+'&cellId='+cellId +'&machId='+machId+'&flid='+flid+'&currentDate='+currentDate+'&shiftId='+shift+'',"listGrid","pager_calender","","","","jhCalLoadComplete");//,"","","","jhCalLoadComplete");
+		processGridnew('clitCalendar_input.clitcal','?q=2&factId='+sbuId+'&sectionId='+sectionId+'&cellId='+cellId +'&machId='+machId+'&flid='+flid+'&currentDate='+currentDate+'&shiftId='+shift+'',"listGrid","pager_calender","","","","jhCalLoadComplete");//,"","","","jhCalLoadComplete");
 	
 });
 
@@ -338,8 +340,10 @@ jQuery("#btnSave").click(function(){
       //alert("INSIDE THE LOOP");
 		selrowid=selArray[i];
        //jsonArr+='[';
-	   var refId =jQuery("#listGrid").jqGrid('getCell', selrowid,"REFID");
-	  var Keyid=refId.slice(0,-2);
+	   //var refId =jQuery("#listGrid").jqGrid('getCell', selrowid,"REFID");//MADHAN
+	   var refId =jQuery("#listGrid").jqGrid('getCell', selrowid,"KEYID");
+	  //var Keyid=refId.slice(0,-2);
+	  var Keyid=refId;
 	//  alert(Keyid +" Keyid");
 	   var Criteriasplit= Keyid.split(',');
 	 	for(var k=0;k<Criteriasplit.length;k++){
@@ -420,6 +424,10 @@ jQuery('#btnSendMail').click(function(){
 	//alert(shiftId);
 	var selArray ;
 	selArray= jQuery("#listGrid").jqGrid('getGridParam', 'selarrrow');
+	if(selArray.length > 1){
+		alert("Select One Record Only ");
+	    return;
+	}
 	var selrowid="";
 	 var jsonArr='';
   if(selArray !=null && selArray!=" " && selArray!=""){
@@ -429,8 +437,8 @@ jQuery('#btnSendMail').click(function(){
       //alert("INSIDE THE LOOP");
 		selrowid=selArray[i];
        //jsonArr+='[';
-	   var refId =jQuery("#listGrid").jqGrid('getCell', selrowid,"REFID");
-	  var Keyid=refId.slice(0,-2);
+	   var refId =jQuery("#listGrid").jqGrid('getCell', selrowid,"KEYID");//REFID
+	  var Keyid= refId; //refId.slice(0,-2);
 	//  alert(Keyid +" Keyid");
 	   var Criteriasplit= Keyid.split(',');
 	 	for(var k=0;k<Criteriasplit.length;k++){
@@ -516,7 +524,7 @@ function dataSaved(result)
 			 			
 			 alert("First Select Actitity.");
 			    readOnlyFields('txtObservation');
-				jQuery('input:checkbox[name=chkNotOk]').attr('checked',false);
+				jQuery('input:checkbox[name=chkNotOk]').prop('checked',false);
 				jQuery('#btnSendMail').hide();
 				jQuery('#abnmTagclassid').hide();
 		 }
@@ -630,7 +638,7 @@ function dataSaved(result)
                     	<input type="button" id="btnSave" class="easyui-button" value="Save" />  </td>
                        <td> 
                        <div style="display:none" id="abnmTagclassid" >
-                        <select   id="cmbAbnmTagclassid" name="cmbAbnmTagclassid" class="easyui-combobox"  style="width:60px;font-size: 12px;height:30px;"   >   
+                        <select   id="cmbAbnmTagclassid" name="cmbAbnmTagclassid" class="easyui-combobox"  style="width:60px;font-size: 12px;/* height:30px; */"   >   
                         	<option value=""> </option>
                         	<option title="RED" value="RED">RED</option>
                         	<option title="RED" value="WHITE">WHITE</option>

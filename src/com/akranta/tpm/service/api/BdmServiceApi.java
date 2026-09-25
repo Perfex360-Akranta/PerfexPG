@@ -96,6 +96,16 @@ public class BdmServiceApi {
         } else {
             str.append("null");
         }
+        // added by priyanka on 18/09/2026
+        // ── multiple Responsibility (single detail record per BDM) ───────────────────────────
+           str.append(",\"bdmMultiResp\":");
+           if (bdmTlMst.getbdmTlMultipleResp() != null && !bdmTlMst.getbdmTlMultipleResp().isEmpty()) {
+               str.append(BAL_BdmTlMultipleResp.toJsonManualList(bdmTlMst.getbdmTlMultipleResp()));
+           } else {
+               str.append("null");
+           }
+           
+           // end 
 
         str.append("}");
         return str.toString();

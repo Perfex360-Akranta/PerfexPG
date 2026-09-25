@@ -1475,7 +1475,7 @@ function getSelectdRows(jqGridId,checkBoxColName,ckeckForSelColName)
 									return false;
 								}	
 							}	
-							jsonArrO += '"'+colName +'":"' + cellValue+'",';
+							jsonArrO += '"'+colName +'":"' + encodeURIComponent(cellValue)+'",';
 						//	alert("colName      "+colName+"       value    "+cellValue);
 						}		
 					}

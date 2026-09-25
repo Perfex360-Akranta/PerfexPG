@@ -549,7 +549,8 @@ public class CommonFilterServiceImpl implements CommonFilterService{
 	        assembly.setTableName(TableNames.TBL_GEN_TL_ASSEMBLYMST);
 	    }
 	    CommonMessage.debugMsg("machineId:" + machineId + " machineNotToShown:" + machineNotToShown);
-	    return commonFilterDao.fillComboValues(assembly);
+	   // return commonFilterDao.fillComboValues(assembly);
+	    return commonFilterDao.fillComboValuesWithoutCondition(assembly);
 	}
 	
 	// end
@@ -990,6 +991,7 @@ public List<ComboBox> getGrpByCellComboList(CommonFilter commonFilter)
 		
 		condSql.append("  SELECT BCSM_KEYID FROM  " );
 		condSql.append(  TableNames.TBL_BDM_TL_CAUSEMST+","+TableNames.TBL_BDM_TL_PHNCAUSELINK + " WHERE 1=1 " );
+		//condSql.append(  TableNames.TBL_BDM_TL_CAUSEMST+","+TableNames.TBL_BAL_BDM_TL_PHNCAUSELINK + " WHERE 1=1 " );
 		if( CommonFunctions.isValidKeyId(phenomenakeyId))
 		{
 			condSql1.append( " AND BPCL_ORIGINALID =  BCSM_KEYID  AND INSTR(BPCL_ELEMENTID,'"+phenomenakeyId+"') > 0");
@@ -1021,6 +1023,43 @@ public List<ComboBox> getGrpByCellComboList(CommonFilter commonFilter)
 		String sectId = commonFilter.getSection() != null ? commonFilter.getSection().getId() : null;
 		condSql.append("  SELECT BPHM_KEYID FROM  " );
 		condSql.append(  TableNames.TBL_BDM_TL_PHENOMENAMST+","+TableNames.TBL_BDM_TL_PHNCAUSELINK + " WHERE 1=1 " );
+		//condSql.append(  TableNames.TBL_BAL_BDM_TL_PHENOMENAMST+","+TableNames.TBL_BAL_BDM_TL_PHNCAUSELINK + " WHERE 1=1 " );
+		
+		if( CommonFunctions.isValidKeyId(machineId))
+		{
+			condSql1.append( " AND BPCL_ORIGINALID =  BPHM_KEYID  AND INSTR(BPCL_ELEMENTID,'"+machineId+"') > 0");
+		}		
+		CommonMessage.debugMsg("Condsql ..........."+condSql1);
+		if(condSql1.length() > 0 )
+			condSql.append(condSql1);
+		phenomena.setCondSql(" AND BPHM_KEYID IN ( " + condSql.toString() + ")");
+		
+		
+		
+		return commonFilterDao.fillComboValues(phenomena);
+	}
+	
+	@Override
+	public List<ComboBox> getPhenomenaBajajComboList(CommonFilter commonFilter)throws Exception {
+		CommonMessage.debugMsg(" common phenomena service  impl");
+		ComboFilter phenomena = commonFilter.getPhenomena();
+		phenomena.setIdField("BPHM_KEYID");
+		//phenomena.setCodeField("BPHM_SHORTNAME");
+		phenomena.setNameField("BPHM_PHENOMENANAME");
+		phenomena.setTableName(TableNames.TBL_BAL_BDM_TL_PHENOMENAMST);
+	
+		
+		StringBuffer condSql = new StringBuffer();
+		StringBuffer condSql1 = new StringBuffer();
+		String machineId = commonFilter.getMachine() != null ? commonFilter.getMachine().getId() : null;
+		String assemblyId = commonFilter.getAssembly() != null ? commonFilter.getAssembly().getId() : null;
+		CommonMessage.debugMsg("Assembly Id............."+assemblyId);
+		String cellId = commonFilter.getCell() != null ? commonFilter.getCell().getId() : null;
+		String sectId = commonFilter.getSection() != null ? commonFilter.getSection().getId() : null;
+		condSql.append("  SELECT BPHM_KEYID FROM  " );
+		//condSql.append(  TableNames.TBL_BDM_TL_PHENOMENAMST+","+TableNames.TBL_BDM_TL_PHNCAUSELINK + " WHERE 1=1 " );
+		condSql.append(  TableNames.TBL_BAL_BDM_TL_PHENOMENAMST+","+TableNames.TBL_BAL_BDM_TL_PHNCAUSELINK + " WHERE 1=1 " );
+		
 		if( CommonFunctions.isValidKeyId(machineId))
 		{
 			condSql1.append( " AND BPCL_ORIGINALID =  BPHM_KEYID  AND INSTR(BPCL_ELEMENTID,'"+machineId+"') > 0");
@@ -1035,6 +1074,34 @@ public List<ComboBox> getGrpByCellComboList(CommonFilter commonFilter)
 		return commonFilterDao.fillComboValues(phenomena);
 	}
 
+
+public List<ComboBox> getCauseBajajComboList(CommonFilter commonFilter,String phenomenakeyId)throws Exception {
+		CommonMessage.debugMsg(" common cause service  impl");
+		ComboFilter cause = commonFilter.getCmbcause();
+		cause.setIdField("BCSM_KEYID");
+		//cause.setCodeField("BCSM_CODE");
+		cause.setNameField("BCSM_NAME");
+		cause.setTableName(TableNames.TBL_BDM_TL_CAUSEMST);
+	
+		StringBuffer condSql = new StringBuffer();
+		StringBuffer condSql1 = new StringBuffer();
+		String phenomena = commonFilter.getPhenomena() != null ? commonFilter.getPhenomena().getId() : null;
+		
+		condSql.append("  SELECT BCSM_KEYID FROM  " );
+		//condSql.append(  TableNames.TBL_BDM_TL_CAUSEMST+","+TableNames.TBL_BDM_TL_PHNCAUSELINK + " WHERE 1=1 " );
+		condSql.append(  TableNames.TBL_BDM_TL_CAUSEMST+","+TableNames.TBL_BAL_BDM_TL_PHNCAUSELINK + " WHERE 1=1 " );
+		if( CommonFunctions.isValidKeyId(phenomenakeyId))
+		{
+			condSql1.append( " AND BPCL_ORIGINALID =  BCSM_KEYID  AND INSTR(BPCL_ELEMENTID,'"+phenomenakeyId+"') > 0");
+		}		
+		CommonMessage.debugMsg("Condsql ..........."+condSql1);
+		if(condSql1.length() > 0 )
+			condSql.append(condSql1);
+		cause.setCondSql(" AND BCSM_KEYID  IN ( " + condSql.toString() + ")");
+		
+		
+		return commonFilterDao.fillComboValues(cause);
+	}
 	@Override
 	public List<ComboBox> getShiftInchargeComboList(CommonFilter commonFilter)throws Exception {
 		CommonMessage.debugMsg(" common shiftinchsrge service  impl");

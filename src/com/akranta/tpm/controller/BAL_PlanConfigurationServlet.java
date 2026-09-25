@@ -248,8 +248,7 @@ public class BAL_PlanConfigurationServlet extends HttpServlet {
 				List<String[]> planEntryList = plmTlPlanconfigurationService.getPlanEntry(machineId, entryDate,
 						productId, commonFilter);
 				CommonFunctions.debugMsg(planEntryList.size());
-				jsonObject = UIUtils.convertToJqGridTableObject(planEntryList, request, 0, 1,
-						commonFilter.getTotalRecordCnt());
+				jsonObject = UIUtils.convertToJqGridTableObject(planEntryList, request, 0, 1,commonFilter.getTotalRecordCnt());
 				out.println(jsonObject);
 			} else if (action.equals("prodplanentry_save.plnconfig")) {
 				saveProductionPlan(request, response);

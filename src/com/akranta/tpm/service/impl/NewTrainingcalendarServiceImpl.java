@@ -689,7 +689,7 @@ public String chkSessionDate(CommonFilter commonFilter) throws Exception {
 }
 
 public List<EntTlTtgCalEmpatScore> createEmployeeAttendance(List<EntTlTtgCalEmpatScore> entEmployeeScore,CommonFilter commonfilter) throws Exception{
-	//  return newTrgCalDao.createEmployeeAttendance(fillValuesEmployeeAttendance(entEmployeeScore),commonfilter);
+	  //return newTrgCalDao.createEmployeeAttendance(fillValuesEmployeeAttendance(entEmployeeScore),commonfilter);
 	  return newTrgServApi.createEmployeeAttendance(fillValuesEmployeeAttendance(entEmployeeScore),commonfilter);
 }
 

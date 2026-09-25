@@ -25,7 +25,9 @@
 	 console.log("hdnMultiresp now:", jQuery("#hdnMultiresp").val());
 	 closePopUpDialoge('loadMultiple');
 });
-function sucess_callBack(ids)
+ 
+ // commented and added by priyanka on 18/09/2026
+/* function sucess_callBack(ids)
 {
 	var ids =  jQuery("#employeeGrid").getDataIDs();
 	  for (var i = 0; i<ids.length; i++) 
@@ -34,7 +36,23 @@ function sucess_callBack(ids)
 		  if(calStatus == 'Y' )
 			  jQuery("#jqg_employeeGrid_"+(i+1)).attr('checked',true);;
 	  }
+} */
+
+function sucess_callBack(ids)
+{
+    var rowIds = jQuery("#employeeGrid").jqGrid('getDataIDs');
+    for (var i = 0; i < rowIds.length; i++)
+    {
+        var rowId = rowIds[i];
+        var calStatus = jQuery("#employeeGrid").jqGrid('getCell', rowId, "BDRS_ACTIVE");
+        if (calStatus == 'Y') {
+            jQuery("#employeeGrid").jqGrid('setSelection', rowId, false); // tells jqGrid the row is selected
+            jQuery("#jqg_employeeGrid_" + rowId).prop('checked', true);   // ticks the visible checkbox
+        }
+    }
 }
+
+// end
  function convertJsonArr(gridId){
 		var allrow = jQuery("#"+gridId).jqGrid('getRowData');
 		var jsonArrO = '';

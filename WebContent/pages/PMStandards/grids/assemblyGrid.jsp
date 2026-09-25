@@ -553,7 +553,7 @@
 	        return;
 	    }
 
-	    var popupUrl = "prvnt_mntncform_multiple_input.prv?pmsdMachineID=" + encodeURIComponent(machineId)
+	    var popupUrl = "prvnt_mntncform_multiple_input.prv?pmsdMachineID=" + encodeURIComponent(rowid)
 	        + "&tradeId=" + encodeURIComponent(tradeId)
 	        + "&activitytype=" + encodeURIComponent(activitytype);
 	    console.log("[pmAssembly_dblclick] LoadPopUp URL:", popupUrl);

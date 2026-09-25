@@ -927,7 +927,7 @@ public class GridBasedTrainingCalendarServlet extends HttpServlet {
 
 			    	EntTlTragcalmst entTlTragcalmst = new EntTlTragcalmst();
 
-								if("modify".equals(mode)||("view".equals(mode))){
+								//if("modify".equals(mode)||("view".equals(mode))){
 									
 						 	    entTlTragcalmst = gridBasedTrgCalService.getselectdata(Calendarkeyid);
 						 	   //////////////////////////////////////////
@@ -963,7 +963,7 @@ public class GridBasedTrainingCalendarServlet extends HttpServlet {
 							 	request.setAttribute("empattn", Integer.parseInt(empattn));
 							 	request.setAttribute("calDate", calDate);
 							 	httpSession.setAttribute("entTlTragcalmst_Servlet", entTlTragcalmst);
-								}
+								//}
 						 	CommonMessage.debugMsg("Entering jsp ");
 								UIUtils.forwardRequest(request, response,"pages/newENT/GridBasedTrgCalEmployeeAttendance.jsp");
 			}
@@ -2082,7 +2082,7 @@ public class GridBasedTrainingCalendarServlet extends HttpServlet {
 		               returnData.put("successData", successData);
 		               returnData.put("formClear", false);
 
-		               httpSession.setAttribute("entTlTragcalmst", AbnormalityList);
+		              // httpSession.setAttribute("entTlTragcalmst", AbnormalityList);//madhan
 		               out.print(returnData.toString());
 		               //CommonMessage.debugMsg(AbnormalityList.get(0).getEtcmKeyid()+" In Servlet calendar keyid");
 		           }

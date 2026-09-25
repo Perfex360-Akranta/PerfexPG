@@ -75,7 +75,7 @@ public class BAL_JhClitCalendarDaoImpl implements BAL_JhClitCalendarDao {
 			CommonFunctions.debugMsg(commonFilter.getCellId()+"....... FLID........"+commonFilter.getMachineId());
 			List<String[]> jhShftCalReport =null;
 			if(!FilterCondSql.getComboSelectionId( commonFilter.getFrequency()).contains("S")){
-				jhShftCalReport = dbActionTemplate.processFunctionCalls("JHN_PC_CLISTANDARD.JHN_FN_GETSCHEDULEARRAY", paramValues);
+				jhShftCalReport = dbActionTemplate.processFunctionCalls("JHN_FN_GETSCHEDULEARRAY_NEW", paramValues);
 				
 			}
 			else if(FilterCondSql.getComboSelectionId( commonFilter.getFrequency()).contains("S")){
@@ -348,9 +348,10 @@ System.out.println("inside delete DaoImpl"+ flag);
 	public String save(List<String> actlst, String cellId,
 			String mchineId, String shiftId,String createdBy,String status,String observations,String tagClass ) throws Exception {
 		String date=CommonFunctions.getDate();
+		String pgDate=CommonFunctions.pg_getDate();
 		CommonFunctions.debugMsg(date +"dateTimedateTimedateTime");
 		//HARI CHANGED THE BELOW getDateTime TO GET DATE
-		String dateTime = CommonFunctions.getDate();//(date, "DD-MM-YYYY HH24:MI") ;
+		String dateTime = CommonFunctions.dateTimeNow();//(date, "DD-MM-YYYY HH24:MI") ;
 		CommonFunctions.debugMsg(dateTime +"dateTimedateTimedateTime");
 		String hour="";
 		String dateTimess="";
@@ -408,19 +409,22 @@ System.out.println("inside delete DaoImpl"+ flag);
 		for( String keyId : actlst)
 		{ 
 		   StringBuffer sql = new StringBuffer();
-			sql.append(" Update CLI_TL_CALENDAR ");
+			sql.append(" Update BAL_CLI_TL_CALENDAR ");
 			sql.append(" SET CLCA_STATUS = 'Y' ,");
-			sql.append("  CLCA_ACTUALDATE =TO_DATE('"+dateTimess+"','DD-MM-YYYY HH12:MI'),");
+			sql.append("  CLCA_ACTUALDATE =TO_DATE('"+dateTimess+"','DD-Mon-YYYY HH24:MI:SS'),");
 			sql.append("  CLCA_COMPLETEDBY ='"+createdBy+"',");
 			sql.append("  CLCA_ACTUALSHIFTID = '"+shiftId+"', ");
 			sql.append("  CLCA_REMARKS = '"+status+"', ");
 			sql.append("  CLCA_OBSERVATION = '"+observations+"', ");
 			sql.append("  CLCA_ABNORMALITYTAG = '"+tagClass+"' ");
-			sql.append(" where CLCA_CELLID = '"+cellId +"' "); 
-			sql.append(" AND CLCA_MACHINEID = '"+ mchineId +"' "); 
-			sql.append(" AND CLCA_PLANDATE =  '"+date+"' ");
-			sql.append(" AND CLCA_PLANSHIFTID = '"+shiftId+"' "); 
-			sql.append(" AND CLCA_CLIREFID = '"+keyId+"' "); 
+			
+//			sql.append(" where CLCA_CELLID = '"+cellId +"' "); 
+//			sql.append(" AND CLCA_MACHINEID = '"+ mchineId +"' "); 
+//			sql.append(" AND CLCA_PLANDATE =  '"+pgDate+"' ");
+//			sql.append(" AND CLCA_PLANSHIFTID = '"+shiftId+"' "); 
+//			sql.append(" AND CLCA_CLIREFID = '"+keyId+"' "); 
+			
+			sql.append(" where CLCA_KEYID = '"+keyId +"' "); 
 			System.out.println(sql +" sqlopdsda");
 			sqls.add(sql.toString());   
 		
@@ -583,10 +587,27 @@ System.out.println("inside delete DaoImpl"+ flag);
 			flid=getFlid(sectionId);
 			String sqls=null;
 			
-				 sqls=" SELECT DISTINCT '','',EMPM_KEYID ,EMPM_NAME, EMPM_EMAIL "+
-					  " FROM gen_tl_employeemst, ADM_tl_rolemst,  gen_mv_flidhierarchy, GEN_TL_FNLNROLETEAM,ADM_TL_USERMST,ADM_TL_USER_ROLE_LINK "+
-					  " WHERE empm_keyid(+) = FRT_EMPM_KEYID AND FRT_ROLE_KEYID  = ROLE_KEYID(+) AND EMPM_EMAIL<>'{}' "+
-					  " AND FLID = FRT_FNLN_KEYID AND USRM_CCNO=FRT_EMPM_KEYID(+) AND USRM_KEYID=ARUL_USERID AND ( INSTR (parentflids || '-' || flid, '"+flid+"' ) >0  )";				
+//				 sqls=" SELECT DISTINCT '','',EMPM_KEYID ,EMPM_NAME, EMPM_EMAIL "+
+//					  " FROM gen_tl_employeemst, ADM_tl_rolemst,  gen_mv_flidhierarchy, GEN_TL_FNLNROLETEAM,ADM_TL_USERMST,ADM_TL_USER_ROLE_LINK "+
+//					  " WHERE empm_keyid(+) = FRT_EMPM_KEYID AND FRT_ROLE_KEYID  = ROLE_KEYID(+) AND EMPM_EMAIL<>'{}' "+
+//					  " AND FLID = FRT_FNLN_KEYID AND USRM_CCNO=FRT_EMPM_KEYID(+) AND USRM_KEYID=ARUL_USERID AND ( INSTR (parentflids || '-' || flid, '"+flid+"' ) >0  )";	
+				 
+				 sqls =
+						    " SELECT DISTINCT '', '', EMPM_KEYID, EMPM_NAME, EMPM_EMAIL " +
+						    " FROM GEN_TL_FNLNROLETEAM f " +
+						    " LEFT JOIN GEN_TL_EMPLOYEEMST e " +
+						    "        ON e.EMPM_KEYID = f.FRT_EMPM_KEYID " +
+						    " LEFT JOIN ADM_TL_ROLEMST r " +
+						    "        ON f.FRT_ROLE_KEYID = r.ROLE_KEYID " +
+						    " LEFT JOIN ADM_TL_USERMST u " +
+						    "        ON u.USRM_CCNO = f.FRT_EMPM_KEYID " +
+						    " INNER JOIN ADM_TL_USER_ROLE_LINK ur " +
+						    "        ON u.USRM_KEYID = ur.ARUL_USERID " +
+						    " INNER JOIN GEN_MV_FLIDHIERARCHY h " +
+						    "        ON h.FLID = f.FRT_FNLN_KEYID " +
+						    " WHERE e.EMPM_EMAIL <> '{}' " +
+						    " AND POSITION('" + flid + "' IN " +
+						    "     (h.PARENTFLIDS || '-' || h.FLID)) > 0 ";
 			
 			List<String[]> mailList=dbActionTemplate.getDataList(sqls);			
 			System.out.println(flid +"Inside daoimpl_09_10"+ mailList.size()+ sqls); 			
@@ -672,14 +693,37 @@ System.out.println("inside delete DaoImpl"+ flag);
 				
 				String sqls=null;
 				
-					 sqls=" SELECT  CELL_NAME ||' - '|| CELL_CODE CELL ,MCHM_MACHINENAME MachineName,MCHM_MACHINENO As Machineno,CLIS_WHATACTIVITY AS ASSEMBLY,CLIS_STANDARD AS ACTIVITY, "+
-				 " TRDM_NAME,CLCA_REMARKS AS REMARKS,CLCA_OBSERVATION AS ABNORMALITY,EMPM_NAME AS DETECTEDBY ,CLCA_ABNORMALITYTAG AS ABNORMALITYTAG "+
-				 " FROM GEN_VW_FNLN, CLI_TL_CALENDAR,GEN_TL_TRADEMST, GEN_TL_EMPLOYEEMST, CLI_TL_STANDARDS  "+
-                 " WHERE CLCA_TRADEID=TRDM_KEYID(+)  "+
-                 " AND CLIS_FLID = FNLN_KEYID "+
-                 " AND EMPM_KEYID= CLCA_COMPLETEDBY(+) "+
-                 " AND CLCA_KEYID= '"+refId+"' "+
-                 " AND CLIS_KEYID=CLCA_CLIREFID ";
+//					 sqls=" SELECT  CELL_NAME ||' - '|| CELL_CODE CELL ,MCHM_MACHINENAME MachineName,MCHM_MACHINENO As Machineno,CLIS_WHATACTIVITY AS ASSEMBLY,CLIS_STANDARD AS ACTIVITY, "+
+//				 " TRDM_NAME,CLCA_REMARKS AS REMARKS,CLCA_OBSERVATION AS ABNORMALITY,EMPM_NAME AS DETECTEDBY ,CLCA_ABNORMALITYTAG AS ABNORMALITYTAG "+
+//				 " FROM GEN_VW_FNLN, CLI_TL_CALENDAR,GEN_TL_TRADEMST, GEN_TL_EMPLOYEEMST, CLI_TL_STANDARDS  "+
+//                 " WHERE CLCA_TRADEID=TRDM_KEYID(+)  "+
+//                 " AND CLIS_FLID = FNLN_KEYID "+
+//                 " AND EMPM_KEYID= CLCA_COMPLETEDBY(+) "+
+//                 " AND CLCA_KEYID= '"+refId+"' "+
+//                 " AND CLIS_KEYID=CLCA_CLIREFID ";
+					 
+					 sqls =
+							    " SELECT " +
+							    " f.CELL_NAME || ' - ' || f.CELL_CODE AS CELL, " +
+							    " f.MCHM_MACHINENAME AS MachineName, " +
+							    " f.MCHM_MACHINENO AS Machineno, " +
+							    " s.CLIS_WHATACTIVITY AS ASSEMBLY, " +
+							    " s.CLIS_STANDARD AS ACTIVITY, " +
+							    " t.TRDM_NAME, " +
+							    " c.CLCA_REMARKS AS REMARKS, " +
+							    " c.CLCA_OBSERVATION AS ABNORMALITY, " +
+							    " e.EMPM_NAME AS DETECTEDBY, " +
+							    " c.CLCA_ABNORMALITYTAG AS ABNORMALITYTAG " +
+							    " FROM BAL_CLI_TL_CALENDAR c " +
+							    " INNER JOIN BAL_CLI_TL_STANDARDS s " +
+							    "         ON s.CLIS_KEYID = c.CLCA_CLIREFID " +
+							    " LEFT JOIN GEN_VW_FNLN f " +
+							    "        ON s.CLIS_FLID = f.FNLN_KEYID " +
+							    " LEFT JOIN GEN_TL_TRADEMST t " +
+							    "        ON c.CLCA_TRADEID = t.TRDM_KEYID " +
+							    " LEFT JOIN GEN_TL_EMPLOYEEMST e " +
+							    "        ON e.EMPM_KEYID = c.CLCA_COMPLETEDBY " +
+							    " WHERE c.CLCA_KEYID = '" + refId + "' ";
 					 CommonFunctions.debugMsg(sqls +"  sqls sqls sqls   ");
 					 ResultSet dataList=dbActionTemplate.getData(sqls) ;			
 				

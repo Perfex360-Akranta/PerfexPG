@@ -47,7 +47,7 @@ jQuery(document).ready(function() {
 
 		// alert(frmMode+" frmMode "+cutofMark+" maxMark "+maxMark);
 		 // commented by vignesh
- 		 if(frmMode.trim()==="modify"){
+ 		/*  if(frmMode.trim()==="modify"){
 			 
 
 			 jQuery("#txtEtcaCutOff").val(cutofMark);
@@ -55,7 +55,15 @@ jQuery(document).ready(function() {
 			 jQuery("#cboEtcaType").val(assesType);
  			 readOnlyFields("txtEtcaCutOff");
  			 readOnlyFields("txtEtcaMaxMarks");
- 		 }
+ 		 } */
+		 
+ 		if ((cutofMark.length > 0) && (maxMark.length > 0)) {
+ 			 jQuery("#txtEtcaCutOff").val(cutofMark);
+			 jQuery("#txtEtcaMaxMarks").val(maxMark);
+			 jQuery("#cboEtcaType").val(assesType);
+ 			 readOnlyFields("txtEtcaCutOff");
+ 			 readOnlyFields("txtEtcaMaxMarks");
+         } 
 		 
 		 if(frmMode=="view"){
 			 disableForm('frmEmplAtted');
@@ -240,6 +248,45 @@ function EmpAttendanceloadComplete(){
         assCom = "N";
     }
 
+    var marksbsd     = jQuery("#hdnMarksReqd").val();
+   
+    
+    
+    if (marksbsd == "Y" ) {
+        if (!((cutOffMrk.length > 0) && (maxMark.length > 0))) {
+     	   popupCommonErrorMsg("Please enter Cut Off & Max Marks");
+           
+            return false;
+        } 
+    }
+    
+    var row       = jQuery("#grdEmplAttGrid").jqGrid('getDataIDs');
+
+    for (var i = 0; i < row.length; i++) {
+ 	   if(jQuery("#jqg_grdEmplAttGrid_" + row[i]).is(':disabled')){
+ 		   //check
+ 	   }else{
+        if (jQuery("#jqg_grdEmplAttGrid_" + row[i]).is(':checked') ) {
+     	  // alert("row["+i+"]:"+row[i]);
+     	   var score = jQuery("textarea#txtEtcaScore_grdEmplAttGrid_" + row[i]).val();
+           //alert("Score:"+score);
+           //return false;
+     	   if (marksbsd == "Y" ) {
+                if ((cutOffMrk.length > 0) && (maxMark.length > 0)) {
+             	   if (score.trim() === '' || score == null) {
+                        popupCommonErrorMsg("Enter Score");
+                        return false;
+                    }
+             	   
+                } else {
+                    popupCommonErrorMsg("Please enter Cut Off & Max Marks");
+                    return false;
+                }
+            }
+        } 
+ 	   }
+    }
+    
     // ✅ Encode the JSON so [, ], {, }, ", spaces, etc. don’t break the URL
     var paramconvertArrParam = encodeURIComponent(gridval);
 
@@ -441,6 +488,7 @@ function grdEmplAttGrid_selectRow(rowId)
 		    	  jQuery("#cmbEtcaResult_"+jqGridId+"_"+rowId).attr('readonly','readonly'); 
 				  jQuery("#cmbEtcaResult_"+jqGridId+"_"+rowId).attr('readonly',true); 
 				  jQuery("#cmbEtcaResult_"+jqGridId+"_"+rowId).css('background-color', '#ece9d8');
+				  jQuery("#txtEtcaScore_grdEmplAttGrid_"+rowId).val('');
 		    	}
 		    
 	    	
@@ -506,7 +554,7 @@ jQuery("#cmbEtcaPresentAbsent_grdEmplAttGrid_"+rowId).combobox({
 		else {
 			  makeMandatoryFieldForPending("grdEmplAttGrid",rowId);
 			  jQuery("#cmbEtcaResult_grdEmplAttGrid_"+rowId).val("P");
-			  jQuery("#txtEtcaScore_grdEmplAttGrid_"+rowId).val("0");
+			  jQuery("#txtEtcaScore_grdEmplAttGrid_"+rowId).val("");
 			  jQuery("#cmbEtcaPresentAbsent_grdEmplAttGrid_"+rowId).val("P");
 			  
 		} 	

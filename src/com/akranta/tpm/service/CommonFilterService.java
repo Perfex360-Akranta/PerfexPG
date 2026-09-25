@@ -147,4 +147,8 @@ public interface CommonFilterService {
 	public String getEmployeeLocation(String userKeyid)throws Exception;
 	
 	public List<ComboBox> getMocItemComboList(CommonFilter commonFilter)throws Exception;
+	
+	public List<ComboBox> getPhenomenaBajajComboList(CommonFilter commonFilter)throws Exception;
+	public List<ComboBox> getCauseBajajComboList(CommonFilter commonFilter,String phenomena)throws Exception;
+
 }

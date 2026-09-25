@@ -2635,10 +2635,11 @@ private void saveCbm(HttpServletRequest request,
                     for (int i = 0; i < createdList.size(); i++) {
                         BAL_PlmTlStandards saved = createdList.get(i);
                         httpSession.setAttribute(saved.getPmsdKeyid(), saved);
-
+                        httpSession.setAttribute("machineId",saved.getPmsdMachineid());
                         JSONObject savedRow = new JSONObject();
                         savedRow.put("rowid", createRowIds.get(i));
                         savedRow.put("hdnPmsdKeyid", saved.getPmsdKeyid());
+                        savedRow.put("hdnMachineId", saved.getPmsdMachineid());
                         savedRows.put((Object) savedRow);
                     }
                 }
@@ -2651,10 +2652,11 @@ private void saveCbm(HttpServletRequest request,
                     for (int i = 0; i < updatedList.size(); i++) {
                         BAL_PlmTlStandards saved = updatedList.get(i);
                         httpSession.setAttribute(saved.getPmsdKeyid(), saved);
-
+                        httpSession.setAttribute("machineId",saved.getPmsdMachineid());
                         JSONObject savedRow = new JSONObject();
                         savedRow.put("rowid", updateRowIds.get(i));
                         savedRow.put("hdnPmsdKeyid", saved.getPmsdKeyid());
+                        savedRow.put("hdnMachineId", saved.getPmsdMachineid());
                         savedRows.put((Object) savedRow);
                     }
                 }
@@ -2673,6 +2675,7 @@ private void saveCbm(HttpServletRequest request,
                 successData.put("msg", savemsg);
                 returnData.put("successData", successData);
                 returnData.put("savedRows", savedRows);
+                returnData.put("formClear", false);
 
                 out.print(returnData.toString());
                 CommonFunctions.debugMsg("end of saveMultiplePmsd");

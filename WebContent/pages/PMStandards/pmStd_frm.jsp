@@ -204,9 +204,29 @@ border:ridge 1px #FFEFEF;
 		//fillComboBox("frmPmStandard","cmbActivitytype","Pmsd_Jobtype.prv");
 	}
 	
+	//function  frmPmStandardcmbActivitytype_onSelect(record)
+	//{
+	//	jQuery('#hdnActType').val(record.id);
+	//}
+	
 	function  frmPmStandardcmbActivitytype_onSelect(record)
 	{
 		jQuery('#hdnActType').val(record.id);
+
+		// Reload the Assembly Wise grid filtered to the current Equipment + newly selected Activity Type
+		var machId = jQuery("#frmPmStandard input[id='cmbPMMachineid']").combobox("getValue");
+		if(machId == null || machId.trim().length <= 0){
+			return; // no equipment selected yet, nothing to reload
+		}
+
+		var costcntr = jQuery("#frmPmStandard input[id='cmbPmstdCostCenter']").combobox("getValue");
+		var fltrStr = "&cmbMchid=" + machId + "&cmbCostCenter=" + costcntr + "&cmbjobtype=" + record.id;
+
+		var url = jQuery('#hiddenUrl').val();
+		var gUrl = url.substring(url.indexOf('preventive_input.prv'), url.indexOf('?q=2'));
+		var grdUrl = (gUrl == 'pmAssembly_input.prv') ? "pmAssembly_input.prv?q=2" : "MouldpmAssembly_input.prv?q=2";
+
+		processGridnew(grdUrl, fltrStr, "assmGrid", "", "", "pmAssembly_dblclick", "", "loadComFunction");
 	}
 	
 	function  frmPmStandardcmbPmstdCostCenter_onLoadSuccess(){
@@ -744,10 +764,27 @@ border:ridge 1px #FFEFEF;
 	});
 
 	
-  function  frmPmStandardcmbPMMachineid_onSelect(record)
+  //function  frmPmStandardcmbPMMachineid_onSelect(record)
+	//{
+	 //alert("PmStandard"+Pmstandarad);
+	// loadFunctionalLocation("pmsdfunLocation","functionalLoc.prv","pmsdfunLocationValues","frmPmStandard","&machId="+record.id);
+	//
+
+	  function  frmPmStandardcmbPMMachineid_onSelect(record)
 	{
 	 //alert("PmStandard"+Pmstandarad);
 	 loadFunctionalLocation("pmsdfunLocation","functionalLoc.prv","pmsdfunLocationValues","frmPmStandard","&machId="+record.id);
+
+	 // Reload the Assembly Wise grid filtered to the newly selected equipment
+	 var actType = jQuery("#frmPmStandard input[id='cmbActivitytype']").combobox("getValue");
+	 var costcntr = jQuery("#frmPmStandard input[id='cmbPmstdCostCenter']").combobox("getValue");
+	 var fltrStr = "&cmbMchid=" + record.id + "&cmbCostCenter=" + costcntr + "&cmbjobtype=" + actType;
+
+	 var url = jQuery('#hiddenUrl').val();
+	 var gUrl = url.substring(url.indexOf('preventive_input.prv'), url.indexOf('?q=2'));
+	 var grdUrl = (gUrl == 'pmAssembly_input.prv') ? "pmAssembly_input.prv?q=2" : "MouldpmAssembly_input.prv?q=2";
+
+	 processGridnew(grdUrl, fltrStr, "assmGrid", "", "", "pmAssembly_dblclick", "", "loadComFunction");
 	}
 
 
@@ -866,6 +903,9 @@ border:ridge 1px #FFEFEF;
 			alert('Select Equipment');
 		//navigateToNextForm(url,formheader,forwardData,persistentData,navigateToNext_SuccessCalBack,navigateToNext_ErrorCalBack)
 	});
+	
+	
+	
 	
 	jQuery('#btnView').click(function(){
 		var url = jQuery('#hiddenUrl').val();
@@ -1099,6 +1139,9 @@ border:ridge 1px #FFEFEF;
 					        "Maintenance Standards","",true
 					    );
 					}
+				 
+				 
+				
 </script>
 <form id="frmPmStandard" name="frmPmStandard" action="" method="post">
 <div id="wrapper" style=" ">
