@@ -35,17 +35,32 @@ import com.akranta.tpm.model.GenTlAllmoduleimgfile;
 import com.akranta.tpm.utils.CommonFunctions;
 import com.akranta.tpm.utils.CommonMessage;
 import com.akranta.tpm.utils.ExcelUtils;
+import com.akranta.tpm.service.api.BAL_BdmTlWhywhyServiceApi;
+import com.akranta.tpm.service.api.FunctionCallApi;
 public class BAL_WhywhyReportDaoImpl implements BAL_WhywhyReportDao {
 	
 	
 	private DBActionTemplate dbActionTemplate; 
 	private BAL_BdmTlWhywhymstSql bdmTlWhywhymstSql;
+	private BAL_BdmTlWhywhyServiceApi balwhywhyserviceapi;
+	FunctionCallApi fnCallApi;
+	
 	public BAL_WhywhyReportDaoImpl(DBActionTemplate dbActionTemplate) 
 	{
 		this.dbActionTemplate = dbActionTemplate;
 		bdmTlWhywhymstSql = new BAL_BdmTlWhywhymstSql();
 	}
-	
+	public void BAL_WhywhyReportDaoImplJwt(String JwtToken) 
+	{
+		try{
+			balwhywhyserviceapi = new BAL_BdmTlWhywhyServiceApi(JwtToken);
+		fnCallApi = new FunctionCallApi(JwtToken);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
 	public void setDbActionTemplate(DBActionTemplate dbActionTemplate) {
 		this.dbActionTemplate = dbActionTemplate;
 		
@@ -306,14 +321,13 @@ public class BAL_WhywhyReportDaoImpl implements BAL_WhywhyReportDao {
 
 	
 
-	@Override
-	public List<String[]> getProposed(CommonFilter commonFilter) throws Exception {
-		// TODO Auto-generated method stub
-		String yyno = commonFilter.getYyNo();
-		//StringBuffer sql= new StringBuffer();
-	
-		String sql = bdmTlWhywhymstSql.counterMeasure(commonFilter);
-		
+	/*
+	 * @Override public List<String[]> getProposed(CommonFilter commonFilter) throws
+	 * Exception { // TODO Auto-generated method stub String yyno =
+	 * commonFilter.getYyNo(); //StringBuffer sql= new StringBuffer();
+	 * 
+	 * String sql = bdmTlWhywhymstSql.counterMeasure(commonFilter);
+	 */
 		/*sql.append(" select 'Proposed preventive counter measures given below','Proposed preventive counter measures given below', ");
 		sql.append(" 'Proposed preventive counter measures given below','Responsibility','Date','Status',0 as dataorder  from dual ");
 		sql.append(" union  ");
@@ -345,11 +359,55 @@ public class BAL_WhywhyReportDaoImpl implements BAL_WhywhyReportDao {
 		System.out.println("sql....."+sql);
 		*/
 		
-		 
-		List<String> params = null ;
-		
-		List<String[]> gridData = dbActionTemplate.getDataListWithColHeader(sql, params);
-		return gridData;
+		/*
+		 * List<String> params = null ;
+		 * 
+		 * List<String[]> gridData = dbActionTemplate.getDataListWithColHeader(sql,
+		 * params); return gridData; }
+		 */
+	@Override
+	public List<String[]> getProposed(CommonFilter commonFilter) throws Exception {
+	    String yyno = commonFilter.getYyNo();
+	    
+	    List<String> paramValues = new ArrayList<String>();
+	    String condParams = "";
+	    String commonParams = "";
+	    
+	    // Build condition parameters
+	    condParams = yyno;
+	    
+	    // Build common parameters (filters, pagination)
+	    if (commonFilter.getGridFilter() != null) {
+	        commonParams += "GRIDFILTER=" + FilterCondSql.makeGridFilterCond(commonFilter.getGridFilter()) + ";";
+	    }
+	    
+	    if (commonFilter.getFromRow() != null && commonFilter.getToRow() != null) {
+	        commonParams += "FROMTOROW=" + commonFilter.getFromRow() + " AND " + commonFilter.getToRow() + ";";
+	    }
+	    commonParams += "ISGETCOL=" +commonFilter.getIsGetCol()+ ";";
+	    
+	    // Add parameters in order
+	    paramValues.add(condParams);   // vcondparam
+	    paramValues.add(commonParams);  // vcommonparam
+	    
+	    CommonMessage.debugMsg("Calling bdm_fn_countermeasure_sb with yyno: " + yyno);
+	    CommonMessage.debugMsg("Common params: " + commonParams);
+	    
+	    // Call function: 2 OUT params (totalcnt, cur), include headers = true
+	    List<String[]> dataList = fnCallApi.callFunctionWithHeaders("bdm_fn_countermeasure_baj_sb", paramValues, 2, true );
+	    
+	    // Get total count from first OUT parameter
+	    if (paramValues.size() > 0) {
+	        String totalCnt = paramValues.get(0);
+	        CommonMessage.debugMsg("totalCnt: " + totalCnt);
+	        if (Pattern.matches("^\\d*$", totalCnt)) {
+	            commonFilter.setTotalRecordCnt(Long.parseLong(totalCnt));
+	        }
+	    }
+	    
+	    CommonMessage.debugMsg("Total record count: " + commonFilter.getTotalRecordCnt());
+	    
+	    return dataList;
 	}
 	@Override
 	public List<String[]> getMainGrid() throws Exception {     //
@@ -368,7 +426,9 @@ public class BAL_WhywhyReportDaoImpl implements BAL_WhywhyReportDao {
 		String sql="";
 		List<String> paramValues = getFilterParamValues(commonFilter);
 		
-		return dbActionTemplate.processFunctionCalls("BDM_PC_BREAKDOWN.BDM_FN_WHYWHYEFFECTIVENESS", paramValues);
+		//return dbActionTemplate.processFunctionCalls("BDM_PC_BREAKDOWN.BDM_FN_WHYWHYEFFECTIVENESS", paramValues);
+		//return dbActionTemplate.processFunctionCalls("BDM_FN_WHYWHYEFFECTIVENESS_BAJAJ", paramValues);
+		return fnCallApi.callFunction("BDM_FN_WHYWHYEFFECTIVENESS_BAJAJ_SB", paramValues,2,true);
 
 	}
 
@@ -412,7 +472,7 @@ public class BAL_WhywhyReportDaoImpl implements BAL_WhywhyReportDao {
 		    sql.append(" UNION ALL ");
 		    sql.append(" SELECT * FROM ( " );
 		    sql.append(" SELECT WWDT_KEYID, WWDT_WHY, WWDT_ANSWER,'' " );
-		    sql.append(" FROM BDM_TL_WHYWHYDTL WHERE WWDT_WWMS_KEYID = '"+masdetkeyid+"'" );
+		    sql.append(" FROM BAL_BDM_TL_WHYWHYDTL WHERE WWDT_WWMS_KEYID = '"+masdetkeyid+"'" );
 		    sql.append(" ORDER BY WWDT_KEYID) t "); // added alias
 		}
 		CommonMessage.debugMsg("sql....."+sql);
@@ -439,7 +499,8 @@ public class BAL_WhywhyReportDaoImpl implements BAL_WhywhyReportDao {
 			
 			List<String> paramValues = new ArrayList<String>();
 			paramValues.add(rowId);
-			Map<Integer, List<String[]>> whyReport = dbActionTemplate.processDbFunCallMultCursor("BDM_PC_BREAKDOWN.BDM_FN_WHYWHYREPORTEXLVIEW", paramValues,2);
+			//Map<Integer, List<String[]>> whyReport = dbActionTemplate.processDbFunCallMultCursor("BDM_PC_BREAKDOWN.BDM_FN_WHYWHYREPORTEXLVIEW", paramValues,2);
+			Map<Integer, List<String[]>> whyReport = dbActionTemplate.processDbFunCallMultCursor("BDM_FN_WHYWHYREPORTEXLVIEW_BAJAJ", paramValues,2);
 			
 			return whyReport;
 			
@@ -477,7 +538,8 @@ public class BAL_WhywhyReportDaoImpl implements BAL_WhywhyReportDao {
 		String commonParams = FilterCondSql.getGridCommonParams(commonFilter); // "ISTOTALCNT="+commonFilter.getViewClick() +";FROMTOROW="+commonFilter.getFromRow() +" AND " + commonFilter.getToRow() +";";
 		paramValues.add(condParms);
 		paramValues.add(commonParams);
-		return dbActionTemplate.dbFunctionCall("BDM_PC_BREAKDOWN.BDM_FN_WHYWHYEFFECTIVENESS", paramValues);
+		//return dbActionTemplate.dbFunctionCall("BDM_PC_BREAKDOWN.BDM_FN_WHYWHYEFFECTIVENESS", paramValues);
+		return dbActionTemplate.dbFunctionCall("BDM_FN_WHYWHYEFFECTIVENESS_BAJAJ", paramValues);
 
 	 }
 

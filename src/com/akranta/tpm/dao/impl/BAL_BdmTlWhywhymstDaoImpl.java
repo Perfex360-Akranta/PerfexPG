@@ -40,7 +40,9 @@ import com.akranta.tpm.model.GenTlDocupdates;
 import com.akranta.tpm.model.BAL_ToolChangeTlDetails;
 import com.akranta.tpm.utils.CommonFunctions;
 import com.akranta.tpm.utils.ExcelUtils;
-
+import com.akranta.tpm.service.api.BAL_BdmTlWhywhyServiceApi;
+import com.akranta.tpm.service.api.FieldAuditSheetServiceApi;
+import com.akranta.tpm.service.api.FunctionCallApi;
 /* dao implementation */
 public class BAL_BdmTlWhywhymstDaoImpl implements BAL_BdmTlWhywhymstDao {
 
@@ -52,6 +54,8 @@ public class BAL_BdmTlWhywhymstDaoImpl implements BAL_BdmTlWhywhymstDao {
 	private BAL_BdmTlWhywhydtlSql bdmTlWhywhydtlSql ;
 	private GenTlDocupdatesSql genTlDocupdatesSql;
 	private BAL_BdmTlYydonebymstSql bdmTlYydonebymstSql;
+	private BAL_BdmTlWhywhyServiceApi balwhywhyserviceapi;
+	FunctionCallApi fnCallApi;
 	
 	//private BdmTlMstSql bdmTlMstSql ;
 
@@ -70,41 +74,32 @@ public class BAL_BdmTlWhywhymstDaoImpl implements BAL_BdmTlWhywhymstDao {
 		this.dbActionTemplate = dbActionTemplate;
 	}
 
+	 public void BAL_BdmTlWhywhymstDaoImplJwt(String JwtToken) 
+		{
+			try{
+				balwhywhyserviceapi = new BAL_BdmTlWhywhyServiceApi(JwtToken);
+			fnCallApi = new FunctionCallApi(JwtToken);
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+	  
 	public BAL_BdmTlWhywhymst create(BAL_BdmTlWhywhymst bdmTlWhywhymst) throws BusinessApplicationExceptions,Exception {
 
 		List<String> sqls = new ArrayList<String>(); /* sqls for execution */ 
-		//BdmTlWhywhymst newBdmTlWhywhymst=new BdmTlWhywhymst();
-		//BdmTlWhywhymstSql bdmTlWhywhymstSql=new BdmTlWhywhymstSql();
 		
-		//try{
-			
-		/*	for(int i =0;i<bdmTlWhywhymst.getBdmTlWhywhydtl().size();i++)
-			{
-				
-				if(UIUtils.isValidKeyId(newBdmTlWhywhymst.getWwmsKeyid()))
-				{
-					sqls.add(BdmTlWhywhymstSql.getUpdateSql(bdmTlWhywhymstSql.getWwmsDbFields(), newBdmTlWhywhymst.getSaveArray()));
-				}
-				else{
-					System.out.println("Inside DAO else....");
-					newBdmTlWhywhymst.setWwmsKeyid(dbActionTemplate.getSequenceNumber(BdmTlWhywhymstSql.TBL_BDM_TL_WHYWHYMST)); 
-					sqls.add(BdmTlWhywhymstSql.getInsertSql(bdmTlWhywhymstSql.getWwmsDbFields(), newBdmTlWhywhymst.getSaveArray()));
-				}
-				}*/
 		
 
 		String elementId = bdmTlWhywhymst.getElementid();
 	 	String location = null;
-	 	String seqIdentfi = com.akranta.tpm.dao.impl.CommonFunctions.getSeqnoLocationIdentifier(elementId,BAL_BdmTlWhywhymstSql.TBL_BDM_TL_WHYWHYMST);
+	 	String seqIdentfi = com.akranta.tpm.dao.impl.CommonFunctions.getSeqnoLocationIdentifier(elementId,BAL_BdmTlWhywhymstSql.TBL_BAL_BDM_TL_WHYWHYMST);
 	 	
 		bdmTlWhywhymst.setWwmsKeyid(dbActionTemplate.getSequenceNumber(seqIdentfi,12,"YY","YYMM"," "));
-			//bdmTlWhywhymst.setWwmsKeyid(dbActionTemplate.getSequenceNumber(BdmTlWhywhymstSql.TBL_BDM_TL_WHYWHYMST,12,"YYM","YYMM"," ")); // set the sequnce number
+			
 			sqls.add(BAL_BdmTlWhywhymstSql.getInsertSql(bdmTlWhywhymstSql.getWwmsDbFields(), bdmTlWhywhymst.getSaveArray())); // add insert sql for master table
 			
-			/*BdmTlWhywhydtl bdmTlWhywhydtl = (BdmTlWhywhydtl)bdmTlWhywhymst.getBdmTlWhywhydtl().get(i); 
-			bdmTlWhywhydtl.setWwdtWwmsKeyid(bdmTlWhywhymst.getWwmsKeyid());				
-    		bdmTlWhywhydtl.setWwdtKeyid(dbActionTemplate.getSequenceNumber(BdmTlWhywhydtlSql.TBL_BDM_TL_WHYWHYDTL,12,"YYD","YY","Y"));
-			sqls.add(BdmTlWhywhydtlSql.getInsertSql(bdmTlWhywhydtlSql.getWwdtDbFields(), bdmTlWhywhydtl.getSaveArray()));*/
 			insertDetail(bdmTlWhywhymst,sqls);
 			
 			//dbActionTemplate.executeStatements(sqls);
@@ -227,7 +222,7 @@ public class BAL_BdmTlWhywhymstDaoImpl implements BAL_BdmTlWhywhymstDao {
 	    		bdmTlWhywhydtl.setWwdtSlno(Integer.toString(i+1));
 	    		CommonFunctions.debugMsg("Sl No in Dao Impl"+bdmTlWhywhydtl.getWwdtSlno());
 	    		bdmTlWhywhydtl.setWwdtWwmsKeyid(bdmTlWhywhymst.getWwmsKeyid());				
-	    		bdmTlWhywhydtl.setWwdtKeyid(dbActionTemplate.getSequenceNumber(BAL_BdmTlWhywhydtlSql.TBL_BDM_TL_WHYWHYDTL,12,"YYD","YY","Y"));
+	    		bdmTlWhywhydtl.setWwdtKeyid(dbActionTemplate.getSequenceNumber(BAL_BdmTlWhywhydtlSql.TBL_BAL_BDM_TL_WHYWHYDTL,12,"YYD","YY","Y"));
 				sqls.add(BAL_BdmTlWhywhydtlSql.getInsertSql(bdmTlWhywhydtlSql.getWwdtDbFields(), bdmTlWhywhydtl.getSaveArray()));// add insert sql for detail table
 			}
 		}
@@ -587,7 +582,7 @@ public class BAL_BdmTlWhywhymstDaoImpl implements BAL_BdmTlWhywhymstDao {
 				CommonFunctions.debugMsg("detailKeyid  :"+bdmTlWhywhydtl.getWwdtKeyid());
 				if(!UIUtils.isValidKeyId(bdmTlWhywhydtl.getWwdtKeyid()))
 				{	
-					bdmTlWhywhydtl.setWwdtKeyid(dbActionTemplate.getSequenceNumber(BAL_BdmTlWhywhydtlSql.TBL_BDM_TL_WHYWHYDTL));
+					bdmTlWhywhydtl.setWwdtKeyid(dbActionTemplate.getSequenceNumber(BAL_BdmTlWhywhydtlSql.TBL_BAL_BDM_TL_WHYWHYDTL));
 					sqls.add(BAL_BdmTlWhywhydtlSql.getInsertSql(bdmTlWhywhydtlSql.getWwdtDbFields(), bdmTlWhywhydtl.getSaveArray()));
 				}
 				else{
@@ -735,7 +730,8 @@ public class BAL_BdmTlWhywhymstDaoImpl implements BAL_BdmTlWhywhymstDao {
 			condParms += "REFDOCID="+commonFilter.getRefdocid()+";";
 		paramValues.add(condParms);
 		paramValues.add(commonParams);
-		return dbActionTemplate.dbFunctionCall("BDM_PC_BREAKDOWN.BDM_FN_WHYWHYMST",paramValues);
+		//return dbActionTemplate.dbFunctionCall("BDM_PC_BREAKDOWN.BDM_FN_WHYWHYMST",paramValues);
+		return dbActionTemplate.NewdbFunctionCall2("BDM_FN_WHYWHYMST_BAJAJ",paramValues);
 	}
 
 private List<String> getFilterParamValues(CommonFilter commonFilter) {
@@ -770,7 +766,9 @@ List<String> paramValues = new ArrayList<String>();
 				paramValues.add(condParms);
 				paramValues.add(commonParams);
 				List<String[]> dataList =  null;
-				dataList =  dbActionTemplate.processFunctionCallsWithColHeaders("BDM_PC_BREAKDOWN.BDM_FN_WHYWHYMST", paramValues);
+				//dataList =  dbActionTemplate.processFunctionCallsWithColHeaders("BDM_PC_BREAKDOWN.BDM_FN_WHYWHYMST", paramValues);
+				//dataList =  dbActionTemplate.processFunctionCallsWithColHeaders("BDM_FN_WHYWHYMST_BAJAJ", paramValues);
+				dataList =  fnCallApi.callFunction("BDM_FN_WHYWHYMST_BAJAJ_SB", paramValues,3,true);
 				if( commonFilter.getViewClick() == 'Y'){
 					String totalCnt = paramValues.get(0); 
 					CommonFunctions.debugMsg("totalCnt....."+totalCnt);
@@ -931,7 +929,9 @@ List<String> paramValues = new ArrayList<String>();
 		List<String> paramValues = getFilterParamValues(commonFilter);
 		List<String[]> dataList =  null;
 		
-		dataList = dbActionTemplate.processFunctionCalls("GEN_PC_REPORTS.WHY_FN_WHYWHYGENDRILLDOWN", paramValues);
+	//	dataList = dbActionTemplate.processFunctionCalls("GEN_PC_REPORTS.WHY_FN_WHYWHYGENDRILLDOWN", paramValues);
+		//dataList = dbActionTemplate.processFunctionCalls("WHY_FN_WHYWHYGENDRILLDOWN_BAJAJ", paramValues);
+		dataList = fnCallApi.callFunction("WHY_FN_WHYWHYGENDRILLDOWN_BAJAJ_SB", paramValues,3,true);
 		if( commonFilter.getViewClick() == 'Y'){
 			String totalCnt = paramValues.get(0); 
 
@@ -950,7 +950,8 @@ List<String> paramValues = new ArrayList<String>();
 		try{
 			List<String> paramValues = getFilterParamValues(commonFilter);
 			
-			rs =  dbActionTemplate.dbFunctionCall("GEN_PC_REPORTS.WHY_FN_WHYWHYGENDRILLDOWN", paramValues);
+			//rs =  dbActionTemplate.dbFunctionCall("GEN_PC_REPORTS.WHY_FN_WHYWHYGENDRILLDOWN", paramValues);
+			rs =  dbActionTemplate.NewdbFunctionCall2("WHY_FN_WHYWHYGENDRILLDOWN_BAJAJ", paramValues);
 			
 			ExcelUtils excelUtils = new ExcelUtils(tblJSONObj);
 			return excelUtils.writeToExcel(rs,format, 1,0,0 );
@@ -965,6 +966,7 @@ List<String> paramValues = new ArrayList<String>();
 	public String getYYKeyId(String refDocId) throws Exception {
 		// TODO Auto-generated method stub
 		String sql=BAL_BdmTlWhywhymstSql.getYYrefKyid(refDocId);
+		CommonFunctions.debugMsg("why"+sql);
 		return dbActionTemplate.getSingleValue(sql);
 		
 	}

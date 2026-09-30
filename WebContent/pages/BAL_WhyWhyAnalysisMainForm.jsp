@@ -113,7 +113,7 @@
   	
 		jQuery("#lgnd-panel").slideToggle(200);
 	});
-  function yyGrid_loadcomplete()
+  /* function yyGrid_loadcomplete()
   {
 	  jQuery("input[id^=txtWhy]").keypress(function(e){
 		    var p = e.which;
@@ -139,7 +139,46 @@
       jQuery("#gbox_AnalysisGrid").children().removeClass("ui-jqgrid-sortable");
   	disableGridSort("AnalysisGrid");	    
 
+  } */
+  //mano
+  
+  function yyGrid_loadcomplete()
+  {
+  	//mano
+  	var mode = jQuery("#mode").val();
+    var formMode1 = jQuery("#hdnMode2").val();
+    //mano end
+  	//disableGridSort("AnalysisGrid");
+
+  	var row  = jQuery("#AnalysisGrid").jqGrid('getDataIDs');
+      if(row.length>0)
+  		enableCounterMeasure();
+  	else
+  		disableCounterMeasure();
+
+      jQuery("#jqgh_AnalysisGrid_Answer").removeClass("ui-jqgrid-sortable");
+  	  jQuery("#jqgh_AnalysisGrid_Delete").removeClass("ui-jqgrid-sortable");	   
+      jQuery("#gbox_AnalysisGrid").children().removeClass("ui-jqgrid-sortable");
+  	  disableGridSort("AnalysisGrid");	
+  	if(mode == "View" || mode == "view" || formMode1 == "View" || formMode1 == "view") {
+        for(var i = 0; i < row.length; i++) {
+            var rowid = row[i];
+            jQuery('#txtWhy_' + rowid).attr('readonly', 'readonly');
+            jQuery('#txtWhy_' + rowid).addClass('readonly');
+            // Hide delete buttons
+            jQuery('#btnDelete_' + rowid).hide();
+        }
+    }else{
+    	for(var i = 0; i < row.length; i++) {
+            var rowid = row[i];
+            jQuery("#txtWhy_"+rowid).on(' click keydown', function(e){
+			    e.stopPropagation();
+			});
+       
+        }
+    }
   }
+ 
 
   function divBDWhywhy_onClose(isDirect){
 	  var rootcause=jQuery("#txtWwmsRootcause").val();
@@ -1284,6 +1323,8 @@ function rootCauseOnLoad()
 				 navigateToPrevForm();
 				 
 			 }
+			//alert("existing sucesscallback");
+			 closePopUpDialoge("divBDWhywhy");
 			
 		}  
 		
@@ -1344,20 +1385,20 @@ function rootCauseOnLoad()
 		 	<td valign="top"   style="padding-left:10px;padding-top:0px;">
 				 <div><label >Equipment</label></div>
 				 <div class="easyui-paddingbfpx" >
-				 	<input  class="easyui-combobox" style=" width :255px;" id="cmbWwmsMachineid" name="cmbWwmsMachineid"  disabled="disabled" value="${requestScope.newBdmTlWhywhymst.wwmsMachineid}" style="width: 300px;" <c:out value = "${requestScope.newBdmTlWhywhymst.wwmsMachineid == true ? ' disabled':''}"/>/>
+				 	<input  class="easyui-combobox" style=" width :255px;" id="cmbWwmsMachineid" name="cmbWwmsMachineid"  readonly="readonly" value="${requestScope.newBdmTlWhywhymst.wwmsMachineid}" style="width: 300px;"  value = "${requestScope.newBdmTlWhywhymst.wwmsMachineid == true ? ' disabled':''}"/>
 				 	
 				 </div>	
 		 	</td>
 		 	<td valign="top" style="padding-left:10px;padding-top:0px;">
 				<div class="easyui-paddingbfpx"><label class="mandatory-lbl">Date</label><label style="padding-left:125px;">Spares</label></div>
 				<div>
-					<input id="dteWwmsDate" name="dteWwmsDate" disabled="disabled" class="easyui-text" clear="false"  style=" width : 120px;height:21px;" value="${requestScope.newBdmTlWhywhymst.wwmsDate}"/>
+					<input id="dteWwmsDate" name="dteWwmsDate" readonly="readonly" class="easyui-text" clear="false"  style=" width : 120px;height:21px;" value="${requestScope.newBdmTlWhywhymst.wwmsDate}"/>
 					<span style="padding-left:-3px;">
-					<input id="chkWwmsSparesreplaced" name="chkWwmsSparesreplaced" disabled="disabled" type="checkbox" value="N" <c:out value = "${requestScope.sparecheck== 'Y' ? 'checked':''}"/> />
+					<input id="chkWwmsSparesreplaced" name="chkWwmsSparesreplaced" readonly="readonly" type="checkbox" value="N"  value = "${requestScope.sparecheck== 'Y' ? 'checked':''}"/> 
 <%-- 					<input id="txtVersion" name="txtVersion" class="easyui-text" clear="false"  style=" width : 70px;height:21px;" value="${requestScope.newBdmTlWhywhymst.wwmsSparesreplaced}" /></span> --%>
 
 					</span>	<span>
-					<input  class="easyui-combobox" style=" width :150px;" id="cmbWwmsSparesId" name="cmbWwmsSparesId" disabled="disabled"value="${requestScope.newBdmTlWhywhymst.wwmsSparesId}"/></span>
+					<input  class="easyui-combobox" style=" width :150px;" id="cmbWwmsSparesId" name="cmbWwmsSparesId" readonly="readonly"value="${requestScope.newBdmTlWhywhymst.wwmsSparesId}"/></span>
 				</div>
 					<table>
 					<tr>
@@ -1381,14 +1422,14 @@ function rootCauseOnLoad()
 			 		<label >Immediate Action</label>
 			 	</div>
 				<div class="easyui-paddingbfpx" >
-					<textarea rows="2" id="txtWwmsImmediateaction" name="txtWwmsImmediateaction" maxlength="495" disabled="disabled" setQuestionInGrid()" style="height:40px;height:70px\9;text-transform: uppercase; width : 285px;">${requestScope.newBdmTlWhywhymst.wwmsImmediateaction}</textarea>
+					<textarea rows="2" id="txtWwmsImmediateaction" name="txtWwmsImmediateaction" maxlength="495" readonly="readonly" setQuestionInGrid()" style="height:40px;height:70px\9;text-transform: uppercase; width : 285px;">${requestScope.newBdmTlWhywhymst.wwmsImmediateaction}</textarea>
 				</div>
 		 	</td><td style="padding-left:10px;padding-top:0px;">
 			 	<div>
 			 		<label>Final Action</label>
 			 	</div>
 				<div class="easyui-paddingbfpx" >
-					<textarea rows="2" id="txtWwmsFinalaction" name="txtWwmsFinalaction" disabled="disabled" maxlength="495" onblur="setQuestionInGrid1()" style="height:40px;height:70px\9;text-transform: uppercase; width : 285px;">${requestScope.newBdmTlWhywhymst.wwmsFinalaction}</textarea>
+					<textarea rows="2" id="txtWwmsFinalaction" name="txtWwmsFinalaction" readonly="readonly" maxlength="495" onblur="setQuestionInGrid1()" style="height:40px;height:70px\9;text-transform: uppercase; width : 285px;">${requestScope.newBdmTlWhywhymst.wwmsFinalaction}</textarea>
 				</div>
 		 	</td>
 		 	
@@ -1409,10 +1450,10 @@ function rootCauseOnLoad()
 				</div>
 				<div class="easyui-paddingbfpx">
 					<span>
-							<input id="dteReportdatetime"  name="dteReportdatetime" disabled="disabled"  class="easyui-datebox" value="${requestScope.rptdate}"  style="width:190px;width:190px\9;height:21px;"  />
+							<input id="dteReportdatetime"  name="dteReportdatetime" readonly="readonly"  class="easyui-datebox" value="${requestScope.rptdate}"  style="width:190px;width:190px\9;height:21px;"  />
 					</span>
 					<span class="spinner easyi-paddingbfpx">
-							<input  id="spnNmrtOccurrencedatetime"  name="spnNmrtOccurrencedatetime" disabled="disabled"  class="easyui-timespinner spinner-text validatebox-text" value="${requestScope.rpttime}"  style="width: 60px;" />
+							<input  id="spnNmrtOccurrencedatetime"  name="spnNmrtOccurrencedatetime" readonly="readonly"  class="easyui-timespinner spinner-text validatebox-text" value="${requestScope.rpttime}"  style="width: 60px;" />
 					</span>
 				</div>
 			</td>
@@ -1435,7 +1476,7 @@ function rootCauseOnLoad()
 						<input  class="easyui-combobox" style=" width : 140px; height : 22px;" id="cmbWwmsPillarid" name="cmbWwmsPillarid"  value="${requestScope.newBdmTlWhywhymst.wwmsPillarid}"/>
 					</span>
 					<span>
-						<input  class="easyui-combobox" style=" width : 140px; height : 22px;" id="cmbWwmsProductid" name="cmbWwmsProductid" disabled="disabled" value="${requestScope.newBdmTlWhywhymst.wwmsProductid}"/>
+						<input  class="easyui-combobox" style=" width : 140px; height : 22px;" id="cmbWwmsProductid" name="cmbWwmsProductid" readonly="readonly" value="${requestScope.newBdmTlWhywhymst.wwmsProductid}"/>
 					</span>
 					
 				</div>	
@@ -1510,8 +1551,8 @@ function rootCauseOnLoad()
 				<div>
 					<label>Is there anything to be checked?</label>
 					<span>
-					    <input type="checkbox" id="chkequipment"  name="chkequipment" value="N"   <c:out value = "${ requestScope.otherCheck == 'Y' ? ' checked':''}"/> />
-						<input id="txtWwmsOthercheckpoints" name="txtWwmsOthercheckpoints" class="easyui-text"  style=" width : 650px;height:21px;" value="${requestScope.newBdmTlWhywhymst.wwmsOthercheckpoints}"  <c:out value = "${requestScope.otherCheck == 'Y' ? '':'disabled'}"/> />
+					    <input type="checkbox" id="chkequipment"  name="chkequipment" value="N"    value = "${ requestScope.otherCheck == 'Y' ? ' checked':''}"/> 
+						<input id="txtWwmsOthercheckpoints" name="txtWwmsOthercheckpoints" class="easyui-text"  style=" width : 650px;height:21px;" value="${requestScope.newBdmTlWhywhymst.wwmsOthercheckpoints}"   value = "${requestScope.otherCheck == 'Y' ? '':'disabled'}"/> 
 					</span>
 				</div>
 			</td>

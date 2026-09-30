@@ -58,4 +58,6 @@ public interface BAL_WhywhyReportDao {
 			JSONObject colmodel, String format)throws Exception;
 
 	public List<String[]> getyyDoneby(String masterkeyid)throws Exception; 
+	
+	 public abstract void BAL_WhywhyReportDaoImplJwt(String jwtToken);
 }

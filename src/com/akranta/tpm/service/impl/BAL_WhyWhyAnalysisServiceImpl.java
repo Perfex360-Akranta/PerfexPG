@@ -23,17 +23,31 @@ import com.akranta.tpm.model.CommonFilter;
 import com.akranta.tpm.service.BAL_WhyWhyAnalysisService;
 import com.akranta.tpm.utils.CommonFunctions;
 import com.akranta.tpm.utils.Validations;
+import com.akranta.tpm.service.api.BAL_BdmTlWhywhyServiceApi;
+import com.akranta.tpm.service.api.FieldAuditSheetServiceApi;
 
 public class BAL_WhyWhyAnalysisServiceImpl implements BAL_WhyWhyAnalysisService{
 
 	
 	private Validations validations ;
 	private BAL_BdmTlWhywhymstDao bdmTlWhywhymstDao;
+	private BAL_BdmTlWhywhyServiceApi balwhywhyserviceapi;
 	
 	public BAL_WhyWhyAnalysisServiceImpl(DBActionTemplate dbActionTemplate)
 	{
 		bdmTlWhywhymstDao = new BAL_BdmTlWhywhymstDaoImpl(dbActionTemplate);
 		validations = new Validations();
+	}
+	public void BAL_WhyWhyAnalysisServiceImplJwt(String JwtToken){
+		try{
+			bdmTlWhywhymstDao.BAL_BdmTlWhywhymstDaoImplJwt(JwtToken);
+			balwhywhyserviceapi = new BAL_BdmTlWhywhyServiceApi(JwtToken);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	    // TODO Auto-generated constructor stub
 	}
 	@Override
 	public BAL_BdmTlWhywhydtl create(BAL_BdmTlWhywhydtl bdmTlWhywhydtl)
@@ -61,7 +75,8 @@ public class BAL_WhyWhyAnalysisServiceImpl implements BAL_WhyWhyAnalysisService{
 	}
 	public BAL_BdmTlWhywhydtl deleteYYDtl(String keyId)
 	throws ValidationExceptions, Exception {
-		return bdmTlWhywhymstDao.deleteYYDtl(keyId);
+		//return bdmTlWhywhymstDao.deleteYYDtl(keyId);
+		return balwhywhyserviceapi.deleteWhyWhyDetail(keyId);
 	}
 	public BAL_BdmTlWhywhymst getWWMS(String wwwsKeyid) throws Exception {
 
@@ -88,7 +103,8 @@ public class BAL_WhyWhyAnalysisServiceImpl implements BAL_WhyWhyAnalysisService{
 	}
 	public List<String[]> getRootCause(String openMode)throws Exception
 	{
-		return this.bdmTlWhywhymstDao.getRootCause(openMode);
+		//return this.bdmTlWhywhymstDao.getRootCause(openMode);
+		return this.balwhywhyserviceapi.getRootCause(openMode);
 	}
 	public List<String []> getProgramList(String start,String end) throws Exception{
 		return this.bdmTlWhywhymstDao.getProgramList(start,end);
@@ -114,14 +130,16 @@ public class BAL_WhyWhyAnalysisServiceImpl implements BAL_WhyWhyAnalysisService{
 		// TODO Auto-generated method stub
 		validations.validate( newBdmTlWhywhymst,"WhyVali","create");
 		fillYYValues(newBdmTlWhywhymst,existBdmTlWhywhymst,yyFormBean);
-		return bdmTlWhywhymstDao.create(newBdmTlWhywhymst);
+		//return bdmTlWhywhymstDao.create(newBdmTlWhywhymst);
+		return balwhywhyserviceapi.saveWhyWhy(newBdmTlWhywhymst);
 	//	return null;
 	}
 	public BAL_BdmTlWhywhymst update(BAL_BdmTlWhywhymst newBdmTlWhywhymst,BAL_BdmTlWhywhymst oldBdmTlWhywhymst,  YYFormBean yyFormBean ) throws BusinessApplicationExceptions,ValidationExceptions, Exception
 	{
 		validations.validate( newBdmTlWhywhymst,"WhyVali","update");
 		fillYYValues(newBdmTlWhywhymst,oldBdmTlWhywhymst,yyFormBean);
-		return bdmTlWhywhymstDao.update(newBdmTlWhywhymst);
+		//return bdmTlWhywhymstDao.update(newBdmTlWhywhymst);
+		return balwhywhyserviceapi.saveWhyWhy(newBdmTlWhywhymst);
 		
 	}
 	
@@ -130,7 +148,7 @@ public class BAL_WhyWhyAnalysisServiceImpl implements BAL_WhyWhyAnalysisService{
 		CommonFunctions.debugMsg("FillValues Master start");
 		/*CommonFunctions.debugMsg(" OLDKeyId  "+oldBdmTlWhywhymst.getWwmsKeyid());
 		CommonFunctions.debugMsg(" NewKeyId  "+newBdmTlWhywhymst.getWwmsKeyid());*/
-		String dateTime = CommonFunctions.dateTimeNow();
+		String dateTime = CommonFunctions.pg_dateTimeNow();
 		String pillar = yyFormBean.getWwmsPillarmode();
 		newBdmTlWhywhymst.setWwmsActive("Y");
 		
@@ -140,10 +158,16 @@ public class BAL_WhyWhyAnalysisServiceImpl implements BAL_WhyWhyAnalysisService{
 			newBdmTlWhywhymst.setWwmsCreatedon(dateTime);
 		
 		newBdmTlWhywhymst.setWwmsModifiedon(dateTime);
+		String date =newBdmTlWhywhymst.getWwmsDate();
+		newBdmTlWhywhymst.setWwmsDate(CommonFunctions.pg_getDateTimeFromDate(date));
 		
 		if(!UIUtils.isValidKeyId(newBdmTlWhywhymst.getWwmsDate()))
 			newBdmTlWhywhymst.setWwmsDate(dateTime);
-		
+		/*
+		 * String wwmsDate = newBdmTlWhywhymst.getWwmsDate();
+		 * newBdmTlWhywhymst.setWwmsDate(CommonFunctions.pg_getDateTimeFromDate(wwmsDate
+		 * ));
+		 */
 		if(!UIUtils.isValidKeyId(newBdmTlWhywhymst.getWwmsFactoryid()))
 			newBdmTlWhywhymst.setWwmsFactoryid("{}");
 		
@@ -183,7 +207,11 @@ public class BAL_WhyWhyAnalysisServiceImpl implements BAL_WhyWhyAnalysisService{
 		
 		if(!UIUtils.isValidKeyId(newBdmTlWhywhymst.getWwmsTimespent()))
 			newBdmTlWhywhymst.setWwmsTimespent("0");
-		
+		/*
+		 * String WwmsReportdatetime = newBdmTlWhywhymst.getWwmsReportdatetime();
+		 * newBdmTlWhywhymst.setWwmsReportdatetime(CommonFunctions.
+		 * pg_getDateTimeFromDate(WwmsReportdatetime));
+		 */
 		if(!UIUtils.isValidKeyId(newBdmTlWhywhymst.getWwmsReportdatetime()))
 			newBdmTlWhywhymst.setWwmsReportdatetime(dateTime);
 		
@@ -332,7 +360,7 @@ public class BAL_WhyWhyAnalysisServiceImpl implements BAL_WhyWhyAnalysisService{
 		if(!UIUtils.isValidKeyId(newBdmTlWhywhymst.getWwmsIshdpossible()))
 			newBdmTlWhywhymst.setWwmsIshdpossible("N");
 		if(!UIUtils.isValidKeyId(newBdmTlWhywhymst.getWwmsPrevdate()))
-			newBdmTlWhywhymst.setWwmsPrevdate(Constants.passNullDate);
+			newBdmTlWhywhymst.setWwmsPrevdate(Constants.pgPassNullDateTime);
 		if(!UIUtils.isValidKeyId(newBdmTlWhywhymst.getWwmsPreveffectiveness()))
 			newBdmTlWhywhymst.setWwmsPreveffectiveness("{}");
 		/*if(!UIUtils.isValidKeyId(newBdmTlWhywhymst.getWwmsTempfield1()))
@@ -404,7 +432,7 @@ public class BAL_WhyWhyAnalysisServiceImpl implements BAL_WhyWhyAnalysisService{
 	}
 	private List<BAL_BdmTlWhywhydtl> detailFillValues(BAL_BdmTlWhywhymst newBdmTlWhywhymst, BAL_BdmTlWhywhymst oldBdmTlWhywhymst,YYFormBean yyFormBean) {
 		System.out.println("DETAIL Fill Values");
-		String dateTime = CommonFunctions.dateTimeNow();
+		String dateTime = CommonFunctions.pg_dateTimeNow();
 		List<BAL_BdmTlWhywhydtl> newBdmTlWhywhydtl = newBdmTlWhywhymst.getBdmTlWhywhydtl();
 		List<BAL_BdmTlWhywhydtl> oldBdmTlWhywhydtl = null;
 		BAL_BdmTlWhywhydtl oldBdmTlWhywhydtlValues  = null;
@@ -579,7 +607,8 @@ public class BAL_WhyWhyAnalysisServiceImpl implements BAL_WhyWhyAnalysisService{
 	}
 	@Override
 	public BAL_BdmTlWhywhymst selectmaskeyid(String maskeyid) throws Exception {
-		return bdmTlWhywhymstDao.selectmaskeyid(maskeyid);
+		//return bdmTlWhywhymstDao.selectmaskeyid(maskeyid);
+		return balwhywhyserviceapi.selectMasKeyid(maskeyid);
 	
 	}
 	@Override
@@ -809,7 +838,8 @@ public class BAL_WhyWhyAnalysisServiceImpl implements BAL_WhyWhyAnalysisService{
 		@Override
 		public String getYYKeyId(String refDocId) throws Exception {
 			// TODO Auto-generated method stub
-			return bdmTlWhywhymstDao.getYYKeyId(refDocId);
+			//return bdmTlWhywhymstDao.getYYKeyId(refDocId);
+			return balwhywhyserviceapi.getYYRefKeyid(refDocId);
 		}
 		
 

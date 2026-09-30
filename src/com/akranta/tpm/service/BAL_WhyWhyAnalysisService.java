@@ -59,4 +59,6 @@ public interface BAL_WhyWhyAnalysisService {
 	
 	public String deleteYYDoneBy(String keyId)throws Exception;
 	public String getYYKeyId(String refDocId) throws Exception;
+	 public void BAL_WhyWhyAnalysisServiceImplJwt(String JwtToken);
+	
 }

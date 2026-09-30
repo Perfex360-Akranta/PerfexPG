@@ -1126,6 +1126,7 @@ public class BAL_preventivemaintenanceservlet extends HttpServlet {
 					commonFilter.setMonwise("Y");
 				}
 			
+				commonFilter.setIsGetCol("Y");
 				List<String[]> impVscomList = plmTlStandardsService.getAllgridassmData(commonFilter);
 				int totalCnt =  (int) commonFilter.getTotalRecordCnt() ;
 				//totalCnt = totalCnt+2;
@@ -1150,6 +1151,7 @@ public class BAL_preventivemaintenanceservlet extends HttpServlet {
 			  List<String []> assmblyGrid  = null;
 			  PrintWriter out = response.getWriter();
 			  JSONObject assmblyGriddata = null;
+			  commonFilter.setIsGetCol("N");
 			  assmblyGrid  = plmTlStandardsService.getAllgridassmData(commonFilter);
 			  int totalCnt =  (int) commonFilter.getTotalRecordCnt() ;
 				//totalCnt = totalCnt+2;
@@ -2882,67 +2884,124 @@ private void saveCbm(HttpServletRequest request,
         return v;
     }
    //for filling headers 1st grid
-    private JSONObject getTableModel(List<String[]> headers) {
-		JqGridTableModel jqGridTableModel = new  JqGridTableModel();
-		String [] colHeader_0 = headers.get(0);	
-		String [] colHeader = headers.get(1);		
-		//String [] colHeader1 = headers.get(2);			
-		jqGridTableModel.getRowHeaders().add(colHeader);
-		
-		for(int i =0; i < colHeader.length; i++)
-		{
-			
-			JqGridColModel jqGridColModel = new JqGridColModel();
-			jqGridColModel.setIndex(colHeader[i].replaceAll(" ", ""));
-			jqGridColModel.setName(colHeader[i].replaceAll(" ", ""));
-			jqGridColModel.setIndex(colHeader_0[i].replaceAll(" ", ""));
-			jqGridColModel.setName(colHeader_0[i].replaceAll(" ", ""));
-			jqGridTableModel.setTableButton(true);		
-			jqGridTableModel.setRowNumbers(true);
-			jqGridColModel.setWidth(100);				
-			jqGridColModel.setAlign("left");
-			jqGridColModel.setEditable(false);
-			if(i==0 || i==1 ||i==2)
-			{
-				jqGridColModel.setHidden(true);
-				jqGridColModel.setKey(true);
-			
-			}
-			else if(i == 3)
-			{
-				jqGridColModel.setWidth(250);
-			}
-			/*else if(i == 5)
-			{
-				jqGridColModel.setWidth(90);
-				jqGridColModel.setAlign("right");
-			}*/
-			else if(i == 5 || i == 6 ||i == 7 ||i == 8 ||i == 9  )
-			{
-				jqGridColModel.setWidth(90);
-				jqGridColModel.setAlign("right");
-			}
-			else if(i == 10)
-			{
-				jqGridColModel.setWidth(100);
-				jqGridColModel.setAlign("right");
-			}
-			else if(i == 11 ||i == 12  )
-			{
-				jqGridColModel.setWidth(68);
-				jqGridColModel.setAlign("right");
-			}
-			
-			CommonFunctions.debugMsg("colHeader["+i+"] "+colHeader[i]);
-			
-			jqGridTableModel.getColModel().add(jqGridColModel);
-		}
-			JSONObject tableModel = UIUtils.getJqGridTableModel(jqGridTableModel);		 
-			tableModel.set("tableHeight", "45%%");
-			tableModel.set("tableWidth", "85%%");
-		 return tableModel;
-    }
+//    private JSONObject getTableModel(List<String[]> headers) {
+//		JqGridTableModel jqGridTableModel = new  JqGridTableModel();
+//		String [] colHeader_0 = headers.get(0);	
+//		String [] colHeader = headers.get(1);		
+//		//String [] colHeader1 = headers.get(2);			
+//		jqGridTableModel.getRowHeaders().add(colHeader);
+//		
+//		for(int i =0; i < colHeader.length; i++)
+//		{
+//			
+//			JqGridColModel jqGridColModel = new JqGridColModel();
+//			jqGridColModel.setIndex(colHeader[i].replaceAll(" ", ""));
+//			jqGridColModel.setName(colHeader[i].replaceAll(" ", ""));
+//			jqGridColModel.setIndex(colHeader_0[i].replaceAll(" ", ""));
+//			jqGridColModel.setName(colHeader_0[i].replaceAll(" ", ""));
+//			jqGridTableModel.setTableButton(true);		
+//			jqGridTableModel.setRowNumbers(true);
+//			jqGridColModel.setWidth(100);				
+//			jqGridColModel.setAlign("left");
+//			jqGridColModel.setEditable(false);
+//			if(i==0 || i==1 ||i==2)
+//			{
+//				jqGridColModel.setHidden(true);
+//				jqGridColModel.setKey(true);
+//			
+//			}
+//			else if(i == 3)
+//			{
+//				jqGridColModel.setWidth(250);
+//			}
+//			/*else if(i == 5)
+//			{
+//				jqGridColModel.setWidth(90);
+//				jqGridColModel.setAlign("right");
+//			}*/
+//			else if(i == 5 || i == 6 ||i == 7 ||i == 8 ||i == 9  )
+//			{
+//				jqGridColModel.setWidth(90);
+//				jqGridColModel.setAlign("right");
+//			}
+//			else if(i == 10)
+//			{
+//				jqGridColModel.setWidth(100);
+//				jqGridColModel.setAlign("right");
+//			}
+//			else if(i == 11 ||i == 12  )
+//			{
+//				jqGridColModel.setWidth(68);
+//				jqGridColModel.setAlign("right");
+//			}
+//			
+//			CommonFunctions.debugMsg("colHeader["+i+"] "+colHeader[i]);
+//			
+//			jqGridTableModel.getColModel().add(jqGridColModel);
+//		}
+//			JSONObject tableModel = UIUtils.getJqGridTableModel(jqGridTableModel);		 
+//			tableModel.set("tableHeight", "45%%");
+//			tableModel.set("tableWidth", "85%%");
+//		 return tableModel;
+//    }
    //end 
+    
+    
+    private JSONObject getTableModel(List<String[]> headers) {
+	    JqGridTableModel jqGridTableModel = new JqGridTableModel();
+	    String[] colHeader_0 = headers.get(0);
+	    String[] colHeader = headers.get(1);
+	    jqGridTableModel.getRowHeaders().add(colHeader);
+
+	    for (int i = 0; i < colHeader.length; i++) {
+
+	        JqGridColModel jqGridColModel = new JqGridColModel();
+	        jqGridColModel.setIndex(colHeader_0[i].replaceAll(" ", ""));
+	        jqGridColModel.setName(colHeader_0[i].replaceAll(" ", ""));
+	        jqGridTableModel.setTableButton(true);
+	        jqGridTableModel.setRowNumbers(true);
+	        jqGridColModel.setWidth(100);
+	        jqGridColModel.setAlign("left");
+	        jqGridColModel.setEditable(false);
+
+	        if (i == 0 || i == 1) {
+	            // row no / KEYID stay hidden
+	            jqGridColModel.setHidden(true);
+	            jqGridColModel.setKey(true);
+	        }
+	        else if (i == 2) {
+	            // Machine Name - now visible
+	            jqGridColModel.setHidden(false);
+	            jqGridColModel.setKey(true);   // kept as key to preserve existing row-id behaviour
+	            jqGridColModel.setWidth(250);
+	        }
+	        else if (i == 3) {
+	            // Machine No
+	            jqGridColModel.setWidth(250);
+	        }
+	        else if (i == 5 || i == 6 || i == 7 || i == 8 || i == 9) {
+	            jqGridColModel.setWidth(90);
+	            jqGridColModel.setAlign("right");
+	        }
+	        else if (i == 10) {
+	            jqGridColModel.setWidth(100);
+	            jqGridColModel.setAlign("right");
+	        }
+	        else if (i == 11 || i == 12) {
+	            jqGridColModel.setWidth(68);
+	            jqGridColModel.setAlign("right");
+	        }
+
+	        CommonFunctions.debugMsg("colHeader[" + i + "] " + colHeader[i]);
+
+	        jqGridTableModel.getColModel().add(jqGridColModel);
+	    }
+
+	    JSONObject tableModel = UIUtils.getJqGridTableModel(jqGridTableModel);
+	    tableModel.set("tableHeight", "45%%");
+	    tableModel.set("tableWidth", "85%%");
+	    return tableModel;
+	}
 //for multi method
     
     

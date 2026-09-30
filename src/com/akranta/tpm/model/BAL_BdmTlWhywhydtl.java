@@ -1,12 +1,16 @@
 package com.akranta.tpm.model;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 public class BAL_BdmTlWhywhydtl {
 
-	private  Object [] saveArray = null;  
+	private  Object [] saveArray = null;
 	//private List<BdmTlWhywhydtl> bdmTlWhywhydtl;
-	
+
 
 	public enum   tableFldConstants
 	{
@@ -21,6 +25,14 @@ public class BAL_BdmTlWhywhydtl {
 
 	public Object[] getSaveArray() {
 		return saveArray;
+	}
+
+	public Object getValue(tableFldConstants field) {
+		return saveArray[field.ordinal()];
+	}
+
+	public void setValue(tableFldConstants field, Object value) {
+		saveArray[field.ordinal()] = value;
 	}
 
 	public String getWwdtKeyid() {
@@ -95,7 +107,77 @@ public class BAL_BdmTlWhywhydtl {
 		saveArray[ tableFldConstants.modifiedon.ordinal() ] = wwdtModifiedon;
 	}
 
+	// ==================================================================
+	//  MODEL -> JSON
+	// ==================================================================
 
+	/** One detail row */
+	public String toJsonManual() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{");
 
+		boolean first = true;
+		for (tableFldConstants field : tableFldConstants.values()) {
+			Object val = saveArray[field.ordinal()];
+			if (val == null) {
+				continue;
+			}
+			if (!first) sb.append(",");
+			String s = val.toString().replace("\\", "\\\\").replace("\"", "\\\"")
+					.replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t");
+			sb.append("\"").append(field.name()).append("\":\"").append(s).append("\"");
+			first = false;
+		}
+
+		sb.append("}");
+		return sb.toString();
+	}
+
+	/** JSON array of detail rows */
+	public static String toJsonManualList(List<BAL_BdmTlWhywhydtl> list) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+
+		if (list != null) {
+			boolean first = true;
+			for (BAL_BdmTlWhywhydtl dtl : list) {
+				if (!first) sb.append(",");
+				sb.append(dtl.toJsonManual());
+				first = false;
+			}
+		}
+
+		sb.append("]");
+		return sb.toString();
+	}
+
+	// ==================================================================
+	//  JSON -> MODEL
+	// ==================================================================
+
+	public static BAL_BdmTlWhywhydtl fromJson(String json) {
+
+		JSONObject obj = JSONObject.fromObject(json);
+		BAL_BdmTlWhywhydtl dtl = new BAL_BdmTlWhywhydtl();
+
+		for (tableFldConstants field : tableFldConstants.values()) {
+			String val = obj.optString(field.name(), null);
+			if (val == null || "null".equalsIgnoreCase(val) || "{}".equals(val)) {
+				val = "";
+			}
+			dtl.setValue(field, val);
+		}
+		return dtl;
+	}
+
+	public static List<BAL_BdmTlWhywhydtl> fromJsonList(String json) {
+
+		List<BAL_BdmTlWhywhydtl> list = new ArrayList<BAL_BdmTlWhywhydtl>();
+
+		JSONArray array = JSONArray.fromObject(json);
+		for (int i = 0; i < array.length(); i++) {
+			list.add(fromJson(array.getJSONObject(i).toString()));
+		}
+		return list;
+	}
 }
-

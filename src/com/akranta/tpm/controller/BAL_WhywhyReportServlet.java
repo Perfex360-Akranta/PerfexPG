@@ -54,6 +54,7 @@ import com.akranta.tpm.service.impl.WorkOrderServiceImpl;
 import com.akranta.tpm.utils.CommonFunctions;
 import com.akranta.tpm.utils.ExcelUtils;
 import com.akranta.tpm.utils.FormModes;
+import com.akranta.tpm.service.api.BAL_BdmTlWhywhyServiceApi;
 
 public class BAL_WhywhyReportServlet extends HttpServlet {
 	
@@ -65,6 +66,7 @@ public class BAL_WhywhyReportServlet extends HttpServlet {
 	BAL_WhyWhyAnalysisService yyService;
 	WorkOrderService workOrderService;
 	BAL_BreakdownService breakDownService ;
+	BAL_BdmTlWhywhyServiceApi balwhywhyserviceapi;
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
 	{ 
@@ -87,6 +89,7 @@ public class BAL_WhywhyReportServlet extends HttpServlet {
 	{
 		String action = UIUtils.getActionPart(request);
 		//HttpSession httpSession = request.getSession(false);
+		HttpSession sttpSession = request.getSession(false);
 
 		try {
 			whywhyService = (BAL_WhywhyReportServiceImpl)UIUtils.getServiceObject(request,"BAL_WhywhyReportServiceImpl");
@@ -96,6 +99,9 @@ public class BAL_WhywhyReportServlet extends HttpServlet {
 			CommonFunctions.debugMsg("breakDownService completed ");
 			workOrderService   = (WorkOrderServiceImpl)UIUtils.getServiceObject(request,"WorkOrderServiceImpl");
 			CommonFunctions.debugMsg("workOrderService completed ");
+			yyService.BAL_WhyWhyAnalysisServiceImplJwt((String) (sttpSession.getAttribute("tpmjwttoken") == null ? "" : sttpSession.getAttribute("tpmjwttoken")) );
+			whywhyService.BAL_WhywhyReportServiceImplJwt((String) (sttpSession.getAttribute("tpmjwttoken") == null ? "" : sttpSession.getAttribute("tpmjwttoken")) );
+			
 		} 
 		catch (ServiceObjectCreationException e) {
 			//CommonFunctions.debugMsg(e);
@@ -111,11 +117,12 @@ public class BAL_WhywhyReportServlet extends HttpServlet {
 				CommonFunctions.debugMsg("action "+ action); 
 				UIUtils.forwardRequest(request, response, "/tiles/xml/WhyWhyEffecRpt.xml");
 			}	else if( action.equals("whywhyEffectiveness_input.balwhy")){
-				UIUtils.forwardRequest(request, response, "/pages/bal_EffectivenessForm.jsp");
+				UIUtils.forwardRequest(request, response, "/pages/BAL_EffectivenessForm.jsp");
 			 }else if( action.equals("whywhyEffectiveness_getCol.balwhy")){
 				 HttpSession httpSession = request.getSession(false);
 				PrintWriter out = response.getWriter();
 				CommonFilter commonFilter = populateCommonFilter(request,"whywhyCommonFilter",true);
+				commonFilter.setIsGetCol("Y");
 				List< String[]> YYEffectiveList  = whywhyService.getYYEffectiveness(commonFilter);
 	   	    	JSONObject jsonObject = null;
 			 	
@@ -159,6 +166,7 @@ public class BAL_WhywhyReportServlet extends HttpServlet {
 						PrintWriter out = response.getWriter();
 						JSONObject jsonObject = new JSONObject();
 						CommonFilter commonFilter = populateCommonFilter(request,"whywhyCommonFilter",false);
+						commonFilter.setIsGetCol("N");
 						List< String[]> YYEffectiveList  = whywhyService.getYYEffectiveness(commonFilter);
 						CommonFunctions.debugMsg("size " + YYEffectiveList.size());
 						jsonObject  = UIUtils.convertToJqGridTableObject(YYEffectiveList,request,2,0,YYEffectiveList.size()); 
@@ -229,7 +237,7 @@ public class BAL_WhywhyReportServlet extends HttpServlet {
 		else if( action.equals("whywhyanalysis_input.balwhy"))     ///TTTT
 		{ 
 			CommonFunctions.debugMsg("action "+ action); 
-			UIUtils.forwardRequest(request, response, "/pages/bal_WhyWhyAnalysisMainFormGrid.jsp");
+			UIUtils.forwardRequest(request, response, "/pages/BAL_WhyWhyAnalysisMainFormGrid.jsp");
 		 }
 		 
 		else if( action.equals("whywhyanalysismodify_input.balwhy")){
@@ -1142,6 +1150,7 @@ public class BAL_WhywhyReportServlet extends HttpServlet {
 		response.setContentType("text/html");
 		if(UIUtils.isValidKeyId(recDocId))
 			commonFilter.setRefdocid(recDocId);
+		commonFilter.setIsGetCol("Y");
 		List<String[]> AbnDataList  = yyService.getAllWhywhy(commonFilter);
 		JqGridTableModel jqGridTableModel = new  JqGridTableModel();			
 		GridColModel gridColModel = new GridColModel();
@@ -1152,8 +1161,8 @@ public class BAL_WhywhyReportServlet extends HttpServlet {
 		
 		gridColModel.setHeaderNum(1);
 		
-		String [] colHeader = AbnDataList.get(2);			
-		String [] colHeaderCond = AbnDataList.get(1);
+		String [] colHeader = AbnDataList.get(1);			
+		String [] colHeaderCond = AbnDataList.get(0);
 		
 		//CommonFunctions.debugMsg("   TABLEMODEL     "+choiceCol.get(0)[1]);
 		List<String[]> headers = new ArrayList<String[]>();
@@ -1175,6 +1184,7 @@ public class BAL_WhywhyReportServlet extends HttpServlet {
 				CommonFilter commonFilter =  populateCommonFilter(request,"whywhyanalysisCommonFilter",false);
 				if(UIUtils.isValidKeyId(recDocId))
 					commonFilter.setRefdocid(recDocId);
+				commonFilter.setIsGetCol("N");
 				  List<String []> WhyReportList  =  yyService.getAllWhywhy(commonFilter);
 				PrintWriter out = response.getWriter();
 				
@@ -1193,6 +1203,7 @@ public class BAL_WhywhyReportServlet extends HttpServlet {
 				String yyid = request.getParameter("masterkeyid");
 				CommonFilter commonFilter =  populateCommonFilter(request,"whywhyanalysisCommonFilter",true);
 				commonFilter.setYyNo(yyid);
+				commonFilter.setIsGetCol("Y");
 				List<String[]> Proposed = whywhyService.getProposed(commonFilter);
 				JSONObject jsonObject = getTableModelProposed(Proposed);
 			    out.println(jsonObject);
@@ -1206,6 +1217,7 @@ public class BAL_WhywhyReportServlet extends HttpServlet {
 				String yyid = request.getParameter("masterkeyid");
 				CommonFilter commonFilter =  populateCommonFilter(request,"whywhyanalysisCommonFilter",false);
 				commonFilter.setYyNo(yyid);
+				commonFilter.setIsGetCol("N");
 				List<String[]> Proposed = whywhyService.getProposed(commonFilter);
 				JSONObject ProposedJson= UIUtils.convertToJqGridTableObject(Proposed, request, 2, 0);
 				out.println(ProposedJson);
@@ -2042,7 +2054,8 @@ public class BAL_WhywhyReportServlet extends HttpServlet {
 	{
 		
 		JqGridTableModel jqGridTableModel = new  JqGridTableModel();
-		String [] colHeader1 = headers.get(0);
+		//String [] colHeader1 = headers.get(0);
+		String[] colHeader1 = {"txtWwdtKeyid","txtWwdtWhy","Answer","Delete"};
 		jqGridTableModel.getRowHeaders().add(colHeader1);
 		
 		jqGridTableModel.setTableHeight(290);
@@ -2121,7 +2134,7 @@ public class BAL_WhywhyReportServlet extends HttpServlet {
 	{
 		
 		JqGridTableModel jqGridTableModel = new  JqGridTableModel();
-		String[] row = headers.get(2);
+		String[] row = headers.get(0);
 		String [] colHeader1 = headers.get(1);
 		String [] colHeader0= headers.get(0);
 		CommonFunctions.debugMsg(colHeader1   + "..................");
@@ -2174,7 +2187,7 @@ public class BAL_WhywhyReportServlet extends HttpServlet {
 		String action = UIUtils.getActionPart(request);
 		if( action.equals("whywhyRptGenDrill_view.balwhy")){
 			
-			UIUtils.forwardRequest(request, response, "/pages/Reports/bal_whywhygendrilldown.jsp");
+			UIUtils.forwardRequest(request, response, "/pages/Reports/BAL_whywhygendrilldown.jsp");
 		}
 		else if( action.equals("whywhyRptGenDrill_getCol.balwhy")){
 			buildTableColModel( request,response);
@@ -2218,7 +2231,7 @@ public class BAL_WhywhyReportServlet extends HttpServlet {
 			commonFilter.setToMonth(CommonFunctions.getDate().substring(3,11));
 			commonFilter.setMonwise("Y");
 		}
-	
+		commonFilter.setIsGetCol("Y");
 		List<String[]> yyData = yyService.getWhyWhyGenDrillData(commonFilter);
 		JSONObject jsonObject = getTableModel(yyData,FilterValues.getHeader(commonFilter.getDrillCaption()));
 		jsonObject.set("tableHeight", "80%%");
@@ -2234,12 +2247,13 @@ public class BAL_WhywhyReportServlet extends HttpServlet {
 
 		
 		CommonFilter commonFilter = populateCommonFilter(request,gendrillcommonfilter,false);
+		commonFilter.setIsGetCol("N");
 		List<String[]> impVscomList = yyService.getWhyWhyGenDrillData(commonFilter);
 		
 		JSONObject listToJsonObject = new JSONObject();
 
 		if (impVscomList != null && impVscomList.size() > 1)
-			listToJsonObject = UIUtils.convertToJqGridTableObject(impVscomList, request, 1, 0,commonFilter.getTotalRecordCnt());
+			listToJsonObject = UIUtils.convertToJqGridTableObject(impVscomList, request, 2, 0,commonFilter.getTotalRecordCnt());
 		
 		PrintWriter out = response.getWriter();
 		out.println(listToJsonObject);
@@ -2250,8 +2264,8 @@ public class BAL_WhywhyReportServlet extends HttpServlet {
 	{
 		JqGridTableModel jqGridTableModel = new  JqGridTableModel();
 		
-		String [] colHeader = headers.get(0) ;
-		int header = colHeader.length-1;
+		String [] colHeader = headers.get(1) ;
+		int header = colHeader.length;
 		String [] headerArr = new String[header];
 		colHeader[2] = caption;  
 		

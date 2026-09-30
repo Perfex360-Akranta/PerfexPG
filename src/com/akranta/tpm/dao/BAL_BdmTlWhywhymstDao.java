@@ -46,5 +46,7 @@ public interface BAL_BdmTlWhywhymstDao {
 	public BAL_BdmTlYydonebymst yyDonebyCreate(BAL_BdmTlYydonebymst newBdmTlYydonebymst) throws Exception;
 	public String deleteYYDoneBy(String keyId)throws Exception ;
 	public abstract String getYYKeyId(String refDocId) throws Exception;
+	 public abstract void BAL_BdmTlWhywhymstDaoImplJwt(String jwtToken);
+	
 }
 

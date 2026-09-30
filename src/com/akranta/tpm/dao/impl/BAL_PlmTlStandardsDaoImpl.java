@@ -552,7 +552,8 @@ public class BAL_PlmTlStandardsDaoImpl implements BAL_PlmTlStandardsDao {
 			 //System.out.println("activity type  "+commonFilter.getJobtype().getId() +" -- "+commonFilter.getJobType().g);
 			System.out.println("paramvalues" + paramValues);
 			//List<String[]> pmStdassmList = dbActionTemplate.processFunctionCallsWithColHeaders("PLM_PC_PLANNEDMAINT.PLM_FN_TRADEWISECOUNT", paramValues);
-			List<String[]> pmStdassmList = dbActionTemplate.processFunctionCallsWithColHeaders("PLM_FN_TRADEWISECOUNT_SB", paramValues);
+			//List<String[]> pmStdassmList = dbActionTemplate.processFunctionCallsWithColHeaders("PLM_FN_TRADEWISECOUNT_SB", paramValues);
+			List<String[]> pmStdassmList = fnCallApi.callFunction("PLM_FN_TRADEWISECOUNT_BAJAJ_SB", paramValues,3,true);
 			System.out.println(" ::: List  " + pmStdassmList.size());
 			 if( commonFilter.getViewClick() == 'Y'){
 					String totalCnt = paramValues.get(0); 

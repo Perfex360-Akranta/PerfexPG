@@ -25,6 +25,8 @@ import com.akranta.tpm.model.CommonFilter;
 import com.akranta.tpm.model.GenTlAllmoduleimgfile;
 import com.akranta.tpm.service.BAL_WhywhyReportService;
 import com.akranta.tpm.utils.CommonFunctions;
+import com.akranta.tpm.service.api.BAL_BdmTlWhywhyServiceApi;
+//import com.akranta.tpm.service.api.WhywhyServiceApi;
 
 
 public  class BAL_WhywhyReportServiceImpl implements BAL_WhywhyReportService {
@@ -32,6 +34,8 @@ public  class BAL_WhywhyReportServiceImpl implements BAL_WhywhyReportService {
 private BAL_WhywhyReportDao whywhyReportDao;
 private BAL_CommonFilterDao commonFilterDao;
 private DBActionTemplate dbActionTemplate;
+//private BWhywhyServiceApi whywhyServiceApi;
+private BAL_BdmTlWhywhyServiceApi balwhywhyserviceapi;
 
 	public BAL_WhywhyReportServiceImpl(DBActionTemplate dbActionTemplate)
 	{
@@ -42,7 +46,17 @@ private DBActionTemplate dbActionTemplate;
 		commonFilterDao = new BAL_CommonFilterDaoImpl(dbActionTemplate);
 		CommonFunctions.debugMsg("dthis.dbActionTemplateServiceImpl==="+this.dbActionTemplate);
 	}
-	
+	public void BAL_WhywhyReportServiceImplJwt(String JwtToken){
+    	try{
+    		whywhyReportDao.BAL_WhywhyReportDaoImplJwt(JwtToken);
+    		balwhywhyserviceapi = new BAL_BdmTlWhywhyServiceApi(JwtToken);
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
+        // TODO Auto-generated constructor stub
+    }
 	public List<String[]> getAllwhywhyStd(CommonFilter commonFilter) throws Exception
 	{
 		
@@ -165,7 +179,10 @@ private DBActionTemplate dbActionTemplate;
 
 	@Override
 	public List<String[]> getanalysis(String masdetkeyid) throws Exception {
-		return whywhyReportDao.getanalysis(masdetkeyid);
+		//return whywhyReportDao.getanalysis(masdetkeyid);
+		return balwhywhyserviceapi.getAnalysis(masdetkeyid);
+		
+		
 		
 	}
 

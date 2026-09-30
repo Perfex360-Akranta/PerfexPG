@@ -1,15 +1,16 @@
 package com.akranta.tpm.model;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import net.sf.json.JSONObject;
 
 public class BAL_BdmTlWhywhymst {
 
 	private  Object [] saveArray = null;
 	private String elementid;
-	
+
 	private List<BAL_BdmTlWhywhydtl> bdmTlWhywhydtl;
-	
+
 	public enum   tableFldConstants
 	{
 		keyid, date, factoryid, sectionid, lossid, cellid, subcellid
@@ -24,7 +25,7 @@ public class BAL_BdmTlWhywhymst {
 		, reportdatetime, othercheckpoints,sparesid,pillarid,productid,immediateaction,
 		tempfield1,tempfield2,tempfield3, active, createdby, createdon, modifiedon
 	}
-    
+
 	public BAL_BdmTlWhywhymst()
 	{
 		saveArray = new  Object [ 66 ];
@@ -35,6 +36,13 @@ public class BAL_BdmTlWhywhymst {
 	}
 	public void setSaveArray(Object[] saveArray) {
 		this.saveArray = saveArray;
+	}
+	public Object getValue(tableFldConstants field) {
+		return saveArray[field.ordinal()];
+	}
+
+	public void setValue(tableFldConstants field, Object value) {
+		saveArray[field.ordinal()] = value;
 	}
 
 	public String getWwmsKeyid() {
@@ -148,7 +156,8 @@ public class BAL_BdmTlWhywhymst {
 	public void setWwmsFinalaction(String wwmsFinalaction) {
 		saveArray[ tableFldConstants.finalaction.ordinal() ] = wwmsFinalaction;
 	}
-		public String getWwmsSparesreplaced() {
+
+	public String getWwmsSparesreplaced() {
 		return (String) saveArray[ tableFldConstants.sparesreplaced.ordinal() ];
 	}
 
@@ -476,6 +485,14 @@ public class BAL_BdmTlWhywhymst {
 		saveArray[ tableFldConstants.othercheckpoints.ordinal() ] = wwmsOthercheckpoints;
 	}
 
+	public String getWwmsSparesid() {
+		return (String) saveArray[ tableFldConstants.sparesid.ordinal() ];
+	}
+
+	public void setWwmsSparesid(String wwmsSparesid) {
+		saveArray[ tableFldConstants.sparesid.ordinal() ] = wwmsSparesid;
+	}
+
 	public String getWwmsSparesId() {
 		return (String) saveArray[ tableFldConstants.sparesid.ordinal() ];
 	}
@@ -483,29 +500,21 @@ public class BAL_BdmTlWhywhymst {
 	public void setWwmsSparesId(String wwmsSparesId) {
 		saveArray[ tableFldConstants.sparesid.ordinal() ] = wwmsSparesId;
 	}
-	
-	public String getWwmsSparesid() {
-		return (String) saveArray[ tableFldConstants.sparesid.ordinal() ];
-	}
 
-	public void setWwmsSparesid(String wwmsSparesId) {
-		saveArray[ tableFldConstants.sparesid.ordinal() ] = wwmsSparesId;
-	}
-	
 	public String getWwmsPillarid() {
 		return (String) saveArray[ tableFldConstants.pillarid.ordinal() ];
 	}
 
-	public void setWwmsPillarid(String wwmsPillarId) {
-		saveArray[ tableFldConstants.pillarid.ordinal() ] = wwmsPillarId;
+	public void setWwmsPillarid(String wwmsPillarid) {
+		saveArray[ tableFldConstants.pillarid.ordinal() ] = wwmsPillarid;
 	}
-	
+
 	public String getWwmsProductid() {
 		return (String) saveArray[ tableFldConstants.productid.ordinal() ];
 	}
 
-	public void setWwmsProductid(String wwmsProductId) {
-		saveArray[ tableFldConstants.productid.ordinal() ] = wwmsProductId;
+	public void setWwmsProductid(String wwmsProductid) {
+		saveArray[ tableFldConstants.productid.ordinal() ] = wwmsProductid;
 	}
 
 	public String getWwmsImmediateaction() {
@@ -513,30 +522,33 @@ public class BAL_BdmTlWhywhymst {
 	}
 
 	public void setWwmsImmediateaction(String wwmsImmediateaction) {
-		saveArray[ tableFldConstants.immediateaction.ordinal() ] =wwmsImmediateaction ;
+		saveArray[ tableFldConstants.immediateaction.ordinal() ] = wwmsImmediateaction;
 	}
+
 	public String getWwmsTempfield1() {
 		return (String) saveArray[ tableFldConstants.tempfield1.ordinal() ];
 	}
 
 	public void setWwmsTempfield1(String wwmsTempfield1) {
-		saveArray[ tableFldConstants.tempfield1.ordinal() ] =wwmsTempfield1 ;
+		saveArray[ tableFldConstants.tempfield1.ordinal() ] = wwmsTempfield1;
 	}
+
 	public String getWwmsTempfield2() {
 		return (String) saveArray[ tableFldConstants.tempfield2.ordinal() ];
 	}
 
 	public void setWwmsTempfield2(String wwmsTempfield2) {
-		saveArray[ tableFldConstants.tempfield2.ordinal() ] =wwmsTempfield2 ;
+		saveArray[ tableFldConstants.tempfield2.ordinal() ] = wwmsTempfield2;
 	}
+
 	public String getWwmsTempfield3() {
 		return (String) saveArray[ tableFldConstants.tempfield3.ordinal() ];
 	}
 
 	public void setWwmsTempfield3(String wwmsTempfield3) {
-		saveArray[ tableFldConstants.tempfield3.ordinal() ] =wwmsTempfield3 ;
+		saveArray[ tableFldConstants.tempfield3.ordinal() ] = wwmsTempfield3;
 	}
-	
+
 	public String getWwmsActive() {
 		return (String) saveArray[ tableFldConstants.active.ordinal() ];
 	}
@@ -585,5 +597,46 @@ public class BAL_BdmTlWhywhymst {
 		return elementid;
 	}
 
-}
+	// ==================================================================
+	//  MODEL -> JSON  (master only; details use BAL_BdmTlWhywhydtl.toJsonManualList)
+	// ==================================================================
+	public String toJsonManual() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{");
 
+		boolean first = true;
+		for (tableFldConstants field : tableFldConstants.values()) {
+			Object val = saveArray[field.ordinal()];
+			if (val == null) {
+				continue;
+			}
+			if (!first) sb.append(",");
+			String s = val.toString().replace("\\", "\\\\").replace("\"", "\\\"")
+					.replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t");
+			sb.append("\"").append(field.name()).append("\":\"").append(s).append("\"");
+			first = false;
+		}
+
+		sb.append("}");
+		return sb.toString();
+	}
+
+	// ==================================================================
+	//  JSON -> MODEL  (master only; details use BAL_BdmTlWhywhydtl.fromJsonList)
+	// ==================================================================
+	public static BAL_BdmTlWhywhymst fromJson(String json) {
+
+		JSONObject obj = JSONObject.fromObject(json);
+		BAL_BdmTlWhywhymst mst = new BAL_BdmTlWhywhymst();
+
+		for (tableFldConstants field : tableFldConstants.values()) {
+			String val = obj.optString(field.name(), null);
+			if (val == null || "null".equalsIgnoreCase(val) || "{}".equals(val)) {
+				val = "";
+			}
+			mst.setValue(field, val);
+		}
+		return mst;
+	}
+
+}

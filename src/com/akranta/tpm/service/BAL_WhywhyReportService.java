@@ -35,4 +35,6 @@ public interface BAL_WhywhyReportService {
 	public Workbook getwhywhyExlView(String rowId, String format, String path,String imagePath)throws Exception;
 	public Workbook WhyWhyEffectivenessExportExcel(CommonFilter commonFilter,JSONObject colmodel, String format)throws Exception;
 	public List<String[]> getyyDoneby(String masterkeyid) throws Exception;
+	 public void BAL_WhywhyReportServiceImplJwt(String JwtToken);
+		
 }

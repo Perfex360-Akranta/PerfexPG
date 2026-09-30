@@ -3,10 +3,10 @@ jQuery(document).ready(function(){
 
 	jQuery ("#btnNew").click(function(){
 		//alert(jQuery("#hdnFilterString").val());
-		navigateToNextForm("whywhyanalysismodify_input.why?"+jQuery("#hdnFilterString").val()+"&filterButton=false");
+		navigateToNextForm("whywhyanalysismodify_input.balwhy?"+jQuery("#hdnFilterString").val()+"&filterButton=false");
 	});
 	
-	viewGrid("whywhyanalysismaingrid_input.why","q=2&"+jQuery("#hdnFilterString").val());
+	viewGrid("whywhyanalysismaingrid_input.balwhy","q=2&"+jQuery("#hdnFilterString").val());
 });
 
 
@@ -15,7 +15,7 @@ function viewGrid(url, filterStr) {
 	
 	//alert("Url :" +url);
 	//alert("filter String :" +filterStr);
-	processGridnew("whywhyanalysismaingrid_input.why",filterStr,"achievementgrid","pager","","docDoubleClick");
+	processGridnew("whywhyanalysismaingrid_input.balwhy",filterStr,"achievementgrid","pager","","docDoubleClick");
 	return true;
 	
 	
@@ -33,7 +33,7 @@ function docDoubleClick(rowid)
 	var keyid = rowData.KEYID;
 	// alert(keyid);
 	
-	navigateToNextForm("whywhyanalysismodify_input.why?keyid="+keyid+"&hdnMode="+jQuery("#hdnMode").val()+"&"+jQuery("#hdnFilterString").val()+"&filterButton=false");
+	navigateToNextForm("whywhyanalysismodify_input.balwhy?keyid="+keyid+"&hdnMode="+jQuery("#hdnMode").val()+"&"+jQuery("#hdnFilterString").val()+"&filterButton=false");
 	
 }
 
