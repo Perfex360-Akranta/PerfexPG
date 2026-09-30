@@ -10,8 +10,11 @@ jQuery(document).ready(function () {
         window.__causeOrigCaptured = true;
     }
 
-    fillComboBox("frmCause", "cmbbphmKeyid", "phenomenabajaj.commonFilter");
-    fillComboBox("frmCause", "cmbbcsmKeyid", "causebajaj.commonFilter");
+    //fillComboBox("frmCause", "cmbbphmKeyid", "phenomenabajaj.commonFilter");
+    //fillComboBox("frmCause", "cmbbcsmKeyid", "causebajaj.commonFilter");
+    
+    fillComboBox("frmCause", "cmbbphmKeyid", "combo_phenomena.Bbrdn");
+    fillComboBox("frmCause", "cmbbcsmKeyid", "combo_cause.Bbrdn");
 
     jQuery('#frmCause .easyui-text').css('text-transform', 'uppercase');
     jQuery('#frmCause .easyui-combobox').css('text-transform', 'uppercase');
@@ -45,7 +48,8 @@ jQuery(document).ready(function () {
 
 function frmCause_successsCallback(result) {
 	jQuery("#cmbbcsmKeyid").combobox("clear");
-	reloadCombo("frmCause","cmbbcsmKeyid","causebajaj.commonFilter");
+	//reloadCombo("frmCause","cmbbcsmKeyid","causebajaj.commonFilter");
+	reloadCombo("frmCause","cmbbcsmKeyid","combo_cause.Bbrdn");
 	if (window.__restoreCauseContext) window.__restoreCauseContext();
 	jQuery('#submitForm').val('frmBDMaster');
 	setSubmitFormUrl('Breakdown_save.Bbrdn');

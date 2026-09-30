@@ -2,7 +2,8 @@ package com.akranta.tpm.dao.sql;
 
 public class BAL_SapTlSparesreplacedSql {
 
-	public static final String TBL_SAP_TL_SPARESREPLACED = "SAP_TL_SPARESREPLACED";  
+	public static final String TBL_SAP_TL_SPARESREPLACED = "BAL_SAP_TL_SPARESREPLACED";
+	public static final String TBL_SAP_TL_SPARESREPLACED_IDENT = "SAP_TL_SPARESREPLACED";
 
 	TableFieldType [] sspmDbFields = null;
 

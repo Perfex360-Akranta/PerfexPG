@@ -25,9 +25,6 @@ jQuery(document).ready(function(){
 	 if(docType=="PM"){	
 	      jQuery('#cmbOredertype').combobox('setValue','SMT002');
 	      jQuery('#snpgrid').width('80%');	
-	  }else if(docType=="GEN"){	
-	      jQuery('#cmbOredertype').combobox('setValue','SMT004');
-	      jQuery('#snpgrid').width('80%');	
 	  }
 	   else{
 		  jQuery('#cmbOredertype').combobox('setValue','SMT001');	
@@ -42,9 +39,6 @@ jQuery(document).ready(function(){
         		//fact = jQuery("#frmWOGen input[id='factory']").val();
         		plantName = jQuery('#linfrmWOGenSbu > u > b').html();        	 	
         		fact = jQuery("#frmWOGen input[id='sbu']").val();
-        	} else if(docType=="GEN"){		
-        		plantName = jQuery('#linfrmGenralMaintenanceSbu > u > b').html();        	 	
-        		fact = jQuery("#frmGenralMaintenance input[id='sbu']").val();
         	}
          else{       		
             	 //plantName = jQuery('#linfrmBDMasterFactory > u > b').html();
@@ -94,7 +88,7 @@ jQuery(document).ready(function(){
 						alert('Enter The Quantity');
 						}
 					else 
-					 saveForm("frmSapDtls","updateSparesQty.sapinfo?spareSAPData="+encodeURIComponent(spareSAPData));
+					 saveForm("frmSapDtls","updateSparesQty.sapinfo?spareSAPData="+spareSAPData);
 					 
 				 
 				 //alert(spareSAPData);

@@ -2320,6 +2320,7 @@ public class UIUtils {
 			String environmnet =(String )userSession.getAttribute("admDbEnvironment");
 			String location =(String )userSession.getAttribute("admDbLocation");
 			String dataSourceIdentifier = location+environmnet;
+			CommonMessage.debugMsg("dataSourceIdentifier"+dataSourceIdentifier);
 			
 			DBActionTemplate  dbActionTemplate = null; 
 			boolean dbActionTemplateExist = false;
@@ -2329,6 +2330,7 @@ public class UIUtils {
 //			CommonMessage.debugMsg("dataSourceIdentifier : "+dataSourceIdentifier);
 			if( location != null && environmnet != null && isValidKeyId(environmnet) && isValidKeyId(location)){
 				dataSourceIdentifier = dataSourceIdentifier.toLowerCase();
+				CommonMessage.debugMsg("dataSourceIdentifier1"+dataSourceIdentifier);
 				dbActionTemplate = (DBActionTemplate)userSession.getServletContext().getAttribute("dbActionTemplate"+dataSourceIdentifier);
 				if( dbActionTemplate != null)
 				{	
@@ -2347,7 +2349,9 @@ public class UIUtils {
 			}
 			
 			if(!dbActionTemplateExist && location != null && environmnet != null){
+				
 				dataSourceIdentifier = location+environmnet;
+				CommonMessage.debugMsg("dataSourceIdentifier2"+dataSourceIdentifier);
 				dataSourceIdentifier = dataSourceIdentifier.toLowerCase();
 				try {
 //					CommonMessage.debugMsg("dbActionTemplateExistConnection : "+dbActionTemplateExist);
@@ -2483,7 +2487,7 @@ public class UIUtils {
 				
 				String identifier = location+environmnet;
 				Object serviceObj = null;
-				
+				CommonMessage.debugMsg("identifier"+identifier);
 				if( environmnet != null && location != null ){
 					
 					synchronized (userSession) {
@@ -3219,6 +3223,21 @@ public static void writeComboBox(HttpServletResponse response,List<ComboBox> com
 		JSONObject error = new JSONObject();
 		error.put("exception", true);
 		error.put("errMsg", errMsg);
+		response.getWriter().print(error);
+	}
+	
+	public static void bindAppExcetionMsg(HttpServletResponse response,JSONObject errMsg ) throws IOException{
+		JSONObject error = new JSONObject();
+		error.put("exception", true);
+		error.put("errMsg", errMsg);
+		response.getWriter().print(error);
+	}
+	
+	public static void bindAppExcetionMsg(HttpServletResponse response,Exception e, String errMsg ) throws IOException{
+		JSONObject error = new JSONObject();
+		error.put("exception", true);
+		error.put("errMsg", errMsg);
+		error.put("errDtl",e.getLocalizedMessage());
 		response.getWriter().print(error);
 	}
 }

@@ -316,7 +316,7 @@ public class BAL_SAPInfoDaoImpl implements BAL_SAPInfoDao{
 		{ 
 		//	sapTlSparesreplaced.setSspmKeyId(dbActionTemplate.getSequenceNumber(SapTlSparesreplacedSql.TBL_SAP_TL_SPARESREPLACED, 12, "SSPM", "MMYY", "Y"));//getSequenceNumber(WomTlWomstSql.TBL_WOM_TL_WOMST)); // set the sequnce number
 			
-			String sspmKeyid =  dbActionTemplate.getSequenceNumber(BAL_SapTlSparesreplacedSql.TBL_SAP_TL_SPARESREPLACED, 12, "SSPM", "MMYY", "Y");
+			String sspmKeyid =  dbActionTemplate.getSequenceNumber(BAL_SapTlSparesreplacedSql.TBL_SAP_TL_SPARESREPLACED_IDENT, 12, "SSPM", "MMYY", "Y");
 			CommonFunctions.debugMsg("sspmKeyid==="+sspmKeyid);				
 			newSapTlSparesreplaced.setSspmKeyId(sspmKeyid);
 			CommonFunctions.debugMsg("newSapTlSparesreplaced.getSspmDocnumber()=="+newSapTlSparesreplaced.getSspmDocnumber());

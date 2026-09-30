@@ -10943,3 +10943,142 @@ jQuery('.limit-length').keyup(function() {
     function replaceAllDoubleQuots(str){
     	return str != undefined ? str.replace(/"/g, '\\"'):"";
     }
+	
+	//SAP Related Functions
+	
+	function submitToSap(processName, processCode, transId){
+        alert("jQuery('#lnkSapSubmitQId').length :"+jQuery("#lnkSapSubmitQId").length)
+	   if(jQuery("#lnkSapSubmitQId").length == 0 ){
+	        	
+
+			   jQuery("#Qlinks").prepend("<div id='lnkSapSubmitQId'><span class='sapQlink'><input type='button' id='btnSAPSBQ'  class='easyui-button'  value='SAP Submission Queue' style='width:180px;margin-top:5px;'/></span> </div>");
+
+		    // jQuery("#Qlinks").prepend("<div id='lnkSapSubmitQId'><span class='sapQlink'><a class='clickThe' title='Click to view SAP Submission Queque' style='line-height:0.7;color:#000;opacity:0.7;' > SAP Submission Queque </a></span> </div>");
+	   }
+	   addProcessToSAPQueue(processName, processCode, transId);
+	  
+	 //  jQuery("#lnkSapSubmitQId.sapQlink a").click(function (e){
+	   jQuery("#btnSAPSBQ").click(function (){
+		  // alert("inisde the click function");
+		//   e.preventDefault();
+		   
+		   jQuery('#popSAPSubmitQueue').css("display","block");
+		   jQuery('#popSAPSubmitQueue').window('open');
+		   jQuery("#olapqiklnk > img").removeClass("blink-border");
+		   
+		   setTimeout(function(){jQuery("input[id^=btnSapQAction_]").removeClass("blink-success");},5000);
+		//   LoadPopUp("popSAPSubmitQueue", null, false,"500px","400px","10%","10%", "", "SAP Submission Queue",false);
+	// alert(123456789);
+	   });
+	   
+	 } 
+
+	 function resizeSapQueueGrid() {
+	     var grid = jQuery("#grdSAPSubmitQueue");
+	     var popup = jQuery("#popSAPSubmitQueue");
+
+	     if (grid.length && grid[0].grid && popup.length) {
+	         var popupWidth = popup.window("window").width();
+	         grid.jqGrid("setGridWidth", popupWidth - 30, true);
+	     }
+	 }
+	 function addProcessToSAPQueue(processName, processCode, transId){
+	   if( jQuery("#popSAPSubmitQueue").length == 0 ){
+		 
+		   jQuery("body").append("<div id='popSAPSubmitQueue' title='SAP Submission Queue' class='easyui-window' style='disply:none;width:600px;height:380px' data-options=\"iconCls:'icon-save',modal:true\" > <div> <table id='grdSAPSubmitQueue'> </table> </div> </div>");
+		   
+		   processGridnew("sapSubmitQ_input.soap","q=2","grdSAPSubmitQueue", "","","","","","","",true);
+
+		   jQuery('#popSAPSubmitQueue').window({  //postSAPSubmitQueue_successcalbk
+		        width:960,
+		        height:500,
+		        modal:true,
+		        closed:true,
+				onOpen: function () {
+				               resizeSapQueueGrid();
+				           }
+		        });
+		   
+	   }
+	   var rowId = transId;
+	   setTimeout(function(){
+	   		var curData = jQuery("#grdSAPSubmitQueue").jqGrid('getRowData',"0");
+
+	  // if( curData == null || curData == undefined || curData.length == 0){
+		   jQuery("#grdSAPSubmitQueue").jqGrid('addRowData', rowId, curData );
+
+		   jQuery("#grdSAPSubmitQueue").jqGrid().setCell(rowId,"txtProcessCode",processCode);
+		   jQuery("#grdSAPSubmitQueue").jqGrid().setCell(rowId,"txtProcessName",processName);
+		   jQuery("#grdSAPSubmitQueue").jqGrid().setCell(rowId,"txtTransId",transId);
+		   jQuery("#grdSAPSubmitQueue").jqGrid().setCell(rowId,"txtStatus","Submitting..");
+
+		   processAjaxCalls("postSapdata.soap","transId="+transId+"&processCode="+processCode+"&processName="+processName,"postSAPSubmitQueue_successcalbk","postSAPSubmitQueue_errorCalbk",null,transId,true);
+	   },5000); 
+	  // }   
+	 }
+
+	 function postSAPSubmitQueue_successcalbk(result){
+	   
+	   if( jQuery("#popSAPSubmitQueue").parent("div").css("display") == "none" )
+		   jQuery("#olapqiklnk > img").addClass("blink-border");
+	   	//alert("result.Exception..........."+result.exception);
+			//alert("result.errorMessage..........."+result.errMsg.msg);
+
+	   if( result.exception){
+		   //alert("result.Exception.in if.........."+result.exception);
+	  		//alert("result.errorMessage...in if    ........"+result.errMsg.msg);
+
+		   jQuery("#grdSAPSubmitQueue").jqGrid().setCell(result.errMsg.rowId,"txtStatus","Failed");
+		   jQuery("#grdSAPSubmitQueue").jqGrid().setCell(result.errMsg.rowId,"txtMessage",result.errMsg.msg);
+		   jQuery("#btnSapQAction_"+result.errMsg.rowId).val('Re-Submit');
+		   jQuery("#btnSapQAction_"+result.errMsg.rowId).addClass("blink-error");
+		   enableUIButton("btnSapQAction_"+result.errMsg.rowId);
+		   jQuery("#btnSapQAction_"+result.errMsg.rowId).bind("click",function(){
+			   jQuery("#olapqiklnk > img").removeClass("blink-border");
+			   disableUIButton("btnSapQAction_"+result.errMsg.rowId);
+			   jQuery(this).removeClass("blink-error");
+			   jQuery("#btnSapQAction_"+result.errMsg.rowId).unbind("click");
+			   jQuery("#grdSAPSubmitQueue").jqGrid().setCell(result.errMsg.rowId,"txtStatus","Re-Submitting..");
+			   
+			   jQuery("#btnSapQAction_"+result.errMsg.rowId).val('Re-Submitting..');
+			   processAjaxCalls("postSapdata.soap","s="+result.errMsg.transId+"&transName="+result.errMsg.transName +"&resend=Y","postSAPSubmitQueue_successcalbk","postSAPSubmitQueue_errorCalbk",null,result.errMsg.transId,true);
+		   });
+			
+	   }
+	   else{
+		   
+		   jQuery("#btnSapQAction_"+result.rowId).addClass("blink-success");
+		   jQuery("#grdSAPSubmitQueue").jqGrid().setCell(result.rowId,"txtStatus","Success");
+		   jQuery("#grdSAPSubmitQueue").jqGrid().setCell(result.rowId,"txtMessage",result.msg);
+		   jQuery("#btnSapQAction_"+result.rowId).val('Submitted');
+		  // jQuery("#grdSAPSubmitQueue").clearGridData();
+		   
+	   }
+	   
+	   setTimeout(function() {
+		 //  alert("Status Value"+jQuery("#grdSAPSubmitQueue").jqGrid().getCell(1,"txtStatus"));
+		  // var status=jQuery("#grdSAPSubmitQueue").jqGrid().getCell(result.rowId,"txtStatus");
+		 // alert("result.Message..........."+jQuery("#grdSAPSubmitQueue").jqGrid().getCell(result.rowId,"txtMessage"));
+		  var status= jQuery("#grdSAPSubmitQueue").jqGrid().getCell(result.rowId,"txtMessage");
+	   		jQuery('#txtSapOrderNo').val(result.transId);
+	   		jQuery('#txtErrppostNo').val(result.transId);
+	   		
+	   		//alert("Status_______________"+status);
+	   		var stat=null;
+	   		if(status=='Succesfully Order Created and techoed')
+	   			 stat='Successfully completed in SAP';
+	   		else
+	   			stat='Failed in SAP';
+	   		
+	   		jQuery('#txtErrppostStatus').val(stat);
+	   		
+	   		//processAjaxCalls("updateTransaction.brdn","tranId="+result.transId+"&status="+escape(status),"updtBdSAPSts_successcalbk","updtBdSAPSts_errCal",null,result.transId,true);
+	   	},10000);
+	}
+	 function sapSubmitQueueTableFormatter(cellValue, options, rowObject){
+	   var rowId= options.rowId;
+	   var caption ="Submitting...";
+	   if( cellValue != "")
+		   caption = cellValue ;
+	   return '<input type="button" class="easyui-button" id="btnSapQAction_'+rowId+'" style="height:20px;text-align:center;" value="'+caption+'" disabled="disabled"/>';
+	 }

@@ -37,7 +37,8 @@ jQuery(document).ready(function(){
 		
 	});
 	viewGrid("");
-	fillComboBox("frmsapstackinformation","cmbPlant","factoryCombo.commonFilter");
+	//fillComboBox("frmsapstackinformation","cmbPlant","factoryCombo.commonFilter");
+	fillComboBox("frmsapstackinformation","cmbPlant","sbuCombo.commonFilter");
 	
 	//processGridnew("Sapstackinformation_input.sapinfo","?q=2","Relatedgrid","Relatedpager");
 	processGridnew("Sapstackstorage_input.sapinfo","?q=2","Storagegrid","Storagepager",null,null,null,"sparesRequestInfo_onComplete");

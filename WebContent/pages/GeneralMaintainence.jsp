@@ -157,7 +157,7 @@ saveForm('frmGenralMaintenance','costinfo.balgenmain?q=2&repType=Actual&refDocTy
 		jQuery("#chkbdSubmittoSap").prop('disabled',true);			
 		}
 		
-		checkSave();
+		//checkSave();
 		
 	//jQuery('#dteGmntShiftdate').datebox('disable');
 	//jQuery("#dteGmntOccureddate").datebox('disable');
@@ -1584,7 +1584,7 @@ function  frmGenralMaintenancecmbGmntRelatedto_onSelect(record)
 function frmGenralMaintenance_FuntLocHierarchy_SuccessCallBack(keyIds)
 {
 	var ldmode=jQuery('#ldmode').val();
-
+	checkSave();
 	if(ldmode =='modify' || ldmode == 'view')
 	{
 		//mano
@@ -1620,6 +1620,8 @@ function frmGenralMaintenance_FuntLocHierarchy_SuccessCallBack(keyIds)
 
 	var factryid = (sbuVal != null && sbuVal != '') ? sbuVal : keyIds.factId;
 	fill_shift(factryid);
+	
+	
 }
 function txt_shift(factryid,sectid,lineid,time){
 
@@ -2531,20 +2533,23 @@ function validateNotFutureDateTime(dateboxId, spinnerId, selDateObj)
 			
 			var genKeyid=jQuery('#cmbGmntKeyid').combobox('getValue');
 			var machine =jQuery('#cmbGmntMachineid').combobox('getText');
-			
-			if(genKeyid!=null||genKeyid!=undefined||genKeyid!=""){
+			var checkY=jQuery('#hdnSpares').val();
+			var sapsts=jQuery('#hdnErrppostStatus').val();
+			var cell = jQuery('#linfrmGenralMaintenanceCell > u > b').html();
+			if(genKeyid!=null && genKeyid!=undefined && genKeyid!=""){
 
-				//	alert(genKeyid+"KeyId in If");
-			jQuery("#tabGenMain").tabs({ onSelect:function(title){  
-			if(title == "SAP Information")
-				{
-				//	alert("tab function Title"); 
+					//alert(genKeyid+"KeyId in If");
+			//jQuery("#tabGenMain").tabs({ onSelect:function(title){  
+				//alert("tab function Title"+title); 
+			//if(title == "SAP Information")
+				//{
+					//alert("tab function Title"); 
 				
-				LoadForm("loadSapInfo","prevloadSapInfo","sapInfo_input.balgenmain?keyId="+genKeyid+"&isSpares="+checkY+"&refDocType=GEN&machine="+machine+"&sapsts="+sapsts,"","sapInfoComplete","sapInfoErr");//?formMode="+mode+"&isSpres="+isSpres+"&flid="+flid+"&bdkeyId="+bdkeyId+"&refDocType=BDM&woId="+woId+"&functionalloc="+cell+"&costCenter="+costCenter+"&machine="+machine,"","sapInfoComplete","sapInfoErr");
-
-				}
-			}
-		});
+				//LoadForm("loadSapInfo","prevloadSapInfo","sapInfo_input.balgenmain?keyId="+genKeyid+"&isSpares="+checkY+"&refDocType=GEN&machine="+machine+"&sapsts="+sapsts,"","sapInfoComplete","sapInfoErr");//?formMode="+mode+"&isSpres="+isSpres+"&flid="+flid+"&bdkeyId="+bdkeyId+"&refDocType=BDM&woId="+woId+"&functionalloc="+cell+"&costCenter="+costCenter+"&machine="+machine,"","sapInfoComplete","sapInfoErr");
+				LoadForm("loadSapInfo","prevloadSapInfo","sapInfo_input.Bbrdn?bdkeyId="+genKeyid+"&isSpres="+checkY+"&refDocType=GEN&machine="+machine+"&functionalloc="+cell+"&sapsts="+sapsts,"","sapInfoComplete","sapInfoErr");//?formMode="+mode+"&isSpres="+isSpres+"&flid="+flid+"&bdkeyId="+bdkeyId+"&refDocType=BDM&woId="+woId+"&functionalloc="+cell+"&costCenter="+costCenter+"&machine="+machine,"","sapInfoComplete","sapInfoErr");
+				//}
+			//}
+		//});
 	}
 	
 }
@@ -2559,8 +2564,8 @@ function validateNotFutureDateTime(dateboxId, spinnerId, selDateObj)
 		
    		 if(genKeyId==null||genKeyId==""){
 	//alert(123);
-	
-		function checkSave(){
+	checkSave();
+		/* function checkSave(){
 		
 				var genKeyid=jQuery('#cmbGmntKeyid').combobox('getValue');
 				var machine =jQuery('#cmbGmntMachineid').combobox('getText');
@@ -2580,12 +2585,13 @@ function validateNotFutureDateTime(dateboxId, spinnerId, selDateObj)
 			});
 		}
 		
-	}			
+	} */			
 }
 else 
 	{
 	
-	LoadForm("loadSapInfo","prevloadSapInfo","sapInfo_input.balgenmain?keyId="+genKeyId+"&isSpares="+checkY+"&refDocType=GEN&machine="+machine+"&sapsts="+sapsts,"sapInfoComplete","sapInfoErr");//?formMode="+mode+"&isSpres="+isSpres+"&flid="+flid+"&bdkeyId="+bdkeyId+"&refDocType=BDM&woId="+woId+"&functionalloc="+cell+"&costCenter="+costCenter+"&machine="+machine,"","sapInfoComplete","sapInfoErr");
+	//LoadForm("loadSapInfo","prevloadSapInfo","sapInfo_input.balgenmain?keyId="+genKeyId+"&isSpares="+checkY+"&refDocType=GEN&machine="+machine+"&sapsts="+sapsts,"sapInfoComplete","sapInfoErr");//?formMode="+mode+"&isSpres="+isSpres+"&flid="+flid+"&bdkeyId="+bdkeyId+"&refDocType=BDM&woId="+woId+"&functionalloc="+cell+"&costCenter="+costCenter+"&machine="+machine,"","sapInfoComplete","sapInfoErr");
+	LoadForm("loadSapInfo","prevloadSapInfo","sapInfo_input.Bbrdn?keyId="+genKeyId+"&isSpares="+checkY+"&refDocType=GEN&machine="+machine+"&sapsts="+sapsts,"sapInfoComplete","sapInfoErr");//?formMode="+mode+"&isSpres="+isSpres+"&flid="+flid+"&bdkeyId="+bdkeyId+"&refDocType=BDM&woId="+woId+"&functionalloc="+cell+"&costCenter="+costCenter+"&machine="+machine,"","sapInfoComplete","sapInfoErr");
 	
 	}
 
@@ -3068,7 +3074,7 @@ else
  -->
 		<input type="hidden" id="txtExistwoid" name="txtExistwoid" value="${requestScope.existWoId }"/>
 		<input type="hidden" id="txtRefDocId" name="txtRefDocId" value="${requestScope.refdocId }"/>	 
- 		<input type="hidden" id="txtSparse" name="txtSparse" value="${requestScope.spares}"/>
+ 		<input type="hidden" id="hdnSparse" name="hdnSparse" value="${requestScope.spares}"/>
  		<input type="hidden" id="hdnbdkeyId" name="hdnbdkeyId" value="${requestScope.bdkeyid}"/>
  	 	<input type="hidden" id="hdnbdorederType" name="hdnbdorederType" value="${requestScope.orderType}"/>
  	

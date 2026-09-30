@@ -491,7 +491,7 @@ public class BAL_BreakdownServiceImpl implements BAL_BreakdownService {
 				comboFilter.setNameField("BPHM_PHENOMENANAME");
 				comboFilter.setIdField("MPHL_BPHMID ");
 				comboFilter
-						.setTableName(TableNames.TBL_GEN_TL_MOULDPHENLINK + "," + TableNames.TBL_BAL_BDM_TL_PHENOMENAMST);
+						.setTableName(TableNames.TBL_GEN_TL_MOULDPHENLINK + "," + TableNames.TBL_BDM_TL_PHENOMENAMST);
 			} else {
 				System.out.println("Entered ELSE -> Non MLD case");
 				comboFilter.setNameField("PCT_DISPLAYCODE");
@@ -506,7 +506,7 @@ public class BAL_BreakdownServiceImpl implements BAL_BreakdownService {
 			//comboFilter.setTableName(TableNames.TBL_BAL_BDM_VW_PHENCASLAYOUT);
 			comboFilter.setNameField("BPHM_PHENOMENANAME");
 		    comboFilter.setIdField("BPHM_KEYID");
-		    comboFilter.setTableName(TableNames.TBL_BAL_BDM_TL_PHENOMENAMST);
+		    comboFilter.setTableName(TableNames.TBL_BDM_TL_PHENOMENAMST);
 
 		    sb.append(" AND BPHM_PHENOMENATYPE = 'BD'");
 		   
@@ -599,7 +599,7 @@ public class BAL_BreakdownServiceImpl implements BAL_BreakdownService {
 
 		comboFilter.setCondSql(condSql);
 
-		comboFilter.setTableName(TableNames.TBL_BAL_BDM_TL_CAUSEMST);
+		comboFilter.setTableName(TableNames.TBL_BDM_TL_CAUSEMST);
 
 		return commonFilterDao.fillComboValues(comboFilter);
 		// return comboList;

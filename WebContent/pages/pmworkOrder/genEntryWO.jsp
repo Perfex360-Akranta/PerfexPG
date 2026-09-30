@@ -1609,6 +1609,7 @@ function getSelectdRows(jqGridId,checkBoxColName,ckeckForSelColName)
 					{
 					 		jQuery("#tabtitle").val("PRM");
 							jQuery("#selectAll").prop('disabled', false);
+							var woId = jQuery('#txtWogenwoNo').val();
 					processGridnew('completeWO_input.mpce','?q=2&type=PRM&woId='+woId+'&filterString='+jQuery('#hdnfilter_string').val(),"CompWOGrid","","","CompWODBLClick","","CompWOGridComplete");
 							
 					}
@@ -1616,7 +1617,7 @@ function getSelectdRows(jqGridId,checkBoxColName,ckeckForSelColName)
 					{
 					 		jQuery("#tabtitle").val("CAL");
 					 		var woIdd=jQuery('#txtWogenwoNo').val();
-					 		alert(".....  "+woIdd);
+					 		//alert(".....  "+woIdd);
 							jQuery("#selectAll").prop('disabled', false);
 					processGridnew('completeWO_input.mpce','?q=2&type=CAL&woId='+woIdd+'&filterString='+jQuery('#hdnfilter_string').val(),"CompWOGridcal","","","CompWODBLClick","","CompWOGridComplete");
 							
@@ -1661,6 +1662,7 @@ function getSelectdRows(jqGridId,checkBoxColName,ckeckForSelColName)
 							 var pmWOKeyid=jQuery("#txtWogenwoNo").val();
 							 if (jQuery('#chkSapinfo').is(':checked')==true) {	
 								//jQuery('#chkSapinfo').prop('disabled',true);
+								var flid = jQuery("#frmWOGen input[id='flid']").val();
 								
 								var refDocType=null;
 								var doctype=jQuery('#hdnUrl').val();				    	
