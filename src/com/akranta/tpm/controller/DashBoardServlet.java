@@ -188,6 +188,11 @@ public class DashBoardServlet extends HttpServlet {
 			else if(action.equals("newdashboard_input.dashboard")){
 				displayNewDashboardPage(request,response);
 			}
+			// ------------------- Dashboard 28Sep2026 --------------------------------------//
+			else if(action.equals("angularDmtDashboard_input.dashboard")){
+			    displayAngularDmtDashboardPage(request, response);
+			}
+			// ------------------- Dashboard 28Sep2026 --------------------------------------//
 			
 			else if(action.equals("newdashboardTable1_input.dashboard")){
 				displayNewDashboardPageTable1(request,response);
@@ -1285,6 +1290,107 @@ public class DashBoardServlet extends HttpServlet {
 			//e.printStackTrace();
 		}
 	}
+	
+	// ------------------- Dashboard 28Sep2026 --------------------------------------//
+	private void displayAngularDmtDashboardPage(
+	        HttpServletRequest request,
+	        HttpServletResponse response)
+	        throws ServletException, IOException {
+
+	    HttpSession session = request.getSession(false);
+
+	    if (session == null) {
+	        response.sendError(
+	            HttpServletResponse.SC_UNAUTHORIZED,
+	            "Session not available"
+	        );
+	        return;
+	    }
+
+	    String jwtToken = (String) session.getAttribute("tpmjwttoken");
+	    String flid =  CommonFunctions.getLoginFlid(request);
+	    CommonMessage.debugMsg( "Angular Dashboard FLID : " + flid  );
+
+	    CommonMessage.debugMsg(
+	        "Angular Dashboard JWT Available : "
+	        + (jwtToken != null && !jwtToken.trim().isEmpty())
+	    );
+
+	    if (jwtToken == null ||
+	        jwtToken.trim().isEmpty()) {
+	        response.sendError(
+	            HttpServletResponse.SC_UNAUTHORIZED,
+	            "JWT token not available"
+	       );
+	        return;
+	    }
+
+	    if (flid == null ||
+	        flid.trim().isEmpty()) {
+	        response.sendError(
+	            HttpServletResponse.SC_BAD_REQUEST,
+	            "Functional location not available"
+	        );
+	        return;
+	    }
+
+	    /*
+	     * Local development Angular URL.
+	     * Later move this to a property file for production.
+	     */
+	  //  String angularOrigin =    "http://localhost:4200";
+	    
+	    String angularOrigin = UIUtils.getPropertyValue("com.akranta.tpm.resources.ApplicationConfig", "ANGULAR_URL");
+
+	    String angularDashboardUrl =   angularOrigin
+	        + "/java-dmt-level-dashboard?embedded=java";
+
+	    /*
+	     * Build JSON safely instead of manually
+	     * concatenating JWT into JavaScript.
+	     */
+	    JSONObject dashboardContext =   new JSONObject();
+
+	    dashboardContext.put(
+	        "type",
+	        "PERFEX_DMT_BOOTSTRAP"
+	    );
+
+	    dashboardContext.put(
+	        "token",
+	        jwtToken
+	    );
+
+	    dashboardContext.put(
+	        "flid",
+	        flid
+	    );
+
+	    request.setAttribute(
+	        "angularOrigin",
+	        angularOrigin
+	    );
+
+	    request.setAttribute(
+	        "angularDashboardUrl",
+	        angularDashboardUrl
+	    );
+
+	    request.setAttribute(
+	        "dashboardBootstrapJson",
+	        dashboardContext.toString()
+	    );
+
+	    UIUtils.forwardRequest(
+	        request,
+	        response,
+	        "/pages/Gen/AngularDmtDashboard.jsp"
+	    );
+	}
+	
+	// ------------------- Dashboard 28Sep2026 --------------------------------------//
+	
+	
 	
 	private void displayDashboardPage(HttpServletRequest request,HttpServletResponse response){
 		try {

@@ -396,6 +396,39 @@ function  frmEmpPagecmbLPShiftid_onLoadSuccess(){
 		processAjaxCalls("getEmployeeLocation.base",'userkeyid='+userkeyid,'employeeLocation','employeeLocation_OnError');
 	 });
  
+ 
+ jQuery("#btnAngulardashboard").click(function(){
+	//	alert("Angular Dashboard");
+		openAngularDmtDashboard();
+	 });
+ 
+ function openAngularDmtDashboard() {
+//	 alert("Angular Dashboard 1");
+	    jQuery('#mainlayout')
+	        .layout('collapse', 'west');
+
+	    LoadPopUp(
+	        "AngularDmtDashboardPopup",
+	        "angularDmtDashboard_input.dashboard",
+	        true,
+	        "98.2%",
+	        "95%",
+	        "0%",
+	        "0%",
+	        "angularDmtDashboardLoaded",
+	        "DMT Dashboard",
+	        false
+	    );
+	}
+
+
+	function angularDmtDashboardLoaded(result) {
+
+	    console.log(
+	        "Angular dashboard wrapper loaded."
+	    );
+	}
+	
  jQuery("#btnTeamPerformance").click(function(){
 	  jQuery('#mainlayout').layout('collapse','west');
 	  jQuery('#subDiv').css('width','1186');
@@ -517,16 +550,21 @@ function  frmEmpPagecmbLPShiftid_onLoadSuccess(){
 							    </div> -->
 							
 					
-					
+					<!--
 					  	    <div style="margin-left:200px;margin-top:-30px;">
 							<span><input type="button" class="easyui-button" id="btndashboard" name="btndashboard" value="Dashboard" style="width:80px;"/></span>
+						
 							    </div> 
-							    
-							     <div style="margin-left:285px;margin-top:-30px;">
-							<span><input type="button" class="easyui-button" id="btnTeamPerformance" name="btnTeamPerformance" value="Team Performance" style="width:120px;"/></span>
+							    -->
+							    <div style="margin-left:200px;margin-top:-30px;">
+							    <span><input type="button" class="easyui-button" id="btnAngulardashboard" name="btnAngulardashboard" value="Angular Dashboard" style="width:120px;" >   </span>
+
+							    </div> 
+							     <div style="margin-left:325px;margin-top:-30px;">
+							<span><input type="button" class="easyui-button" id="btnTeamPerformance" name="btnTeamPerformance" value="Team Performance" style="width:120px;" disabled="disabled"/></span>
 							    </div>
 							    
-							 <div style="margin-left:410px;margin-top:-28px;">
+							 <div style="margin-left:450px;margin-top:-28px;">
 							<span><input type="button" class="easyui-button" id="btnTeamPerformanceCount" name="btnTeamPerformanceCount" value="Team Performance Count" style="width:160px;"/></span>
 							    </div>
 							    

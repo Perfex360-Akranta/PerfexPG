@@ -436,6 +436,12 @@ filter: “alpha(opacity=100)”;
 
 <img id="ImgBack" alt="" title="Previous Page (Back Space)" src="images/menu-icon/imgback.png" style="cursor: pointer;" width="34px" height="34px" class="top_menu_efct">
 </div>
+<span
+    id="divAngularUserName"
+    style="display:none;">
+    ${sessionScope.userLogin.employeeName}
+</span>
+
 <input type="hidden" id="hdnFirstTime" name="hdnFirstTime" value="Y">
 <input type="hidden" id="hdnLoginElementid" name="hdnLoginElementid" value="">
 <input type="hidden" id="hdnLoginFlid" name="hdnLoginFlid" value="">
