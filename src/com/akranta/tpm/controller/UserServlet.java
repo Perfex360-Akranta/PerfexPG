@@ -800,7 +800,7 @@ public class UserServlet extends HttpServlet {
 	        	s.removeAttribute("userMenuRights");
 				s.setAttribute("userMenuRights", menuList);
 	        */	
-			s.setMaxInactiveInterval(1*60*10);
+			s.setMaxInactiveInterval(1*60*30);
         	//s.setMaxInactiveInterval(10);
 
 			

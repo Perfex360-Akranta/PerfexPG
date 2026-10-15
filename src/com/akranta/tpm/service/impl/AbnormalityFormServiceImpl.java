@@ -1780,7 +1780,23 @@ private List<AbnTlAbnormality> AbnMultiplefillValues(List<AbnTlAbnormality> newA
          if( abnormalitydata.getAbnmWorktime() == null )
         	 abnormalitydata.setAbnmWorktime("0");
          abnormalitydata.setAbnmWostarttime(dateTime);
-         abnormalitydata.setAbnmWoendtime(dateTime);
+         //abnormalitydata.setAbnmWoendtime(dateTime);
+         
+         if(abnormalitydata.getAbnmStatus().equals("P"))
+        	 abnormalitydata.setAbnmWoendtime(Constants.pgPassNullDateTime);
+ 		else
+ 			{
+ 			if(abnormalitydata.getAbnmWoendtime() ==null)
+ 			{
+ 				
+ 				abnormalitydata.setAbnmWoendtime(dateTime);	
+ 			}
+ 		
+ 			else
+ 			{
+ 				abnormalitydata.setAbnmWoendtime(CommonFunctions.pg_getDateTimeFromDate( abnormalitydata.getAbnmWoendtime()));
+ 			}
+ 		}
    
    			abnormalityLinkList.add(abnormalitydata);
    	}

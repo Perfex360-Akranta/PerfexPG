@@ -203,9 +203,18 @@ public class AbnormalityFormServlet extends HttpServlet {
 			abnStatus = abnTlAbnormality.getAbnmStatus();
 			request.setAttribute("abnStatus", abnStatus);
 			CommonMessage.debugMsg("ID="+abnTlAbnormality.getAbnmEquipmentid());
-			String woendDate = UIUtils.removeDefaultDate(abnTlAbnormality.getAbnmWoendtime()," ");
+			//String woendDate = UIUtils.removeDefaultDate(abnTlAbnormality.getAbnmWoendtime()," ");
+			//String woendDate = CommonFunctions.pg_getFormatDateFromDate(abnTlAbnormality.getAbnmWoendtime().substring(0,10));
 			
-			abnTlAbnormality.setAbnmWoendtime(woendDate);
+			//abnTlAbnormality.setAbnmWoendtime(woendDate);
+			
+			if(abnTlAbnormality.getAbnmWoendtime().contains(Constants.pgPassNullDateTime))
+			{
+				abnTlAbnormality.setAbnmWoendtime("");	
+			}else {
+				abnTlAbnormality.setAbnmWoendtime(CommonFunctions.pg_getFormatDateFromDate(abnTlAbnormality.getAbnmWoendtime().substring(0,10)));
+			}
+			
 			if(abnTlAbnormality.getAbnmEffectivedate().contains(Constants.pgPassNullDateTime))
 			{
 				abnTlAbnormality.setAbnmEffectivedate("");	

@@ -44,7 +44,7 @@ public class OPLITCExcelTemplate {
 
 		String excelFormat = null;
 		String excelPath = null;
-		excelPath = "/OPLITC.xlsx";
+		excelPath = "/OPLITC_NEW.xlsx";//excelPath = "/OPLITC.xlsx";
 		CommonMessage.debugMsg("Xl path........" + path + excelPath);
 		InputStream inp = new FileInputStream(path + excelPath);
 
@@ -192,53 +192,94 @@ public class OPLITCExcelTemplate {
 			sheet.getRow(4).getCell(14).setCellValue(impshtexl[1]);//OPL NO
 			sheet.getRow(5).getCell(14).setCellValue(impshtexl[2]);//Prepared Date
 			
-			if(impshtexl[3] != null)
-			{
-				if(impshtexl[3].contains("B"))
-				{
-					sheet.getRow(8).getCell(4).setCellStyle(style);
-					sheet.getRow(8).getCell(4).setCellValue("�");//Classification Basic
-				}
-				if(impshtexl[3].contains("T"))
-				{	
-					sheet.getRow(8).getCell(8).setCellStyle(style);
-					sheet.getRow(8).getCell(8).setCellValue("�");//tick
-				}
-				if(impshtexl[3].contains("I"))
-				{	
-					sheet.getRow(8).getCell(6).setCellStyle(style);
-					sheet.getRow(8).getCell(6).setCellValue("�");//tick
-				}
-			}
+//			if(impshtexl[3] != null)
+//			{
+//				if(impshtexl[3].contains("B"))
+//				{
+//					sheet.getRow(8).getCell(4).setCellStyle(style);
+//					sheet.getRow(8).getCell(4).setCellValue("�");//Classification Basic
+//				}
+//				if(impshtexl[3].contains("T"))
+//				{	
+//					sheet.getRow(8).getCell(8).setCellStyle(style);
+//					sheet.getRow(8).getCell(8).setCellValue("�");//tick
+//				}
+//				if(impshtexl[3].contains("I"))
+//				{	
+//					sheet.getRow(8).getCell(6).setCellStyle(style);
+//					sheet.getRow(8).getCell(6).setCellValue("�");//tick
+//				}
+//			}
 			
+			if (impshtexl[3] != null)
+			{
+				final String TICK = String.valueOf((char) 0xFE); // Wingdings checked box
+				String cls = impshtexl[3];
+
+				if (cls.contains("B")) setTick(sheet, 8, 4, style, TICK);  // Basic Knowledge
+				if (cls.contains("I")) setTick(sheet, 8, 6, style, TICK);  // Improvement
+				if (cls.contains("T")) setTick(sheet, 8, 8, style, TICK);  // Trouble
+				if (cls.contains("S")) setTick(sheet, 10, 4, style, TICK);  // Safety (NEW)
+				if (cls.contains("C")) setTick(sheet, 10, 6, style, TICK);  // Cost (NEW)
+				if (cls.contains("P")) setTick(sheet, 10, 8, style, TICK);  // Production (NEW)
+			}
+
+			
+//			if( impshtexl[8].equals("W"))  
+//			{
+//				sheet.getRow(11).getCell(1).setCellValue("Why");
+//				//sheet.getRow(13).getCell(1).setCellValue("How");
+//				sheet.getRow(23).getCell(1).setCellValue("How");
+//			}else if( impshtexl[8].equals("Y"))  
+//			{
+//				sheet.getRow(11).getCell(1).setCellValue("Not Ok");
+//				//sheet.getRow(13).getCell(1).setCellValue("Ok");
+//				sheet.getRow(23).getCell(1).setCellValue("Ok");
+//			}
+//	
+//			if( impshtexl[9].equals("Y"))  
+//			{
+//				sheet.getRow(11).getCell(1).setCellValue("Present");
+//				//sheet.getRow(13).getCell(1).setCellValue("After");
+//				sheet.getRow(23).getCell(1).setCellValue("After");
+//			}
+//			
+//			sheet.getRow(8).getCell(10).setCellValue(impshtexl[4]);
+//			sheet.getRow(12).getCell(10).setCellValue(impshtexl[5] != null ? impshtexl[5].toUpperCase() : "" );
+//			sheet.getRow(25).getCell(10).setCellValue(impshtexl[6] != null ? impshtexl[6].toUpperCase() : "" );
+//			sheet.getRow(34).getCell(2).setCellValue(impshtexl[10] != null ? impshtexl[10].toUpperCase() : "" );
+//			sheet.getRow(13).getCell(11).setCellValue(impshtexl[5]);
+//			sheet.getRow(26).getCell(11).setCellValue(impshtexl[6]);
+//			//sheet.getRow(8).getCell(12).setCellValue(impshtexl[7]);
+//			excelFormat = impshtexl[0];
+//			
 			if( impshtexl[8].equals("W"))  
 			{
-				sheet.getRow(11).getCell(1).setCellValue("Why");
+				sheet.getRow(12).getCell(1).setCellValue("Why");
 				//sheet.getRow(13).getCell(1).setCellValue("How");
-				sheet.getRow(23).getCell(1).setCellValue("How");
+				sheet.getRow(24).getCell(1).setCellValue("How");
 			}else if( impshtexl[8].equals("Y"))  
 			{
-				sheet.getRow(11).getCell(1).setCellValue("Not Ok");
+				sheet.getRow(12).getCell(1).setCellValue("Not Ok");
 				//sheet.getRow(13).getCell(1).setCellValue("Ok");
-				sheet.getRow(23).getCell(1).setCellValue("Ok");
+				sheet.getRow(24).getCell(1).setCellValue("Ok");
 			}
 	
 			if( impshtexl[9].equals("Y"))  
 			{
-				sheet.getRow(11).getCell(1).setCellValue("Present");
+				sheet.getRow(12).getCell(1).setCellValue("Present");
 				//sheet.getRow(13).getCell(1).setCellValue("After");
-				sheet.getRow(23).getCell(1).setCellValue("After");
+				sheet.getRow(24).getCell(1).setCellValue("After");
 			}
 			
 			sheet.getRow(8).getCell(10).setCellValue(impshtexl[4]);
-			sheet.getRow(12).getCell(10).setCellValue(impshtexl[5] != null ? impshtexl[5].toUpperCase() : "" );
-			sheet.getRow(25).getCell(10).setCellValue(impshtexl[6] != null ? impshtexl[6].toUpperCase() : "" );
-			sheet.getRow(34).getCell(2).setCellValue(impshtexl[10] != null ? impshtexl[10].toUpperCase() : "" );
-			sheet.getRow(13).getCell(11).setCellValue(impshtexl[5]);
-			sheet.getRow(26).getCell(11).setCellValue(impshtexl[6]);
+			sheet.getRow(13).getCell(10).setCellValue(impshtexl[5] != null ? impshtexl[5].toUpperCase() : "" );
+			sheet.getRow(26).getCell(10).setCellValue(impshtexl[6] != null ? impshtexl[6].toUpperCase() : "" );
+			sheet.getRow(35).getCell(2).setCellValue(impshtexl[10] != null ? impshtexl[10].toUpperCase() : "" );
+			sheet.getRow(14).getCell(11).setCellValue(impshtexl[5]);
+			sheet.getRow(27).getCell(11).setCellValue(impshtexl[6]);
 			//sheet.getRow(8).getCell(12).setCellValue(impshtexl[7]);
 			excelFormat = impshtexl[0];
-			
 			
 			
 			List<ExcelInsertImage> imageType = new ArrayList();
@@ -259,7 +300,7 @@ public class OPLITCExcelTemplate {
 				{
 					ExcelInsertImage  xlImg1 = new ExcelInsertImage();							
 					xlImg1.col1=2;
-					xlImg1.row1 = 13;
+					xlImg1.row1 = 14; //xlImg1.row1 = 13;
 					xlImg1.imageFileName=oplImgList.get(i).getImflFilename();
 					imageType.add(xlImg1);
 				}
@@ -268,7 +309,7 @@ public class OPLITCExcelTemplate {
 					
 					ExcelInsertImage  xlImg = new ExcelInsertImage();			
 					xlImg.col1=2;
-					xlImg.row1 = 26;
+					xlImg.row1 = 27;//xlImg.row1 = 26;
 					xlImg.imageFileName=oplImgList.get(i).getImflFilename();			
 					imageType.add(xlImg);
 					
@@ -286,5 +327,15 @@ public class OPLITCExcelTemplate {
 		}
 		sheet.protectSheet("admin");
 		return wb;
+	}
+	
+
+	private void setTick(Sheet sheet, int rowIdx, int colIdx, CellStyle style, String tick) {
+		org.apache.poi.ss.usermodel.Row row = sheet.getRow(rowIdx);
+		if (row == null) row = sheet.createRow(rowIdx);
+		org.apache.poi.ss.usermodel.Cell cell = row.getCell(colIdx);
+		if (cell == null) cell = row.createCell(colIdx);
+		cell.setCellStyle(style);
+		cell.setCellValue(tick);
 	}
 }

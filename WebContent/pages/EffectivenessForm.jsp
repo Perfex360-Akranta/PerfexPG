@@ -3,7 +3,7 @@
 		var url = jQuery('#hiddenUrl').val();
 		initialiseForm('frmYYEffectiveness');
 		jQuery('#submitForm').val('frmYYEffectiveness');
-		var dataStr="?q=2";			
+		var dataStr="q=2";			
 		viewGrid(url,dataStr);
 	});
 
@@ -17,7 +17,7 @@
 	    
 	}
 	function viewGrid(url,filterString)
-	{						
+	{			
 		if( validateFilterSelection(filterString))
 		{
 			filterString += '&drillFlag=f&firstClick=Y';
