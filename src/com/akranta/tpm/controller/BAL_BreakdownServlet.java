@@ -416,7 +416,7 @@ public class BAL_BreakdownServlet extends HttpServlet {
 			String bdView = request.getParameter("selid");
 			httpSession.removeAttribute("BrkDownDownTimeView");
 			httpSession.setAttribute("BrkDownDownTimeView", bdView);
-			RequestDispatcher rd = request.getRequestDispatcher("/pages/breakdownmaster.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("/pages/BAL_breakdownmaster.jsp");//Change to BAl
 			rd.forward(request, response);
 
 		} else if (action.equals("BDAnalysisRpt_input.Bbrdn")) {
@@ -425,7 +425,7 @@ public class BAL_BreakdownServlet extends HttpServlet {
 			String bdView = request.getParameter("selid");
 			httpSession.removeAttribute("BrkDownDownTimeView");
 			httpSession.setAttribute("BrkDownDownTimeView", bdView);
-			RequestDispatcher rd = request.getRequestDispatcher("/pages/BreakdownAnalysisRpt.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("/pages/BAL_BreakdownAnalysisRpt.jsp");
 			rd.forward(request, response);
 		} else if (action.equals("bdpoorskill_input.Bbrdn")) {
 			RequestDispatcher rd = request.getRequestDispatcher("/pages/BreakDownNew.jsp");
@@ -482,8 +482,8 @@ public class BAL_BreakdownServlet extends HttpServlet {
 
 			gridColModel.setHeaderNum(1);
 
-			String[] colHeader = bdList.get(0);
-			String[] colHeaderCond = bdList.get(1);
+			String[] colHeader = bdList.get(1);
+			String[] colHeaderCond = bdList.get(0);
 
 			// CommonFunctions.debugMsg(" TABLEMODEL "+choiceCol.get(0)[1]);
 			List<String[]> headers = new ArrayList<String[]>();
@@ -554,11 +554,17 @@ public class BAL_BreakdownServlet extends HttpServlet {
 			jqGridTableModel.setRowNumbers(true);
 			jqGridTableModel.setEnableFilter(true);
 			jqGridTableModel.setTableButton(true);
+			
+			//elumalai
+			gridColModel.setFormatter("breakdownMstGrid_formater");   // add
+			gridColModel.setFormattorFromCol("2");                     // add
+			gridColModel.setFormattorToCol("2");                       // add
+			jqGridTableModel.setFormatterIndex(new String[] { "2" });
 
 			gridColModel.setHeaderNum(1);
 
-			String[] colHeader = bdList.get(0);
-			String[] colHeaderCond = bdList.get(1);
+			String[] colHeader = bdList.get(1);
+			String[] colHeaderCond = bdList.get(0);
 
 			// CommonFunctions.debugMsg(" TABLEMODEL "+choiceCol.get(0)[1]);
 			List<String[]> headers = new ArrayList<String[]>();

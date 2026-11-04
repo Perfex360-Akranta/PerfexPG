@@ -276,6 +276,153 @@
     <servlet-name>BAL_ClitScheduleServlet</servlet-name>
     <url-pattern>*.clitcal</url-pattern>
   </servlet-mapping>
+
+
+ <servlet>
+    <servlet-name>BAL_annualcalServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_AnnualPlanRptServelet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BAL_annualcalServlet</servlet-name>
+    <url-pattern>*.acl</url-pattern>
+  </servlet-mapping>
+
+<servlet>
+    <servlet-name>BAL_maintActivityRptServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_MaintActivityRptServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BAL_maintActivityRptServlet</servlet-name>
+    <url-pattern>*.map</url-pattern>
+  </servlet-mapping>
+
+<servlet>
+    <servlet-name>BAL_mTTRMTBFServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_MTTRMTBFServlet</servlet-class>
+  </servlet>
+<servlet-mapping>
+    <servlet-name>BAL_mTTRMTBFServlet</servlet-name>
+    <url-pattern>*.MTTR</url-pattern>
+  </servlet-mapping>
+
+
+<servlet>
+    <servlet-name>BAL_PMActivitySummaryReport</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_PmActivitySummaryReportServlet</servlet-class>
+  </servlet>
+<servlet-mapping>
+    <servlet-name>BAL_PMActivitySummaryReport</servlet-name>
+    <url-pattern>*.pmsmrRpt</url-pattern>
+  </servlet-mapping>
+
+
+<servlet>
+    <servlet-name>BAL_PMActivityDownload</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_PMActivityWorkOrderServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>BAL_PMActivityDownload</servlet-name>
+    <url-pattern>*.actWo</url-pattern>
+  </servlet-mapping>
+  
+
+<servlet>
+    <servlet-name>BAL_BDppMatrixRptServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_BDppMatrixRptServlet</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>BAL_BDppMatrixRptServlet</servlet-name>
+    <url-pattern>*.ppMatrixRpt</url-pattern>
+  </servlet-mapping>
+
+
+<servlet-mapping>
+    <servlet-name>BAL_failurePhnMatrix</servlet-name>
+    <url-pattern>*.fpmRpt</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>BAL_failurePhnMatrix</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_FailurePhnMatrixServlet</servlet-class>
+  </servlet>	
+  
+
+<servlet>
+    <servlet-name>BAL_PMComplainceRtpServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_PMComplainceRtpServlet</servlet-class>
+  </servlet>
+<servlet-mapping>
+    <servlet-name>BAL_PMComplainceRtpServlet</servlet-name>
+    <url-pattern>*.pmCompliance</url-pattern>
+  </servlet-mapping>
+
+
+<servlet>
+    <servlet-name>BAL_PmStandards</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_PmStandardServlet</servlet-class>
+  </servlet>
+<servlet-mapping>
+    <servlet-name>BAL_PmStandards</servlet-name>
+    <url-pattern>*.pmStandarsRpt</url-pattern>
+  </servlet-mapping>
+
+
+<servlet>
+    <servlet-name>BAL_CBMTrendServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_CBMTrendServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BAL_CBMTrendServlet</servlet-name>
+    <url-pattern>*.cbmTrend</url-pattern>
+  </servlet-mapping>
+
+
+<servlet>
+    <servlet-name>BAL_ElapsedMaintenanceActivity</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_ElapsedMaintenanceActivity</servlet-class>
+  </servlet>
+
+   <servlet-mapping>
+    <servlet-name>BAL_ElapsedMaintenanceActivity</servlet-name>
+    <url-pattern>*.elapMaintAct</url-pattern>
+  </servlet-mapping>
+ 
+
+<servlet>
+    <servlet-name>BAL_equipmentReportServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_EquipmentReportServlet</servlet-class>
+  </servlet>
+<servlet-mapping>
+    <servlet-name>BAL_equipmentReportServlet</servlet-name>
+    <url-pattern>*.equipmentRpt</url-pattern>
+  </servlet-mapping>
+
+   <servlet>
+    <servlet-name>BAL_equipmentDownTimeRpt</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_EquipmentDownTimeServlet</servlet-class>
+  </servlet>
+<servlet-mapping>
+    <servlet-name>BAL_equipmentDownTimeRpt</servlet-name>
+    <url-pattern>*.BeDTRpt</url-pattern>
+  </servlet-mapping>
+
+<servlet>
+    <servlet-name>BAL_breakdownParetoServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_BreakDownParetoServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>BAL_breakdownParetoServlet</servlet-name>
+    <url-pattern>*.Bbdmprto</url-pattern>
+</servlet-mapping>
+  
+  <servlet>
+    <servlet-name>BAL_whyComplaiceRpt</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_WhyComplianceRptServlet</servlet-class>
+</servlet>
+ <servlet-mapping>
+    <servlet-name>BAL_whyComplaiceRpt</servlet-name>
+    <url-pattern>*.yyComRpt</url-pattern>
+  </servlet-mapping>
   
   <servlet>
     <servlet-name>ToolMonitoringServlet</servlet-name>
@@ -2567,10 +2714,10 @@
     <servlet-name>docManagerServlet</servlet-name>
     <url-pattern>*.dcm</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
+  <!-- <servlet-mapping>
     <servlet-name>ElapsedMaintenanceActivity</servlet-name>
     <url-pattern>*.elapMaintAct</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   <servlet-mapping>
     <servlet-name>DefectMatrixRptServlet</servlet-name>
     <url-pattern>*.dMatrix</url-pattern>
@@ -2603,18 +2750,18 @@
     <servlet-name>EntempAttendanceServlet</servlet-name>
     <url-pattern>*.empatt</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
+  <!-- <servlet-mapping>
     <servlet-name>PMComplainceRtpServlet</servlet-name>
     <url-pattern>*.pmCompliance</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   <servlet-mapping>
     <servlet-name>WorkOrderOverViewRptServlet</servlet-name>
     <url-pattern>*.wordrovrve</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
+  <!-- <servlet-mapping>
     <servlet-name>CBMTrendServlet</servlet-name>
     <url-pattern>*.cbmTrend</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   <servlet-mapping>
     <servlet-name>EquipmentAvailRptServlet</servlet-name>
     <url-pattern>*.eqpavlrpt</url-pattern>
@@ -2827,10 +2974,10 @@
     <servlet-name>customerComplaintFormServlet</servlet-name>
     <url-pattern>*.cscm</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
+  <!-- <servlet-mapping>
     <servlet-name>BDppMatrixRptServlet</servlet-name>
     <url-pattern>*.ppMatrixRpt</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   <servlet-mapping>
     <servlet-name>skilrevalServlet</servlet-name>
     <url-pattern>*.svl</url-pattern>
@@ -2847,10 +2994,10 @@
     <servlet-name>employeeareamapServletServlet</servlet-name>
     <url-pattern>*.eamp</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
+  <!-- <servlet-mapping>
     <servlet-name>annualcalServlet</servlet-name>
     <url-pattern>*.acl</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   <servlet-mapping>
     <servlet-name>EquipmentDefectPhenomena</servlet-name>
     <url-pattern>*.EqpDefect</url-pattern>
@@ -3055,18 +3202,18 @@
     <servlet-name>medicalCheckupServlet</servlet-name>
     <url-pattern>*.ckp</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
+  <!-- <servlet-mapping>
     <servlet-name>maintActivityRptServlet</servlet-name>
     <url-pattern>*.map</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   <servlet-mapping>
     <servlet-name>whywhyReportServlet</servlet-name>
     <url-pattern>*.why</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
+  <!-- <servlet-mapping>
     <servlet-name>PmStandards</servlet-name>
     <url-pattern>*.pmStandarsRpt</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   <servlet-mapping>
     <servlet-name>EquipmentQueryServlet</servlet-name>
     <url-pattern>*.eqm</url-pattern>
@@ -3119,10 +3266,10 @@
     <servlet-name>abnormalitycumulativeRptServlet</servlet-name>
     <url-pattern>*.abnCumulative</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
+  <!-- <servlet-mapping>
     <servlet-name>equipmentReportServlet</servlet-name>
     <url-pattern>*.equipmentRpt</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   <servlet-mapping>
     <servlet-name>DefectPhenomenaLinkServlet</servlet-name>
     <url-pattern>*.dphmlnk</url-pattern>
@@ -3163,10 +3310,10 @@
     <servlet-name>kaizenReportServlet</servlet-name>
     <url-pattern>*.kaz</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
+  <!-- <servlet-mapping>
     <servlet-name>mTTRMTBFServlet</servlet-name>
     <url-pattern>*.MTTR</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   <servlet-mapping>
     <servlet-name>wrkOdrOvrVwServlet</servlet-name>
     <url-pattern>*.woo</url-pattern>
@@ -3270,10 +3417,10 @@
     <servlet-name>maintainActiveCountServlet</servlet-name>
     <url-pattern>*.maiac</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
+  <!-- <servlet-mapping>
     <servlet-name>breakdownParetoServlet</servlet-name>
     <url-pattern>*.bdmprto</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   <servlet-mapping>
     <servlet-name>factorymstServlet</servlet-name>
     <url-pattern>*.fact</url-pattern>
@@ -3326,10 +3473,10 @@
     <servlet-name>JhaTlFiveSAuditareaServlet</servlet-name>
     <url-pattern>*.5saudit</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
+  <!-- <servlet-mapping>
     <servlet-name>failurePhnMatrix</servlet-name>
     <url-pattern>*.fpmRpt</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   <servlet-mapping>
     <servlet-name>PPMatrixAdvanced</servlet-name>
     <url-pattern>*.ppmatrixad</url-pattern>
@@ -3338,10 +3485,10 @@
     <servlet-name>lossSummaryRpt</servlet-name>
     <url-pattern>*.lossRpt</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
+  <!-- <servlet-mapping>
     <servlet-name>whyComplaiceRpt</servlet-name>
     <url-pattern>*.yyComRpt</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   <servlet-mapping>
     <servlet-name>masterTableConfigServlet</servlet-name>
     <url-pattern>*.mastertblconfig</url-pattern>

@@ -19,14 +19,31 @@ import com.akranta.tpm.model.CommonFilter;
 import com.akranta.tpm.utils.CommonFunctions;
 import com.akranta.tpm.utils.ExcelUtils;
 
+
+import com.akranta.tpm.service.api.FunctionCallApi;
+
 public class BAL_PpMatrixRptDaoImpl implements BAL_PpMatrixRptDao {
 private DBActionTemplate dbActionTemplate; 
+FunctionCallApi fnCallApi;
+
 	
 	public BAL_PpMatrixRptDaoImpl(DBActionTemplate dbActionTemplate) 
 	{
 		this.dbActionTemplate = dbActionTemplate;
 	}
-	
+	 public void BAL_PpMatrixRptDaoImplJwt(String JwtToken) 
+		{
+			try{
+
+
+			fnCallApi = new FunctionCallApi(JwtToken);
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+	  
 	public void setDbActionTemplate(DBActionTemplate dbActionTemplate) {
 		this.dbActionTemplate = dbActionTemplate;
 	}
@@ -51,7 +68,9 @@ private DBActionTemplate dbActionTemplate;
 			//groupByFormula.setCondValue((char)252+"");
 			//groupByFormula.setBgColor(new RGB(100,100,100));
 			groupByFormulas.add(groupByFormula);
+			System.out.println(colmodel+"colmodelcheck");
 			excelUtils = new ExcelUtils(colmodel,groupByFormulas);
+			
 			
 			
 			List<XLConditionalFormats> condFormats = new ArrayList<XLConditionalFormats>();
@@ -96,7 +115,7 @@ private DBActionTemplate dbActionTemplate;
 			excelUtils.setCondFormats(condFormats);
 			
 			
-			return excelUtils.writeToExcel(rs,rptFormat,2,0,0 );
+			return excelUtils.writeToExcel(rs,rptFormat,3,0,0 );
 			
 		   }finally{
 			   DBActionTemplate.closeConnection(rs, null, null, null, rs.getStatement().getConnection());
@@ -113,7 +132,7 @@ private DBActionTemplate dbActionTemplate;
 		paramValues.add(condParms);   
 		paramValues.add(commonParams);	
 		System.out.println("ParmValues:"+paramValues);
-		return dbActionTemplate.dbFunctionCall("BDM_PC_BREAKDOWN.BDM_FN_PPMATRIXMACHINEWISE", paramValues);
+		return dbActionTemplate.NewdbFunctionCall2("BDM_FN_PPMATRIXMACHINEWISE", paramValues);
 	}
 	public Workbook getPPMatrixMonthRptExcelDao(CommonFilter commonFilter,JSONObject colmodel, String rptFormat) throws Exception {
 		ResultSet rs = null;
@@ -209,7 +228,9 @@ private DBActionTemplate dbActionTemplate;
 						
 		
 		
-		 List<String[]> test = dbActionTemplate.processFunctionCalls("BDM_PC_BREAKDOWN.BDM_FN_PPMATRIXMONTHWISE", paramValues);
+		// List<String[]> test = dbActionTemplate.processFunctionCalls("BDM_PC_BREAKDOWN.BDM_FN_PPMATRIXMONTHWISE", paramValues);
+		 //List<String[]> test = dbActionTemplate.processFunctionCalls("BDM_FN_PPMATRIXMONTHWISE_SB", paramValues);
+		 List<String[]> test = fnCallApi.callFunction("BDM_FN_PPMATRIXMONTHWISE_SB", paramValues,4,true);
 		 System.out.println("DAO IMPL PLSQL EXECUTED");
 		 return test;
 			
@@ -242,7 +263,9 @@ private DBActionTemplate dbActionTemplate;
 						
 		
 			
-		 List<String[]> test = dbActionTemplate.processFunctionCalls("BDM_PC_PPMATRIX.BDM_FN_PPMATRIXMACHINEWISE", paramValues);
+		// List<String[]> test = dbActionTemplate.processFunctionCalls("BDM_PC_PPMATRIX.BDM_FN_PPMATRIXMACHINEWISE", paramValues);
+			// List<String[]> test = dbActionTemplate.processFunctionCalls("BDM_FN_PPMATRIXMACHINEWISE", paramValues);
+			 List<String[]> test = fnCallApi.callFunction("BDM_FN_PPMATRIXMACHINEWISE_SB", paramValues,4,false);
 		 System.out.println("DAO IMPL PLSQL EXECUTED");
 		 if( commonFilter.getViewClick() == 'Y'){
 				String totalCnt = paramValues.get(0); 

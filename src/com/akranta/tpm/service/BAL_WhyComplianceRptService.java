@@ -21,6 +21,8 @@ public interface BAL_WhyComplianceRptService {
 	public Workbook whydetailExportExcel(CommonFilter commonFilter,	JSONObject tblJSONObj, String format)throws Exception;
 
 	public Workbook whymonthExportExcel(CommonFilter commonFilter,JSONObject tblJSONObj, String format)throws Exception;
+	
+	public void BAL_WhyComplianceRptServiceImplJwt(String jwtToken);
 
 	
 

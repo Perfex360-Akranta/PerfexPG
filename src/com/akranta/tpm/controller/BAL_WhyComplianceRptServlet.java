@@ -4,6 +4,9 @@ package com.akranta.tpm.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -88,7 +91,12 @@ public class BAL_WhyComplianceRptServlet extends HttpServlet {
 		String action = UIUtils.getActionPart(request);
 		HttpSession httpSession = request.getSession(false);
 		try {
-			whyComplianceRptService = (BAL_WhyComplianceRptServiceImpl)UIUtils.getServiceObject(request,"WhyComplianceRptServiceImpl");
+			whyComplianceRptService = (BAL_WhyComplianceRptServiceImpl)UIUtils.getServiceObject(request,"BAL_WhyComplianceRptServiceImpl");
+			
+			//jwt
+			HttpSession h = request.getSession(false);
+
+			whyComplianceRptService.BAL_WhyComplianceRptServiceImplJwt((String) (h.getAttribute("tpmjwttoken") == null ? "" : h.getAttribute("tpmjwttoken")) );
 		} catch (ServiceObjectCreationException e) {
 			CommonFunctions.debugMsg(e);
 		}
@@ -104,7 +112,7 @@ public class BAL_WhyComplianceRptServlet extends HttpServlet {
 			request.setAttribute("drilldownMsg", UIUtils.getPropertyValue("com.akranta.tpm.resources.CommonMessages","drilldownMsg"));
 			request.setAttribute("compgraph", UIUtils.getPropertyValue("com.akranta.tpm.resources.CommonMessages","compgraph"));
 			request.setAttribute("compcell", UIUtils.getPropertyValue("com.akranta.tpm.resources.CommonMessages","compcell"));
-			UIUtils.forwardRequest(request, response, "/pages/Reports/WhyComplianceRpt.jsp");
+			UIUtils.forwardRequest(request, response, "/pages/Reports/BAL_WhyComplianceRpt.jsp");
 		}
 		else if(action.equals("WhyComplianceRpt_getCol.yyComRpt"))
 		{
@@ -260,7 +268,7 @@ public class BAL_WhyComplianceRptServlet extends HttpServlet {
 			 CommonFilter commonFilter = populateCommonFilter(request,"WhyComplianceMonCommonFilter",false);
 			// CommonFilter commonFilter =(CommonFilter) httpSession.getAttribute("WhyComplianceMonCommonFilter");
 			 List< String[]> whyCompmnthlist  = whyComplianceRptService.getAllmonth(commonFilter);
-			 JSONObject whyComplianceData = UIUtils.convertToJqGridTableObject(whyCompmnthlist,request,1,1);
+			 JSONObject whyComplianceData = UIUtils.convertToJqGridTableObject(whyCompmnthlist,request,1,0);
 			 out.println(whyComplianceData);
 			
 		}
@@ -299,6 +307,7 @@ public class BAL_WhyComplianceRptServlet extends HttpServlet {
 				 //For Drill 
 				 if( (commonFilter.getDrillFlag() == DrillLevelConstants.forwardFlag || commonFilter.getDrillFlag() == DrillLevelConstants.backwardFlag) || (fromDetail != null  &&   ! fromDetail.equals("Y") )) {
 					 commonFilter =(CommonFilter) httpSession.getAttribute(commonFilterIdent);
+					 
 					 List< String[]> whyComplianceList  = whyComplianceRptService.getAllyydrill(commonFilter);
 					 JSONObject whyComplianceData =  UIUtils.convertToJqGridTableObject(whyComplianceList,request,1,1); 
 					 out.println(whyComplianceData);

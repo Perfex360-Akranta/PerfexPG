@@ -73,6 +73,11 @@ public class BAL_GenMaintReportServlet extends HttpServlet {
 	    String action = UIUtils.getActionPart(request);
 		try {
 			generalmaintService = (BAL_GeneralmaintServiceImpl)UIUtils.getServiceObject(request,"BAL_GeneralmaintServiceImpl");
+			
+			HttpSession h = request.getSession(false);
+
+			generalmaintService.BAL_GeneralmaintServiceImplJwt((String) (h.getAttribute("tpmjwttoken") == null ? "" : h.getAttribute("tpmjwttoken")) );
+			
 		} catch (ServiceObjectCreationException e) {
 			CommonFunctions.debugMsg(e);
 		}	
@@ -118,6 +123,8 @@ public class BAL_GenMaintReportServlet extends HttpServlet {
 			
 			PrintWriter out = response.getWriter();
 			 String firstClick =request.getParameter("firstClick");
+			 String drillLevel = request.getParameter("DRILLLEVEL");
+			 System.out.println(drillLevel+"drillLeval");
 			 CommonFilter  commonFilter = null;
 			
 			/* if( ! UIUtils.isValidKeyId(firstClick)  || (firstClick!= null && ! firstClick.equals("Y"))){
@@ -154,6 +161,9 @@ public class BAL_GenMaintReportServlet extends HttpServlet {
 	      	  	
 		  		//httpSession.removeAttribute("generalmanitdrillDown");
 	      	commonFilter.setISFORGRAPH('N');
+	      	if ("LOCN".equals(drillLevel)) {
+	      	    commonFilter.setDrillLevel("LOCN");
+	      	}
 			  List<String[]> generalmanitList  = generalmaintService.getAllgeneralmanit(commonFilter);
 			  JSONObject jsonObject = null;
 			  
@@ -168,9 +178,9 @@ public class BAL_GenMaintReportServlet extends HttpServlet {
 					
 			  		List<String[]> headers = new ArrayList<String[]>();				
 					//headers.add(colHeader);
-					String [] colHeader2 = generalmanitList.get(2);
-					String [] colHeader3 = generalmanitList.get(3);
-					String [] colHeaderHead = generalmanitList.get(1);
+					String [] colHeader2 = generalmanitList.get(1);
+					String [] colHeader3 = generalmanitList.get(2);
+					String [] colHeaderHead = generalmanitList.get(0);
 					headers.add(colHeader2);	
 					headers.add(colHeader3);	
 
@@ -219,8 +229,12 @@ public class BAL_GenMaintReportServlet extends HttpServlet {
 				 if(action.equals("genMainSetupAndAdjust_getData.genmainRpt"))
 			 		 commonFilter.setWostatus("S");//for setup and adjustment 
 				 commonFilter.setISFORGRAPH('N');
+				 String drillLevel = request.getParameter("DRILLLEVEL");
+				 if ("LOCN".equals(drillLevel)) {
+					    commonFilter.setDrillLevel("LOCN");
+					}
 				 List<String[]> generalmanitList  = generalmaintService.getAllgeneralmanit(commonFilter);
-				 JSONObject listToJsonObject = UIUtils.convertToJqGridTableObject(generalmanitList,request,4,0);
+				 JSONObject listToJsonObject = UIUtils.convertToJqGridTableObject(generalmanitList,request,3,0);
 				 
 				 httpSession.removeAttribute("generalmanitFilter");
 			  	 httpSession.setAttribute("generalmanitFilter",commonFilter);
@@ -235,6 +249,7 @@ public class BAL_GenMaintReportServlet extends HttpServlet {
 		 else if( action.equals("genMain_getExcel.genmainRpt")||action.equals("genMainMould_getExcel.genmainRpt")){
 	 			
 			 CommonFilter commonFilter = populateCommonFilter(request,"generalmanitFilter",false,false);
+			 String drillLevel = request.getParameter("DRILLLEVEL");
 				String tmpFromRow = commonFilter.getFromRow();
 				commonFilter.setFromRow(null);
 				//String tableModel = UIUtils.getPropertyValue("com.akranta.tpm.resources.EquipmentRpt", "EqpQuery");
@@ -246,6 +261,9 @@ public class BAL_GenMaintReportServlet extends HttpServlet {
 				String fromdate = commonFilter.getFromDate();
 				String todate = commonFilter.getToDate();
 				String date   = fromdate +"  -  "+ todate ;
+				if ("LOCN".equals(drillLevel)) {
+				    commonFilter.setDrillLevel("LOCN");
+				}
 				tblJSONObj.put("title", "General Maintenance DrillDown " + " - "+date);
 				if( commonFilter.getMonwise().equals("Y")){
 					tblJSONObj.put("title", "General Maintenance DrillDown " + " - "+month1);
@@ -286,7 +304,7 @@ public class BAL_GenMaintReportServlet extends HttpServlet {
 			
 			String [] header =  graphData.get(0);
 			String [] month =  graphData.get(2);
-			String [] data =  graphData.get(4);
+			String [] data =  graphData.get(3);
 			String prevMonth = null;
 			
 			String subTitle = data[2];

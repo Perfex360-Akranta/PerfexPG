@@ -66,8 +66,9 @@ public class BAL_GeneralmaintDaoImpl implements BAL_GeneralmaintDao {
 			 //String sbuId = request.getParameter("cmbSbuid");
 
 			//List<String[]> genmaintList = dbActionTemplate.processFunctionCallsWithColHeaders("PLM_PC_PLANNEDMAINT.PLM_FN_GENERALMAINT", paramValues);	
-			List<String[]> genmaintList = dbActionTemplate.processFunctionCallsWithColHeaders("PLM_FN_GENERALMAINT", paramValues);
-			//List<String[]> dataList = fnCallApi.callFunction("PLM_FN_GENERALMAINT",paramValues,3,true);
+			//List<String[]> genmaintList = dbActionTemplate.processFunctionCallsWithColHeaders("PLM_FN_GENERALMAINT", paramValues);
+		       //List<String[]> genmaintList = fnCallApi.callFunction("PLM_FN_GENERALMAINT_SB", paramValues);
+			  List<String[]> genmaintList = fnCallApi.callFunction("PLM_FN_GENERALMAINT_SB", paramValues, 3, true);		        
 
 			System.out.println(" ::: List  " + genmaintList.size());
 			return genmaintList;
@@ -85,7 +86,7 @@ public class BAL_GeneralmaintDaoImpl implements BAL_GeneralmaintDao {
 			
 			rs =   getGenMaintRptResultSet(commonFilter);
 			ExcelUtils excelUtils = new ExcelUtils(colmodel);
-			return excelUtils.writeToExcel(rs,rptFormat, 3,0,0 );
+			return excelUtils.writeToExcel(rs,rptFormat, 3,1,0 );
 			
 		   }finally{
 			   DBActionTemplate.closeConnection(rs, null, null, null, rs.getStatement().getConnection());
@@ -96,8 +97,9 @@ public class BAL_GeneralmaintDaoImpl implements BAL_GeneralmaintDao {
 		List<String> paramValues = getFilterParamValues(commonFilter);
 		
 		//return dbActionTemplate.dbFunctionCall("PLM_PC_PLANNEDMAINT.PLM_FN_GENERALMAINT", paramValues);
-		return dbActionTemplate.dbFunctionCall("PLM_FN_GENERALMAINT", paramValues);
-		//List<String[]> dataList = fnCallApi.callFunction("PLM_FN_GENERALMAINT",paramValues,3,true);
+		return dbActionTemplate.NewdbFunctionCall2("PLM_FN_GENERALMAINT", paramValues);
+		
+		//List<String[]> dataList = fnCallApi.callFunction("PLM_FN_GENERALMAINT_SB",paramValues,3,true);
 		//return null;
 
 		

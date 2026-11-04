@@ -3,6 +3,7 @@ package com.akranta.tpm.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import jakarta.servlet.ServletException;
@@ -83,7 +84,11 @@ public class BAL_BreakDownParetoServlet extends HttpServlet {
 			HttpSession httpSession = request.getSession(false);
 
 			try {
-				breakdownParetoRptService = (BAL_BreakDownParetoServiceImpl)UIUtils.getServiceObject(request,"BreakDownParetoServiceImpl");
+				breakdownParetoRptService = (BAL_BreakDownParetoServiceImpl)UIUtils.getServiceObject(request,"BAL_BreakDownParetoServiceImpl");
+				
+				HttpSession h = request.getSession(false);
+
+				breakdownParetoRptService.BAL_BreakDownParetoServiceImplJwt((String) (h.getAttribute("tpmjwttoken") == null ? "" : h.getAttribute("tpmjwttoken")) );
 			} catch (ServiceObjectCreationException e) {
 				CommonFunctions.debugMsg(e);
 			}
@@ -96,12 +101,12 @@ public class BAL_BreakDownParetoServlet extends HttpServlet {
 					UIUtils.forwardRequest(request, response, "/tiles/xml/BreakDownPareto.xml") ;
 				 }	
 			 
-			 if(action.equals("breakDwnRpt_input.bdmprto")) 
+			 if(action.equals("breakDwnRpt_input.Bbdmprto")) 
 			{
-				UIUtils.forwardRequest(request, response, "/pages/Reports/BreakDownPareto.jsp");
+				UIUtils.forwardRequest(request, response, "/pages/Reports/BAL_BreakDownPareto.jsp");
 			}
 	
-			else if(action.equals("breakDwnRpt_getCol.bdmprto"))
+			else if(action.equals("breakDwnRpt_getCol.Bbdmprto"))
 			{
 				 httpSession.removeAttribute("commonFilterIden");
 				 String firstClick =request.getParameter("firstClick");
@@ -126,7 +131,7 @@ public class BAL_BreakDownParetoServlet extends HttpServlet {
 				 httpSession.removeAttribute("commonFilterIden");
 				 httpSession.setAttribute("commonFilterIden",commonFilter);
 				 
-				String colmodel = UIUtils.getPropertyValue("com.akranta.tpm.resources.BreakDwnParetoRpt","breakdownPareto");
+				String colmodel = UIUtils.getPropertyValue("com.akranta.tpm.resources.BAL_BreakDwnParetoRpt","breakdownPareto");
 				String paretoOptions =commonFilter.getDrillLevel(); 
 				if( paretoOptions.equals("SECT"))
 					paretoOptions = "Section ";
@@ -154,7 +159,7 @@ public class BAL_BreakDownParetoServlet extends HttpServlet {
 				out.print(colModelObj);
 				
 			}
-			else if( action.equals("breakDwnRpt_getData.bdmprto") )
+			else if( action.equals("breakDwnRpt_getData.Bbdmprto") )
 			{ CommonFunctions.debugMsg("mak getdata ");
 				try
 				{
@@ -168,7 +173,7 @@ public class BAL_BreakDownParetoServlet extends HttpServlet {
 				    System.out .println("backValue="+backValue);
 				    
 					 List< String[]> Breakdwnpareto  =  breakdownParetoRptService.getAllbkdpareto(commonFilter);
-					 JSONObject BreakdwnparetoData =  UIUtils.convertToJqGridTableObject(Breakdwnpareto,request,0,0); 
+					 JSONObject BreakdwnparetoData =  UIUtils.convertToJqGridTableObject(Breakdwnpareto,request,2,2); 
 					 
 					 out.println(BreakdwnparetoData);
 	  			 	 httpSession.removeAttribute("commonFilterIden");
@@ -181,7 +186,7 @@ public class BAL_BreakDownParetoServlet extends HttpServlet {
 					System.out.println("error " +e.getMessage());
 				}
 			}
-			else if( action.equals("breakDwnRpt_getExcel.bdmprto")){
+			else if( action.equals("breakDwnRpt_getExcel.Bbdmprto")){
 				
 				//HttpSession httpSession = request.getSession(false);
 				commonFilter = populateCommonFilter(request,"commonFilterIden",false);
@@ -204,7 +209,7 @@ public class BAL_BreakDownParetoServlet extends HttpServlet {
 				
 			}
 			
-			else if( action.equals("chart.bdmprto")){
+			else if( action.equals("chart.Bbdmprto")){
 				
 				PrintWriter out = response.getWriter();
 				//processChart(request,response);
@@ -269,14 +274,33 @@ public class BAL_BreakDownParetoServlet extends HttpServlet {
 				List<Double> barDataList = new ArrayList<Double>();//declaring variable for bar chart
 				
 				
-				for( int i =0; i<graphData.size(); i++)
-				{	
-					xCategories.add(graphData.get(i)[1]);
-					dataLine.add(Double.parseDouble(graphData.get(i)[3]));//adding data to the variable of line chart
-					barDataList.add(Double.parseDouble(graphData.get(i)[2]));//adding data to the variable of Bar chart
-					
-				}
+				  for(String[] array:graphData) {
+				  CommonFunctions.debugMsg("row "+Arrays.toString(array)); }
+				 
 				
+				
+				
+				/*
+				 * for( int i =0; i<graphData.size(); i++) {
+				 * xCategories.add(graphData.get(i)[3]);
+				 * dataLine.add(Double.parseDouble(graphData.get(i)[4]));//adding data to the
+				 * variable of line chart
+				 * barDataList.add(Double.parseDouble(graphData.get(i)[5]));//adding data to the
+				 * variable of Bar chart
+				 * 
+				 * }
+				 */
+				 
+				
+			  for (String[] r : graphData) {
+				    if (!"4".equals(r[1])) continue;                    // skip model (1) and header (2) rows, keep data (4)
+
+					    xCategories.add(r[3]);                              // MNAME
+				    barDataList.add(Double.parseDouble(r[4]));          // DOWNTIME -> bars
+				    dataLine.add(Double.parseDouble(r[5]));             // CUMULATIVE % -> line				
+				    }
+				    
+				  
 				
 				barChart.setName("DownTime");//declaring name for the bar
 				barChart.setData(barDataList);//adding data 
@@ -306,14 +330,34 @@ public class BAL_BreakDownParetoServlet extends HttpServlet {
 				chartYAxis.add(y1Axis);//adding Yaxis to the chart
 				chartXAxis.add(xaxis);
 				columnChart.getxAxis().setTitle(xaxis.getTitle());
+				/*
+				 * JSONObject chartObj = columnChart.drawChart(xCategories, chartSeriesList,
+				 * "BreakDown Pareto ("+ paretoOptions +")  "+date, null, chartYAxis); String
+				 * dashboardIdnt = request.getParameter("dashboardIdent"); if(
+				 * UIUtils.isValidKeyId(dashboardIdnt)); chartObj.set("dashboardIdent",
+				 * dashboardIdnt);
+				 * 
+				 * out.println(chartObj); out.close();
+				 */
+				
 				JSONObject chartObj  = columnChart.drawChart(xCategories, chartSeriesList, "BreakDown Pareto ("+ paretoOptions +")  "+date, null, chartYAxis);
 				String dashboardIdnt = request.getParameter("dashboardIdent");
 				if( UIUtils.isValidKeyId(dashboardIdnt));
-					chartObj.set("dashboardIdent", dashboardIdnt);
-					
+				    chartObj.set("dashboardIdent", dashboardIdnt);
+
+				// ---- make x-axis labels horizontal (ADD THIS) ----
+				JSONObject xAx = chartObj.getJSONObject("chartData").getJSONObject("xAxis");
+				JSONObject lblStyle = new JSONObject();
+				lblStyle.put("fontSize", "11px");
+				lblStyle.put("textAlign", "center");
+				JSONObject labels = new JSONObject();
+				labels.put("rotation", 0);
+				labels.put("style", lblStyle);
+				xAx.put("labels", labels);
+				// ---------------------------------------------------
+
 				out.println(chartObj);
 				out.close();
-				
 			}
 		
 		}

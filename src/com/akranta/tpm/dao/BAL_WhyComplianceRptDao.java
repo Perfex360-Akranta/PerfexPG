@@ -21,5 +21,7 @@ public interface BAL_WhyComplianceRptDao {
 	public Workbook getWhydetailExl(CommonFilter commonFilter, JSONObject colmodel,	String rptFormat)throws Exception;
 
 	public Workbook getWhymonthExl(CommonFilter commonFilter, JSONObject colmodel,	String rptFormat)throws Exception;
+	
+	public void BAL_WhyComplianceRptDaoImplJwt(String jwtToken);
 
 }

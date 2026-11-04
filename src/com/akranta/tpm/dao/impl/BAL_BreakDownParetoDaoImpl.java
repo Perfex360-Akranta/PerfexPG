@@ -11,15 +11,31 @@ import org.apache.poi.ss.usermodel.Workbook;
 import com.akranta.tpm.dao.BAL_BreakDownParetoDao;
 import com.akranta.tpm.dao.sql.FilterCondSql;
 import com.akranta.tpm.model.CommonFilter;
+import com.akranta.tpm.service.api.FunctionCallApi;
+import com.akranta.tpm.service.api.VisualsopServiceApi;
 import com.akranta.tpm.utils.CommonFunctions;
 import com.akranta.tpm.utils.ExcelUtils;
 
 public class BAL_BreakDownParetoDaoImpl implements BAL_BreakDownParetoDao {
+	FunctionCallApi fnCallApi;
 private DBActionTemplate dbActionTemplate; 
+
 	
 	public BAL_BreakDownParetoDaoImpl(DBActionTemplate dbActionTemplate) 
 	{
 		this.dbActionTemplate = dbActionTemplate;
+	}
+	
+	//jwt
+public void BAL_BreakDownParetoDaoImplJwt(String jwtToken) {
+		
+		try{
+		fnCallApi = new FunctionCallApi(jwtToken);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 	public void setDbActionTemplate(DBActionTemplate dbActionTemplate) {
 		this.dbActionTemplate = dbActionTemplate;
@@ -41,7 +57,9 @@ private DBActionTemplate dbActionTemplate;
 			paramValues.add(commonParams);		
 			
 			//CommonFunctions.debugMsg("condParmsBB  :"+condParms+commonParams);
-			List<String[]> brkdParetolist = dbActionTemplate.processFunctionCalls("BDM_PC_BREAKDOWN.BDM_FN_BDPARETO", paramValues);
+			//List<String[]> brkdParetolist = dbActionTemplate.processFunctionCalls("BDM_PC_BREAKDOWN.BDM_FN_BDPARETO", paramValues);
+			//List<String[]> brkdParetolist = dbActionTemplate.processFunctionCalls("bdm_fn_bdpareto", paramValues);
+			List<String[]> brkdParetolist = fnCallApi.callFunction("bdm_fn_bdpareto_sb", paramValues,3,true);
 			//List<String[]> losslist = dbActionTemplate.processFunctionCalls("TST_PC_TESTPACK1.KZN_FN_LOSSSUMMARY", paramValues);
 			
 			CommonFunctions.debugMsg("brkdParetolist          "+brkdParetolist.size());
@@ -70,7 +88,7 @@ private DBActionTemplate dbActionTemplate;
 	{
 		List<String> paramValues = getFilterParamValues(commonFilter);
 		
-		return dbActionTemplate.dbFunctionCall("BDM_PC_BREAKDOWN.BDM_FN_BDPARETO", paramValues);
+		return dbActionTemplate.NewdbFunctionCall2("BDM_FN_BDPARETO", paramValues);
 	}
 	private List<String> getFilterParamValues(CommonFilter commonFilter){
 		List<String> paramValues = new ArrayList<String>();

@@ -204,7 +204,8 @@ public class BAL_WhywhyReportServlet extends HttpServlet {
 		else if(action.equals("whywhyReport_input.balwhy")){
 			request.setAttribute("yyrep", UIUtils.getPropertyValue("com.akranta.tpm.resources.CommonMessages","yyrep"));
 			request.setAttribute("yydetails", UIUtils.getPropertyValue("com.akranta.tpm.resources.CommonMessages","yydetails"));
-			RequestDispatcher rd = request.getRequestDispatcher("/pages/bal_WhyWhyStandardReport.jsp"); 
+			//RequestDispatcher rd = request.getRequestDispatcher("/pages/bal_WhyWhyStandardReport.jsp"); 
+			RequestDispatcher rd = request.getRequestDispatcher("/pages/BAL_WhyWhyStandardReport.jsp"); 
 			rd.forward(request, response); 
 		}if( action.equals("filterXmlwhywhyanalysis_input.balwhy")){
 			response.setContentType("xml");		
@@ -353,8 +354,19 @@ public class BAL_WhywhyReportServlet extends HttpServlet {
 				
 				gridColModel.setHeaderNum(1);
 				
-				String [] colHeader = whywhyList.get(0);			
-				String [] colHeaderCond = whywhyList.get(1);
+				String [] colHeader = whywhyList.get(1);			
+				String [] colHeaderCond = whywhyList.get(0);
+				
+				//elumalai
+				for (int i = 0; i < Math.min(5, whywhyList.size()); i++) {
+				    String[] r = whywhyList.get(i);
+				    String joined = java.util.Arrays.toString(r);
+				    if (colHeaderCond == null && joined.contains("AL=") && joined.contains("IND=")) {
+				        colHeaderCond = r;
+				    } else if (colHeader == null && joined.contains("Why Why Doc No")) {
+				        colHeader = r;
+				    }
+				}
 				
 				//CommonFunctions.debugMsg("   TABLEMODEL     "+choiceCol.get(0)[1]);
 				List<String[]> headers = new ArrayList<String[]>();

@@ -14,4 +14,5 @@ public interface BAL_PpMatrixRptDao {
 	List<String[]> getPPMatrixMachineRptDao(CommonFilter commonFilter) throws Exception;
 	public Workbook getPPMatrixMonthRptExcelDao(CommonFilter commonFilter, JSONObject colmodel,String rptFormat)throws Exception;
 	public Workbook getPPMatrixMachineRptExcelDao(CommonFilter commonFilter, JSONObject colmodel,String rptFormat)throws Exception;
+	 public abstract void BAL_PpMatrixRptDaoImplJwt(String jwtToken);
 }

@@ -1156,7 +1156,7 @@ public class BAL_preventivemaintenanceservlet extends HttpServlet {
 			  int totalCnt =  (int) commonFilter.getTotalRecordCnt() ;
 				//totalCnt = totalCnt+2;
 				CommonFunctions.debugMsg("totalCnt Data   "+totalCnt);
-			  assmblyGriddata = UIUtils.convertToJqGridTableObject(assmblyGrid,request,2,1,totalCnt);
+			  assmblyGriddata = UIUtils.convertToJqGridTableObject(assmblyGrid,request,2,0,totalCnt);
 			  
 			  out.println(assmblyGriddata);
 			  

@@ -11,5 +11,6 @@ public interface BAL_PpMatrixRptService {
 	public List<String[]> getPPMatrixMachineRpt(CommonFilter commonFilter) throws Exception;
 	public Workbook getPPMatrixMonthRptExcel(CommonFilter commonFilter,	JSONObject tblJSONObj, String format) throws Exception;
 	public Workbook getPPMatrixMachineRptExcel(CommonFilter commonFilter,	JSONObject tblJSONObj, String format) throws Exception;
+	 public void BAL_PpMatrixRptServiceImplJwt(String JwtToken);
 
 }

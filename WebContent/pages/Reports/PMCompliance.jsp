@@ -72,7 +72,7 @@ function PMCompliance_onProcessGridBack(){
 			//}
 }		
 					
-function doubleClickGrid(id){ 
+/* function doubleClickGrid(id){ 
 	
 	var rowData = jQuery("#PMCompliance").jqGrid('getRowData',id);
 	var removeBlank = jQuery("#hiddenRemoveBlank").val();
@@ -95,7 +95,124 @@ function doubleClickGrid(id){
 			}
 			else 
 				alert("No Record to View Graph");
-}
+} */
+ function doubleClickGrid(id) {
+
+    console.log("========== doubleClickGrid START ==========");
+    console.log("[doubleClickGrid] Row ID:", id);
+
+    var rowData = jQuery("#PMCompliance").jqGrid('getRowData', id);
+    console.log("[doubleClickGrid] Row Data:", rowData);
+
+    var removeBlank = jQuery("#hiddenRemoveBlank").val();
+    console.log("[doubleClickGrid] Remove Blank:", removeBlank);
+
+    var circle = jQuery("#hiddencircle").val();
+    console.log("[doubleClickGrid] Circle:", circle);
+
+    var selId = rowData.keyid;
+    console.log("[doubleClickGrid] Selected ID (keyId):", selId);
+
+    var rowid = rowData.rnum0;
+    console.log("[doubleClickGrid] Row Number (rnum0):", rowid);
+
+    // Check whether row data exists
+    if (!rowData) {
+        console.error("[doubleClickGrid] ERROR: No row data found for ID:", id);
+        return;
+    }
+
+    console.log("[doubleClickGrid] Calling checkForZeroes...");
+
+    if (checkForZeroes("PMCompliance", id, 3)) {
+
+        console.log("[doubleClickGrid] checkForZeroes returned TRUE");
+
+        if (selId.substr(0, 3) != 'MCH') {
+
+            console.log("[doubleClickGrid] Selected ID is NOT MCH");
+            console.log("[doubleClickGrid] selId:", selId);
+
+            var filterData = "?";
+            
+            var flidResult = selId.substr(0,12);
+            
+            //filterString += "&flid="+celValue.substr(0,12);//+"&Keyid="+celValue;
+
+            filterData += '&flid=' + flidResult + '&drillFlag=f&firstClick=N';
+            filterData += "&chkRemoveBlank=" + removeBlank;
+
+            console.log("[doubleClickGrid] Filter Data:", filterData);
+
+            var url = jQuery('#hiddenUrl').val();
+
+            console.log("[doubleClickGrid] URL:", url);
+            console.log("[doubleClickGrid] Calling processGridnew...");
+            
+            processGridnew(
+                url,
+                filterData,
+                "PMCompliance",
+                "pager",
+                '',
+                "doubleClickGrid",
+                "",
+                "PMCompliance_loadComplete"
+            );
+
+            console.log("[doubleClickGrid] processGridnew called successfully");
+        }
+
+        if (selId.substr(0, 3) == 'MCH' && circle.substr(0, 3) == "CRC") {
+
+            console.log("[doubleClickGrid] MCH + CRC condition matched");
+            console.log("[doubleClickGrid] selId:", selId);
+            console.log("[doubleClickGrid] circle:", circle);
+
+            // Existing logic is empty here
+        }
+
+    } else {
+
+        console.warn("[doubleClickGrid] checkForZeroes returned FALSE");
+        console.warn("[doubleClickGrid] No Record to View Graph");
+
+        alert("No Record to View Graph");
+    }
+
+    console.log("========== doubleClickGrid END ==========");
+} 
+
+/* function doubleClickGrid(id) {
+    var rowData = jQuery("#PMCompliance").jqGrid('getRowData', id);
+    var removeBlank = jQuery("#hiddenRemoveBlank").val();
+    var circle = jQuery("#hiddencircle").val();
+
+    var rawKeyId = rowData.keyid;
+    var selId = rawKeyId.split('#')[0];   // <-- just the FLID, e.g. 'FNL000000001'
+
+    if (!rowData) {
+        console.error("[doubleClickGrid] No row data for ID:", id);
+        return;
+    }
+
+    if (checkForZeroes("PMCompliance", id, 4)) {
+        if (selId.substr(0, 3) != 'MCH') {
+            var filterData = "?";
+            filterData += '&flid=' + selId + '&drillFlag=f';
+            filterData += "&chkRemoveBlank=" + removeBlank;
+
+            var url = jQuery('#hiddenUrl').val();
+            processGridnew(url, filterData, "PMCompliance", "pager", '',
+                            "doubleClickGrid", "", "PMCompliance_loadComplete");
+        }
+        if (selId.substr(0, 3) == 'MCH' && circle.substr(0, 3) == "CRC") {
+            // (still empty — separate issue, see below)
+        }
+    } else {
+        alert("No Record to View Graph");
+    }
+} */
 </script>
 
 <div id="wrapperRpt">

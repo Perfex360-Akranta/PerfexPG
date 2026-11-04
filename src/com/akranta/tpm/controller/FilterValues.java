@@ -3389,7 +3389,7 @@ private static void setMainKeyidForQualityDrillDown(CommonFilter commonFilter,St
 		String extendedLife = request.getParameter("chkLifeExtended");	
 		String earlyLife = request.getParameter("chkLifeEarly");
 		String trialTool = request.getParameter("chkTrialTool");
-		// mmadhan to checkQR
+		// madhan to checkQR
 //		commonFilter.setToolid(cmbToolid);
 //		commonFilter.setChangeType(cmbChangeType);
 //		commonFilter.setToolCategory(cmbToolCategory);
@@ -3402,4 +3402,11 @@ private static void setMainKeyidForQualityDrillDown(CommonFilter commonFilter,St
 		return commonFilter;
 		
 	}
+	
+	public static CommonFilter getPmActivityRelated(HttpServletRequest request,
+			CommonFilter commonFilter) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }

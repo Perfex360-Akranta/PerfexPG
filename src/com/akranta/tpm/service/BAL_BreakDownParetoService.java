@@ -12,4 +12,6 @@ public interface BAL_BreakDownParetoService {
 	List<String[]> getAllbkdpareto(CommonFilter commonFilter) throws Exception;
 
 	public Workbook paretoExportExcel(CommonFilter commonFilter,JSONObject tblJSONObj, String format) throws Exception;
+	
+	public void BAL_BreakDownParetoServiceImplJwt(String jwtToken);
 }

@@ -510,7 +510,7 @@
 
 	    console.log("=== pmAssembly_dblclick END ===");
 	}  */
-	function pmAssembly_dblclick(rowid) {
+	/* function pmAssembly_dblclick(rowid) {
 
 	    console.log("=== pmAssembly_dblclick FIRED, rowid:", rowid, "===");
 
@@ -554,6 +554,74 @@
 	    }
 
 	    var popupUrl = "prvnt_mntncform_multiple_input.prv?pmsdMachineID=" + encodeURIComponent(rowid)
+	        + "&tradeId=" + encodeURIComponent(tradeId)
+	        + "&activitytype=" + encodeURIComponent(activitytype);
+	    console.log("[pmAssembly_dblclick] LoadPopUp URL:", popupUrl);
+
+	    LoadPopUp(
+	        "prvnMntncStdDiv",
+	        popupUrl,
+	        true, "90%", "82%", "1%", "1%", "",
+	        "Maintenance Standards", "", true
+	    );
+
+	    console.log("=== pmAssembly_dblclick END ===");
+	} */
+	function pmAssembly_dblclick(rowid) {
+
+	    console.log("=== pmAssembly_dblclick FIRED, rowid:", rowid, "===");
+
+	    var iCol = jQuery('#getiCol').val();
+	    var colm = jQuery("#assmGrid").jqGrid('getGridParam', 'colModel');
+	    var rawColName = (iCol != null && colm[iCol]) ? colm[iCol].name : "";
+
+	    // colModel name looks like "AL=R#WI=80#IND=TDE000001#EO={}" - real key is the IND= part
+	    var indMatch = /(?:^|#)IND=([^#]+)/.exec(rawColName);
+	    var tradeId = indMatch ? indMatch[1].trim() : rawColName.trim();
+
+	    console.log("[pmAssembly_dblclick] iCol:", iCol, "| rawColName:", rawColName, "| tradeId (IND):", tradeId);
+
+	    // machine-identity columns are not trades
+	    var nonTradeColumns = ["MCHM_KEYID", "MCHM_MACHINENAME", "MCHM_MACHINENO"];
+	    var isBlocked = (tradeId === "") || nonTradeColumns.indexOf(tradeId.toUpperCase()) !== -1;
+	    console.log("[pmAssembly_dblclick] isBlocked?", isBlocked);
+
+	    if (isBlocked) {
+	        alert("Click on a Trade/Maint. Section column");
+	        return;
+	    }
+
+	    // Machine KEYID: rowid is the Machine NAME (last key:true column),
+	    // so read the KEYID from the hidden KEYID column instead.
+	    var rowData = jQuery("#assmGrid").jqGrid('getRowData', rowid);
+	    var machineId = "";
+	    for (var k in rowData) {
+	        if (rowData.hasOwnProperty(k) && k.toUpperCase().indexOf("IND=MCHM_KEYID") > -1) {
+	            machineId = jQuery.trim(rowData[k]);
+	            break;
+	        }
+	    }
+	    console.log("[pmAssembly_dblclick] rowid (machine name):", rowid, "| machineId (keyid):", machineId);
+
+	    if (machineId.length <= 0) {
+	        alert("Machine id not found for the selected row");
+	        return;
+	    }
+
+	    // resolve activity type: combobox first, then hidden field
+	    var activitytype = jQuery("#frmPmStandard input[id=cmbActivitytype]").combobox("getValue");
+	    if (!activitytype || activitytype.trim().length <= 0) {
+	        activitytype = jQuery('#hdnActType').val();
+	    }
+	    activitytype = (activitytype || "").trim();
+	    console.log("[pmAssembly_dblclick] resolved activitytype:", activitytype);
+
+	    if (activitytype.length <= 0) {
+	        alert("Select Activity Type");
+	        return;
+	    }
+
+	    var popupUrl = "prvnt_mntncform_multiple_input.prv?pmsdMachineID=" + encodeURIComponent(machineId)
 	        + "&tradeId=" + encodeURIComponent(tradeId)
 	        + "&activitytype=" + encodeURIComponent(activitytype);
 	    console.log("[pmAssembly_dblclick] LoadPopUp URL:", popupUrl);

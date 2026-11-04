@@ -235,7 +235,7 @@ public class BAL_BdmTlMstDaoImpl implements BAL_BdmTlMstDao {
 				
 				String elementId = bdmTlMst.getBdmsElementid();
 
-			 	String seqIdentfi = com.akranta.tpm.dao.impl.CommonFunctions.getSeqnoLocationIdentifier(elementId,BAL_BdmTlWhywhymstSql.TBL_BDM_TL_WHYWHYMST);
+			 	String seqIdentfi = com.akranta.tpm.dao.impl.CommonFunctions.getSeqnoLocationIdentifier(elementId,BAL_BdmTlWhywhymstSql.TBL_BAL_BDM_TL_WHYWHYMST);
 
 				bdmTlWhywhymst.setWwmsKeyid(dbActionTemplate.getSequenceNumber(seqIdentfi,12,"YY","YYMM"," "));
 				
@@ -260,7 +260,7 @@ public class BAL_BdmTlMstDaoImpl implements BAL_BdmTlMstDao {
 		if( bdmTlWhywhydtlList != null && bdmTlWhywhydtlList.size()>0) // check for detail table data
 		{
 			BAL_BdmTlWhywhydtlSql bdmTlWhywhydtlSql = new BAL_BdmTlWhywhydtlSql();
-			GenSequenceNumber genSequenceNumber = new GenSequenceNumber(dbActionTemplate.getDataSource().getConnection(),BAL_BdmTlWhywhydtlSql.TBL_BDM_TL_WHYWHYDTL,12,"YYD","YY","Y");
+			GenSequenceNumber genSequenceNumber = new GenSequenceNumber(dbActionTemplate.getDataSource().getConnection(),BAL_BdmTlWhywhydtlSql.TBL_BAL_BDM_TL_WHYWHYDTL,12,"YYD","YY","Y");
 			
 			
 			for(int i =0;i<bdmTlWhywhydtlList.size();i++)
@@ -583,7 +583,8 @@ public class BAL_BdmTlMstDaoImpl implements BAL_BdmTlMstDao {
 				 dataList =  dbActionTemplate.processFunctionCalls("PLM_PC_PLANNEDMAINT.PLM_FN_GETUNPLANNEDMAINTS", paramValues);
 			else
 				//dataList =  dbActionTemplate.processFunctionCalls("BDM_PC_BREAKDOWN.BDM_FN_GetActivitiesForBDA", paramValues);	
-			dataList =  dbActionTemplate.processFunctionCalls("BDM_FN_GetActivitiesForBDA", paramValues);
+			//dataList =  dbActionTemplate.processFunctionCalls("BDM_FN_GetActivitiesForBDA", paramValues);
+			dataList =  fnCallApi.callFunction("bdm_fn_getactivitiesforbda_sb", paramValues,3, true);
 			CommonFunctions.debugMsg("After " +dataList.size());
 			if( commonFilter.getViewClick() == 'Y'){
 				String totalCnt = paramValues.get(0); 
@@ -887,87 +888,87 @@ WomTlWomstSql womTlWomstSql = new WomTlWomstSql();
 		
 	return sqls;
 }
-@Override
-public Workbook breakdownRpt(CommonFilter commonFilter,JSONObject colmodel, String rptFormat) throws Exception {
-	   ResultSet rs = null;
-	   try{
-		
-		rs =   getGenMaintRptResultSet(commonFilter);
-		ExcelUtils excelUtils = new ExcelUtils(colmodel);
-		
-		List<XLConditionalFormats> condFormats = new ArrayList<XLConditionalFormats>();
-		XLConditionalFormats statusBooked = new XLConditionalFormats();
-		statusBooked.setFontName(XLConditionalFormats.FONT_DEFAULT);
-		statusBooked.setFontHeightPoint((short)8);
-		statusBooked.setFontBoldWeight((short)20);
-		statusBooked.setDbChkColIndx(28);
-		statusBooked.setFromCol(2);
-		statusBooked.setToCol(2);
-		statusBooked.setOperator(ComparisonOperator.EQUAL);
-		statusBooked.setCondValue("COMPLETED"); 
-		statusBooked.setIdentfier("C");
-		statusBooked.setBgColor(new RGB(67, 197, 221));
-		condFormats.add(statusBooked);
-		
-		XLConditionalFormats statusBooked2 = new XLConditionalFormats();
-		statusBooked2.setFontName(XLConditionalFormats.FONT_DEFAULT);
-		statusBooked2.setFontHeightPoint((short)8);
-		statusBooked2.setFontBoldWeight((short)20);
-		statusBooked2.setDbChkColIndx(25);
-		statusBooked2.setFromCol(2);
-		statusBooked2.setToCol(2);
-		statusBooked2.setOperator(ComparisonOperator.EQUAL);
-		statusBooked2.setCondValue("PENDING"); 
-		statusBooked2.setIdentfier("P");
-		statusBooked2.setBgColor(new RGB(224, 195, 195));
-		condFormats.add(statusBooked2);
-		
-		XLConditionalFormats statusBooked3 = new XLConditionalFormats();
-		statusBooked3.setFontName(XLConditionalFormats.FONT_DEFAULT);
-		statusBooked3.setFontHeightPoint((short)8);
-		statusBooked3.setFontBoldWeight((short)20);
-		statusBooked3.setDbChkColIndx(23);
-		statusBooked3.setFromCol(2);
-		statusBooked3.setToCol(2);
-		statusBooked3.setOperator(ComparisonOperator.EQUAL);
-		statusBooked3.setCondValue("PENDING"); 
-		statusBooked3.setIdentfier("P");
-		statusBooked3.setBgColor(new RGB(175, 214, 254));
-		condFormats.add(statusBooked3);
-		
-		XLConditionalFormats statusBooked4 = new XLConditionalFormats();
-		statusBooked4.setFontName(XLConditionalFormats.FONT_DEFAULT);
-		statusBooked4.setFontHeightPoint((short)8);
-		statusBooked4.setFontBoldWeight((short)20);
-		statusBooked4.setDbChkColIndx(22);
-		statusBooked4.setFromCol(2);
-		statusBooked4.setToCol(2);
-		statusBooked4.setOperator(ComparisonOperator.EQUAL);
-		statusBooked4.setCondValue("PENDING"); 
-		statusBooked4.setIdentfier("P");
-		statusBooked4.setBgColor(new RGB(239, 182, 239));
-		condFormats.add(statusBooked4);
-		
-		XLConditionalFormats statusBooked5 = new XLConditionalFormats();
-		statusBooked5.setFontName(XLConditionalFormats.FONT_DEFAULT);
-		statusBooked5.setFontHeightPoint((short)8);
-		statusBooked5.setFontBoldWeight((short)20);
-		statusBooked5.setDbChkColIndx(22);
-		statusBooked5.setFromCol(2);
-		statusBooked5.setToCol(2);
-		statusBooked5.setOperator(ComparisonOperator.EQUAL);
-		statusBooked5.setCondValue("REPEAT BREAKDOWN"); 
-		statusBooked5.setIdentfier("R");
-		statusBooked5.setBgColor(new RGB(249, 162, 172));
-		condFormats.add(statusBooked5);
-		excelUtils.setCondFormats(condFormats);
-		
-		return excelUtils.writeToExcel(rs,rptFormat,2,0,0 );
-		
-	   }finally{
-		   DBActionTemplate.closeConnection(rs, null, null, null, rs.getStatement().getConnection());
-	   }
-}
+	@Override
+	public Workbook breakdownRpt(CommonFilter commonFilter,JSONObject colmodel, String rptFormat) throws Exception {
+		   ResultSet rs = null;
+		   try{
+			
+			rs =   getGenMaintRptResultSet(commonFilter);
+			ExcelUtils excelUtils = new ExcelUtils(colmodel);
+			
+			List<XLConditionalFormats> condFormats = new ArrayList<XLConditionalFormats>();
+			XLConditionalFormats statusBooked = new XLConditionalFormats();
+			statusBooked.setFontName(XLConditionalFormats.FONT_DEFAULT);
+			statusBooked.setFontHeightPoint((short)8);
+			statusBooked.setFontBoldWeight((short)20);
+			statusBooked.setDbChkColIndx(28);
+			statusBooked.setFromCol(2);
+			statusBooked.setToCol(2);
+			statusBooked.setOperator(ComparisonOperator.EQUAL);
+			statusBooked.setCondValue("COMPLETED"); 
+			statusBooked.setIdentfier("C");
+			statusBooked.setBgColor(new RGB(67, 197, 221));
+			condFormats.add(statusBooked);
+			
+			XLConditionalFormats statusBooked2 = new XLConditionalFormats();
+			statusBooked2.setFontName(XLConditionalFormats.FONT_DEFAULT);
+			statusBooked2.setFontHeightPoint((short)8);
+			statusBooked2.setFontBoldWeight((short)20);
+			statusBooked2.setDbChkColIndx(25);
+			statusBooked2.setFromCol(2);
+			statusBooked2.setToCol(2);
+			statusBooked2.setOperator(ComparisonOperator.EQUAL);
+			statusBooked2.setCondValue("PENDING"); 
+			statusBooked2.setIdentfier("P");
+			statusBooked2.setBgColor(new RGB(224, 195, 195));
+			condFormats.add(statusBooked2);
+			
+			XLConditionalFormats statusBooked3 = new XLConditionalFormats();
+			statusBooked3.setFontName(XLConditionalFormats.FONT_DEFAULT);
+			statusBooked3.setFontHeightPoint((short)8);
+			statusBooked3.setFontBoldWeight((short)20);
+			statusBooked3.setDbChkColIndx(23);
+			statusBooked3.setFromCol(2);
+			statusBooked3.setToCol(2);
+			statusBooked3.setOperator(ComparisonOperator.EQUAL);
+			statusBooked3.setCondValue("PENDING"); 
+			statusBooked3.setIdentfier("P");
+			statusBooked3.setBgColor(new RGB(175, 214, 254));
+			condFormats.add(statusBooked3);
+			
+			XLConditionalFormats statusBooked4 = new XLConditionalFormats();
+			statusBooked4.setFontName(XLConditionalFormats.FONT_DEFAULT);
+			statusBooked4.setFontHeightPoint((short)8);
+			statusBooked4.setFontBoldWeight((short)20);
+			statusBooked4.setDbChkColIndx(22);
+			statusBooked4.setFromCol(2);
+			statusBooked4.setToCol(2);
+			statusBooked4.setOperator(ComparisonOperator.EQUAL);
+			statusBooked4.setCondValue("PENDING"); 
+			statusBooked4.setIdentfier("P");
+			statusBooked4.setBgColor(new RGB(239, 182, 239));
+			condFormats.add(statusBooked4);
+			
+			XLConditionalFormats statusBooked5 = new XLConditionalFormats();
+			statusBooked5.setFontName(XLConditionalFormats.FONT_DEFAULT);
+			statusBooked5.setFontHeightPoint((short)8);
+			statusBooked5.setFontBoldWeight((short)20);
+			statusBooked5.setDbChkColIndx(22);
+			statusBooked5.setFromCol(2);
+			statusBooked5.setToCol(2);
+			statusBooked5.setOperator(ComparisonOperator.EQUAL);
+			statusBooked5.setCondValue("REPEAT BREAKDOWN"); 
+			statusBooked5.setIdentfier("R");
+			statusBooked5.setBgColor(new RGB(249, 162, 172));
+			condFormats.add(statusBooked5);
+			excelUtils.setCondFormats(condFormats);
+			
+			return excelUtils.writeToExcel(rs,rptFormat,2,0,0 );
+			
+		   }finally{
+			   DBActionTemplate.closeConnection(rs, null, null, null, rs.getStatement().getConnection());
+		   }
+	}
 @Override
 public List<String[]> getSapInfoList(CommonFilter commFilter) throws Exception {
 	// TODO Auto-generated method stub
@@ -976,19 +977,11 @@ public List<String[]> getSapInfoList(CommonFilter commFilter) throws Exception {
 	String sql1="";
 	String keyid = commFilter.getKey();
 	System.out.println("keyid.."+keyid);
-//	sql.append(" select * from ( " );//'Model','Quantity'
-//	sql.append(" select 'KeyId','Select','Part No','Spare Name','Spare Loc','Planned Quantity','Actual Quantity','Rate','Avl Stock','hdnCheckSel',0 as dataorder from dual ");
-//	sql.append(" UNION ALL SELECT SSPM_KEYID,'',TO_CHAR(SSPM_SPARENO),SSPM_SPARENAME,SSPM_STORAGELOCATION,SPRM_MODEL,TO_CHAR(SSPM_QUANTITY),TO_CHAR(SSPM_RATE),SSPM_AVAILABLESTOCK ");
-//	sql.append(" ,'',1 as dataorder FROM  SAP_TL_SPARESREPLACED,gen_tl_sparesmst ");//gen_tl_sparesmst
-//    sql.append(" WHERE 1=1  AND TO_CHAR(SSPM_SPARENO) = SPRM_PARTNO (+) ");
-//    sql.append(" AND SSPM_DOCNUMBER = '"+keyid+"' ");
-//    sql.append(" ) order by dataorder ");
-    
-    sql.append(" select * from ( " );//'Model','Quantity'
-	sql.append(" select 'KeyId','Select','Part No','Spare Name','Spare Loc','Planned Quantity','Actual Quantity','Rate','Avl Stock','hdnCheckSel',0 as dataorder  ");
-	sql.append(" UNION ALL SELECT SSPM_KEYID,'',SSPM_SPARENO::TEXT,SSPM_SPARENAME,SSPM_STORAGELOCATION,SPRM_MODEL,SSPM_QUANTITY::TEXT,SSPM_RATE::TEXT,SSPM_AVAILABLESTOCK ");
-	sql.append(" ,'',1 as dataorder FROM  BAL_SAP_TL_SPARESREPLACED LEFT JOIN gen_tl_sparesmst ON  SSPM_SPARENO::TEXT = SPRM_PARTNO   ");//gen_tl_sparesmst
-    sql.append(" WHERE 1=1 ");
+	sql.append(" select * from ( " );//'Model','Quantity'
+	sql.append(" select 'KeyId','Select','Part No','Spare Name','Spare Loc','Planned Quantity','Actual Quantity','Rate','Avl Stock','hdnCheckSel',0 as dataorder from dual ");
+	sql.append(" UNION ALL SELECT SSPM_KEYID,'',TO_CHAR(SSPM_SPARENO),SSPM_SPARENAME,SSPM_STORAGELOCATION,SPRM_MODEL,TO_CHAR(SSPM_QUANTITY),TO_CHAR(SSPM_RATE),SSPM_AVAILABLESTOCK ");
+	sql.append(" ,'',1 as dataorder FROM  SAP_TL_SPARESREPLACED,gen_tl_sparesmst ");//gen_tl_sparesmst
+    sql.append(" WHERE 1=1  AND TO_CHAR(SSPM_SPARENO) = SPRM_PARTNO (+) ");
     sql.append(" AND SSPM_DOCNUMBER = '"+keyid+"' ");
     sql.append(" ) order by dataorder ");
     
@@ -1052,7 +1045,8 @@ private ResultSet getGenMaintRptResultSet(CommonFilter commonFilter) throws Exce
 {
 	List<String> paramValues = getFilterParamValues(commonFilter);
 	
-	return dbActionTemplate.dbFunctionCall("BDM_PC_BREAKDOWN.BDM_FN_GetActivitiesForBDA", paramValues);
+//	return dbActionTemplate.dbFunctionCall("BDM_PC_BREAKDOWN.BDM_FN_GetActivitiesForBDA", paramValues);
+	return dbActionTemplate.NewdbFunctionCall2("BDM_FN_GetActivitiesForBDA_SB", paramValues);
 }
 private List<String> getFilterParamValues(CommonFilter commonFilter){
 	List<String> paramValues = new ArrayList<String>();		
@@ -1794,7 +1788,8 @@ public SapTlMaintenanceOrdermst getSapSpareInFoData(String woKeyid)
 			if(CommonFunctions.isValidKeyId(maintMode))				
 				 dataList =  dbActionTemplate.processFunctionCalls("PLM_PC_PLANNEDMAINT.PLM_FN_GETUNPLANNEDMAINTS", paramValues);
 			else
-				dataList =  dbActionTemplate.processFunctionCalls("BDM_PC_BREAKDOWN.BDM_FN_BDANALYSISREPORTSUMMARY", paramValues);	
+//				dataList =  dbActionTemplate.processFunctionCalls("BDM_PC_BREAKDOWN.BDM_FN_BDANALYSISREPORTSUMMARY", paramValues);	
+			dataList =  fnCallApi.callFunction("bdm_fn_bdanalysisreportsummary_sb", paramValues,3,true);
 			if( commonFilter.getViewClick() == 'Y'){
 				String totalCnt = paramValues.get(0); 
 				boolean isInteger = Pattern.matches("^\\d*$", totalCnt);
@@ -1818,7 +1813,8 @@ public SapTlMaintenanceOrdermst getSapSpareInFoData(String woKeyid)
 		   try{
 			   List<String> paramValues = getFilterParamValues(commonFilter);
 				
-				rs= dbActionTemplate.dbFunctionCall("BDM_PC_BREAKDOWN.BDM_FN_BDANALYSISREPORTSUMMARY", paramValues);
+				//rs= dbActionTemplate.dbFunctionCall("BDM_PC_BREAKDOWN.BDM_FN_BDANALYSISREPORTSUMMARY", paramValues);
+				rs= dbActionTemplate.NewdbFunctionCall2("BDM_FN_BDANALYSISREPORTSUMMARY", paramValues);
 				ExcelUtils excelUtils = new ExcelUtils(tblJSONObj);
 				return excelUtils.writeToExcel(rs,format,2,0,0 );
 				

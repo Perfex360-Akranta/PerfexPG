@@ -78,7 +78,8 @@ public class BAL_BDppMatrixRptServlet extends HttpServlet {
 		String dispatchUrl =null;
 
 		try {
-			ppMatrixRptService = (BAL_PpMatrixRptServiceImpl)UIUtils.getServiceObject(request,"PpMatrixRptServiceImpl");
+			ppMatrixRptService = (BAL_PpMatrixRptServiceImpl)UIUtils.getServiceObject(request,"BAL_PpMatrixRptServiceImpl");
+			ppMatrixRptService.BAL_PpMatrixRptServiceImplJwt((String) (httpSession.getAttribute("tpmjwttoken") == null ? "" : httpSession.getAttribute("tpmjwttoken")) );
 		} catch (ServiceObjectCreationException e) {
 			CommonFunctions.debugMsg(e);
 		}
@@ -109,6 +110,7 @@ public class BAL_BDppMatrixRptServlet extends HttpServlet {
 			 FilterValues.getBDRelated(request,commonFilter);
 			 commonFilter.setChkoccurchkbox("Y");
 			 commonFilter.setChktimeChkBox("Y");*/
+			commonFilter.setIsGetCol("Y");
 			 List<String[]> pcsRpt  = ppMatrixRptService.getPPMatrixMonthRpt(commonFilter);
 			  
 			 JSONObject pcsRptData= UIUtils.convertToJqGridTableObject(pcsRpt,request,0,0,commonFilter.getTotalRecordCnt());
@@ -183,9 +185,11 @@ public class BAL_BDppMatrixRptServlet extends HttpServlet {
 				/*commonFilter= 	FilterValues.getCommonFilters(request, commonFilter); // getFilterValues(request);			
 				commonFilter= 	FilterValues.getBDRelated(request, commonFilter);
 				commonFilter.setChkoccurchkbox("Y");*/
+				commonFilter.setIsGetCol("N");
 				List< String[]> ppMatMonList  = ppMatrixRptService.getPPMatrixMonthRpt(commonFilter);	
 				 System.out.println("ppMatMonListList" + ppMatMonList.size() );
-				 if(ppMatMonList.size() > 3 )				 
+				 if(ppMatMonList.size() > 3 )			
+					 //if(ppMatMonList.size()  >= 2 )			
 					 jsonObject = UIUtils.convertToJqGridTableObject(ppMatMonList,request,3,0,ppMatMonList.size());	        	 
 			
 				 out.println(jsonObject);	
@@ -234,6 +238,7 @@ public class BAL_BDppMatrixRptServlet extends HttpServlet {
 			 CommonFilter commonFilter = populateCommonFilter(request,"BDppMatrixRptServlet",true);
 			 /*FilterValues.getCommonFilters(request,commonFilter);
 			  FilterValues.getBDRelated(request,commonFilter);*/
+			 commonFilter.setIsGetCol("Y");
 			 List<String[]> pcsRpt  = ppMatrixRptService.getPPMatrixMachineRpt(commonFilter);
 			 JSONObject pcsRptData= UIUtils.convertToJqGridTableObject(pcsRpt,request,0,0,commonFilter.getTotalRecordCnt());
 			CommonFunctions.debugMsg("accidentInvestList   "+pcsRpt.size());
@@ -310,6 +315,7 @@ public class BAL_BDppMatrixRptServlet extends HttpServlet {
 				CommonFunctions.debugMsg("Matrix Machine wise getData");
 				/*commonFilter= 	FilterValues.getCommonFilters(request, commonFilter); // getFilterValues(request);			
 				commonFilter= 	FilterValues.getBDRelated(request, commonFilter);*/
+				commonFilter.setIsGetCol("N");
 				List< String[]> ppMatMachList  = ppMatrixRptService.getPPMatrixMachineRpt(commonFilter);	
 				 System.out.println("ppMatMachineList" + ppMatMachList.size() );
 				 if(ppMatMachList.size() > 2 )				 
@@ -472,6 +478,7 @@ public class BAL_BDppMatrixRptServlet extends HttpServlet {
 		tblJSONObj.put("title", "PP Matrix Machine Wise");
 		String format = ExcelUtils.getFormat(request);		
 		Workbook wb = ppMatrixRptService.getPPMatrixMachineRptExcel(commonFilter,tblJSONObj,format);
+		
 		commonFilter.setFromRow(tmpFromRow);		
 		ExcelUtils.writeToResponse(response, wb, "PPMatrixMachineWise", format);
 		

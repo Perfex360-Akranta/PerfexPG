@@ -3,7 +3,7 @@ package com.akranta.tpm.dao.sql;
 
 public class BAL_BdmTlWhywhydtlSql {
 
-	public static final String TBL_BDM_TL_WHYWHYDTL = "BDM_TL_WHYWHYDTL";  
+	public static final String TBL_BAL_BDM_TL_WHYWHYDTL = "BAL_BDM_TL_WHYWHYDTL";  
 
 	TableFieldType [] wwdtDbFields = null;
 
@@ -55,12 +55,12 @@ public class BAL_BdmTlWhywhydtlSql {
 
 	public static String getInsertSql(TableFieldType [] fieldTypeArr, Object [] dataArray)
 	{
-		return SqlUtils.getInsertSql(TBL_BDM_TL_WHYWHYDTL, fieldTypeArr, dataArray);
+		return SqlUtils.getInsertSql(TBL_BAL_BDM_TL_WHYWHYDTL, fieldTypeArr, dataArray);
 	}
 
 	public static String getUpdateSql(TableFieldType [] fieldTypeArr, Object [] dataArray)
 	{
-		String sql = SqlUtils.getUpdateSql(TBL_BDM_TL_WHYWHYDTL, fieldTypeArr, dataArray);
+		String sql = SqlUtils.getUpdateSql(TBL_BAL_BDM_TL_WHYWHYDTL, fieldTypeArr, dataArray);
 		
 		sql += " where " + fieldTypeArr[tableFldConstants.keyid.ordinal()].fieldName  +
 			  " = '" +  (String)dataArray[ tableFldConstants.keyid.ordinal() ] + "'";
@@ -69,7 +69,7 @@ public class BAL_BdmTlWhywhydtlSql {
 
 	public static String getDeleteSql(TableFieldType [] fieldTypeArr, Object [] dataArray)
 	{
-		String sql = "DELETE from " + TBL_BDM_TL_WHYWHYDTL ;
+		String sql = "DELETE from " + TBL_BAL_BDM_TL_WHYWHYDTL ;
 		
 		sql += " where " + fieldTypeArr[tableFldConstants.keyid.ordinal()].fieldName  +
 			  " = '" +  (String)dataArray[ tableFldConstants.keyid.ordinal()] + "'";
@@ -78,7 +78,7 @@ public class BAL_BdmTlWhywhydtlSql {
 	
 	public static String getDeleteAllKZNDtl(TableFieldType [] fieldTypeArr, String masterID)
 	{
-		String sql = "DELETE from " + TBL_BDM_TL_WHYWHYDTL ;
+		String sql = "DELETE from " + TBL_BAL_BDM_TL_WHYWHYDTL ;
 		
 		sql += " where " + fieldTypeArr[tableFldConstants.wwms_keyid.ordinal()].fieldName  +
 			  " = '" +  masterID + "'";
@@ -87,7 +87,7 @@ public class BAL_BdmTlWhywhydtlSql {
 	
 	public static String getSelectWWDT(String masterID)
 	{
-		 String query= "select *  from " + TBL_BDM_TL_WHYWHYDTL + " where wwdt_wwms_keyid = '" + masterID + "'" ;
+		 String query= "select *  from " + TBL_BAL_BDM_TL_WHYWHYDTL + " where wwdt_wwms_keyid = '" + masterID + "'" ;
 		 System.out.println("Select Query From with masterid bdmdtlsql "+query);
 		 return query;
 	} 
@@ -102,7 +102,7 @@ public class BAL_BdmTlWhywhydtlSql {
 	
 	public static String delYYDtlSql(String detailID)
 	{
-		String sql = "DELETE from " + TBL_BDM_TL_WHYWHYDTL +" where WWDT_KEYID = '"+detailID+"'";
+		String sql = "DELETE from " + TBL_BAL_BDM_TL_WHYWHYDTL +" where WWDT_KEYID = '"+detailID+"'";
 		return sql;
 	}
 	

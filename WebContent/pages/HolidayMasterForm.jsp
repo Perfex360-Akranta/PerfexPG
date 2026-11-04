@@ -14,8 +14,49 @@
 			var currentTime = getServerDateTime();
 			var year = currentTime.getFullYear();
 			jQuery("#cmbBeanYear").combobox("setValue",year);
+			//---------------------added by gopi------------------------
+			jQuery('#cmbBeanYear').combobox('options').onSelect = function(record){
+			    frmHolidaycmbBeanYear_onSelect(record);
+			};
+			jQuery('#cmbBeanYear').combobox('options').onChange = function(newValue, oldValue){
+			    if(newValue != oldValue){
+			        frmHolidaycmbBeanYear_onSelect(newValue);
+			    }
+			};
+			//---------------------added for cmbHolmFactory fix------------------------
+		   /* jQuery('#cmbHolmFactory').combobox('options').onSelect = function(record){
+		        frmHolidaycmbHolmFactory_onSelect(record);
+		    };
+		    jQuery('#cmbHolmFactory').combobox('options').onChange = function(newValue, oldValue){
+		        if(newValue != oldValue){
+		            frmHolidaycmbHolmFactory_onSelect(newValue);
+		        }
+		    };*/
+			//---------------------added for cmbHolmFactory fix------------------------
+			jQuery("#cmbHolmFactory").combobox({
+			    onSelect: function(record){
+			        //var factId = jQuery('#cmbHolmFactory').combobox('getValue');
+			        var factId = record.id;   
+			        var yr = jQuery('#cmbBeanYear').combobox('getValue');
+			        var dataString = "?q=2&keyId="+factId+"&year="+yr+"&holidaySelect=holiday";
+
+			        if(jQuery('input[name=rdoHolmHolidayflag]:checked').val()=="W")
+			            dataString += "&holidayFlag=W";
+			        else
+			            dataString += "&holidayFlag=H";
+
+			        viewGrid("holiday_input.holiday",dataString);
+			    }
+			});
+		    //---------------------added for cmbHolmFactory fix------------------------
+			//---------------------added by gopi------------------------
+
 			
-			var dataString = "?q=2";
+			//------------------gopi
+			//var dataString = "?q=2";
+			//var dataString = "?q=2&year="+year+"&holidayFlag=H";
+			var dataString = "?q=2&year="+year+"&holidaySelect=holiday&holidayFlag=H";
+
 			viewGrid("holiday_input.holiday",dataString);
 		});
 		
@@ -24,8 +65,10 @@
  			jQuery("#day").show();
  			jQuery('#lblName').attr("class","mndlbl");
  			jQuery('#lblDesc').attr("class","mndlbl");
- 			readOnlyFields("txtHolmDescription");
- 			disableField("frmHoliday", "txtHolmName");
+ 			//readOnlyFields("txtHolmDescription");
+ 			//disableField("frmHoliday", "txtHolmName");
+ 			enableFields("txtHolmDescription");   // readOnlyFields --> enableFields
+            enableFields("txtHolmName"); 
  			jQuery("#txtHolmDescription").val('');
  			jQuery("#txtHolmName").val('');
  			jQuery("#cmbHolmFactory").combobox("setValue",''); 			
@@ -134,9 +177,21 @@
 			alert(result.tpmException);
 		}
 		
+		/* function viewGrid(url,filterString)
+		 {	
+		 		processGridnew(url,filterString,"HolidayList","HolidayPager","","list_doubleClickGrid");
+		 		return true;
+		 }*/
+		 
 		 function viewGrid(url,filterString)
 		 {	
 		 		processGridnew(url,filterString,"HolidayList","HolidayPager","","list_doubleClickGrid");
+		 		
+		 		jQuery("#HolidayList").jqGrid('setGridParam', {
+		 		    onSelectRow: function(id){
+		 		        jQuery("#txtHolmKeyid").val(id);
+		 		    }
+		 		});
 		 		return true;
 		 }
 		 
@@ -180,8 +235,10 @@
  			
  			jQuery('#lblName').attr("class","mndlbl");
  			jQuery('#lblDesc').attr("class","mndlbl");
- 			readOnlyFields("txtHolmDescription");
- 			disableField("frmHoliday", "txtHolmName");
+ 			//readOnlyFields("txtHolmDescription");
+ 			//disableField("frmHoliday", "txtHolmName");
+ 			enableFields("txtHolmDescription");   
+            enableFields("txtHolmName"); 
  			jQuery("#txtHolmDescription").val('');
  			jQuery("#txtHolmName").val('');
 		}
@@ -190,6 +247,7 @@
 	function  frmHolidaycmbHolmFactory_onSelect(record){
 
 		var factId = jQuery('#cmbHolmFactory').combobox('getValue');
+		//var factId = record.id;
 		var year = jQuery('#cmbBeanYear').combobox('getValue');
 		var dataString = "?q=2&keyId="+factId+"&year="+year;			
 
@@ -200,12 +258,42 @@
 		
 		viewGrid("holiday_input.holiday",dataString) ;	
 	}
+	//------------------------------Gopi----------------------------
+	function frmHolidaycmbBeanYear_onSelect(record){
+		
+		console.log(record);
+	   var factId = jQuery('#cmbHolmFactory').combobox('getValue');
+	   var year = record.id;	
+	    //var year = record.value;
+	   var dataString = "?q=2&keyId="+factId+"&year="+year;
+	    
+	    //var dataString = "?q=2&keyId="+factId+"&year="+year+"&holidaySelect=holiday";
+
+
+	    if(jQuery('input[name=rdoHolmHolidayflag]:checked').val()=="W")
+	        dataString += "&holidayFlag=W";
+	    else
+	        dataString += "&holidayFlag=H";
+	    
+	    viewGrid("holiday_input.holiday",dataString) ;
+	  //---------------------added by gopi: year-based date box toggle------------------------
+	    var currentTime = getServerDateTime();
+	    var currentYear = currentTime.getFullYear();
+	    if(String(year) == String(currentYear)){
+	        fillWithCurrentDate("dteHolmDate");
+	    } else {
+	        jQuery("#dteHolmDate").datebox("setValue",'');
+	    }
+	    //---------------------added by gopi------------------------
+	}
+	//------------------------------Gopi----------------------------
+
 /*	function frmHoliday_beforeSubmit()
 	{       
 		return false;
 	}*/
 	
-	jQuery("#btnDelete").click(function(){
+	/*jQuery("#btnDelete").click(function(){
 		
 		if(jQuery('input[name=rdoHolmHolidayflag]:checked').val()=="W"){
 			var dayVal = jQuery("#cboBeanDay").val();	
@@ -219,6 +307,14 @@
 			deleteRecord("frmHoliday","holiday_delete.holiday");//saveForm("frmHoliday","holiday_delete.holiday");
 		}
 		//processAjaxCalls("holiday_delete.holiday","","delete_successCalBack","delete_errCalBack");
+	});*/
+	jQuery("#btnDelete").click(function(){
+	    var keyid = jQuery("#txtHolmKeyid").val();
+	    if(keyid == null || keyid.trim() == ''){
+	        alert("Please select a record to delete (double-click the row first)");
+	        return;
+	    }
+	    deleteRecord("frmHoliday","holiday_delete.holiday");
 	});
 
 	 function frmHoliday_beforeDelete(){			
@@ -315,5 +411,3 @@
 
 		<input type="hidden"  id="txtHolmKeyid" name="txtHolmKeyid" /> 
 </form>
-
-

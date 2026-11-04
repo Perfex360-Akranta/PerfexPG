@@ -48,10 +48,10 @@ function eqpDoubleClick(id)
 	var perstData = jQuery.parseJSON(jsonstr);	
 
 	if(formName=="BREAKDOWN")
-		navigateToNextForm('brkdown_input.brdn'+'?BDKeyid='+keyid+'&mode=view&activity=B&filterButton=false',"Breakdown",null,perstData);	
+		navigateToNextForm('brkdown_input.Bbrdn'+'?BDKeyid='+keyid+'&mode=view&activity=B&filterButton=false',"Breakdown",null,perstData);	
 	
 	if(formName=="UNPLANNED")
-		navigateToNextForm('brkdown_input.brdn'+'?BDKeyid='+keyid+'&mode=view&activity=U&filterButton=false',"UnPlanned Maintaince",null,perstData);
+		navigateToNextForm('brkdown_input.Bbrdn'+'?BDKeyid='+keyid+'&mode=view&activity=U&filterButton=false',"UnPlanned Maintaince",null,perstData);
 	
 	 if(formName=="ABNORMALITY")
 		navigateToNextForm('Abnormality_input.abnForm'+'?AbnId='+keyid+'&mode=view',"Abnormality",null,perstData);
@@ -67,7 +67,7 @@ function eqpDoubleClick(id)
 		
 
 	 if(formName=="MACHINE ACTIVITY")
-		navigateToNextForm('generalMaintcreat_input.genmain'+'?docno='+keyid+'&mode=VIEW&filterButton=false',"General",null,perstData);
+		navigateToNextForm('generalMaintcreat_input.balgenmain'+'?docno='+keyid+'&mode=VIEW&filterButton=false',"General",null,perstData);
 
 	 if(formName=="IMPROVEMENT")
 		navigateToNextForm('kaizen_input.kaizen'+'?keyId='+keyid+'&mode=VIEW&filterButton=false',"Kaizen",null,perstData);

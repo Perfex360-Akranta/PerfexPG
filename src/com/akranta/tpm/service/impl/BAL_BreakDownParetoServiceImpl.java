@@ -11,9 +11,21 @@ import com.akranta.tpm.dao.BAL_BreakDownParetoDao;
 import com.akranta.tpm.dao.impl.BAL_BreakDownParetoDaoImpl;
 import com.akranta.tpm.model.CommonFilter;
 import com.akranta.tpm.service.BAL_BreakDownParetoService;
+import com.akranta.tpm.service.api.AbnormalityServiceApi;
 
 public class BAL_BreakDownParetoServiceImpl implements BAL_BreakDownParetoService {
 private BAL_BreakDownParetoDao breakdownRptDao;
+
+public void BAL_BreakDownParetoServiceImplJwt(String JwtToken){
+	try{
+		breakdownRptDao.BAL_BreakDownParetoDaoImplJwt(JwtToken);
+		}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+	}
+    // TODO Auto-generated constructor stub
+}
 	
 	
 	public BAL_BreakDownParetoServiceImpl(DBActionTemplate dbActionTemplate)

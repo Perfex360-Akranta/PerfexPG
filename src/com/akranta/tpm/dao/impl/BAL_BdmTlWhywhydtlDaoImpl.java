@@ -30,7 +30,7 @@ public class BAL_BdmTlWhywhydtlDaoImpl implements BAL_BdmTlWhywhydtlDao {
 		BAL_BdmTlWhywhydtlSql bdmTlWhywhydtlSql = new BAL_BdmTlWhywhydtlSql(); // contains dbtable,field names, Field types and related sqls  of master table  
 		try{
 		
-			bdmTlWhywhydtl.setWwdtKeyid(dbActionTemplate.getSequenceNumber(BAL_BdmTlWhywhydtlSql.TBL_BDM_TL_WHYWHYDTL)); // set the sequnce number 
+			bdmTlWhywhydtl.setWwdtKeyid(dbActionTemplate.getSequenceNumber(BAL_BdmTlWhywhydtlSql.TBL_BAL_BDM_TL_WHYWHYDTL)); // set the sequnce number 
 			sqls.add(BAL_BdmTlWhywhydtlSql.getInsertSql(bdmTlWhywhydtlSql.getWwdtDbFields(), bdmTlWhywhydtl.getSaveArray())); // add insert sql for master table
 			dbActionTemplate.executeStatements(sqls); // execute the block of sqls
 			

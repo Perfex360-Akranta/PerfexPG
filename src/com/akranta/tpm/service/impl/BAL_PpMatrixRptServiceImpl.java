@@ -14,6 +14,7 @@ import com.akranta.tpm.model.CommonFilter;
 import com.akranta.tpm.service.BAL_PpMatrixRptService;
 
 
+
 public class BAL_PpMatrixRptServiceImpl implements BAL_PpMatrixRptService{
 	
 	private BAL_PpMatrixRptDao ppMatrixRptDao;
@@ -25,7 +26,17 @@ public class BAL_PpMatrixRptServiceImpl implements BAL_PpMatrixRptService{
 	{
 		return this.ppMatrixRptDao.getPPMatrixMonthRptDao(commonFilter);
 	}
-	
+	public void BAL_PpMatrixRptServiceImplJwt(String JwtToken){
+		try{
+			ppMatrixRptDao.BAL_PpMatrixRptDaoImplJwt(JwtToken);
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	    // TODO Auto-generated constructor stub
+	}
 	public List<String[]> getPPMatrixMachineRpt(CommonFilter commonFilter) throws Exception
 	{
 		return this.ppMatrixRptDao.getPPMatrixMachineRptDao(commonFilter);

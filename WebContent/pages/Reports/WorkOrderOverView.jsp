@@ -32,6 +32,7 @@ function viewGrid(url,filterString)
 	if( validateFilterSelection(filterString))
 	{	
 		var circle = getFilterValue(filterString, "cmbCircle");
+		console.log(circle);
 		jQuery("#hiddencircle").val(circle);
 		filterString += '&drillFlag=f&firstClick=Y';
 		var tableCaption = "Improvement Vs Completed";
@@ -67,8 +68,12 @@ function workOrderGrid_onProcessGridBack(){
 }			
 					
 function doubleClickGrid(id){ 
+	
+	console.log(id);
 	var rowData = jQuery("#workOrderGrid").jqGrid('getRowData',id);
+	console.log(rowData);
 	var selId = rowData.KEYIDFIELD;
+	console.log(selId);
 	var circle = jQuery("#hiddencircle").val();
 	if(selId.substr(0,3) != 'ASM' && circle.substr(0,3) != "CRC"){
 		var filterData ="?";
@@ -92,7 +97,7 @@ function doubleClickGrid(id){
 
 <div id="wrapperRpt">
 <div style="margin-top: -28px">
-<label class="notes" style="font-weight: bold;">Double Click  on Company/Factory/Section/Line/Equipment to Drilldown</label>
+<!-- <label class="notes" style="font-weight: bold;">Double Click  on Company/Factory/Section/Line/Equipment to Drilldown</label> -->
 <div class="clear"></div>
 <table id="workOrderGrid" ></table>
 <div id="pager"></div>

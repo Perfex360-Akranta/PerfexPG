@@ -21,7 +21,11 @@ public class BAL_WhyComplianceRptServiceImpl implements BAL_WhyComplianceRptServ
 	{
 		whyComplianceRptDao = new BAL_WhyComplianceRptDaoImpl(dbActionTemplate);
 	
-	}  
+	}
+	
+	public void BAL_WhyComplianceRptServiceImplJwt(String jwtToken) {
+		whyComplianceRptDao.BAL_WhyComplianceRptDaoImplJwt(jwtToken);
+	}
 	
 	@Override
 	public List<String[]> getAllyydrill(CommonFilter commonFilter)throws Exception {

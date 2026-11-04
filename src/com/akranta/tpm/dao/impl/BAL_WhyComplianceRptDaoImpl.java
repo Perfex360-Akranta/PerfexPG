@@ -13,11 +13,14 @@ import org.apache.poi.ss.usermodel.Workbook;
 import com.akranta.tpm.dao.BAL_WhyComplianceRptDao;
 import com.akranta.tpm.dao.sql.FilterCondSql;
 import com.akranta.tpm.model.CommonFilter;
+import com.akranta.tpm.service.api.FunctionCallApi;
 import com.akranta.tpm.utils.ExcelUtils;
 
 
 
 public class BAL_WhyComplianceRptDaoImpl implements BAL_WhyComplianceRptDao {
+	
+	FunctionCallApi fnCallApi;
 	
 
 
@@ -26,6 +29,18 @@ public class BAL_WhyComplianceRptDaoImpl implements BAL_WhyComplianceRptDao {
 	public BAL_WhyComplianceRptDaoImpl(DBActionTemplate dbActionTemplate) 
 	{
 		this.dbActionTemplate = dbActionTemplate;
+	}
+	
+	//jwt
+public void BAL_WhyComplianceRptDaoImplJwt(String jwtToken) {
+		
+		try{
+		fnCallApi = new FunctionCallApi(jwtToken);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 	public void setDbActionTemplate(DBActionTemplate dbActionTemplate) {
 		this.dbActionTemplate = dbActionTemplate;
@@ -46,7 +61,9 @@ public class BAL_WhyComplianceRptDaoImpl implements BAL_WhyComplianceRptDao {
 			 
 			System.out.println("paramvalues" + paramValues);
 			
-			List<String[]> whyCompList = dbActionTemplate.processFunctionCalls("BDM_PC_BREAKDOWN.BDM_FN_YYCOMPLIANCE", paramValues);
+			//List<String[]> whyCompList = dbActionTemplate.processFunctionCalls("BDM_PC_BREAKDOWN.BDM_FN_YYCOMPLIANCE", paramValues);
+			//List<String[]> whyCompList = dbActionTemplate.processFunctionCalls("bdm_fn_yycompliance", paramValues);
+			List<String[]> whyCompList = fnCallApi.callFunction("bdm_fn_yycompliance_sb", paramValues,2,true);
 			if( commonFilter.getViewClick() == 'Y'){
 				String totalCnt = paramValues.get(0); 
 				boolean isInteger = Pattern.matches("^\\d*$", totalCnt);
@@ -115,7 +132,10 @@ public class BAL_WhyComplianceRptDaoImpl implements BAL_WhyComplianceRptDao {
 			 paramValues.add(condParms);
 			 paramValues.add(commonParams);
 			 System.out.println("paramvalues" + paramValues);
-			 List<String[]> whyCompmonList = dbActionTemplate.processFunctionCalls("BDM_PC_BREAKDOWN.BDM_FN_YYCOMPMONTHWISE", paramValues);
+			// List<String[]> whyCompmonList = dbActionTemplate.processFunctionCalls("BDM_PC_BREAKDOWN.BDM_FN_YYCOMPMONTHWISE", paramValues);
+			// List<String[]> whyCompmonList = dbActionTemplate.processFunctionCalls("BDM_FN_YYCOMPMONTHWISE", paramValues);
+			 //elumalai
+			 List<String[]> whyCompmonList = fnCallApi.callFunction("BDM_FN_YYCOMPMONTHWISE_SB", paramValues,2,true);
 		
 			 System.out.println("Inside  yy DAO Impl whyCompmonList" +whyCompmonList.size());
 			 if( commonFilter.getViewClick() == 'Y'){
@@ -139,7 +159,7 @@ public class BAL_WhyComplianceRptDaoImpl implements BAL_WhyComplianceRptDao {
 			
 			rs =   getdownTimeReportResultSet(commonFilter);
 			ExcelUtils excelUtils = new ExcelUtils(colmodel);
-			return excelUtils.writeToExcel(rs,rptFormat, 1,1,0 );
+			return excelUtils.writeToExcel(rs,rptFormat, 1,0,0 );
 			
 		   }finally{
 			   DBActionTemplate.closeConnection(rs, null, null, null, rs.getStatement().getConnection());
@@ -149,7 +169,7 @@ public class BAL_WhyComplianceRptDaoImpl implements BAL_WhyComplianceRptDao {
 	{
 		List<String> paramValues = getFilterParamValues(commonFilter);
 		
-		return dbActionTemplate.dbFunctionCall("BDM_PC_BREAKDOWN.BDM_FN_YYCOMPLIANCE", paramValues);
+		return dbActionTemplate.NewdbFunctionCall2("BDM_FN_YYCOMPLIANCE", paramValues);
 	}
 	private List<String> getFilterParamValues(CommonFilter commonFilter){
 		List<String> paramValues = new ArrayList<String>();
@@ -200,7 +220,7 @@ public class BAL_WhyComplianceRptDaoImpl implements BAL_WhyComplianceRptDao {
 	{
 		List<String> paramValues = getFilterParamValues(commonFilter);
 		
-		return dbActionTemplate.dbFunctionCall("BDM_PC_BREAKDOWN.BDM_FN_YYCOMPMONTHWISE", paramValues);
+		return dbActionTemplate.NewdbFunctionCall2("BDM_FN_YYCOMPMONTHWISE", paramValues);
 	}
 	
 }

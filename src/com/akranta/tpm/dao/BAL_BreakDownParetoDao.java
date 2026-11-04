@@ -13,5 +13,7 @@ public interface BAL_BreakDownParetoDao {
 	List<String[]> getAllbkdpareto(CommonFilter commonFilter) throws Exception;
 
 	public Workbook getparetoExcel(CommonFilter commonFilter, JSONObject colmodel,String rptformat) throws Exception;
+	
+	public void BAL_BreakDownParetoDaoImplJwt(String jwtToken);
 
 }
