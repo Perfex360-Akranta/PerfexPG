@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="SheTlPlantSafetymst" name="com.akranta.tpm.model.SheTlPlantSafetymst" >
+		<validate For="create update">
+			<property name="SpsmFlid" type="String" required="true"  />
+			<property name="SpsmMembers" type="String" required="true"  />
+			<property name="SpsmRemarks" type="String" required="true"  />
+			<property name="SpsmDate" type="Date" required="true"  LECD="true" />
+			<property name="SpsmDoneby" type="String"  required="true"  />	
+			<property name="SpsmType" type="String"  required="true"  />			
+		</validate>
+	</class>
+</validations>

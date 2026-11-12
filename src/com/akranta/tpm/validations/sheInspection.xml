@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="SheTlInspectionmst" name="com.akranta.tpm.model.SheTlInspectionmst" >
+		<validate For="create update">
+			<property name="Activity" type="String" required="true"/>
+			<property name="Members" type="String" required="true"/>
+			<property name="Responsibility" type="String" required="true"/>
+			<property name="Date" type="Date" required="true" LECD="false"/>
+		</validate>
+	</class>
+</validations>

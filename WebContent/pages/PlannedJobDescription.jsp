@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
+<%-- <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %> --%>
 <script>
 	jQuery(document).ready(function(){
 		initialiseForm('frmPlannedJobDesc');
@@ -91,7 +91,7 @@
 	 		chkRadio("chkPjobIsFollowUpN","chkPjobIsFollowUpY");
 		 });
 
-	 	clearField('cmbPjobEmployeeid');
+	 	//clearField('cmbPjobEmployeeid');
 	});
 	
 	jQuery('#btnPJOFollow').click(function(){
@@ -133,16 +133,16 @@
 	 	}
 	}
 	function checkSingle(){
-		jQuery("#chkPjobIsPropertyDamageN").attr('checked',true);
-		jQuery("#chkPjobIsEfficientN").attr('checked',true);
-		jQuery("#chkPjobIsComplyN").attr('checked',true);
-		jQuery("#chkPjobIsDetrimentalN").attr('checked',true);
-		jQuery("#chkPjobIsComplementedN").attr('checked',true);
-		jQuery("#chkPjobIsFollowUpN").attr('checked',true);
+		jQuery("#chkPjobIsPropertyDamageN").prop('checked',true);
+		jQuery("#chkPjobIsEfficientN").prop('checked',true);
+		jQuery("#chkPjobIsComplyN").prop('checked',true);
+		jQuery("#chkPjobIsDetrimentalN").prop('checked',true);
+		jQuery("#chkPjobIsComplementedN").prop('checked',true);
+		jQuery("#chkPjobIsFollowUpN").prop('checked',true);
 	}
 	function chkRadio(check,uncheck){
 		if(jQuery('#'+check).is(':checked') == true){
-			jQuery("#"+uncheck).attr('checked',false);
+			jQuery("#"+uncheck).prop('checked',false);
 		}
 	}
 	function frmPlannedJobDesc_beforeDelete(){
@@ -222,13 +222,13 @@
 			
                     // var followup=jQuery("#chkPjobIsFollowUpY").is(":checked");
 			      //jQuery('#chkPjobIsFollowUpY').attr('checked',true);
-			  var followup=jQuery("#chkPjobIsFollowUpY").attr('checked',true);
+			  var followup=jQuery("#chkPjobIsFollowUpY").prop('checked',true);
 				
                    // alert(followup);
            if(followup){
 		
 	     var FollowUpAction=jQuery("#txtpjobFollowUpAction").val();		
-       //  alert(FollowUpAction.length);
+         //alert(FollowUpAction.length);
          if(FollowUpAction.length==0){
     	popupCommonErrorMsg("Please Enter the FollowUp Action");
     	return false;    
@@ -250,7 +250,7 @@
 		var rowId=parseInt(i)+1;	
 		var rowData = jQuery("#employeeGrd").jqGrid('getRowData',rowId);
 		// alert("rowData :" +rowData);
-		 var employeeIds =rowData.PJEL_PJOB_EMPLOYEEID;
+		 var employeeIds =rowData.pjel_pjob_employeeid;
 		// alert("employeeId :" +employeeIds);
 		 empArr1=empArr1 +"," +employeeIds;
 		 var empIds =rowData.EMPM_KEYID;
@@ -302,7 +302,7 @@
 		var facSaved = jQuery('#txtIsEmployeeLink').val( );
 		 if( facSaved.trim() == "Y")
 		 {
-		  clearField('cmbPjobEmployeeid');	
+		 // clearField('cmbPjobEmployeeid');	
 		 }
 	   if(openactnpln==true){
 		   var mainTask=getFieldValue("txtpjobFollowUpAction");
@@ -344,7 +344,7 @@
 	 function empdoubleclickGrid(id){ 
 		 var rowData = jQuery("#employeeGrd").jqGrid('getRowData',id);
 	// alert("rowData :" +rowData);
-		 var employeeId =rowData.PJEL_PJOB_EMPLOYEEID;
+		 var employeeId =rowData.pjel_pjob_employeeid;
 		// alert("employeeId :" +employeeId);
 		 var empId =rowData.EMPM_KEYID;
 		// alert(employeeId);
@@ -368,8 +368,8 @@
 		// alert("Delete Record");
 			var pjelPjobEmployeeid='';
 			if("employeeGrd"==gridId){
-				pjelPjobEmployeeid = getGridCell(gridId,rowid,'PJEL_PJOB_EMPLOYEEID');
-			//alert("Delete Key Id:" +pjelPjobEmployeeid);
+				pjelPjobEmployeeid = getGridCell(gridId,rowid,'PJOB_EMPLOYEEID');
+			alert("Delete Key Id:" +pjelPjobEmployeeid);
 			}
 			
 			
@@ -390,7 +390,7 @@
 		 
 		
 			var DiscussionType=jQuery("#cmbPjobEmployeeid").combobox("getText");
-		//alert("DiscussionType"+DiscussionType)
+		alert("DiscussionType"+DiscussionType)
 			
 			}	
 	
@@ -435,9 +435,9 @@
 							
 						</div>
 						<div>
-							<input class="easyui-combobox" id="cmbPjobEmployeeid" name="cmbPjobEmployeeid" style="width:265px;" value="${requestScope.sheTlPlannedjobobservation.pjobEmployeeid}"/>
-							<input type="button" class="easyui-button" value="Add" id="btnEmployeeSave"/>
-						</div>
+    <input class="easyui-combobox" id="cmbPjobEmployeeid" name="cmbPjobEmployeeid" style="width:265px;" value="${requestScope.sheTlPlannedjobobservation.pjobEmployeeid}"/>
+    <input type="button" class="easyui-button" value="Add" id="btnEmployeeSave"/>
+</div>
 					</div>
 				</td>
 				<td width="70%">
@@ -491,7 +491,7 @@
 							<label class="mandatory-lbl">4. Task Observed(Activity/Procedure)</label>
 						</div>
 						<div>
-							<textarea id="txtPjobTaskObserved" name="txtPjobTaskObserved" style="resize:none;width:400px;height:100px;" maxlength="1000" >${requestScope.sheTlPlannedjobobservation.pjobTaskObserved}</textarea>
+							<textarea onkeyup="restrict(this.value,this.id)" onpaste="restrictPaste(this.value,this.id)" id="txtPjobTaskObserved" name="txtPjobTaskObserved" style="resize:none;width:400px;height:100px;" maxlength="1000" >${requestScope.sheTlPlannedjobobservation.pjobTaskObserved}</textarea>
 						</div>
 					</div>
 	 		</td>
@@ -543,7 +543,7 @@
 						<label style="color:green;"><b>Follow UP Task Observed</b></label>
 						</div>
 						<div>
-						<textarea id="txtPjobFollowuptaskobserved" name="txtPjobFollowuptaskobserved" disabled="disabled" style="resize:none; width:400px;height:50px;" maxlength="1000" >${requestScope.sheTlPlannedjobobservation.pjobFollowuptaskobserved}</textarea>
+						<textarea onkeyup="restrict(this.value,this.id)" onpaste="restrictPaste(this.value,this.id)" id="txtPjobFollowuptaskobserved" name="txtPjobFollowuptaskobserved" disabled="disabled" style="resize:none; width:400px;height:50px;" maxlength="1000" >${requestScope.sheTlPlannedjobobservation.pjobFollowuptaskobserved}</textarea>
 			
 			
 			</div>
@@ -616,11 +616,11 @@
 						<div>
 							<span style="padding-left: 8px">
 								<span style="padding-left: 10px">
-									<input id="chkPjobIsPropertyDamageY"  name="chkPjobIsPropertyDamageY" type="checkbox" value="Y" <c:out value = "${ requestScope.sheTlPlannedjobobservation.pjobIsPropertyDamage == 'Y' ? ' checked':''}"/>/>
+									<input id="chkPjobIsPropertyDamageY"  name="chkPjobIsPropertyDamageY" type="checkbox" value="Y"  ${ requestScope.sheTlPlannedjobobservation.pjobIsPropertyDamage == 'Y' ? ' checked':''}/>
 									<label style="margin-left:8px">Yes</label>
 								</span>
 								<span style="padding-left: 10px">
-									<input id="chkPjobIsPropertyDamageN"  name="chkPjobIsPropertyDamageN" type="checkbox" value="N"  <c:out value="${requestScope.sheTlPlannedjobobservation.pjobIsPropertyDamage=='N' ? ' checked':''}"/>/>
+									<input id="chkPjobIsPropertyDamageN"  name="chkPjobIsPropertyDamageN" type="checkbox" value="N"  ${requestScope.sheTlPlannedjobobservation.pjobIsPropertyDamage=='N' ? ' checked':''}/>
 									<label style="margin-left:8px">No</label>
 								</span>
 							</span>
@@ -637,11 +637,11 @@
 						<div>
 							<span style="padding-left: 8px">
 								<span style="padding-left: 10px">
-									<input id="chkPjobIsEfficientY"  name="chkPjobIsEfficientY" type="checkbox" value="Y"  <c:out value = "${ requestScope.sheTlPlannedjobobservation.pjobIsEfficient == 'Y' ? ' checked':''}"/>/>
+									<input id="chkPjobIsEfficientY"  name="chkPjobIsEfficientY" type="checkbox" value="Y"   ${ requestScope.sheTlPlannedjobobservation.pjobIsEfficient == 'Y' ? ' checked':''}/>
 									<label style="margin-left:8px">Yes</label>
 								</span>
 								<span style="padding-left: 10px">
-									<input id="chkPjobIsEfficientN"  name="chkPjobIsEfficientN" type="checkbox" value="N"  <c:out value = "${ requestScope.sheTlPlannedjobobservation.pjobIsEfficient == 'N' ? ' checked':''}"/>/>
+									<input id="chkPjobIsEfficientN"  name="chkPjobIsEfficientN" type="checkbox" value="N"  ${ requestScope.sheTlPlannedjobobservation.pjobIsEfficient == 'N' ? ' checked':''}/>
 									<label style="margin-left:8px">No</label>
 								</span>
 							</span>
@@ -658,11 +658,11 @@
 						<div>
 							<span style="padding-left: 8px">
 								<span style="padding-left: 10px">
-									<input id="chkPjobIsComplyY"  name="chkPjobIsComplyY" type="checkbox" value="Y"  <c:out value = "${ requestScope.sheTlPlannedjobobservation.pjobIsComply == 'Y' ? ' checked':''}"/>/>
+									<input id="chkPjobIsComplyY"  name="chkPjobIsComplyY" type="checkbox" value="Y"  ${ requestScope.sheTlPlannedjobobservation.pjobIsComply == 'Y' ? ' checked':''}/>
 									<label style="margin-left:8px">Yes</label>
 								</span>
 								<span style="padding-left: 10px">
-									<input id="chkPjobIsComplyN"  name="chkPjobIsComplyN" type="checkbox" value="N"  <c:out value = "${ requestScope.sheTlPlannedjobobservation.pjobIsComply == 'N' ? ' checked':''}"/>/>
+									<input id="chkPjobIsComplyN"  name="chkPjobIsComplyN" type="checkbox" value="N"  ${ requestScope.sheTlPlannedjobobservation.pjobIsComply == 'N' ? ' checked':''}/>
 									<label style="margin-left:8px">No</label>
 								</span>
 							</span>
@@ -679,11 +679,11 @@
 						<div>
 							<span style="padding-left: 8px">
 								<span style="padding-left: 10px">
-									<input id="chkPjobIsDetrimentalY"  name="chkPjobIsDetrimentalY" type="checkbox" value="Y"  <c:out value = "${ requestScope.sheTlPlannedjobobservation.pjobIsDetrimental == 'Y' ? ' checked':''}"/>/>
+									<input id="chkPjobIsDetrimentalY"  name="chkPjobIsDetrimentalY" type="checkbox" value="Y"  ${ requestScope.sheTlPlannedjobobservation.pjobIsDetrimental == 'Y' ? ' checked':''}/>
 									<label  style="margin-left:8px">Yes</label>
 								</span>
 								<span style="padding-left: 10px">
-									<input id="chkPjobIsDetrimentalN"  name="chkPjobIsDetrimentalN" type="checkbox" value="N"  <c:out value = "${ requestScope.sheTlPlannedjobobservation.pjobIsDetrimental == 'N' ? ' checked':''}"/>/>
+									<input id="chkPjobIsDetrimentalN"  name="chkPjobIsDetrimentalN" type="checkbox" value="N"  ${ requestScope.sheTlPlannedjobobservation.pjobIsDetrimental == 'N' ? ' checked':''}/>
 									<label style="margin-left:8px">No</label>
 								</span>
 							</span>
@@ -699,24 +699,24 @@
 								<label>12. Describe clearly below any practices or conditions related to items above that deserve complement or correction, with respect to the demand safe work</label>
 							</div>
 							<div>
-								<textarea id="txtPjobCorrections" name="txtPjobCorrections" style="resize:none;width:590px;height:75px;" maxlength="470"  >${requestScope.sheTlPlannedjobobservation.pjobCorrections}</textarea>
+								<textarea onkeyup="restrict(this.value,this.id)" onpaste="restrictPaste(this.value,this.id)" id="txtPjobCorrections" name="txtPjobCorrections" style="resize:none;width:590px;height:75px;" maxlength="470"  >${requestScope.sheTlPlannedjobobservation.pjobCorrections}</textarea>
 							</div>
 						</div>
 						<div>
 							<div style="padding-left: 10px">
-								<input id="chkPjobPositioning"  name="chkPjobPositioning" type="checkbox" value="POW"  <c:out value = "${ requestScope.sheTlPlannedjobobservation.pjobPositioning == 'Y' ? ' checked':''}"/>/>
+								<input id="chkPjobPositioning"  name="chkPjobPositioning" type="checkbox" value="POW"   ${ requestScope.sheTlPlannedjobobservation.pjobPositioning == 'Y' ? ' checked':''}/>
 								<label  style="margin-left:8px">Worker had Equipment & supplies well organised, especially in their positioning at the work area.</label>
 							</div>
 							<div style="padding-left: 10px">
-								<input id="chkPjobChecklist"  name="chkPjobChecklist" type="checkbox" value="CKF"  <c:out value = "${ requestScope.sheTlPlannedjobobservation.pjobChecklist == 'Y' ? ' checked':''}"/>/>
+								<input id="chkPjobChecklist"  name="chkPjobChecklist" type="checkbox" value="CKF"  ${ requestScope.sheTlPlannedjobobservation.pjobChecklist == 'Y' ? ' checked':''}/>
 								<label style="margin-left:8px">All Steps according to the checklist followed.</label>
 							</div>
 							<div style="padding-left: 10px">
-								<input id="chkPjobAppPPE"  name="chkPjobAppPPE" type="checkbox" value="PPE"  <c:out value = "${ requestScope.sheTlPlannedjobobservation.pjobAppPPE == 'Y' ? ' checked':''}"/>/>
+								<input id="chkPjobAppPPE"  name="chkPjobAppPPE" type="checkbox" value="PPE"   ${ requestScope.sheTlPlannedjobobservation.pjobAppPPE == 'Y' ? ' checked':''}/>
 								<label  style="margin-left:8px">Have the workers use all PPEs, appropriate and used in order.</label>
 							</div>
 							<div style="padding-left: 10px">
-								<input id="chkPjobCheckWorker"  name="chkPjobCheckWorker" type="checkbox" value="CKW"  <c:out value = "${ requestScope.sheTlPlannedjobobservation.pjobCheckWorker == 'Y' ? ' checked':''}"/>/>
+								<input id="chkPjobCheckWorker"  name="chkPjobCheckWorker" type="checkbox" value="CKW"  ${ requestScope.sheTlPlannedjobobservation.pjobCheckWorker == 'Y' ? ' checked':''}/>
 								<label style="margin-left:8px">Check, since he was aware of being observed, his conscientious manner of work during the </label>
 								<div>
 									<label style="margin-left:35px">observation appeared to be his natural way of doing the job.</label>
@@ -733,7 +733,7 @@
 							<label>13. Detail below the deviations from the Safe work practices and any other unsafe conditions / practices</label>
 						</div>
 						<div>
-							<textarea id="txtPjobDeviations" name="txtPjobDeviations" style="resize:none;width:590px;height:75px;" maxlength="470"  >${requestScope.sheTlPlannedjobobservation.pjobDeviations}</textarea>
+							<textarea onkeyup="restrict(this.value,this.id)" onpaste="restrictPaste(this.value,this.id)" id="txtPjobDeviations" name="txtPjobDeviations" style="resize:none;width:590px;height:75px;" maxlength="470"  >${requestScope.sheTlPlannedjobobservation.pjobDeviations}</textarea>
 						</div>
 					</div>
 				</td>
@@ -747,11 +747,11 @@
 						<div>
 							<span style="padding-left: 8px">
 								<span style="padding-left: 10px">
-									<input id="chkPjobIsComplementedY"  name="chkPjobIsComplementedY" type="checkbox" value="Y"  <c:out value = "${ requestScope.sheTlPlannedjobobservation.pjobIsComplemented == 'Y' ? ' checked':''}"/>/>
+									<input id="chkPjobIsComplementedY"  name="chkPjobIsComplementedY" type="checkbox" value="Y"  ${ requestScope.sheTlPlannedjobobservation.pjobIsComplemented == 'Y' ? ' checked':''}/>
 									<label  style="margin-left:8px">Yes</label>
 								</span>
 								<span style="padding-left: 10px">
-									<input id="chkPjobIsComplementedN"  name="chkPjobIsComplementedN" type="checkbox" value="N"  <c:out value = "${ requestScope.sheTlPlannedjobobservation.pjobIsComplemented == 'N' ? ' checked':''}"/>/>
+									<input id="chkPjobIsComplementedN"  name="chkPjobIsComplementedN" type="checkbox" value="N"  ${ requestScope.sheTlPlannedjobobservation.pjobIsComplemented == 'N' ? ' checked':''}/>
 									<label style="margin-left:8px">No</label>
 								</span>
 							</span>
@@ -768,11 +768,11 @@
 						<div>
 							<span style="padding-left: 8px">
 								<span style="padding-left: 10px">
-									<input id="chkPjobIsFollowUpY"  name="chkPjobIsFollowUpY" type="checkbox" value="Y"  <c:out value = "${ requestScope.sheTlPlannedjobobservation.pjobIsFollowUp == 'Y' ? ' checked':''}"/>/>
+									<input id="chkPjobIsFollowUpY"  name="chkPjobIsFollowUpY" type="checkbox" value="Y"  ${ requestScope.sheTlPlannedjobobservation.pjobIsFollowUp == 'Y' ? ' checked':''}/>
 									<label  style="margin-left:8px">Yes</label>
 								</span>
 								<span style="padding-left: 10px">
-									<input id="chkPjobIsFollowUpN"  name="chkPjobIsFollowUpN" type="checkbox" value="N"  <c:out value = "${ requestScope.sheTlPlannedjobobservation.pjobIsFollowUp == 'N' ? ' checked':''}"/>/>
+									<input id="chkPjobIsFollowUpN"  name="chkPjobIsFollowUpN" type="checkbox" value="N"  ${ requestScope.sheTlPlannedjobobservation.pjobIsFollowUp == 'N' ? ' checked':''}/>
 									<label style="margin-left:8px">No</label>
 								</span>
 							</span>
@@ -787,7 +787,7 @@
 							<label>16. Describe any standard procedure? Method or equipment you observed that should be considered for change in the interest of better safety</label>
 						</div>
 						<div>
-							<textarea id="txtPjobStandardProcedure" name="txtPjobStandardProcedure" style="resize:none;width:590px;height:75px;" maxlength="470"  >${requestScope.sheTlPlannedjobobservation.pjobStandardProcedure}</textarea>
+							<textarea onkeyup="restrict(this.value,this.id)" onpaste="restrictPaste(this.value,this.id)" id="txtPjobStandardProcedure" name="txtPjobStandardProcedure" style="resize:none;width:590px;height:75px;" maxlength="470"  >${requestScope.sheTlPlannedjobobservation.pjobStandardProcedure}</textarea>
 						</div>
 					</div>
 				</td>
@@ -822,7 +822,7 @@
 							<label  id="FA" style="color: green ;font-weight: bold;">Follow-Up Action</label>
 						</div>
 						<div>
-							<textarea id="txtpjobFollowUpAction" name="txtpjobFollowUpAction" style="resize:none;width:590px;height:75px;" maxlength="470"  >${requestScope.sheTlPlannedjobobservation.pjobFollowUpAction}</textarea>
+							<textarea onkeyup="restrict(this.value,this.id)" onpaste="restrictPaste(this.value,this.id)" id="txtpjobFollowUpAction" name="txtpjobFollowUpAction" style="resize:none;width:590px;height:75px;" maxlength="470"  >${requestScope.sheTlPlannedjobobservation.pjobFollowUpAction}</textarea>
 						</div>
 					</div>
 				</td>
@@ -877,7 +877,7 @@
 	<!-- <div  style="margin-left:-1095px;margin-top:755px;"><label style="color:green;">Follow UP Task Observed.</label>
 	</div> -->
 <%-- 	<div style="margin-top:-1088px;margin-left:770px;">
-		<textarea id="txtPjobFollowuptaskobserved" name="txtPjobFollowuptaskobserved" disabled="disabled" style="resize:none; width:320px;height:50px;" maxlength="1000" >${requestScope.sheTlPlannedjobobservation.pjobFollowuptaskobserved}</textarea>
+		<textarea onkeyup="restrict(this.value,this.id)" onpaste="restrictPaste(this.value,this.id)" id="txtPjobFollowuptaskobserved" name="txtPjobFollowuptaskobserved" disabled="disabled" style="resize:none; width:320px;height:50px;" maxlength="1000" >${requestScope.sheTlPlannedjobobservation.pjobFollowuptaskobserved}</textarea>
 						</div>
 						<div class="easyui-paddingbfpx" style="margin-top:-98px;margin-left:770px;">
 			<input type="button" class="easyui-button" value="Add FollowUp Pjo" id="btnPJOFollow"/>
@@ -887,4 +887,6 @@
 	<input type="hidden" id="txtIsEmployeeLink" name="txtIsEmployeeLink" value=" "/>
 	<input type="hidden" name="hdnPjobKeyid" id="hdnPjobKeyid" value="${requestScope.sheTlPlannedjobobservation.pjobKeyid}"/>
 	<input type="hidden" id="txtEmpKeyid" name="txtEmpKeyid" />
+	<!-- FIXED - add the value attribute -->
+
 </form>

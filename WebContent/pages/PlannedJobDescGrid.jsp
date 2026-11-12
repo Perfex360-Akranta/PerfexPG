@@ -1,26 +1,18 @@
 <script>
-	jQuery(document).ready(function(){
-		
-			initialiseForm('frmPlannedJobGrid');
-			jQuery('#submitForm').val('frmPlannedJobGrid'); 
-			var url = jQuery("#hiddenUrl").val();
-			var location=jQuery("#hdnLocation").val();
-		//alert(location +"  location");
-			if(location=="LCN0000001"||location=="LCN0000003"){
-				alert("This Menu is Disabled For Your Location Users..!");
-				jQuery("#btnNew").hide();
-			}
-			else{
-				jQuery("#btnNew").show();
-			viewGrid(url,"?q=2");
-			
-			}
-			jQuery ("#btnNew").click(function()
-			{
-			  navigateToNextForm("PlannedJobObservationEntry_input.plnJobD");
-			});
-			
-	});
+    jQuery(document).ready(function(){
+
+        initialiseForm('frmPlannedJobGrid');
+        jQuery('#submitForm').val('frmPlannedJobGrid');
+        var url = jQuery("#hiddenUrl").val();
+
+        jQuery("#btnNew").show();
+        viewGrid(url,"?q=2");
+
+        jQuery("#btnNew").click(function(){
+            navigateToNextForm("PlannedJobObservationEntry_input.plnJobD");
+        });
+
+    });
 	function viewGrid(url,filterString) {
 		
 		processGridnew("PlannedJobObservation_view.plnJobD",filterString,"plnJobGrid","plnJobPager","","doubleclick","","loadcomplete");

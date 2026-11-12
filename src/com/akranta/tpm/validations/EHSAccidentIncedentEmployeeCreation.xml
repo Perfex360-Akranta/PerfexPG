@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<validations>
+	<class id="SheTlIncidentEmployee" name="com.akranta.tpm.model.SheTlIncidentEmployeenew" >
+		<validate For="create update">
+			<property name="SineInjuryModeid" type="String" required="true"/>				
+			<property name="SineEmpmKeyid" type="String" required="true"/>
+			<property name="SineBodypart" type="String" required="true"/>
+		</validate>	
+		<validate For="contractcreate contractupdate">
+			<property name="SineInjuryModeid" type="String" required="true"/>			
+			<property name="SineBodypart" type="String" required="true"/>			
+		</validate>	
+	</class>	
+	<class id="SheTlIncidentEmployeetBean" name="com.akranta.tpm.bean.SheTlIncidentEmployeetBeannew" >
+		<validate For="contractcreate contractupdate">
+			<property name="ContractEmp" type="String" required="true"/>	
+			<property name="ContractComp" type="String" required="true"/>		
+		</validate>
+	</class>
+</validations>

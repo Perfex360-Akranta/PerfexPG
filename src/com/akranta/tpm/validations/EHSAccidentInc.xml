@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="SheTlIncidentmst" name="com.akranta.tpm.model.SheTlIncidentmstnew" >
+		<validate For="create">
+			<property name="SinmLocnKeyid" type="String" required="true"  /> 
+			<property name="SinmAccidentType" type="String" required="true"  /> 
+			<property name="SinmOccurredShift" type="String" required="true"  /> 
+			<property name="SinmReportedShift" type="String" required="true"  />
+			<property name="SinmReportedBy" type="String" required="true"  />
+<!-- 			<property name="SinmDepartment" type="String" required="true"  /> -->
+<!-- 			<property name="SinmDivision" type="String" required="true"  /> -->
+			<property name="SinmArea" type="String" required="true"  />
+			<property name="SinmAccidentDesc" type="String" required="true"  />
+			<!-- <property name="SinmReportedDate" type="Date" LE="SinmOccurredDate"/>  -->
+			<!-- <property name="SinmOccurredDate" type="Date" LECD="true"/> -->
+		</validate>
+		<validate For="update">
+			<property name="SinmLocnKeyid" type="String" required="true"  /> 
+			<property name="SinmAccidentType" type="String" required="true"  /> 
+			<property name="SinmOccurredShift" type="String" required="true"  /> 
+			<property name="SinmReportedShift" type="String" required="true"  />
+			<property name="SinmReportedBy" type="String" required="true"  />
+<!-- 			<property name="SinmDepartment" type="String" required="true"  /> -->
+<!-- 			<property name="SinmDivision" type="String" required="true"  /> -->
+			<property name="SinmArea" type="String" required="true"  />
+<!-- 			<property name="SinmAccidentDesc" type="String" required="true"  /> -->
+			<!-- <property name="SinmAnalysedDate" type="Date" LE="SinmReportedDate"/>  -->
+			<!-- <property name="SinmReportedDate" type="Date" LECD="true"/> -->
+			<property name="SinmAnalysedDate" type="String" required="true"  /> 
+			<property name="SinmAnalysedShift" type="String" required="true"  />
+			<property name="SinmAnalysedBy" type="String" required="true"  /> 
+			<property name="SinmExactType" type="String" required="true"  /> 			
+		</validate>
+	</class>
+</validations>

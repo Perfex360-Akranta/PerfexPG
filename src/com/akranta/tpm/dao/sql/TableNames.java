@@ -180,6 +180,7 @@ public class TableNames {
 	public static final String TBL_SHE_TL_INJURYMODEMST = "SHE_TL_INJURYMODEMST";
 	public static final String TBL_SHE_TL_INCIINJURYMODEMST = "SHE_TL_INCIINJURYMODEMST";
 	public static final String TBL_SHE_TL_INCIDENTMST = "SHE_TL_INCIDENTMST";
+	public static final String TBL_SHE_TL_INCIDENTMSTNEW = "SHE_TL_INCIDENTMSTNEW";
 	
 	
 	

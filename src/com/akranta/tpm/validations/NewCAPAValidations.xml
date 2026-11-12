@@ -1,0 +1,17 @@
+<validations>
+<class id="QtmTlCapa" name="com.akranta.tpm.model.QtmTlCapa">
+<validate For="create update">
+<property name="QcapTodmtleader" type="String" required="true"/>
+<property name="QcapComplaintraisedby" type="String" LECD="true"/>
+<property name="QcapAreaincharge" type="String" required="true"/>
+<property name="QcapTodmt" type="String" required="true"/>
+<property name="QcapTojh" type="String" required="true"/>
+<property name="QcapDefect" type="String" required="true"/>
+<property name="QcapUom" type="String" required="true"/>
+<property name="QcapQuantityeffect" type="String" required="true"/>
+<property name="QcapQualityIssue" type="String" required="true"/>
+<property name="QcapDate" type="Date" required="true"/>
+<property name="QcapFlid" type="String" required="true"/>
+</validate>
+</class>
+</validations>

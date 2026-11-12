@@ -25,6 +25,9 @@
 	   // alert(TaskObserved);
 	    jQuery("#txtPjobFollowuppjono").val(FollowUpKeyid);
 	    jQuery("#txtPjobFollowuptaskobserved").val(TaskObserved);
+	    
+	    //clearField('cmbPjobEmployeeid');
+	    
 	    closePopUpDialoge("divPJOFollow");
 		}
 

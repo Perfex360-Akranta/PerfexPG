@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="GenTlCapa" name="com.akranta.tpm.model.GenTlCapa" >
+		<validate For="create">		
+			<property name="capaActionplanid" type="String" required="true"/>		
+			<property name="capaAnalysedby" type="String" required="true"/>
+			<property name="capaAnalyseddate" type="String" required="true"/>
+			<property name="capaCorrectiveaction" type="String" required="true"/>
+			<property name="capaPreventiveaction" type="String" required="true"/>			
+			<property name="capaCountermeasure" type="String" required="true"/>
+			<property name="capaRootcause" type="String" required="true"/>
+			<property name="capaRemarks" type="String" required="true"/>	
+					
+		</validate>	
+	</class>	
+</validations>

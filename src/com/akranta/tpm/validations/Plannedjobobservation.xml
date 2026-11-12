@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validations>
+	<class id="SheTlPlannedjobobservation" name="com.akranta.tpm.model.SheTlPlannedjobobservation" >
+		<validate For="create update">
+			<property name="PjobFlid" type="String" required="true"/>
+			<property name="PjobEmployeeid" type="String" required="true"/>
+ 			<property name="PjobFollowUpDate" type="Date" LE="PjobDate" />
+ 			<property name="PjobDate" type="Date" required="true" />
+ 			<property name="PjobTaskObserved" type="String" required="true"/>
+ 			<property name="PjobType" type="String" required="true"/>
+ 			<property name="PjobNotification" type="String" required="true"/>
+ 			<property name="PjobReasonid" type="String" required="true"/>
+ 		<!-- 	<property name="PjobFollowUpAction" type="String" required="true"/> -->
+		</validate>
+	</class>
+</validations>
