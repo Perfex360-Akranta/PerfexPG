@@ -234,7 +234,9 @@ function doubleClickTable(tableId,rowid,clickEnable){
 		</c:if>	 --%>
 		
 		<%
-		    if ((Boolean) request.getAttribute("showAll")) {
+		    //if ((Boolean) request.getAttribute("showAll")) {
+		   Boolean showAll = (Boolean) request.getAttribute("showAll");
+           if (Boolean.TRUE.equals(showAll)) {
 		%>
 		    <div id="allTab" title="${requestScope.titleAll}" style="padding:10px;width:102.6%\9" tabindex="0">
 			<table id="${requestScope.tblAll}" style="width:100%"><tr><td/></tr></table>
@@ -255,7 +257,9 @@ function doubleClickTable(tableId,rowid,clickEnable){
 		</c:if> --%>
 		
 		<%
-    if ((Boolean) request.getAttribute("showGen")) {
+   // if ((Boolean) request.getAttribute("showGen")) {
+	   Boolean showGen = (Boolean) request.getAttribute("showGen");
+         if (Boolean.TRUE.equals(showGen)) {
 %>
     <div id="genTab" title="${requestScope.titleGen}" class="" style="padding:10px;width:100%" tabindex="0">
 			<table id="${requestScope.tblGen}"  style="width:100%;"><tr><td/></tr></table>
@@ -273,7 +277,9 @@ function doubleClickTable(tableId,rowid,clickEnable){
 		</div>
 		</c:if> --%>
 		<%
-		    if ((Boolean) (request.getAttribute("showBdm"))) {
+		    //if ((Boolean) (request.getAttribute("showBdm"))) {
+		    Boolean showBdm = (Boolean) request.getAttribute("showBdm");
+		    if (Boolean.TRUE.equals(showBdm)) {
 		%>
 			<div  id="bdmTab" title="${requestScope.titleBdm}" style="padding:10px;width:102.6%\9" id="bdmTab" tabindex="0">
 			<table id="${requestScope.tblBdm}" style="width:100%;"><tr><td/></tr></table>
@@ -293,7 +299,9 @@ function doubleClickTable(tableId,rowid,clickEnable){
 		</c:if> --%>
 		
 		<%
-		if ((Boolean) (request.getAttribute("showJH"))) {
+		//if ((Boolean) (request.getAttribute("showJH"))) {
+		Boolean showJH = (Boolean) request.getAttribute("showJH");
+		    if (Boolean.TRUE.equals(showJH)) {
 			%>
 				<div id="jhTab" title="${requestScope.titleJh}" style="padding:10px;width:102.6%\9" tabindex="0">
 			<table id="${requestScope.tblJh}" style="width:100%;"><tr><td/></tr></table>
@@ -313,9 +321,11 @@ function doubleClickTable(tableId,rowid,clickEnable){
 		</c:if>--%>
 		
 		<%
-		if ((Boolean) (request.getAttribute("showKZN"))) {
+		//if ((Boolean) (request.getAttribute("showKZN"))) {
+		Boolean showKZN = (Boolean) request.getAttribute("showKZN");
+		if (Boolean.TRUE.equals(showKZN)) {
 		%>
-			<<div id="kznTab" title="${requestScope.titleKzn}" style="padding:10px;width:102.6%\9" tabindex="0">
+			<div id="kznTab" title="${requestScope.titleKzn}" style="padding:10px;width:102.6%\9" tabindex="0">
 			<table id="${requestScope.tblKzn}"  style="width:100%"><tr><td/></tr></table>
 			<div id="pager4"></div>
 		</div> 
@@ -332,7 +342,9 @@ function doubleClickTable(tableId,rowid,clickEnable){
 		</div>
 		</c:if> --%>
 		<%
-		if ((Boolean) (request.getAttribute("showPM"))) {
+		//if ((Boolean) (request.getAttribute("showPM"))) {
+		Boolean showPM = (Boolean) request.getAttribute("showPM");
+		if (Boolean.TRUE.equals(showPM)) {
 		%>
 			<div id="pmdTab" title="${requestScope.titlePmd}" style="padding:10px;width:102.6%\9" tabindex="0">
 			<table id="${requestScope.tblPmd}" style="width:100%"><tr><td/></tr></table>
@@ -351,7 +363,9 @@ function doubleClickTable(tableId,rowid,clickEnable){
 		</c:if> --%>
 		
 		<%
-		if ((Boolean) (request.getAttribute("showHSE"))) {
+		//if ((Boolean) (request.getAttribute("showHSE"))) {
+		Boolean showHSE = (Boolean) request.getAttribute("showHSE");
+		if (Boolean.TRUE.equals(showHSE)) {
 		%>
 			<div title="${requestScope.titleEhs}" style="padding:10px;width:102.6%\9" tabindex="0">
 			<table id="${requestScope.tblEhs}" style="width:100%"><tr><td/></tr></table>
@@ -369,7 +383,9 @@ function doubleClickTable(tableId,rowid,clickEnable){
 		</c:if> --%>
 		
 		<%
-		if ((Boolean) (request.getAttribute("showET"))) {
+		//if ((Boolean) (request.getAttribute("showET"))) {
+		Boolean showET = (Boolean) request.getAttribute("showET");
+		if (Boolean.TRUE.equals(showET)) {
 		%>
 			<div id="etTab" title="${requestScope.titleEt}" style="padding:10px;width:102.6%\9" tabindex="0">
 			<table id="${requestScope.tblEt}" style="width:100%"><tr><td/></tr></table>
@@ -388,7 +404,9 @@ function doubleClickTable(tableId,rowid,clickEnable){
 		</c:if> --%>
 		
 		<%
-		if ((Boolean) (request.getAttribute("showQTM"))) {
+		//if ((Boolean) (request.getAttribute("showQTM"))) {
+		Boolean showQTM = (Boolean) request.getAttribute("showQTM");
+		if (Boolean.TRUE.equals(showQTM)) {
 		%>
 			<div  id="qtmTab" title="${requestScope.titleQtm}" style="padding:10px;width:102.6%\9" tabindex="0">
 			<table id="${requestScope.tblQtm}" style="width:100%"><tr><td/></tr></table>
@@ -406,7 +424,9 @@ function doubleClickTable(tableId,rowid,clickEnable){
 		</c:if> --%>
 		
 		<%
-		if ((Boolean) (request.getAttribute("showAdm"))) {
+		//if ((Boolean) (request.getAttribute("showAdm"))) {
+		Boolean showAdm = (Boolean) request.getAttribute("showAdm");
+		if (Boolean.TRUE.equals(showAdm)) {
 		%>
 			<div id="admTab" title="${requestScope.titleAdm}" style="padding:10px;width:102.6%\9" tabindex="0">
 			<table id="${requestScope.tblAdm}" style="width:100%"><tr><td/></tr></table>
@@ -425,7 +445,9 @@ function doubleClickTable(tableId,rowid,clickEnable){
 		</c:if> --%>
 		
 		<%
-		if ((Boolean) (request.getAttribute("showSAP"))) {
+		//if ((Boolean) (request.getAttribute("showSAP"))) {
+		Boolean showSAP = (Boolean) request.getAttribute("showSAP");
+		if (Boolean.TRUE.equals(showSAP)) {
 		%>
 		    <div id="SAPTab" title="${requestScope.titleSAP}" style="padding:10px;width:102.6%\9" tabindex="0">
 			<table id="${requestScope.tblSAP}" style="width:100%"><tr><td/></tr></table>

@@ -346,6 +346,12 @@ public class TableNames {
 	public static final String TBL_BAL_GEN_TL_CRITICALITYMST = "BAL_GEN_TL_CRITICALITYMST";
 	public static final String TBL_BAL_GEN_TL_FUNCTIONALLOCN = "BAL_GEN_TL_FUNCTIONALLOCN";
 	
+	public static final String TBL_BAL_PCS_TL_LOSSCAUSEMST = "BAL_PCS_TL_LOSSCAUSEMST";
+	public static final String TBL_BAL_PCS_TL_CYCLETIMEMST = "BAL_PCS_TL_CYCLETIMEMST";
+	public static final String TBL_BAL_PCS_TL_PRODUCTMST = "BAL_PCS_TL_PRODUCTMST";
+	public static final String TBL_BAL_PCS_TL_PRODUCTIONDATA = "BAL_PCS_TL_PRODUCTIONDATA";
+	
+	public static final String TBL_PCS_VW_TOOLCHANGE = "PCS_VW_TOOLCHANGE";
 	
 	
 	

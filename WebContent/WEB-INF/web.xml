@@ -423,6 +423,73 @@
     <servlet-name>BAL_whyComplaiceRpt</servlet-name>
     <url-pattern>*.yyComRpt</url-pattern>
   </servlet-mapping>
+
+  <!-- BAL PCS -->
+  <servlet>
+    <servlet-name>BAL_PcsEntryServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_PcsEntryServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BAL_PcsEntryServlet</servlet-name>
+    <url-pattern>*.balpcs</url-pattern>
+  </servlet-mapping>
+
+   <!--BAL PCS Master  -->
+  <servlet>
+    <servlet-name>BAL_cellManningServlet</servlet-name>
+<servlet-class>com.akranta.tpm.controller.BAL_CellManningServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>BAL_cellManningServlet</servlet-name>
+<url-pattern>*.balcllmng</url-pattern>
+</servlet-mapping>
+
+<servlet>
+<servlet-name>BAL_PCSEnableDisable</servlet-name>
+<servlet-class>com.akranta.tpm.controller.BAL_PCSEnableDisableServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>BAL_PCSEnableDisable</servlet-name>
+<url-pattern>*.balpcsEnable</url-pattern>
+</servlet-mapping>
+
+
+<!-- PCS reports -->
+<servlet>
+    <servlet-name>BAL_lossStratificationServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_LossStratificationServlet</servlet-class>
+  </servlet>
+<servlet-mapping>
+    <servlet-name>BAL_lossStratificationServlet</servlet-name>
+    <url-pattern>*.ballosstr</url-pattern>
+  </servlet-mapping> 
+
+<servlet>
+    <servlet-name>BAL_oeearprqrServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_OeearprqrServlet</servlet-class>
+  </servlet>
+<servlet-mapping>
+    <servlet-name>BAL_oeearprqrServlet</servlet-name>
+    <url-pattern>*.baloeear</url-pattern>
+  </servlet-mapping>  
+
+<servlet>
+    <servlet-name>BAL_pcsComplianceRptServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_PcsComplianceRptServlet</servlet-class>
+  </servlet>
+<servlet-mapping>
+    <servlet-name>BAL_pcsComplianceRptServlet</servlet-name>
+    <url-pattern>*.balpcscomp</url-pattern>
+  </servlet-mapping>
+
+<servlet>
+    <servlet-name>BAL_productionLossServlet</servlet-name>
+    <servlet-class>com.akranta.tpm.controller.BAL_ProductionLossServlet</servlet-class>
+  </servlet>
+<servlet-mapping>
+    <servlet-name>BAL_productionLossServlet</servlet-name>
+    <url-pattern>*.balprdloss</url-pattern>
+  </servlet-mapping>
   
   <servlet>
     <servlet-name>ToolMonitoringServlet</servlet-name>

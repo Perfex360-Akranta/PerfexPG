@@ -1,13 +1,18 @@
-
 <script type="text/javascript">
 
 jQuery(document).ready(function(){	
 	
 	var actionPart = jQuery('#hiddenUrl').val();	
 	var  prevDataUrl = jQuery('#hdnPrevDataUrl').val();
-	jQuery("#chkboxvai").attr("checked",false);
+	jQuery("#chkboxvai").attr("checked",true);
+	url="LossStratification_input.ballosstr";
+	var allLoss="N";
+	//viewGrid("LossStratification_input.losstr","?q=2&firstClick=Y");
+	var filterString = '&drillFlag=y&allLoss=N';
 	if( prevDataUrl == null || prevDataUrl.length <= 0)		
-		viewGrid("LossStratification_input.losstr","?q=2&firstClick=Y");
+		//processGridnew(url,filterString,"LossGrid","pager","","doubleClickGrid","","Grid_loadComplete");
+		viewGrid("LossStratification_input.ballosstr","?q=2&firstClick=Y&allLoss=N");
+		
 	else{
 		 	viewGrid(unescape(prevDataUrl),"?q=2");
 	}		
@@ -24,24 +29,33 @@ jQuery(document).ready(function(){
 	}); 	
 });
 jQuery('#chkboxviewSubloss').click(function(){
+//	alert(1);
 	if(jQuery('#chkboxviewSubloss').is(':checked')==true){
+		alert(1);
 		jQuery('#LossGrid td:contains("(+)")').trigger('click');
+		alert(2);
 	}
 	else{
 		jQuery('#LossGrid td:contains("(-)")').trigger('click');
 	}
 });
 jQuery('#chkboxvai').click(function(){
-	if(jQuery('#chkboxvai').is(':checked')==true)
-		viewAddInfo();		
-	else 		
+				
+	if(jQuery('#chkboxvai').is(':checked')== true){
+		//jQuery("#list").jqGrid('hideRow',["Loadingtime","ROA"]);
+		viewAddInfo();
+		
+	}	
+	else 	
+			
 		hideAddInfo();		
 });
 function viewAddInfo()
 {
-	var allRowsId = jQuery('#LossGrid').jqGrid('getDataIDs');	
-	for(var i=0;i<allRowsId.length;i++)
-	{
+	var allRowsId = jQuery('#LossGrid').jqGrid('getDataIDs');
+	
+	for(var i=13;i<allRowsId.length;i++)
+	{		
 		var ID=allRowsId[i];
 		
 		var nextTr = jQuery("#LossGrid tr[id="+ID+"]").next('tr').attr("id");
@@ -52,10 +66,8 @@ function viewAddInfo()
 		if(nextRowData.GroupF == "A" ){
 			
 			while(nextRowData.GroupF=="A")
-			{				
-				
-				
-				jQuery("#LossGrid tr[id="+nextTr +"]").show();					
+			{			
+				 jQuery("#LossGrid tr[id="+nextTr +"]").show();					
 				 jQuery("#" +nextTr).find("td").css("background-color", "#"+color);
 				 nextTr = jQuery("#LossGrid tr[id="+nextTr+"]").next('tr').attr("id");				
 				 nextRowData = jQuery("#LossGrid").jqGrid('getRowData',nextTr);	
@@ -68,23 +80,55 @@ function viewAddInfo()
 function hideAddInfo()
 {	
 	var allRowsId = jQuery('#LossGrid').jqGrid('getDataIDs');	
-	for(var i=0;i<allRowsId.length;i++)
+	for(var i=13;i<allRowsId.length;i++)
 	{
-		var ID=allRowsId[i];		
+		var ID=allRowsId[i];
+		//alert(ID+" ........l");
 		var nextTr = jQuery("#LossGrid tr[id="+ID+"]").next('tr').attr("id");		
 		var nextRowData = jQuery("#LossGrid").jqGrid('getRowData',nextTr);
-			
+		
 		if(nextRowData.GroupF == "A"){
-			
-			while(nextRowData.GroupF=="A")
+
+			var i = ID.substr(8,2);
+			while(i>=90 && i<= 99)
 			{			
 				//hideJqGridRow("LossGrid", nextTr);
 				
+			//	alert(12390);
+				
 				jQuery("#LossGrid"+ ' tr[id='+ nextTr +"]").css({display:"none"});
 				 nextTr = jQuery("#LossGrid tr[id="+nextTr+"]").next('tr').attr("id");				 
-				 nextRowData = jQuery("#LossGrid").jqGrid('getRowData',nextTr);					
+				 nextRowData = jQuery("#LossGrid").jqGrid('getRowData',nextTr);
+				 i++;					
 			}	}
 		}
+}
+function Grid_loadComplete(){
+	
+	//jQuery("#eqpnote").css('display','block');		
+	var circle = jQuery("#hiddencircle").val();	
+	
+	//setTotalRowColorForGroupby("OeeGrid");	
+	var rowIds = jQuery("#LossGrid").getDataIDs();
+		
+	if(rowIds.length>=0)
+		{
+				
+		var parentId =  rowIds[0];//jQuery("#OeeGrid").jqGrid('getCell', rowIds[0], 'keyid');
+			hideShowBack(true);
+			if(parentId.substr(0,3) == 'CMP')			
+				hideShowBack(false);
+			/*if(circle.substr(0,3) == 'CRC')
+				 hideShowBack(false);	*/
+					
+		}
+	var row = jQuery("#LossGrid").jqGrid('getDataIDs');		
+	jQuery("#LossGrid").jqGrid('setRowData', row.length, false );//{color:'blue','font-weight':'bold'}
+//	jQuery("#OeeGrid").jqGrid( 'setGridParam',{onCellSelect:function(rowid,iCol,cellcontent,e)
+	//{
+	//	doubleClickGrid(rowid,iCol);
+				
+	//}  });	
 }
 
 jQuery("#btnoee").click(function(rowid){
@@ -117,12 +161,13 @@ jQuery("#btnoee").click(function(rowid){
 		
 		//&parentId=FCT002
 	var url = jQuery("#LossGrid").jqGrid('getGridParam', 'url');
-	url = url.replace("LossStratification_getData.losstr","LossStratification_input.losstr");
+	url = url.replace("LossStratification_getData.ballosstr","LossStratification_input.ballosstr");
 	url = escape(url); 
 	
 	navigateToNextForm("Oeearprqr_input.oeear"+datStr+"&parentId="+ jQuery('#hdnPrevParent').val(),"OEE,AR,PR,OR - Trend",null,{"filterString":url});
 	}
 });
+
 jQuery("#btnloss").click(function(rowid){	
 	var rowid = jQuery("#hdnselid").val();	
 	if(rowid == null || rowid ==''){ 
@@ -145,7 +190,7 @@ jQuery("#btnloss").click(function(rowid){
 		var datStr ="?q=2&";	
 		datStr+=getParamName(selId)+"="+rowid;
 		var url = jQuery("#LossGrid").jqGrid('getGridParam', 'url');
-		url = url.replace("LossStratification_getData.losstr","LossStratification_input.losstr");
+		url = url.replace("LossStratification_getData.ballosstr","LossStratification_input.ballosstr");
 		url = escape(url); 
 		jQuery('#isCommonFilterSlideOpen').val('N');
 			navigateToNextForm("ProductionLoss_input.prdloss"+datStr,"Production Loss Analysis",null,{"filterString":url});
@@ -188,7 +233,7 @@ jQuery("#btnmon").click(function(rowid){
 		var datStr ="?q=2&";
 		datStr+=getParamName(selId)+"="+rowid;
 		var url = jQuery("#LossGrid").jqGrid('getGridParam', 'url');
-		url = url.replace("LossStratification_getData.losstr","LossStratification_input.losstr");
+		url = url.replace("LossStratification_getData.ballosstr","LossStratification_input.ballosstr");
 		url = escape(url); 
 		jQuery('#isCommonFilterSlideOpen').val('N');
 		navigateToNextForm("PrdLogRpt_input.prdlogMon"+datStr,"Production Log Report(Month Wise)",null,{"filterString":url});
@@ -211,7 +256,7 @@ jQuery("#btnpcs").click(function(){
 		var datStr ="?q=2&fromLossStratifi=true&";		
 		datStr+=getParamName(selId)+"="+rowid;	
 		var url = jQuery("#LossGrid").jqGrid('getGridParam', 'url');
-		url = url.replace("LossStratification_getData.losstr","LossStratification_input.losstr");
+		url = url.replace("LossStratification_getData.ballosstr","LossStratification_input.ballosstr");
 		url = escape(url); 		
 		navigateToNextForm("PcsReport_input.pcsrpt"+datStr,"PCS Report",null,{"filterString":url});	
 	}
@@ -274,7 +319,7 @@ function addSubLoss(rowid)
 			filterString +="&rowId="+rowid;
 			filterString +="&celid="+celid;
 			filterString +="&mchid="+mchid;		
-		var url = "LossStratificationSubGrid_getData.losstr";
+		var url = "LossStratificationSubGrid_getData.ballosstr";
 		jQuery("#hiddenChkVal").val("1");
 		processAjaxCalls(url,filterString,"subGrid_successCallBack","subGrid_errCallBack","");
 		return false;
@@ -294,7 +339,7 @@ function addSubLoss(rowid)
 		if(selId.substr(0,3) =='FCT')
 			alert("From Line Level Sub Losses Can View");
 			
-		var url = "LossStratificationSubGrid_getData.losstr";
+		var url = "LossStratificationSubGrid_getData.ballosstr";
 		jQuery("#hiddenChkVal").val("1");
 		processAjaxCalls(url,filterString,"subGrid_successCallBack","subGrid_errCallBack","");
 		return false;
@@ -332,6 +377,7 @@ function LossGrid_loadComplete_afterLoad()
 		}
 	});
 	jQuery('#LossGrid td:contains("(+)")').bind("click",function(){
+		alert(1236);
 		var hideVal = this.title;
    		
 	if(hideVal.substring(1,2)=="+"){
@@ -374,7 +420,8 @@ function LossGrid_loadComplete_afterLoad()
 	}
 function LossGrid_loadComplete(){
 	
-	jQuery("#LossGrid").jqGrid( 'setGridParam',{onCellSelect:function(rowid,iCol,cellcontent,e){		
+	jQuery("#LossGrid").jqGrid( 'setGridParam',{onCellSelect:function(rowid,iCol,cellcontent,e){
+		alert( "");		
 		 doubleClickGrid(rowid,iCol);
 	}});	
 	
@@ -493,7 +540,7 @@ jQuery('#btnGraphOk').click(function(){
 		var rowid = jQuery("#hdnselid").val();		
 		if(rowid == "no" )
 			rowid = jQuery("#hiddenkey").val();		
-		var url = "chartpercent.losstr?" + (rowid != null && rowid != 'undefined' ?  getParamName(rowid)+"="+rowid:"chType=p");
+		var url = "chartpercent.ballosstr?" + (rowid != null && rowid != 'undefined' ?  getParamName(rowid)+"="+rowid:"chType=p");
 		showGraphData(url);
 	}
 	else if(jQuery('#chksubLos').is(':checked') == true)
@@ -502,7 +549,7 @@ jQuery('#btnGraphOk').click(function(){
 			var rowid = jQuery("#hdnselid").val();			
 			if(rowid == "no" )
 				rowid = jQuery("#hiddenkey").val();			 
-			var url = "chart.losstr?" + (rowid != null && rowid != 'undefined' ?  getParamName(rowid)+"="+rowid:"chType=p");
+			var url = "chart.ballosstr?" + (rowid != null && rowid != 'undefined' ?  getParamName(rowid)+"="+rowid:"chType=p");
 			showGraphData(url);			
 		}    
    	else if(jQuery('#chkZeroLoss').is(':checked') == true)
@@ -511,25 +558,27 @@ jQuery('#btnGraphOk').click(function(){
 	   	 	var rowid = jQuery("#hdnselid").val();			
 			if(rowid == "no" )
 				rowid = jQuery("#hiddenkey").val();			 
-			var url = "chartzero.losstr?" + (rowid != null && rowid != 'undefined' ?  getParamName(rowid)+"="+rowid:"chType=p");
+			var url = "chartzero.ballosstr?" + (rowid != null && rowid != 'undefined' ?  getParamName(rowid)+"="+rowid:"chType=p");
 			showGraphData(url);			 
 		}
    		else{
 			var rowid = jQuery("#hdnselid").val();			
 			if(rowid == "no" )
 				rowid = jQuery("#hiddenkey").val();			 
-			var url = "chartzero.losstr?" + (rowid != null && rowid != 'undefined' ?  getParamName(rowid)+"="+rowid:"chType=p");
+			var url = "chartzero.ballosstr?" + (rowid != null && rowid != 'undefined' ?  getParamName(rowid)+"="+rowid:"chType=p");
 			showGraphData(url);	
    		}		
-		jQuery( "#graphOption" ).dialog("close");
+		jQuery( "#graphOption" ).dialog("close");              
    });
 function doubleClickGrid(id,iCol,colVal)
 {
-	
 	selId =jQuery('#hdnselid').val();
 	var prevParent = null;
+	alert(123);
 	
 	if(selId.substring(0,3)=="CMP" ){
+		alert(selId.substring(0,3) +" id "+ selId +" iCol "+ iCol +"colVal "+colVal);
+		
 		prevParent = selId;
 	}
 	else if(selId.substring(0,3)=="LCN"){
@@ -553,7 +602,8 @@ function doubleClickGrid(id,iCol,colVal)
 	}catch(Exception	){
 	}
 	setDrillDoubleClick(id);
-	/*if(selId.substr(0,3) != 'MCH'){
+	if(selId.substr(0,3) != 'CEL'){
+		
 		var filterData ="?";	
 		var removeBlank = jQuery("#hiddenLStfiRemoveBlank").val();
 		filterData += "&chkRemoveBlank="+removeBlank;
@@ -561,7 +611,9 @@ function doubleClickGrid(id,iCol,colVal)
 		var url = jQuery('#hiddenUrl').val();
 				
 		processGridnew(url,filterData,"LossGrid","pager",'',"doubleClickGrid","","LossGrid_loadComplete");	
-	}	*/
+	}
+	else
+	alert("No Record to Select");	
 	
 } 
 function setDrillDoubleClick(id){
@@ -612,6 +664,7 @@ function LossGrid_onProcessGridBack(){
     	var colm = jQuery("#LossGrid").jqGrid ('getGridParam', 'colModel');
     	if(colm.length>=6)
     	{
+        	
     		var colm = jQuery("#LossGrid").jqGrid ('getGridParam', 'colModel');
     		var keyField = colm[5].name;
     		if((keyField.trim()).length>0){
@@ -745,6 +798,23 @@ function frmFilter_enableDisableSuccessCallBack()
 	jQuery("#dtetoDate").datebox('disable');
 }
 
+jQuery('#chkboxviewAllloss').click(function(){
+	var allLoss=null;
+	if(jQuery('#chkboxviewAllloss').is(':checked')== true){
+		var filterString="&allLoss=Y";
+		
+	 	processGridnew('LossStratification_input.ballosstr?q=2',filterString,"LossGrid","pager","","","","Grid_loadComplete");
+
+	//	processAjaxCalls('LossStratification_input.losstr?q=2&allLoss='+allLoss,"subGrid_successCallBack","subGrid_errCallBack","");
+	}	
+	else 	{
+		var filterString="&allLoss=N";
+	 	processGridnew('LossStratification_input.ballosstr?q=2',filterString,"LossGrid","pager","","","","Grid_loadComplete");
+
+		//processAjaxCalls('LossStratification_getCol.losstr?q=2&allLoss='+allLoss,"subGrid_successCallBack","subGrid_errCallBack","");
+	}
+				
+});
 </script>
 <form name="frmEdtreport" id="frmEdtreport" >
 
@@ -752,14 +822,21 @@ function frmFilter_enableDisableSuccessCallBack()
 <div class="floatleft" style="padding-left:40px;">
 <input id="chkboxvai" name="chkboxvai" type="checkbox" /> <label>View Results</label>
 <span>
-<input id="chkboxviewSubloss" name="chkboxviewSubloss" type="checkbox" disabled="disabled"/> <label>View Subloss</label>
+<input id="chkboxviewSubloss" name="chkboxviewSubloss" type="checkbox" /> <label>View Subloss</label>
 </span>
+
+<span>
+<input id="chkboxviewAllloss" name="chkboxviewAllloss" type="checkbox" /> <label>View All Losses</label>
+</span>
+
 </div>
+<div>
+<label style="padding-left:150px; font-weght:bold; color:blue;"> Double Click  company\ Section\ Cell to Drill Down.</label></div> 
 <div class="floatright" style="padding-right:5px;"><input id="btnGraph" class="easyui-button"  type="button" value="Pie-Graph"/> </div>
-<div class="floatright" style="padding-right:5px;"><input id="btnoee" class="easyui-button"  type="button" value="OEE Analysis"/> </div>
-<div class="floatright" style="padding-right:5px;"><input id="btnloss" class="easyui-button"  type="button" value="Loss Trend & Pareto"/></div>
-<div class="floatright" style="padding-right:5px;"><input id="btnmon" class="easyui-button"  type="button" value="Date/Month Wise Report"/></div>
-<div class="floatright" style="padding-right:5px;"><input id="btnpcs" class="easyui-button"  type="button" value="PCS Report"/>
+<div class="floatright" style="padding-right:5px;"><input id="btnoee" class="easyui-button"  type="button" value="OEE Analysis"style="display:none;"/> </div>
+<div class="floatright" style="padding-right:5px;"><input id="btnloss" class="easyui-button"  type="button" value="Loss Trend & Pareto"style="display:none;"/></div>
+<div class="floatright" style="padding-right:5px;"><input id="btnmon" class="easyui-button"  type="button" value="Date/Month Wise Report"style="display:none;"/></div>
+<div class="floatright" style="padding-right:5px;"><input id="btnpcs" class="easyui-button"  type="button" value="PCS Report" style="display:none;"/>
 </div>
  </div>
  <div id="wrapperRpt" style="top: 0px;">
@@ -806,4 +883,3 @@ function frmFilter_enableDisableSuccessCallBack()
 <input type="hidden" id="hdnElementVal" />
 </div> 
 </form>
-	

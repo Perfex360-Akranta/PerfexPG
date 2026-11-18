@@ -580,6 +580,146 @@ public class DBActionTemplate {
 		
 	}
 	
+	public void executeStatement1(List<String> sqls, List<Object[]> valueList, List<int[]> dataTypes, char [] sqlType)  throws Exception
+  	{
+  		if( sqls.size() <= 0)
+  			throw new Exception("No statement found");
+  		
+  		FileInputStream fis = null;
+  		File file; 
+  		Connection connection = null;
+  		PreparedStatement preparedStatement = null;
+  		CallableStatement stmt = null;
+  		try{
+  			connection = getNewConnection() ; // dataSource.getConnection();
+  			int index = 0;
+  			connection.setAutoCommit(false);
+  			System.out.println(" sql in side db Action" + sqls.size());
+  			for( String sql: sqls)
+  			{	
+  				
+  				System.out.println(" sql in side db Action" + sql);
+  			
+  				Object [] values = valueList.size()>0?valueList.get(index):null;
+  				if( sqlType[index] == 'Q'){
+  			       preparedStatement = connection.prepareStatement(sql);
+  				
+  				   int i = 0;
+  				   int [] types = dataTypes.size()>0?dataTypes.get(index):null;
+  				
+  				   if(values != null)
+  				   {
+  				
+  					   for( Object value : values )
+  					   {
+  						
+  						    if( types[ i ] == Types.VARCHAR)
+  							   preparedStatement.setString(i+1,(String)value);
+  						    else if( types[ i ] == Types.INTEGER)
+  						    {
+  							   preparedStatement.setInt(i+1,Integer.parseInt((String) value));
+  						    }
+  						    else if( types[ i ] == Types.DATE)	
+  						    {
+  							   preparedStatement.setDate(i+1,(java.sql.Date)value);
+  						    }
+  						    else if( types[ i ] == Types.DOUBLE)
+  						    {
+  							   preparedStatement.setDouble(i+1,(Double) value);
+  						    }
+  						    else if( types[ i ] == Types.VARCHAR)
+  						    {
+  							   preparedStatement.setString(i+1,(String)value);
+  						    }
+  						    else if( types[ i ] == Types.BLOB)
+  						    {
+  							   file=new File((String)value);
+  							   fis=new FileInputStream(file);
+  							   preparedStatement.setBinaryStream(i+1,fis,file.length());
+  	
+  						    }
+  						    else if( types[ i ] == Types.TIMESTAMP)	
+  						    {
+  							   preparedStatement.setTimestamp(i+1,(java.sql.Timestamp)value);
+  						    }
+  						    else
+  							   preparedStatement.setString( i+1,(String)value);
+  						
+  						    i++;
+  					     }
+  				   }
+   				    //   preparedStatement.addBatch();
+  				     preparedStatement.execute();
+  				}
+  				else if( sqlType[index] == 'P') //
+  				{
+  					StringBuffer query = new StringBuffer();
+  					
+  					query.append("{ ? = call ");
+  					query.append( sql );
+  					query.append("( ");
+  					int i= 0;
+  					if( values != null )
+  						for(  i = 0; i < values.length; query.append(" ?,"), i++ );
+  					
+  					
+  					query.deleteCharAt(query.length()-1);
+  					query.append(") }");
+  					
+  					
+  					stmt = connection.prepareCall( query.toString());
+  					int params =0;
+  					if( values != null ){
+  					    for( params = 0; params < values.length; params++)
+  					    {		
+  					    	
+  					    	stmt.setString(params+2, values[params].toString() );
+  					    }
+  					}
+  				    stmt.registerOutParameter(1, Types.INTEGER);
+  					stmt.execute();
+  					
+  					int retVal = stmt.getInt(1);
+  					
+  					if( retVal == -1  ) //error
+  					{
+  						com.akranta.tpm.utils.CommonFunctions.debugMsg( " retVal " + retVal);
+  						//com.akranta.tpm.utils.CommonFunctions.debugMsg(" ExceptionException _ 0009876");
+  						connection.rollback();
+  						throw new Exception();//("DATA NOT SAVED");
+  					}
+  					else if(retVal == -2 || retVal == -3)
+  					{
+  						connection.rollback();
+  						throw new Exception(Integer.toString(retVal));
+  					}
+  					
+  				}
+  				index++;
+  			}
+  			
+  		//	com.akranta.tpm.utils.CommonFunctions.debugMsg( " retVal " );
+  			//preparedStatement.executeBatch();
+  			connection.commit();
+  				
+  		}catch (SQLException e) {
+  			// TODO: handle exception
+  			if( connection != null && ! connection.isClosed())
+  				connection.rollback();
+  			throw new Exception( e.getMessage());
+  			
+  		}catch( Exception e){
+  			if( connection != null && ! connection.isClosed())
+  				connection.rollback();
+  			e.printStackTrace();
+  			throw new Exception( e.getMessage());
+  		}finally{
+  			if( fis != null)
+  				fis.close();
+  			closeConnection(null,null,null, preparedStatement, connection);			
+  		}
+  	}
+	
 	public ResultSet getData(String sql, Object [] args   ) throws  NoDataFoundException ,Exception
 	{
 		Connection connection = null;

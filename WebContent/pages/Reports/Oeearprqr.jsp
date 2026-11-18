@@ -3,7 +3,7 @@
 jQuery(document).ready(function()
 		{
 		     jQuery('#submitForm').val('frmOeereport');
-			 viewGrid("Oeearprqr_input.oeear","?q=2&firstClick=Y");
+			 viewGrid("Oeearprqr_input.baloeear","?q=2&firstClick=Y");
 
 		});
 
@@ -35,12 +35,13 @@ jQuery('#btnGraph').click(function() //// initialiseForm('frmOeereport');
 			var url="";
 			if(rowid!=null && rowid!=''&& rowid!=' '&& rowid!=undefined && rowid!='undefined'){
 			var rowData = jQuery("#OeeGrid").jqGrid('getRowData',rowid);
-			var selId = rowData.KEYFIELD2;
-			var colData = selId.split("#");
+			//var selId = rowData.KEYFIELD2;
+             var selId = rowData.KEYFIELD2;
+             var colData = selId.split("#");
 			var conflid=colData[0];
 	        if(checkForZeroes("OeeGrid",rowid,3))
 				{	
-					url = "chart.oeear?conflid="+conflid; // + (rowid != null && rowid != 'undefined' ?  getParamName(rowid)+"="+rowid:"chType=p");
+					url = "chart.baloeear?conflid="+conflid; // + (rowid != null && rowid != 'undefined' ?  getParamName(rowid)+"="+rowid:"chType=p");
 					showGraphData(url);
 		    }else{ 
 					alert("No Record to View Graph");
@@ -49,7 +50,7 @@ jQuery('#btnGraph').click(function() //// initialiseForm('frmOeereport');
 		 }
 		else{
 					rowid="";
-				    url = "chart.oeear";  
+				    url = "chart.baloeear";  
 				   showGraphData(url);
 
 			}
@@ -62,26 +63,46 @@ function OeeGrid_onProcessGridBack()
 {
 	
 	var keyfieldData=jQuery("#hdnFnlnKeyid").val();
-	setDrillProcesGridBack("OeeGrid","KEYFIELD2",keyfieldData);
+	//setDrillProcesGridBack("OeeGrid","KEYFIELD2",keyfieldData);
+	setDrillProcesGridBack("OeeGrid","keyid",keyfieldData);
 	jQuery("#hdnFnlnKeyid").val("");	
 	
 }	
 
-function doubleClickGrid(id)
+/*function doubleClickGrid(id)
 { 	
 	
 	var keyfieldData=jQuery("#hdnFnlnKeyid").val();
 	keyfieldData=setDrillDoubleClick("OeeGrid","KEYFIELD2",id,keyfieldData);
 	jQuery("#hdnFnlnKeyid").val(keyfieldData);
 
+}*/
+var currentDrillLevel = 'COMP';
+
+function doubleClickGrid(id)
+{
+	var tr = document.getElementById(id);
+	var keyid = jQuery.trim(jQuery(tr).find('td[aria-describedby="OeeGrid_KEYFIELD2"]').text());
+
+	if (!keyid || currentDrillLevel != 'COMP')
+		return;
+
+	var filterString = "q=2&drillFlag=f&firstClick=N&flid=" + keyid
+	                 + "&DRILLLEVEL=LOCN&COMPANYID=" + keyid;
+	currentDrillLevel = 'LOCN';
+
+	processGridnew("Oeearprqr_input.baloeear", filterString, "OeeGrid", "pager",
+	               "tableCaption", "doubleClickGrid", "", "visGrid", "", "");
 }
 
 function visGrid()
 {
-	
-	setDrillDownHeader("CH1-0","OeeGrid","KEYFIELD2");
+	setDrillDownHeader("CH1-0","OeeGrid","keyid");
 	setTotalRowCss('OeeGrid');
-	
+
+	jQuery("#OeeGrid").jqGrid('setGridParam', {
+		ondblClickRow: function(rowid){ doubleClickGrid(rowid); }
+	});
 }
 
 

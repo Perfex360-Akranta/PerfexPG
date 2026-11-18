@@ -165,4 +165,98 @@ public class SqlUtils {
 		CommonMessage.debugMsg(sql.toString());
 		return sql.toString();
 	}
+	
+	
+	public static String getUpdatePcsProductionSql(String tableName,TableFieldType [] fieldTypeArr, Object[] dataArr )
+	{
+		StringBuffer sql = 	new StringBuffer();
+		
+		sql.append(" update  " + tableName + " set ");
+		int i = 0;
+		for( TableFieldType tableFieldType :fieldTypeArr)
+		{ 
+			if (tableFieldType.fieldName.equals("CALENDARTIME") ||
+					tableFieldType.fieldName.equals("NOPLANINMINS") ||
+					tableFieldType.fieldName.equals("PLANNEDQTY") ||
+					tableFieldType.fieldName.equals("PRODUCEDQTY") ||
+					tableFieldType.fieldName.equals("UNACCOUNTEDTIME") ||
+					tableFieldType.fieldName.equals("LOADINGTIME") || 
+					tableFieldType.fieldName.equals("PRODUCTIONTIME") ||
+					tableFieldType.fieldName.equals("REMARKS") || 
+					tableFieldType.fieldName.equals("REJECTEDQTY") ||
+					tableFieldType.fieldName.equals("REWORKQTY") ||
+					tableFieldType.fieldName.equals("CAVITYAVAILABLE") || 
+					tableFieldType.fieldName.equals("CAVITYUSED") ||
+					tableFieldType.fieldName.equals("REMARKS") ||
+					tableFieldType.fieldName.equals("REMARKS") ||
+					tableFieldType.fieldName.equals("CAVITYAVAILABLE") ||
+					tableFieldType.fieldName.equals("BACKLOGQTY") ||
+					tableFieldType.fieldName.equals("THEORITICALCYCLETIME") ||
+					tableFieldType.fieldName.equals("ACTUALCYCLETIME") ||
+					tableFieldType.fieldName.equals("PRODUCTID") ||
+					tableFieldType.fieldName.equals("WNO") ||
+					tableFieldType.fieldName.equals("RAWMATERIALTYPE") ||
+					tableFieldType.fieldName.equals("WEIGHT") ||
+					tableFieldType.fieldName.equals("TRIMMINGQTY") || 
+					tableFieldType.fieldName.equals("EXPANSIONQTY") )
+				
+			{ 
+				CommonFunctions.debugMsg("tableFieldType.fieldName"+tableFieldType.fieldName);
+				CommonFunctions.debugMsg("dataArr[i],tableFieldType.fieldType"+dataArr[i]);
+				sql.append( tableFieldType.fieldName + " = " + formatFieldValue( dataArr[i++],tableFieldType.fieldType ) );
+				sql.append(",");
+			}
+			else
+				i++;
+		}
+		sql.deleteCharAt(sql.lastIndexOf(","));
+		return sql.toString();
+	}
+	
+	public static String getUpdateBALPcsSql(String tableName,TableFieldType [] fieldTypeArr, Object[] dataArr )
+	{
+		StringBuffer sql = 	new StringBuffer();
+		
+		sql.append(" update  " + tableName + " set ");
+		int i = 0;
+		for( TableFieldType tableFieldType :fieldTypeArr)
+		{ 
+			if (tableFieldType.fieldName.equals("CALENDARTIME") ||
+				//	tableFieldType.fieldName.equals("NOPLANINMINS") ||
+				//	tableFieldType.fieldName.equals("PLANNEDQTY") ||
+				//	tableFieldType.fieldName.equals("PRODUCEDQTY") ||
+				//	tableFieldType.fieldName.equals("UNACCOUNTEDTIME") ||
+					tableFieldType.fieldName.equals("LOADINGTIME") || 
+				//	tableFieldType.fieldName.equals("PRODUCTIONTIME") ||
+					tableFieldType.fieldName.equals("REMARKS") || 
+				//	tableFieldType.fieldName.equals("REJECTEDQTY") ||
+				//	tableFieldType.fieldName.equals("REWORKQTY") ||
+					tableFieldType.fieldName.equals("CAVITYAVAILABLE") || 
+				//	tableFieldType.fieldName.equals("CAVITYUSED") ||
+					tableFieldType.fieldName.equals("REMARKS") ||
+					tableFieldType.fieldName.equals("REMARKS") ||
+					tableFieldType.fieldName.equals("CAVITYAVAILABLE") ||
+					tableFieldType.fieldName.equals("BACKLOGQTY") ||
+				//	tableFieldType.fieldName.equals("THEORITICALCYCLETIME") ||
+				//	tableFieldType.fieldName.equals("ACTUALCYCLETIME") ||
+				//	tableFieldType.fieldName.equals("PRODUCTID") ||
+					tableFieldType.fieldName.equals("WNO") ||
+					tableFieldType.fieldName.equals("RAWMATERIALTYPE") ||
+					tableFieldType.fieldName.equals("WEIGHT") ||
+					tableFieldType.fieldName.equals("TRIMMINGQTY") || 
+					tableFieldType.fieldName.equals("EXPANSIONQTY") )
+				
+			{ 
+				CommonFunctions.debugMsg("tableFieldType.fieldName"+tableFieldType.fieldName);
+				CommonFunctions.debugMsg("dataArr[i],tableFieldType.fieldType"+dataArr[i]);
+				sql.append( tableFieldType.fieldName + " = " + formatFieldValue( dataArr[i++],tableFieldType.fieldType ) );
+				sql.append(",");
+			}
+			else
+				i++;
+		}
+		sql.deleteCharAt(sql.lastIndexOf(","));
+		return sql.toString();
+	}
+	
 }

@@ -45,7 +45,7 @@
           factory="com.zaxxer.hikari.HikariJNDIFactory"
           type="javax.sql.DataSource"
           driverClassName="org.postgresql.Driver"
-          jdbcUrl="jdbc:postgresql://103.39.132.39:5432/PERFEXPGSBDEV"
+          jdbcUrl="jdbc:postgresql://103.39.132.39:5432/BajajDtotp1"
           username="campuser"
           password="campusr_!234"
           maximumPoolSize="20"

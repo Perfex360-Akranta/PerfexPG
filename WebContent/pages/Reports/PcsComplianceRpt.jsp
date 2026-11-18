@@ -132,7 +132,7 @@ function viewGrid(url,filterString)
 function pcs_loadComplete(){ 
 
 	
-		jQuery("#pcsnote").css('display','block');
+		//jQuery("#pcsnote").css('display','block');
 		hideJqGridRow("pcs","1");
 		hideJqGridRow("pcs","2");
 		jQuery("#pcs").jqGrid( 'setGridParam',{onCellSelect:function(rowid,iCol,cellcontent,e){
@@ -261,10 +261,13 @@ function pcs_loadComplete_afterLoad(data)
 	 var cm = jQuery("#pcs").jqGrid("getGridParam", "colModel");
 	 for(var i=2;i<rowid.length;i++)
 	 {
-		  
-		 for(var j=7;j<cm.length;j++)
+		  //----changes by gopi----------------
+		// for(var j=7;j<cm.length;j++)
+		for(var j=0;j<cm.length;j++)
+
      	 {
-	     	 
+		  if (!/^\d{2}[A-Za-z]{3}\d{4}/.test(cm[j].name)) continue;
+
 		  var zeroVal = jQuery("#pcs").jqGrid('getCell',rowid[i],cm[j].name);	
 			 // alert("zeroVal"+		zeroVal); 
 			  if(zeroVal != "" && zeroVal != " " && zeroVal != null)
@@ -374,9 +377,12 @@ function getShiftSuccess(result) {
 
 <!--<div class="floatright"><input type="button" id="bdbtn" onclick="" style="padding-top:3px " class="easyui-button" value="View "/></div>-->
 <table  style="margin-top:2px;padding-left:0px;">
- <tr><td style="border: solid 1px #c1c1c1;border-right:none;padding:3px;">
- <label id="pcsnote" class="lossnotes" style="font-weight: bold;width:250px;padding-left:20px;padding-right:20px;display: none;">${requestScope.pcstick} </label>
-</td> 
+ <tr>
+ <%-- 
+<td style="border: solid 1px #c1c1c1;border-right:none;padding:3px;">
+ <label id="pcsnote" class="lossnotes" style="font-weight: bold;width:250px;padding-left:20px;padding-right:20px;display: none;"></label>
+</td>
+--%>
 <td style="border: solid 1px #c1c1c1;border-left:none;border-right:none;padding:3px;">
  <span class="wo-priority" style="background-color:#9d99f2"></span></td>
  <td style="border: solid 1px #c1c1c1;border-left:none;border-right:none;padding:3px;"><label style="color: ;padding-left:10px;font-weight: bold">Holiday</label></td>
