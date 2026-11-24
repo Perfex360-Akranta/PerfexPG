@@ -41,6 +41,8 @@ public class BAL_PcsTlCycletimemstServiceImpl implements BAL_PcsTlCycletimemstSe
 	 public void BAL_PcsTlCycletimemstServiceImplJwt(String jwtToken) { 
 	        try { 
 	        	balPcsTlCycletimeServiceApi = new BAL_PcsTlCycletimeServiceApi(jwtToken); 
+	        	pcsTlCycletimemstDao.BAL_PcsTlCycletimemstDaoImplJwt(jwtToken);
+	        	
 	        } catch (Exception e) { 
 	            e.printStackTrace(); 
 	        } 
@@ -53,6 +55,8 @@ public class BAL_PcsTlCycletimemstServiceImpl implements BAL_PcsTlCycletimemstSe
 		commonFilterDao = new CommonFilterDaoImpl(dbActionTemplate);
 		validations = new Validations();
  	}
+	
+	
 	
 	public void setPcsTlCycletimemstDao(BAL_PcsTlCycletimemstDao pcsTlCycletimemstDao)
 	{
@@ -144,8 +148,8 @@ public class BAL_PcsTlCycletimemstServiceImpl implements BAL_PcsTlCycletimemstSe
 		CommonFunctions.debugMsg("Conditionsssql "+condSql);
 		comboFilter.setCondSql(condSql);
 		
-		//comboFilter.setTableName(TableNames.TBL_PCS_TL_PRODUCTMST);	
-		comboFilter.setTableName(TableNames.TBL_PCS_TL_PRODUCTMST);
+		comboFilter.setTableName(TableNames.TBL_PCS_TL_PRODUCTMST);	
+		//comboFilter.setTableName(TableNames.BAL_PCS_TL_PRODUCTMST);
 		return commonFilterDao.fillComboValues(comboFilter);	
 		/*ComboFilter comboFilter = new ComboFilter();
 		comboFilter.setCodeField("PRDM_CODE");
@@ -162,10 +166,16 @@ public List<ComboBox> getCellCombo(ComboFilter Combofilter)throws Exception{
 	Combofilter.setTableName("GEN_TL_CELLMST");
 	return commonFilterDao.fillComboValues(Combofilter);
 }
+//cell
 	@Override
-	public List<String[]> getPcsData() throws Exception {
+	public List<String[]> getPcsData(String cellId) throws Exception {
 		// TODO Auto-generated method stub
-		return  pcsTlCycletimemstDao.getPcsData();
+		return  pcsTlCycletimemstDao.getPcsData(cellId);
+	}
+	
+	public List<String[]> getCellCycletimeData(String cellId, String machineId,
+	        String productId, GridParams gridParams) throws Exception {
+	    return pcsTlCycletimemstDao.getCellCycletimeData(cellId, machineId, productId, gridParams);
 	}
 	
 	@Override

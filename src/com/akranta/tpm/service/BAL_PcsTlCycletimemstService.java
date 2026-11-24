@@ -17,7 +17,9 @@ import com.akranta.tpm.model.BAL_PcsTlCycletimemst;
 	
 		public List<BAL_PcsTlCycletimemst> save(List<BAL_PcsTlCycletimemst> pcsTlCycletimemstList,	List<BAL_PcsTlCycletimemst> existPcsTlCycletimemst,
 				PcsCycletimemstBean pcsCycletimemstBean)throws Exception;
-		public List<String[]> getPcsData()throws Exception;
+		public List<String[]> getPcsData(String cellId)throws Exception;
+		public List<String[]> getCellCycletimeData(String cellId, String machineId,
+		        String productId, GridParams gridParams) throws Exception;
 		//public List<String[]> getPcsEntryData(String cellId, String machineId, String productId, String prodGroupId,GridParams gridParams)throws Exception;
 		public List<String[]> getPcsEntryData(String cellId, String productId,GridParams gridParams)throws Exception;		
 		//public int getTotalCountSql(String cellId, String machineId, String productId, String prodGroupId,GridParams gridParams);

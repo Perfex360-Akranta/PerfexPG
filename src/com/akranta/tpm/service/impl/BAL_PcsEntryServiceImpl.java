@@ -1020,7 +1020,7 @@ public List<ComboBox> getRejectionPhenomenaCombo(ComboFilter currentFilter ) thr
 		/*if (pcsEntryBean.getFormMode().equals("update"))
 			return pcsTlLosscaptureDao.update(newPcsTlLosscapture);		
 		else*/
-			//return pcsEntryDao.createLossCapture(newPcsTlLosscapture, pcsTlMst, pcsTlDtl, pcsTlLossreasonlink,pcsEntryBean);
+//			return pcsEntryDao.createLossCapture(newPcsTlLosscapture, pcsTlMst, pcsTlDtl, pcsTlLossreasonlink,pcsEntryBean);
 		return pcsenrtyserviceApi.insertLossRecord(newPcsTlLosscapture, pcsTlMst, pcsTlDtl, pcsTlLossreasonlink,pcsEntryBean);
 	}
 	
@@ -2455,7 +2455,7 @@ private BAL_PcsTlHtProductionHistory fillValues(BAL_PcsTlHtProductionHistory new
 		newPcsTlDtl.setCellid(newPcsTlMst.getPrlmCellid());
 		pcsLossProductiondataCaptureFillValues(newPcsTlProductiondata,existPcsTlProductionData,newPcsTlMst,newPcsTlDtl);
 	
-			//return pcsTlproductiondatadao.createNew(newPcsTlProductiondata,newPcsTlMst,newPcsTlDtl, pcsEntryBean);
+//			return pcsTlproductiondatadao.createNew(newPcsTlProductiondata,newPcsTlMst,newPcsTlDtl, pcsEntryBean);
 		return pcsenrtyserviceApi.insertRecord(newPcsTlProductiondata,newPcsTlMst,newPcsTlDtl, pcsEntryBean);
 		}catch (ValidationExceptions e){			
 			CommonFunctions.debugMsg("e.getMessage():"+e.getMessage());

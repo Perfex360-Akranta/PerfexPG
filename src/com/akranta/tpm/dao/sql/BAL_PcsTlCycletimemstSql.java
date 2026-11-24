@@ -123,7 +123,7 @@ public class BAL_PcsTlCycletimemstSql {
 	public static String isValidSql()
 	{
 		StringBuffer sql= new StringBuffer();
-		sql.append(" SELECT DISTINCT PELC_TYPE FROM PCS_TL_ENABLELOSSCAPTURE");
+		sql.append(" SELECT DISTINCT PELC_TYPE FROM BAL_PCS_TL_ENABLELOSSCAPTURE");
 		sql.append(" WHERE PELC_LINEID = 'LIN/02'  ");
 		sql.append(" AND PELC_CELLID = 'CEL003' ");
 		sql.append(" AND PELC_ISGROUPBASED IN('Y','N') ");
@@ -133,37 +133,113 @@ public class BAL_PcsTlCycletimemstSql {
 	}
 	
 	
-	public static String getPcsCycletimeSql()
+	/*
+	 * public static String getPcsCycletimeSql() { StringBuffer sql = new
+	 * StringBuffer();
+	 * sql.append(" SELECT CELLID,  PRODID ,  MCHM_MACHINENO ,  PRODUCTCODE, ");
+	 * sql.
+	 * append(" PRODUCTNAME,  SUM(SPEED) AS SPEED, SUM(MCHHRRATE) AS MCHHRRATE,FROMDATE AS FROMDATE, "
+	 * ); sql.append(" MODEL "); sql.
+	 * append(" FROM (SELECT NVL(PRODID,'-')  AS PRODID,  MCHM_KEYID  AS CELLID,");
+	 * sql.append(" NVL(MCHM_MACHINENO,'-') AS MCHM_MACHINENO , "); sql.
+	 * append(" NVL(PRODUCTCODE,'-') AS PRODUCTCODE ,NVL(PRODUCTNAME,'-')  AS PRODUCTNAME,SPEED AS SPEED, "
+	 * ); sql.
+	 * append(" MCHHRRATE AS MCHHRRATE,  DECODE(FROMDATE,'','-' ,FROMDATE) AS FROMDATE,NVL(MODEL,'-')  AS MODEL "
+	 * ); sql.
+	 * append(" FROM ( SELECT DISTINCT CELL_KEYID , PRDM_KEYID AS PRODID, PRODUCTCODE, PRODUCTNAME, "
+	 * );
+	 * sql.append(" DECODE(CYTM_MACHINEID,MCHM_KEYID,CYTM_CYCLETIME,0)  AS SPEED, "
+	 * ); sql.
+	 * append(" DECODE(CYTM_MACHINEID,MCHM_KEYID,CYTM_MANPOWER,0)   AS MCHHRRATE , "
+	 * ); sql.
+	 * append(" DECODE(CYTM_MACHINEID,MCHM_KEYID,CYTM_FROMDATE, '') AS FROMDATE , "
+	 * ); sql.
+	 * append(" MCHM_KEYID, MCHM_MACHINENO AS MCHM_MACHINENO, PRMM_NAME  AS MODEL "
+	 * ); sql.
+	 * append(" FROM PCS_TL_ENABLELOSSCAPTURE,GEN_TL_MACHINEMST,( SELECT DISTINCT PRDM_KEYID, "
+	 * ); sql.
+	 * append(" CELL_KEYID , CYTM_CYCLETIME,CYTM_MANPOWER,CYTM_FROMDATE,MCHM_KEYID AS CYTM_MACHINEID, "
+	 * ); sql.
+	 * append(" MCHM_MACHINENAME ,PRDM_CODE AS PRODUCTCODE ,PRDM_NAME AS PRODUCTNAME ,PRMM_NAME"
+	 * ); sql.
+	 * append(" FROM PCS_TL_CYCLETIMEMST,GEN_TL_CELLMST,PCS_TL_ENABLELOSSCAPTURE,");
+	 * sql.append(" GEN_TL_MACHINEMST,PCS_TL_PRODUCTMST,PCS_TL_PRODUCTMODELMST");
+	 * sql.append(" WHERE 1 = 1 AND PRDM_ACTIVE = 'Y' AND CYTM_CELLID = CELL_KEYID"
+	 * ); sql.
+	 * append(" AND CYTM_PRODUCTID     = PRDM_KEYID(+) AND PRDM_MODEL= PRMM_KEYID (+) AND CYTM_ACTIVE = 'Y'"
+	 * ); sql.
+	 * append(" AND PELC_CELLID = CELL_KEYID AND PELC_CELLID = MCHM_CELLID AND CYTM_MACHINEID = MCHM_KEYID"
+	 * ); sql.
+	 * append(" AND PELC_ISPCSENABLED  = 'Y' AND PELC_ISGROUPBASED  = 'N' AND CELL_FACTORYID (+) ='FCT/01' "
+	 * ); sql.append(" AND CELL_SECTIONID (+) ='LIN/01' "); sql.
+	 * append(" AND CELL_KEYID  = 'CEL001' AND CELL_COSTCENTREID  = 'CST/0001' )WHERE 1 = 1 "
+	 * ); sql.
+	 * append(" AND PELC_MACHINEID = MCHM_KEYID AND PELC_ISPCSENABLED = 'Y' AND PELC_ISGROUPBASED = 'N' AND MCHM_CELLID = 'CEL001'"
+	 * ); sql.
+	 * append("  ) )GROUP BY cellid, prodid,  MCHM_MACHINENO,productcode,productname ,FROMDATE,"
+	 * ); sql.
+	 * append(" model ORDER BY MCHM_MACHINENO,PRODUCTCODE,PRODUCTNAME,MCHHRRATE ,MODEL"
+	 * ); CommonFunctions.debugMsg("The Final GridData"+sql.toString()); return
+	 * sql.toString() ; }
+	 */
+	
+	//cell
+	
+//	public static String getPcsCycletimeSql()
+//	{
+//	    StringBuffer sql = new StringBuffer();
+//	    sql.append(" SELECT CELLID,  PRODID ,  MCHM_MACHINENO ,  PRODUCTCODE, ");
+//	    sql.append(" PRODUCTNAME,  SUM(SPEED) AS SPEED, SUM(MCHHRRATE) AS MCHHRRATE, FROMDATE AS FROMDATE, ");
+//	    sql.append(" MODEL ");
+//	    sql.append(" FROM (SELECT COALESCE(PRODID,'-')  AS PRODID,  MCHM_KEYID  AS CELLID,");
+//	    sql.append(" COALESCE(MCHM_MACHINENO,'-') AS MCHM_MACHINENO , ");
+//	    sql.append(" COALESCE(PRODUCTCODE,'-') AS PRODUCTCODE , COALESCE(PRODUCTNAME,'-')  AS PRODUCTNAME, SPEED AS SPEED, ");
+//	    sql.append(" MCHHRRATE AS MCHHRRATE,  COALESCE(TO_CHAR(FROMDATE,'DD-Mon-YYYY'),'-') AS FROMDATE, COALESCE(MODEL,'-')  AS MODEL ");
+//	    sql.append(" FROM ( SELECT DISTINCT CELL_KEYID , PRDM_KEYID AS PRODID, PRODUCTCODE, PRODUCTNAME, ");
+//	    sql.append(" CASE WHEN CYTM_MACHINEID IS NOT DISTINCT FROM MCHM_KEYID THEN CYTM_CYCLETIME ELSE 0 END AS SPEED, ");
+//	    sql.append(" CASE WHEN CYTM_MACHINEID IS NOT DISTINCT FROM MCHM_KEYID THEN CYTM_MANPOWER ELSE 0 END AS MCHHRRATE, ");
+//	    sql.append(" CASE WHEN CYTM_MACHINEID IS NOT DISTINCT FROM MCHM_KEYID THEN CYTM_FROMDATE ELSE NULL END AS FROMDATE, ");
+//	    sql.append(" MCHM_KEYID, MCHM_MACHINENO AS MCHM_MACHINENO, PRMM_NAME  AS MODEL ");
+//	    sql.append(" FROM BAL_PCS_TL_ENABLELOSSCAPTURE, GEN_TL_MACHINEMST, ( SELECT DISTINCT PRDM_KEYID, ");
+//	    sql.append(" CELL_KEYID , CYTM_CYCLETIME, CYTM_MANPOWER, CYTM_FROMDATE, MCHM_KEYID AS CYTM_MACHINEID, ");
+//	    sql.append(" MCHM_MACHINENAME , PRDM_CODE AS PRODUCTCODE , PRDM_NAME AS PRODUCTNAME , PRMM_NAME ");
+//	    sql.append(" FROM BAL_PCS_TL_CYCLETIMEMST ");
+//	    sql.append(" LEFT JOIN PCS_TL_PRODUCTMST ON CYTM_PRODUCTID = PRDM_KEYID ");
+//	    sql.append(" LEFT JOIN PCS_TL_PRODUCTMODELMST ON PRDM_MODEL = PRMM_KEYID ");
+//	    sql.append(" INNER JOIN GEN_TL_CELLMST ON CYTM_CELLID = CELL_KEYID ");
+//	    sql.append(" INNER JOIN BAL_PCS_TL_ENABLELOSSCAPTURE ON PELC_CELLID = CELL_KEYID ");
+//	    sql.append(" INNER JOIN GEN_TL_MACHINEMST ON PELC_CELLID = MCHM_CELLID AND CYTM_MACHINEID = MCHM_KEYID ");
+//	    sql.append(" WHERE 1 = 1 AND PRDM_ACTIVE = 'Y' AND CYTM_ACTIVE = 'Y' ");
+//	    sql.append(" AND PELC_ISPCSENABLED = 'Y' AND PELC_ISGROUPBASED = 'N' AND CELL_FACTORYID = 'FCT/01' ");
+//	    sql.append(" AND CELL_SECTIONID = 'LIN/01' ");
+//	    sql.append(" AND CELL_KEYID = 'CEL001' AND CELL_COSTCENTREID = 'CST/0001' ) AS CT ");
+//	    sql.append(" WHERE 1 = 1 ");
+//	    sql.append(" AND PELC_MACHINEID = MCHM_KEYID AND PELC_ISPCSENABLED = 'Y' AND PELC_ISGROUPBASED = 'N' AND MCHM_CELLID = 'CEL001'");
+//	    sql.append("  ) AS L3 ) AS L2 GROUP BY CELLID, PRODID, MCHM_MACHINENO, PRODUCTCODE, PRODUCTNAME, FROMDATE, ");
+//	    sql.append(" MODEL ORDER BY MCHM_MACHINENO, PRODUCTCODE, PRODUCTNAME, MCHHRRATE, MODEL");
+//	    CommonFunctions.debugMsg("The Final GridData"+sql.toString());
+//	    return sql.toString() ;
+//	}
+	
+	public static String getPcsCycletimeSql(String cellId)
 	{
-		StringBuffer sql = new StringBuffer();
-		sql.append(" SELECT CELLID,  PRODID ,  MCHM_MACHINENO ,  PRODUCTCODE, ");
-		sql.append(" PRODUCTNAME,  SUM(SPEED) AS SPEED, SUM(MCHHRRATE) AS MCHHRRATE,FROMDATE AS FROMDATE, ");
-		sql.append(" MODEL ");
-		sql.append(" FROM (SELECT NVL(PRODID,'-')  AS PRODID,  MCHM_KEYID  AS CELLID,");
-		sql.append(" NVL(MCHM_MACHINENO,'-') AS MCHM_MACHINENO , ");
-		sql.append(" NVL(PRODUCTCODE,'-') AS PRODUCTCODE ,NVL(PRODUCTNAME,'-')  AS PRODUCTNAME,SPEED AS SPEED, ");
-		sql.append(" MCHHRRATE AS MCHHRRATE,  DECODE(FROMDATE,'','-' ,FROMDATE) AS FROMDATE,NVL(MODEL,'-')  AS MODEL ");
-		sql.append(" FROM ( SELECT DISTINCT CELL_KEYID , PRDM_KEYID AS PRODID, PRODUCTCODE, PRODUCTNAME, ");
-		sql.append(" DECODE(CYTM_MACHINEID,MCHM_KEYID,CYTM_CYCLETIME,0)  AS SPEED, ");
-		sql.append(" DECODE(CYTM_MACHINEID,MCHM_KEYID,CYTM_MANPOWER,0)   AS MCHHRRATE , ");
-		sql.append(" DECODE(CYTM_MACHINEID,MCHM_KEYID,CYTM_FROMDATE, '') AS FROMDATE , ");
-		sql.append(" MCHM_KEYID, MCHM_MACHINENO AS MCHM_MACHINENO, PRMM_NAME  AS MODEL ");
-		sql.append(" FROM PCS_TL_ENABLELOSSCAPTURE,GEN_TL_MACHINEMST,( SELECT DISTINCT PRDM_KEYID, ");
-		sql.append(" CELL_KEYID , CYTM_CYCLETIME,CYTM_MANPOWER,CYTM_FROMDATE,MCHM_KEYID AS CYTM_MACHINEID, ");
-		sql.append(" MCHM_MACHINENAME ,PRDM_CODE AS PRODUCTCODE ,PRDM_NAME AS PRODUCTNAME ,PRMM_NAME");
-		sql.append(" FROM PCS_TL_CYCLETIMEMST,GEN_TL_CELLMST,PCS_TL_ENABLELOSSCAPTURE,");
-		sql.append(" GEN_TL_MACHINEMST,PCS_TL_PRODUCTMST,PCS_TL_PRODUCTMODELMST");
-		sql.append(" WHERE 1 = 1 AND PRDM_ACTIVE = 'Y' AND CYTM_CELLID = CELL_KEYID");
-		sql.append(" AND CYTM_PRODUCTID     = PRDM_KEYID(+) AND PRDM_MODEL= PRMM_KEYID (+) AND CYTM_ACTIVE = 'Y'");
-		sql.append(" AND PELC_CELLID = CELL_KEYID AND PELC_CELLID = MCHM_CELLID AND CYTM_MACHINEID = MCHM_KEYID");
-		sql.append(" AND PELC_ISPCSENABLED  = 'Y' AND PELC_ISGROUPBASED  = 'N' AND CELL_FACTORYID (+) ='FCT/01' ");
-    	sql.append(" AND CELL_SECTIONID (+) ='LIN/01' ");
-		sql.append(" AND CELL_KEYID  = 'CEL001' AND CELL_COSTCENTREID  = 'CST/0001' )WHERE 1 = 1 ");
-		sql.append(" AND PELC_MACHINEID = MCHM_KEYID AND PELC_ISPCSENABLED = 'Y' AND PELC_ISGROUPBASED = 'N' AND MCHM_CELLID = 'CEL001'");
-		sql.append("  ) )GROUP BY cellid, prodid,  MCHM_MACHINENO,productcode,productname ,FROMDATE,");		
-		sql.append(" model ORDER BY MCHM_MACHINENO,PRODUCTCODE,PRODUCTNAME,MCHHRRATE ,MODEL");
-		CommonFunctions.debugMsg("The Final GridData"+sql.toString());
-		return sql.toString() ;
+	    String safeCell = (cellId == null) ? "" : cellId.replace("'", "''");
+	    StringBuffer sql = new StringBuffer();
+	    sql.append(" SELECT CYTM_CELLID AS CELLID, PRDM_KEYID AS PRODID, '-' AS MCHM_MACHINENO, ");
+	    sql.append(" COALESCE(PRDM_CODE,'-') AS PRODUCTCODE, ");
+	    sql.append(" COALESCE(PRMM_NAME,'-') AS MODEL, ");
+	    sql.append(" CYTM_CYCLETIME AS SPEED, CYTM_MANPOWER AS MCHHRRATE, ");
+	    sql.append(" 0 AS CAVITY, 0 AS MANDRELS, ");
+	    sql.append(" COALESCE(TO_CHAR(CYTM_FROMDATE,'DD-Mon-YYYY'),'-') AS FROMDATE, ");
+	    sql.append(" CYTM_KEYID AS KEYID ");
+	    sql.append(" FROM BAL_PCS_TL_CYCLETIMEMST ");
+	    sql.append(" LEFT JOIN PCS_TL_PRODUCTMST ON CYTM_PRODUCTID = PRDM_KEYID ");
+	    sql.append(" LEFT JOIN PCS_TL_PRODUCTMODELMST ON PRDM_MODEL = PRMM_KEYID ");
+	    sql.append(" WHERE CYTM_ACTIVE = 'Y' ");
+	    sql.append(" AND CYTM_CELLID = '").append(safeCell).append("' ");
+	    sql.append(" ORDER BY CYTM_FROMDATE DESC, CYTM_KEYID DESC ");
+	    CommonFunctions.debugMsg("The Final GridData" + sql);
+	    return sql.toString();
 	}
 	public static String getPcsCycletimeEntrySql()
 	{
@@ -287,8 +363,9 @@ public class BAL_PcsTlCycletimemstSql {
 		//String text = "MCH00001";
 		System.out.println("CellID" +cellId);
 
-		String machine = cellId.substring(0, 3);
-		if(machine.equals("MCH")) {
+		//String machine = cellId.substring(0, 3);
+		//if(machine.equals("MCH")){
+		if(cellId != null && cellId.startsWith("MCH")) {
 			sql.append(" AND CYTM_MACHINEID = '"+cellId+"' ");
 		}
 		else {

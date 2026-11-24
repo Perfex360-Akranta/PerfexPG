@@ -20,12 +20,16 @@ import com.akranta.tpm.model.CommonFilter;
 import com.akranta.tpm.model.BAL_PcsTlCycletimehistory;
 import com.akranta.tpm.model.BAL_PcsTlCycletimemst;
 import com.akranta.tpm.utils.CommonFunctions;
+import com.akranta.tpm.utils.CommonMessage;
 import com.akranta.tpm.utils.ExcelUtils;
 
-import com.akranta.tpm.service.api.BAL_PcsTlCycletimeServiceApi; 
+import com.akranta.tpm.service.api.BAL_PcsTlCycletimeServiceApi;
+import com.akranta.tpm.service.api.FunctionCallApi; 
 
 /* dao implementation */
 public  class BAL_PcsTlCycletimemstDaoImpl implements BAL_PcsTlCycletimemstDao {
+	
+	 
 	
 	//Jwt
 	private BAL_PcsTlCycletimeServiceApi balPcsTlCycletimeServiceApi; 
@@ -34,6 +38,8 @@ public  class BAL_PcsTlCycletimemstDaoImpl implements BAL_PcsTlCycletimemstDao {
 	private DBActionTemplate dbActionTemplate; 
 	private BAL_PcsTlCycletimemstSql pcsTlCycletimemstSql;
 	private BAL_PcsTlCycletimehistorySql pcsTlCycletimehistorySql;
+	
+	FunctionCallApi fnCallApi;
 	//private PcsTlCycletimemst newpcsTlCycletimemst;
 
 	public BAL_PcsTlCycletimemstDaoImpl(DBActionTemplate dbActionTemplate) 
@@ -51,6 +57,7 @@ public  class BAL_PcsTlCycletimemstDaoImpl implements BAL_PcsTlCycletimemstDao {
 	public void BAL_PcsTlCycletimemstDaoImplJwt(String jwtToken) { 
 		 try { 
 			 balPcsTlCycletimeServiceApi = new BAL_PcsTlCycletimeServiceApi(jwtToken); 
+			 fnCallApi = new FunctionCallApi(jwtToken);
 		 } 
 		 catch (Exception e) { 
 		 e.printStackTrace(); 
@@ -215,13 +222,14 @@ public  class BAL_PcsTlCycletimemstDaoImpl implements BAL_PcsTlCycletimemstDao {
 		return null;
 		
 	}
+	//elumalai cell
 	@Override
-	public List<String[]> getPcsData() throws Exception {
+	public List<String[]> getPcsData(String cellId) throws Exception {
 		// TODO Auto-generated method stub
 		List<String[]> ImprvCategoryList=null;
 		try
 		{
-			String sql = BAL_PcsTlCycletimemstSql.getPcsCycletimeSql();
+			String sql = BAL_PcsTlCycletimemstSql.getPcsCycletimeSql(cellId);
 			System.out.println("String sql="+sql);
 			ImprvCategoryList = dbActionTemplate.getDataList(sql);
 			return ImprvCategoryList;
@@ -232,10 +240,37 @@ public  class BAL_PcsTlCycletimemstDaoImpl implements BAL_PcsTlCycletimemstDao {
 			System.out.println("Exception in Pcs dao impl"+e.getMessage());
 		}
 		return null;
-	}
+	}	
 
-	@Override
-/*	  public List<String[]> getPcsEntryData(String cellId, String machineId, String productId, String prodGroupId,GridParams gridParams) throws Exception {
+	public List<String[]> getCellCycletimeData(String cellId, String machineId,
+	        String productId, GridParams gridParams) throws Exception
+	{
+	    try {
+	        String condParms = "";
+	        if (UIUtils.isValidKeyId(cellId))    condParms += "CELLID=" + cellId + ";";
+	        if (UIUtils.isValidKeyId(machineId)) condParms += "MACHINEID=" + machineId + ";";
+	        if (UIUtils.isValidKeyId(productId)) condParms += "PRODUCTID=" + productId + ";";
+
+	        String commonParams = "";
+	        String toRow = gridParams.getToRow();
+	        if (toRow != null && toRow.trim().length() > 0 && !toRow.trim().equals("0"))
+	            commonParams += "FROMROW=" + gridParams.getFromRow() + ";"
+	                          + "TOROW=" + toRow + ";";
+	        String gridFilter = FilterCondSql.makeGridFilterCond(gridParams.getGridFilters());
+	        if (gridFilter != null && gridFilter.trim().length() > 0)
+	            commonParams += "GRIDFILTER=" + gridFilter + ";";
+
+	        List<String> paramValues = new ArrayList<String>();
+	        paramValues.add(condParms);
+	        paramValues.add(commonParams);
+	        return fnCallApi.callFunction("PCS_FN_CELLCYCLETIME_SB", paramValues, 2, true);
+	    } catch (Exception e) {
+	        System.out.println("Exception in getCellCycletimeData " + e.getMessage());
+	    }
+	    return null;
+	}
+/*	@Override
+	  public List<String[]> getPcsEntryData(String cellId, String machineId, String productId, String prodGroupId,GridParams gridParams) throws Exception {
 		// TODO Auto-generated method stub
 		List<String[]> ImprvCategoryList=null;
 		try
@@ -243,7 +278,7 @@ public  class BAL_PcsTlCycletimemstDaoImpl implements BAL_PcsTlCycletimemstDao {
 			
 			StringBuffer sql = new StringBuffer();
 			sql.append(" select * from (select ROWNUM rnum,  a.* FROM ( ");
-			sql.append(PcsTlCycletimemstSql.RecallCompSqlForMachine(cellId, machineId, productId, prodGroupId,gridParams));
+			sql.append(balPcsTlCycletimemstSql.RecallCompSqlForMachine(cellId, machineId, productId, prodGroupId,gridParams));
 			sql.append( " ) a ) where rnum between " );
 			sql.append( gridParams.getFromRow());
 			sql.append(" and ");
@@ -262,36 +297,78 @@ public  class BAL_PcsTlCycletimemstDaoImpl implements BAL_PcsTlCycletimemstDao {
 		return null;
 	} */
 	
-	
-	public List<String[]> getPcsEntryData(String cellId,String productId,GridParams gridParams) throws Exception {
-		// TODO Auto-generated method stub
-		List<String[]> ImprvCategoryList=null;
-		try
-		{
-			
-			StringBuffer sql = new StringBuffer();
-			//sql.append(" select * from (select ROWNUM rnum,  a.* FROM ( ");
-			//elumalai
-			sql.append(" select * from (select ROW_NUMBER() OVER () AS rnum,  a.* FROM ( ");
-			//sql.append(PcsTlCycletimemstSql.RecallCompSqlForMachine(cellId, machineId, productId, prodGroupId,gridParams));
-			sql.append(BAL_PcsTlCycletimemstSql.RecallCompSqlForMachine(cellId,productId,gridParams));	
-			sql.append( " ) a ) where rnum between ");
-			sql.append( gridParams.getFromRow());
-			sql.append(" and ");
-			sql.append(gridParams.getToRow());
-			//String sqls = PcsTlCycletimemstSql.RecallCompSqlForMachine(cellId, machineId, productId, prodGroupId);//getPcsCycletimeEntrySql();
-			System.out.println("String sql="+sql.toString());
-			//List<String> params=pillarId;
-			ImprvCategoryList = dbActionTemplate.getDataList(sql.toString());
-			return ImprvCategoryList;
-		}
-	
-		catch(Exception e)
-		{
-			System.out.println("Exception in Pcs dao impl"+e.getMessage());
-		}
-		return null;
+	//elumalai
+	public List<String[]> getPcsEntryData(String cellId, String productId, GridParams gridParams) throws Exception
+	{
+	    try
+	    {
+	        List<String> paramValues = new ArrayList<String>();
+
+	        String machineId = "";
+	        String cellOnly = "";
+	        if (cellId != null && cellId.startsWith("MCH"))
+	            machineId = cellId;
+	        else if (UIUtils.isValidKeyId(cellId))
+	            cellOnly = cellId;
+
+	        String condParms = "";
+	        if (UIUtils.isValidKeyId(cellOnly))
+	            condParms += "CELLID=" + cellOnly + ";";
+	        if (UIUtils.isValidKeyId(machineId))
+	            condParms += "MACHINEID=" + machineId + ";";
+	        if (UIUtils.isValidKeyId(productId))
+	            condParms += "PRODUCTID=" + productId + ";";
+
+	        String commonParams = "FROMROW=" + gridParams.getFromRow() + ";"
+	                            + "TOROW=" + gridParams.getToRow() + ";";
+	        String gridFilter = FilterCondSql.makeGridFilterCond(gridParams.getGridFilters());
+	        if (gridFilter != null && gridFilter.trim().length() > 0)
+	            commonParams += "GRIDFILTER=" + gridFilter + ";";
+
+	        paramValues.add(condParms);
+	        paramValues.add(commonParams);
+	        CommonMessage.debugMsg("The Param Values Are:::" + paramValues);
+
+	       // return dbActionTemplate.processFunctionCallsWithColHeaders("PCS_FN_CYCLETIMEENTRY", paramValues);
+	        return fnCallApi.callFunction("PCS_FN_CYCLETIMEENTRY_SB", paramValues,2,true);
+	    }
+	    catch (Exception e)
+	    {
+	        System.out.println("Exception in getPcsEntryData dao impl " + e.getMessage());
+	    }
+	    return null;
 	}
+	
+	
+//	public List<String[]> getPcsEntryData(String cellId,String productId,GridParams gridParams) throws Exception {
+//		// TODO Auto-generated method stub
+//		List<String[]> ImprvCategoryList=null;
+//		try
+//		{
+//			
+//			StringBuffer sql = new StringBuffer();
+//			//sql.append(" select * from (select ROWNUM rnum,  a.* FROM ( ");
+//			//elumalai
+//			sql.append(" select * from (select ROW_NUMBER() OVER () AS rnum,  a.* FROM ( ");
+//			//sql.append(PcsTlCycletimemstSql.RecallCompSqlForMachine(cellId, machineId, productId, prodGroupId,gridParams));
+//			sql.append(BAL_PcsTlCycletimemstSql.RecallCompSqlForMachine(cellId,productId,gridParams));	
+//			sql.append( " ) a ) where rnum between ");
+//			sql.append( gridParams.getFromRow());
+//			sql.append(" and ");
+//			sql.append(gridParams.getToRow());
+//			//String sqls = PcsTlCycletimemstSql.RecallCompSqlForMachine(cellId, machineId, productId, prodGroupId);//getPcsCycletimeEntrySql();
+//			System.out.println("String sql="+sql.toString());
+//			//List<String> params=pillarId;
+//			ImprvCategoryList = dbActionTemplate.getDataList(sql.toString());
+//			return ImprvCategoryList;
+//		}
+//	
+//		catch(Exception e)
+//		{
+//			System.out.println("Exception in Pcs dao impl"+e.getMessage());
+//		}
+//		return null;
+//	}
 	
 	
 	

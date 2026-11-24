@@ -117,23 +117,73 @@ public class BAL_CellManningServlet  extends HttpServlet  {
 			}
 		}
 		
-		else if (action.equals("CellMng_getData.balcllmng")) 
-		{
-            CommonFunctions.debugMsg("Inside the getData");
-			try 
-			{
-				PrintWriter out = response.getWriter();
-				List< String[]>cellManningList=pcsTlCycletimemstService.getPcsData();
-				JSONObject cellManningtData = UIUtils.convertToJqGridTableObject(cellManningList,request,0,0);
-				CommonFunctions.debugMsg("CellManningData"+cellManningtData);
-				out.println(cellManningtData);
-			}
-			catch(Exception e)
-			{
-				System.out.println(e.getMessage());
-			}
+		
+//		  else if (action.equals("CellMng_getData.balcllmng")) {
+//		  CommonFunctions.debugMsg("Inside the getData"); try { PrintWriter out =
+//		 response.getWriter(); List<
+//		 String[]>cellManningList=pcsTlCycletimemstService.getPcsData(); JSONObject
+//		  cellManningtData =
+//		  UIUtils.convertToJqGridTableObject(cellManningList,request,0,0);
+//		  CommonFunctions.debugMsg("CellManningData"+cellManningtData);
+//		  out.println(cellManningtData); } catch(Exception e) {
+//		  System.out.println(e.getMessage()); } }
+		 
+		
+//		else if (action.equals("CellMng_getData.balcllmng")) {
+//		    try {
+//		        PrintWriter out = response.getWriter();
+//		        String cellId = request.getParameter("cellId");
+//		        List<String[]> cellManningList = pcsTlCycletimemstService.getPcsData(cellId);
+//		        if (cellManningList == null) cellManningList = new ArrayList<String[]>();
+//		        JSONObject cellManningtData = UIUtils.convertToJqGridTableObject(cellManningList, request, 0, 0);
+//		        out.println(cellManningtData);
+//		    } catch (Exception e) {
+//		        e.printStackTrace();
+//		    }
+//		}
+		
+		else if (action.equals("CellMng_getData.balcllmng")) {
+		    try {
+		        PrintWriter out = response.getWriter();
+		        String cellId    = request.getParameter("cellId");
+		        String machineId = request.getParameter("mchId");      // optional
+		        String productId = request.getParameter("productId");  // optional
+
+		        GridParams gridParams = new GridParams();
+		        FilterValues.populateGridParams(request, gridParams);
+
+		        List<String[]> cellManningList =
+		            pcsTlCycletimemstService.getCellCycletimeData(cellId, machineId, productId, gridParams);
+		        if (cellManningList == null) cellManningList = new ArrayList<String[]>();
+
+		        JSONObject cellManningData = UIUtils.convertToJqGridTableObject(cellManningList, request, 1, 1);
+		        out.println(cellManningData);
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
 		}
 		
+		/*
+		 * else if (action.equals("CellMng_getData.balcllmng")) { try { PrintWriter out
+		 * = response.getWriter(); String cellId = request.getParameter("cellId");
+		 * String productId = request.getParameter("productId");
+		 * 
+		 * GridParams gridParams = (GridParams)
+		 * httpSession.getAttribute("AreaManningGridParams"); if (gridParams == null)
+		 * gridParams = new GridParams(); FilterValues.populateGridParams(request,
+		 * gridParams);
+		 * 
+		 * List<String[]> cellManningList =
+		 * pcsTlCycletimemstService.getPcsEntryData(cellId, productId, gridParams);
+		 * 
+		 * httpSession.removeAttribute("AreaManningGridParams");
+		 * httpSession.setAttribute("AreaManningGridParams", gridParams);
+		 * 
+		 * JSONObject cellManningData =
+		 * UIUtils.convertToJqGridTableObject(cellManningList, request, 1, 1);
+		 * out.println(cellManningData); } catch(Exception e) {
+		 * System.out.println(e.getMessage()); } }
+		 */		
 		else if(action.equals("PcsCycletimePrdWise_input.balcllmng"))
 		{
 			

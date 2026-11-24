@@ -116,7 +116,7 @@ function frmCellManningcmbcytmMachineid_onClear(){
 	//	reloadCombo("frmCellManning","cmbCostCenter","costCenter.commonFilter?cellId="+keyIds.cellId + "&factId="+keyIds.factId +"&machId="+keyIds.machId);
 		//reloadCombo("frmCellManning","cmbCostCenter","costCenter.commonFilter?cellId="+keyIds.cellId + "&factId="+keyIds.factId);
          // reloadCombo("frmCellManning","cmbcytmCellid","cellCombo.commonFilter?cellId="+keyIds.cellId);
-         alert("machineId="+keyIds.machineId);
+         //alert("machineId="+keyIds.machineId);
           reloadCombo("frmCellManning","cmbcytmMachineid","machineCombo.commonFilter?machineId="+keyIds.machineId);
 
           reloadCombo("frmCellManning","cmbCostCenter","costCenter.commonFilter?cellId="+keyIds.cellId + "&factId="+keyIds.factId);
@@ -124,10 +124,11 @@ function frmCellManningcmbcytmMachineid_onClear(){
 
           
           var sectId = getFieldValue('section','frmCellManning');
- 		  fillCellManningData();
+ 		  //fillCellManningData();
+          fillCellManningData(keyIds.machId);//today machine
 	}	
 	
-	function fillCellManningData()
+	/* function fillCellManningData()
 	{
      	var cellId = getFieldValue('cell','frmCellManning');
 	//	var cellId=getFieldValue('cmbcytmCellid','frmCellManning');
@@ -143,7 +144,27 @@ function frmCellManningcmbcytmMachineid_onClear(){
     viewGrid("PcsCycletimeEntryMode_input.balcllmng","&productId="+productId+"&cellId="+cellId,"pcsViewmode");
 			}
 	}
+ */
+ //today machine 
+ function fillCellManningData(machId)
+ {
+     var cellId = getFieldValue('cell','frmCellManning');
+     var productId = jQuery('#cmbcytmProductid').combobox('getValue');
 
+     // use the passed value, else fall back to the combo
+     var mchId = (machId != null && machId !== undefined)
+                     ? machId
+                     : jQuery('#cmbcytmMachineid').combobox('getValue');
+     mchId = mchId ? mchId : "";
+
+     if(cellId != null && cellId.trim() != "")
+     {
+         jQuery('#hdnCycletimeId').val('');
+         viewGrid("PcsCycletimeEntryMode_input.balcllmng",
+                  "&productId="+productId+"&cellId="+cellId+"&mchId="+mchId,
+                  "pcsViewmode");
+     }
+ }
 	
 	function frmCellManning_beforeSubmit()
 	{
@@ -175,7 +196,7 @@ function frmCellManningcmbcytmMachineid_onClear(){
 					   '","cmbcytmMachineid":"'+ machineId +
 					   '"}]';		
 		var gridData='&pcsTlCycletime='+jsonStr ;
-		alert(gridData+" griddata");
+		//alert(gridData+" griddata");
 		return gridData; 
 	}
 
@@ -227,7 +248,7 @@ function frmCellManningcmbcytmMachineid_onClear(){
  		// var cellId = getFieldValue('cell','frmCellManning');
  		// alert("The CellId"+cellId);
  		var mchId = getFieldValue('cmbcytmMachineid','frmCellManning');	
- 		alert (mchId);
+ 		//alert (mchId);
 		if(mchId != null && mchId.trim() !="")
 		//if(cellId != null && cellId.trim() !="")
  		{
@@ -246,16 +267,16 @@ function frmCellManningcmbcytmMachineid_onClear(){
 		 });
 
  	      jQuery('#btnInsert').click(function(){
- 	    	  alert(123);
+ 	    	  //alert(123);
 		 	var cytmKeyid=jQuery('#hdnCycletimeId').val();
-		 	alert("CycleTimeKeyId"+cytmKeyid);
+		 	//alert("CycleTimeKeyId"+cytmKeyid);
 			var cytmProduct=jQuery('#cmbcytmProductid').combobox('getValue');
-			alert("The Product"+cytmProduct);
+			//alert("The Product"+cytmProduct);
 		//	var cytmProdgroupid=jQuery('#cmbcytmProdgroupid').combobox('getValue');
 			//alert("Product groupid"+cytmProdgroupid);
 			//var equipment=jQuery('#cmbcytmMachineid').combobox('getValue');
 			var cellId=jQuery('#cmbcytmMachineid').combobox('getValue');
-			alert("The CellID"+cellId);	
+			//alert("The CellID"+cellId);	
 			var manpower = jQuery('#txtcytmManpower').val();
 		//	alert("The ManPower"+manpower);
 			var cycleTime = jQuery('#txtcytmCycletime').val();
@@ -315,7 +336,7 @@ function frmCellManningcmbcytmMachineid_onClear(){
 			} */
 			else
 			{
-				alert(098);
+				//alert(098);
 				var rowObject =[];
 				var id=jQuery("#pcsCycletimeGrid").getGridParam('reccount')+1;
 				//alert(" Id:Inside else condition "+id);
@@ -337,12 +358,12 @@ function frmCellManningcmbcytmMachineid_onClear(){
 				(rowObject[0])['txtSelectionid'] = "INSERT";
 				 wrap =jQuery(rowObject);
 				 //alert(" Inside else ::cytmProduct "+cytmProduct+"cytmProdgroupid "+cytmProdgroupid+" cycleTime"+cycleTime+"manpower"+manpower+"cavity"+cavity+"mandrels"+mandrels+"dtecytmFromdate"+dtecytmFromdate);
-				 alert("cytmKeyid  "+cytmKeyid);
+				 //alert("cytmKeyid  "+cytmKeyid);
 				 var rowDataExist = jQuery("#pcsCycletimeGrid").getRowData(parseInt(cytmKeyid));	
 				 //alert(" rowDataExist:Inside else condition "+Object.keys(rowDataExist));			
 				if( cytmKeyid.trim()!="" || cytmKeyid!="" )//isEmpty(rowDataExist)
 				{
-					alert(" Inside cytmKeyid.trim()");
+					//alert(" Inside cytmKeyid.trim()");
 					 /*	var option=confirm("Data Already Exists...  Do You Want To Update? ");
 						//if(option==true)
 						//{
@@ -360,7 +381,7 @@ function frmCellManningcmbcytmMachineid_onClear(){
 				}	
 				else
 				{
-					alert(345);
+					//alert(345);
 					jQuery("#pcsCycletimeGrid").addRowData(id,rowObject,'last',id);
 					jQuery('tr[id=undefined]').attr('id',id);
 					saveForm("frmCellManning","CellMng_save.balcllmng");

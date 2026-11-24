@@ -35,9 +35,9 @@
 	
 	//jQuery('#cmbPlosMachineid').combobox('disable',true);
 	//$('#dropDownId').attr('disabled', true);
-	jQuery('#cmbPlosMachineid').combobox('disable');
-	 jQuery('#cmbPlosMachineid').combobox('disable');
-	  jQuery('#cmbPlosToolId').combobox('disable');
+	jQuery('#cmbPlosMachineid').combobox('readonly',true);
+	 jQuery('#cmbPlosMachineid').combobox('readonly',true);
+	  jQuery('#cmbPlosToolId').combobox('readonly',true);
 		 
 	// jQuery('#btnSpareshReplaced').prop('disabled',true);
 	 jQuery('#btnLink').prop('disabled',true);
@@ -50,7 +50,7 @@
 	
 	jQuery('#lblplosSource').hide();
 	jQuery('#plosSourcediv').hide();
-	  jQuery('#cmbPlosSource').combobox('disable');			   
+	  jQuery('#cmbPlosSource').combobox('readonly',true);			   
 		
 	var serverTime = srvTime();
 	var currentTime = new Date(serverTime);
@@ -289,7 +289,7 @@
 	jQuery('#chkPlosDurationSel').click(function(){
 			var selDurationSel = jQuery("#chkPlosDurationSel").is(':checked');
 			if(selDurationSel == true){
-				jQuery('#cmbSelPrdHourL').combobox('disable');
+				jQuery('#cmbSelPrdHourL').combobox('readonly',true);
 				readOnlyFields("txtPlosLosstime");
 				//jQuery('#cmbSelPrdHourL').val("");
 				enableFields("dtePlosFromdate");
@@ -304,9 +304,9 @@
 				setFieldValue('cmbSelPrdHourL','-');
 				}
 			else if(selDurationSel == false){
-					jQuery('#cmbSelPrdHourL').combobox('enable');
+					//jQuery('#cmbSelPrdHourL').combobox('enable');
 					enableFields("txtPlosLosstime");
-					jQuery('#cmbSelPrdHourL').combobox("disabled",false);
+					jQuery('#cmbSelPrdHourL').combobox("readonly",false);
 				}
 			else{
 				}
@@ -902,17 +902,17 @@ function frmPcsLosscmbPlosCellid_onSelect(record){
 			
 			fillComboBox("frmPcsLoss","cmbPprdArea","combo_ProdArea.balpcs");
 			//jQuery('#selPprdHour').is('disabled',true);
-			jQuery("#cmbPprdManpower").combobox('disable');
-			jQuery("#selPprdHour").prop("disabled", true);
-			jQuery("#cmbPprdArea").prop('enabled',true);
+			jQuery("#cmbPprdManpower").combobox('readonly',true);
+			jQuery("#selPprdHour").prop("readonly", true);
+			jQuery("#cmbPprdArea").prop('readonly',false);
 			jQuery("#lblAreaS").show();
 			jQuery("#inArea").show();
 			
 			}
 		else{
-		jQuery("#selPprdHour").prop("disabled", false);
-		jQuery("#cmbPprdManpower").combobox('enabled',true);
-		jQuery("#cmbPprdArea").prop('disabled',true);
+		jQuery("#selPprdHour").prop("readonly", false);
+		jQuery("#cmbPprdManpower").combobox('readonly',false);
+		jQuery("#cmbPprdArea").prop('readonly',true);
 		jQuery("#lblAreaS").hide();
 		jQuery("#inArea").hide();
 		
@@ -930,14 +930,14 @@ function frmPcsLosscmbPprdArea_onSelect(record) 	{
 	var area=jQuery('#cmbPprdArea').combobox('getValue');
 	reloadCombo("frmPcsLoss","cmbPprdBatchqty","txt_PprdBatchqty.pcs?prd="+prd+"&area="+area);
 } */
-function frmPcsLosscmbPlosLossid_onSelect(record){
+/* function frmPcsLosscmbPlosLossid_onSelect(record){
 	var losLosstime=jQuery("txtPlosLosstime").val();
 	//alert('losLosstime'+losLosstime);
 		jQuery("#cmbPlosLossid").combobox('clear');
 	
 	reloadCombo("frmPcsLoss","cmbPlosLossid","combo_SubLoss.balpcs");
 	
-}
+} */
 
 function frmPcsLosscmbPlosCellid_onLoadSuccess() 	{
 	jQuery("#chkPprdShiftnoplan").attr('checked', false);
@@ -1166,7 +1166,7 @@ function frmPcsLosscmbMainLoss_onSelect(record) 	{
 	reloadCombo("frmPcsLoss","cmbPlosLossid","combo_SubLoss.balpcs?mainlossId="+mainlossId);
 	//frmPcsLosscmbMainLoss_onClear();
 }
-function frmPcsLosscmbPlosLossid_onSelect(record) 	{
+/* function frmPcsLosscmbPlosLossid_onSelect(record) 	{
 
 	jQuery("#cmbPlosLossid").combobox('clear');
 
@@ -1174,7 +1174,7 @@ function frmPcsLosscmbPlosLossid_onSelect(record) 	{
 	//var mainlossId = record.id;
 //	reloadCombo("frmPcsLoss","cmbPprdProductid","combo_product.pcs?prdModelId="+prdModelId);
 	reloadCombo("frmPcsLoss","cmbPlosLossid","combo_SubLoss.balpcs");
-}
+} */
 
 
 function frmPcsLosscmbPprdProductmodel_onSelect(record) 	{
@@ -1746,7 +1746,7 @@ function frmPcsLosscmbPlosLossreason_onSelect(record) {
 }
 
 function frmPcsLosscmbPlosLossid_onSelect(record) { 
-	var loss= jQuery('#cmbPlosLossid').combobox('getValue');
+	var loss= record.id;// jQuery('#cmbPlosLossid').combobox('getValue');
 	//alert("......"+loss + "..");
 	processAjaxCalls('getSubMainLossNo.pcs',"&subLossid="+record.id,'subLossMainIdSuccess','reasonLossIdError');
 	var flId=jQuery("#frmPcsLoss input[id='flid']").val();
@@ -1760,21 +1760,24 @@ function frmPcsLosscmbPlosLossid_onSelect(record) {
 	
 		//var lossName= jQuery('#"cmbPlosLossid"').text();
 		//alert("......"+availTime + ".."+hourno+"    "+lossdate);
-		var lossName= jQuery('#cmbPlosLossid').combobox('getText');
+		var lossName=record.text;// jQuery('#cmbPlosLossid').combobox('getText');
 		 if(loss=="PLC/000006"||loss=="PLC/000017"||loss=="PLC/000033"||lossName=="1.1-EQUIPMENT FAILURE (ELECTRICAL)"||lossName=="1.2-EQUIPMENT FAILURE (ELECTRONICS)"||lossName=="1.3-EQUIPMENT FAILURE (MECHANICAL)"){
-			 LoadPopUp("",'Breakdownpcs_input.brdn?Flid='+flId+'&cellid='+cellid+'&shiftId='+shiftId+'&shifttext='+shifttext+'&hourno='+hourno+'&lossdate='+lossdate+'&availtime='+availTime, true,"90%","500px","60px","20px", null, 'Breakdown Analysis - Breakdown Link',false, true,true);
+			 LoadPopUp("PCSBreackDown",'Breakdownpcs_input.Bbrdn?Flid='+flId+'&cellid='+cellid+'&shiftId='+shiftId+'&shifttext='+shifttext+'&hourno='+encodeURIComponent(hourno)+'&lossdate='+encodeURIComponent(lossdate)+'&availtime='+encodeURIComponent(availTime), true,"90%","500px","60px","20px", null, 'Breakdown Analysis - Breakdown Link',false, true,true);
 		 }
 			  if(loss=="PLC/000044" || lossName=="5-MINOR STOPPAGE" || loss=="PLC/000039" || loss=="PLC/000068" || loss=="PLC/000010"){
 
-				 jQuery('#cmbPlosMachineid').combobox('enable');
+				 //jQuery('#cmbPlosMachineid').combobox('enable');
+				 jQuery("#cmbPlosMachineid").combobox('readonly',false);
 			   }
 			  else
-				  jQuery('#cmbPlosMachineid').combobox('disable');	
+				  jQuery('#cmbPlosMachineid').combobox('readonly',true);	
 		 if(loss=='PLC/000039' || loss=='PLC/000068' || loss=='PLC/000010'|| loss=='PLC/000044' ){				 
-					jQuery('#cmbPlosToolId').combobox('enable');	
+					//jQuery('#cmbPlosToolId').combobox('enable');	
+					jQuery("#cmbPlosToolId").combobox('readonly',false);
 				  }	
 			  else{	   
-			 		 jQuery('#cmbPlosToolId').combobox('disable');
+			 		 //jQuery('#cmbPlosToolId').combobox('disable');
+			 		jQuery("#cmbPlosToolId").combobox('readonly',true);
 			  }
 
 			//////
@@ -1802,14 +1805,16 @@ function frmPcsLosscmbPlosLossid_onSelect(record) {
 			jQuery('#lblplosSource').show();
 			jQuery('#plosSourcediv').show();
 		//	jQuery("cmbPlosToolId").hide();			
-			jQuery('#cmbPlosSource').combobox('enable');
+			//jQuery('#cmbPlosSource').combobox('enable');
+			jQuery("#cmbPlosSource").combobox('readonly',false);
 			}
 		else{
 			jQuery('#plosequip').show();
 			jQuery('#lblplosMachine').show();
 		    jQuery('#lblplosSource').hide();
 		    jQuery('#plosSourcediv').hide();
-			jQuery('#cmbPlosSource').combobox('disable');
+			//jQuery('#cmbPlosSource').combobox('disable');
+			jQuery("#cmbPlosSource").combobox('readonly',true);
 		}
 	
 	/*	if(loss=="PLC/000049"||loss=="PLC/000083" ){
@@ -1825,10 +1830,12 @@ function frmPcsLosscmbPlosLossid_onSelect(record) {
 	//processAjaxCalls('getSubMainLossNo.pcs',"&subLossid="+record.id,'subLossMainIdSuccess','reasonLossIdError');	
  }
 		else{jQuery('#btnLink').prop('disabled',true);}*/
+		alert(loss);
 		 if(loss=="PLC/000045"){
-			 jQuery('#btnLink').prop('disabled',false);
+			 //jQuery('#btnLink').prop('disabled',false);
+			 alert(loss);
 				LoadPopUp("",'speedLoss_input.balpcs?Flid='+flId+'&cellid='+cellid+'&shiftId='+shiftId+'&shifttext='+shifttext+'&hourno='+hourno+'&lossdate='+lossdate+'&availtime='+availTime+'&jhTime='+jhTime+'&lossName=speed', true,"90%","500px","60px","20px", null, 'SPEED LOSS ENTRY',false, true,true);
-				
+				alert(loss);
 			 }
 		 else jQuery('#btnLink').prop('disabled',true);
 }
@@ -2947,7 +2954,7 @@ function pcsdblClick(rowid) {
 	setFieldValue('cmbPlosMachineid',rowData.Machineid);
 	
 	setFieldValue('txtPlosLossreason',rowData.LossReason);
-	jQuery('#cmbPlosToolId').combobox('enable');
+	jQuery('#cmbPlosToolId').combobox('readonly',false);
 	setFieldValue('cmbPlosToolId',rowData.ToolId);
 	
 	//if (rowData.Prodn.Impact == "Y")
@@ -4237,7 +4244,13 @@ function lossMinutesProductionGridValidation(startHour,endHour)
 
 function shiftStartEndTimeSuccess(result) {
 	//alert(result.endTime);.
-	var availtime=result.totalShifttime;
+	//var availtime=result.totalShifttime;
+	var availtime = Number(result.totalShifttime);
+	if (!(availtime > 0)) {
+	    function toMin(t){ return parseInt(t.substring(0,2),10)*60 + parseInt(t.substring(3,5),10); }
+	    availtime = toMin(result.endTime) - toMin(result.startTime);
+	    if (availtime <= 0) availtime += 1440;
+	}
 	var hours='';
 	var i='';
 	var shiftStarttime = result.startTime;
@@ -4955,13 +4968,13 @@ function lossfunction(val,rowid){
    						
    						<div>
    							<span style="padding-left:30px;display: none;">
-								<input type="text" class="easyui-text"  id="txLossHours"   name="txLossHours"  value=""  style="width:80px;text-align: right;" disabled="disabled" maxlength="5" >
+								<input type="text" class="easyui-text"  id="txLossHours"   name="txLossHours"  value=""  style="width:80px;text-align: right;" readonly="readonly" maxlength="5" >
 							</span>
 							<span style="padding-left:20px;">
 								<input type="text" class="easyui-text"  id="txtPlosLosstime"   name="txtPlosLosstime"  value=""  style="width:50px;text-align: right;"  maxlength="5"  onchange="lossMinutevalidate()">
 							</span>
 							<span style="padding-left:15px;">
-								<input type="text" class="easyui-text"  id="txtPlosLossQty"   name="txtPlosLossQty"  value=""  style="width:50px;text-align: right;" disabled="disabled" maxlength="5"  onchange="lossMinutevalidate()">
+								<input type="text" class="easyui-text"  id="txtPlosLossQty"   name="txtPlosLossQty"  value=""  style="width:50px;text-align: right;" readonly="readonly" maxlength="5"  onchange="lossMinutevalidate()">
 							</span>
 							<!-- temporaaly commented 
 							<span style="padding-left:28px; display: none;">
@@ -4976,7 +4989,7 @@ function lossfunction(val,rowid){
 							
 							<span style="padding-left:15px;">
 								<!--  <input type="text" class="easyui-combo"  id="cmbPlosSource"   name="cmbPlosSource"  value=""  style="width:160px;text-align: right;"  ">
-									--><select  class="easyui-combobox"id="cmbPlosSource" name="cmbPlosSource" class="easyui-combobox"  style="width:80px; /* height:20px; */"   <c:out value = "${ requestScope.abnormalityBean.disableForm == true ? ' disabled':''}"/> >  
+									--><select  class="easyui-combobox"id="cmbPlosSource" name="cmbPlosSource" class="easyui-combobox"  style="width:80px; /* height:20px; */"   <c:out value = "${ requestScope.abnormalityBean.disableForm == true ? ' readonly':''}"/> >  
                         	<option title="" value=""></option>
                         	<option title="V" value="V">Vendor</option>
                         	<option title="IN" value="IN">In House</option>
