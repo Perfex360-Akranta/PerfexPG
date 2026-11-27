@@ -765,8 +765,8 @@ public class BAL_BreakdownServiceImpl implements BAL_BreakdownService {
 					newBdmTlMst.setBdmsProdaccepdate(CommonFunctions.pg_getDateTimeFromTimeStamp(prodaceepDate));
 
 				} else {
-					String prodaceepDate1 = newBdmTlMst.getBdmsReporteddate();
-					newBdmTlMst.setBdmsReporteddate(CommonFunctions.pg_getDateTimeFromDate(prodaceepDate1));
+					String prodaceepDate1 = newBdmTlMst.getBdmsProdaccepdate();
+					newBdmTlMst.setBdmsProdaccepdate(CommonFunctions.pg_getDateTimeFromDate(prodaceepDate1));
 
 				}
 			}

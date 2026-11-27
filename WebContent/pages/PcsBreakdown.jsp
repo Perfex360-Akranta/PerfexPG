@@ -167,30 +167,43 @@
 	   return true;
    }
    function bdPcsdbl(rowid) { 
-
+	   alert("click");
 		//var plosKeyid = jQuery("#pcslossGrid").jqGrid('getCell',id,2); 		
-		
+		//console.log("hi")
 		var rowData = jQuery("#pcsBdGrid").jqGrid('getRowData',rowid);
-
+		
 		var prdAccept=rowData.PRDFLAG;
 		//alert(prdAccept);
 		if(prdAccept=='Y'){
 			var strttm=rowData.ProductionStartDate;
 			jQuery("#chbbdmsWoprodaccepflag").prop('checked', true);
 			readOnlyFields('chbbdmsWoprodaccepflag');
+			
+			 // issue 2: enable Prod. Started date and time
+	        enableFields('dtebdmsProdaccepdate');
+	        enableFields('spnbdmsProdacceptime');
+	        jQuery('#dtebdmsProdaccepdate').datebox('readonly', false);
+	        jQuery('#spnbdmsProdacceptime').timespinner('readonly', false);
+
+	        // issue 1: set date and time
+	        jQuery('#dtebdmsProdaccepdate').datebox('setValue', rowData.ProductionStartDate);
+	        jQuery('#spnbdmsProdacceptime').timespinner('setValue', rowData.ProductionStartTime);
 			}
-		else
+		else{
 			jQuery("#chbbdmsWoprodaccepflag").prop('checked',false);	
+		 jQuery('#dtebdmsProdaccepdate').datebox('setValue', '').datebox('readonly', true);
+	        jQuery('#spnbdmsProdacceptime').timespinner('setValue', '').timespinner('readonly', true);
+		}
 	       
 	       
 	    setFieldValue('cmbbdmsMachineid',rowData.MachinId);
 	    setFieldValue('hdncmbbdmsMachineid',rowData.MachinId);
 		setFieldValue('txtbdmsProblemdescription',rowData.Problem);
 		setFieldValue('txtbdmsRemarks',rowData.Remark);		
-		setFieldValue('dtebdmsProdaccepdate',rowData.ProductionStartDate);
-		setFieldValue('spnbdmsProdacceptime',rowData.ProductionStartTime);
-		setFieldValue('dtebdmsReporteddate',rowData.OccuredDate);
-		setFieldValue('spnbdmsReportedtime',rowData.OccuredTime);
+		//setFieldValue('dtebdmsProdaccepdate',rowData.ProductionStartDate);
+	//	setFieldValue('spnbdmsProdacceptime',rowData.ProductionStartTime);
+	//	setFieldValue('dtebdmsReporteddate',rowData.OccuredDate);
+	//	setFieldValue('spnbdmsReportedtime',rowData.OccuredTime);
 		setFieldValue('hdnbdmsKeyid',rowData.BDId);
 		setFieldValue('txtbdmsActualworktime',rowData.WTIME);
 		loadFunctionalLocation("bdmsfunLocation","functionalLoc.Bbrdn","bdmsfunLocationValues","frmBDpcs","&machId="+rowData.MachinId);

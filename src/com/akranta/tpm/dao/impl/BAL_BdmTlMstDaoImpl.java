@@ -2021,7 +2021,7 @@ public BAL_BdmTlMst updatepcsBd(BAL_BdmTlMst bdmTlMst,WomTlWomst womTlWomst)	thr
 				{
 					if(bdmTlMst.getBdmsWoprodaccepflag().equals("Y"))
 					{*/
-						woId = dbActionTemplate.getSingleValue(TableNames.TBL_WOM_TL_MST,"WOMS_KEYID", "WOMS_ACTIVITYID", bdmTlMst.getBdmsKeyid());
+						woId = dbActionTemplate.getSingleValue(TableNames.TBL_BAL_WOM_TL_MST,"WOMS_KEYID", "WOMS_ACTIVITYID", bdmTlMst.getBdmsKeyid());
 						if(UIUtils.isValidKeyId(woId))
 						{
 							CommonFunctions.debugMsg("ID : "+woId);
