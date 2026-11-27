@@ -2,6 +2,7 @@ package com.akranta.tpm.service.api;
 
 import com.akranta.tpm.model.BAL_BdmTlMst;
 import com.akranta.tpm.model.BAL_BdmTlMultipleResp;
+import com.akranta.tpm.model.BAL_PcsTlPcsBd;
 import com.akranta.tpm.model.BAL_WomTlManpowercostactual;
 import com.akranta.tpm.model.BAL_WomTlManpowercostplan;
 import com.akranta.tpm.model.BAL_WomTlOthercostactual;
@@ -68,6 +69,10 @@ public class BdmServiceApi {
         CommonMessage.debugMsg("BDM saveRecord Result: " + result);
         return result;
     }
+    
+    
+ 
+    
 
     // =========================================================================
     //  BUILD REQUEST JSON
@@ -1120,5 +1125,71 @@ public class BdmServiceApi {
             "empm_name"
         };
     
+    }
+    
+    
+ // New method, used only by savepcsRecord
+    public BAL_BdmTlMst savepcsbdRecord(BAL_BdmTlMst bdmTlMst) throws Exception {
+
+        String apiUrl = "/bdm/savepcsbd";
+
+        // Always mark active = Y on save
+        bdmTlMst.setBdmsActive("Y");
+
+        boolean isInsert = (bdmTlMst.getBdmsKeyid() == null
+                || bdmTlMst.getBdmsKeyid().trim().isEmpty());
+
+        CommonMessage.debugMsg("BDM savepcsRecord – mode: " + (isInsert ? "INSERT" : "UPDATE")
+                + ", keyid: " + bdmTlMst.getBdmsKeyid());
+
+        String jsonPayload = toPcsJson(bdmTlMst);   // changed
+        CommonMessage.debugMsg("BDM savepcsRecord Json :: " + jsonPayload);
+
+        HttpResponse res = api.makeAuthRequest(apiUrl, "POST", jsonPayload);
+        CommonMessage.debugMsg("BDM savepcsRecord Status: " + res.getStatusCode());
+
+        String jsonResponse = res.getBody();
+        CommonMessage.debugMsg("BDM savepcsRecord Response: " + jsonResponse);
+
+        if (res.getStatusCode() < 200 || res.getStatusCode() >= 300) {
+            throw new IllegalStateException("BDM PCS save failed HTTP=" + res.getStatusCode()
+                    + " body=[" + jsonResponse + "]");
+        }
+
+        BAL_BdmTlMst result = fromJson(jsonResponse);
+        CommonMessage.debugMsg("BDM savepcsRecord Result: " + result);
+        return result;
+    }
+
+    private String toPcsJson(BAL_BdmTlMst bdmTlMst) {
+
+        String json = toJson(bdmTlMst);   // old method, unchanged
+
+        if (bdmTlMst.getPcsbd() == null || bdmTlMst.getPcsbd().isEmpty()) {
+            return json;
+        }
+
+        BAL_PcsTlPcsBd pcsBd = (BAL_PcsTlPcsBd) bdmTlMst.getPcsbd().get(0);
+
+        // JSON names must match the Spring Boot entity
+        JSONObject pcs = new JSONObject();
+        putIfPresent(pcs, "keyid", pcsBd.getPcsbdKeyid());
+        putIfPresent(pcs, "bdmsKeyid", pcsBd.getPcsBdmsKeyid());
+        putIfPresent(pcs, "active", pcsBd.getActive());
+        putIfPresent(pcs, "createdby", pcsBd.getCreatedBy());
+        // createdon is set by the server
+
+        // position just after the opening brace of "master"
+        int pos = json.indexOf('{', json.indexOf("\"master\":")) + 1;
+
+        return json.substring(0, pos)
+                + "\"pcsBd\":" + pcs.toString() + ","
+                + json.substring(pos);
+    }
+
+    private void putIfPresent(JSONObject obj, String key, String value) {
+        if (value != null && !value.isEmpty() && !"{}".equals(value)) {
+            obj.put(key, value);
+        }
     }
 }

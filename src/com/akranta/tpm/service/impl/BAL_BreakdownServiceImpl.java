@@ -766,7 +766,7 @@ public class BAL_BreakdownServiceImpl implements BAL_BreakdownService {
 
 				} else {
 					String prodaceepDate1 = newBdmTlMst.getBdmsReporteddate();
-					newBdmTlMst.setBdmsReporteddate(CommonFunctions.pg_getDate(prodaceepDate1));
+					newBdmTlMst.setBdmsReporteddate(CommonFunctions.pg_getDateTimeFromDate(prodaceepDate1));
 
 				}
 			}
@@ -1950,13 +1950,14 @@ public class BAL_BreakdownServiceImpl implements BAL_BreakdownService {
 			String strAPstatus = "0";
 			if (newBdmTlMst.getBdmsStatus().equals("C"))
 				strAPstatus = bdmTlMstDao.getActionPlanDetails(newBdmTlMst);
-			;
+			
 
 			if (Integer.parseInt(strAPstatus) > 0)
 				throw new BusinessApplicationExceptions("Action Plan pending");
 			else {
 
-				return bdmTlMstDao.createPcsBd(newBdmTlMst);
+				//return bdmTlMstDao.createPcsBd(newBdmTlMst);
+				return bdmServiceApi.savepcsbdRecord(newBdmTlMst);
 			}
 
 			// return bdmTlMstDao.create(newBdmTlMst);
@@ -2035,7 +2036,9 @@ public class BAL_BreakdownServiceImpl implements BAL_BreakdownService {
 		        }
 		    }
 			// end 
-			return bdmServiceApi.saveRecord(newBdmTlMst);
+			//return bdmServiceApi.saveRecord(newBdmTlMst);
+			return bdmServiceApi.savepcsbdRecord(newBdmTlMst);
+
 		}
 		
 	}

@@ -6,7 +6,7 @@
  <script type="text/javascript">	
 
    jQuery(document).ready(function(){
-	   //jQuery("#frmBDpcs select[id='cmbbdmsRelatedto']").attr('disabled',"disabled");
+	   //jQuery("#frmBDpcs select[id='cmbbdmsRelatedto']").attr('readonly',"readonly");
        initialiseForm('frmBDpcs');	    	  
        jQuery('#submitForm').val('frmBDpcs'); // set the id of form to submit  txtbdmsActualworktime
        /*Added By Roopa---*/
@@ -15,10 +15,20 @@
  	   formatDateBox('dtebdmsReporteddate','dd-MMM-yyyy');
  	  formatDateBox('dtebdmsProdaccepdate','dd-MMM-yyyy');
  	 // fillWithCurrentDate('dtebdmsReporteddate');//filling Current Date
- 	  fillWithCurrentDate('dtebdmsProdaccepdate');
+ //	  fillWithCurrentDate('dtebdmsProdaccepdate');
+ //	 setTimeout(function(){ fillWithCurrentDate("dtebdmsProdaccepdate");},500);
 	 // fillWithCurrentDate('spnbdmsReportedtime');
-	  fillWithCurrentDate('spnbdmsProdacceptime');
-	  
+//	  fillWithCurrentDate('spnbdmsProdacceptime');
+	//setTimeout(function(){ fillWithCurrentDate("dtebdmsReporteddate");},500);
+	setTimeout(function(){
+    fillWithCurrentDate("dtebdmsReporteddate");
+    var occureddate = jQuery('#hdnbdmslossdate').val();
+    if(occureddate != '') jQuery('#dtebdmsReporteddate').datebox('setValue', occureddate);
+    }, 500);
+	setTimeout(function(){ fillWithCurrentDate("spnbdmsReportedtime");},500);
+	//setTimeout(function(){ fillWithCurrentDate("spnbdmsProdacceptime");},500);
+	//setTimeout(function(){ actualTimeCalculation(); }, 800);
+	
 	 // fillComboBox("frmBDpcs","cmbbdmsMachineid","machineCombo.commonFilter" ); 
 	   var flId = jQuery("#hdnFlid").val();
 	  // var cellId = jQuery("#frmBDpcs input[id='cell']").val();
@@ -39,27 +49,65 @@
 			   var cellId = jQuery("#frmBDpcs input[id='cell']").val();
 			   var machId = jQuery("#frmBDpcs input[id='machine']").val();
 			   var flid = jQuery("#frmBDpcs input[id='flid']").val();
-			   var dataStr = "&factId="+factId+"&sectionId="+sectionId+"&cellId="+cellId+"&machId="+machId+"&flid="+flId;	  					
+			  var dataStr = "&factId="+factId+"&sectionId="+sectionId+"&cellId="+cellId+"&machId="+machId+"&flid="+flId;	
+			  // var dataStr = "&sectionId="+sectionId+"&cellId="+cellId+"&machId="+machId+"&flid="+flId;
 			   var cellid = jQuery('#hdnCellId').val();
 			  // alert("cell id        "+machId);
-				 loadFunctionalLocation("bdmsfunLocation","functionalLoc.brdn","bdmsfunLocationValues","frmBDpcs",dataStr);
-				 processGridnew("Breakdownpcs_input.brdn","&cellid="+cellid, "pcsBdGrid", "pcsBdPager","","bdPcsdbl","","loadSuccess");
+				 loadFunctionalLocation("bdmsfunLocation","functionalLoc.Bbrdn","bdmsfunLocationValues","frmBDpcs",dataStr);
+				 processGridnew("Breakdownpcs_input.Bbrdn","&cellid="+cellid, "pcsBdGrid", "pcsBdPager","","bdPcsdbl","","loadSuccess");
 					
 				 function loadSuccess() {}	
+				 
+				 
+				// checkbox handler (replace the old .click block with this)
+				 jQuery(document).on('click', '#chbbdmsWoprodaccepflag', function () {
+				     if (jQuery(this).is(':checked')) {
+				         jQuery('#dtebdmsProdaccepdate').datebox('readonly', false);
+				         jQuery('#spnbdmsProdacceptime').spinner('readonly', false);
+				         jQuery('#dtebdmsProdaccepdate').datebox('setValue', jQuery('#dtebdmsReporteddate').datebox('getValue'));
+				         jQuery('#spnbdmsProdacceptime').spinner('setValue', jQuery('#spnbdmsReportedtime').spinner('getValue'));
+				         actualTimeCalculation();
+				     } else {
+				         jQuery('#dtebdmsProdaccepdate').datebox('readonly', true);
+				         jQuery('#spnbdmsProdacceptime').spinner('readonly', true);
+				         jQuery('#dtebdmsProdaccepdate').datebox('setValue', '');
+				         jQuery('#spnbdmsProdacceptime').spinner('setValue', '');
+				         jQuery('#txtbdmsActualworktime').val('0');
+				     }
+				 });
+
+				 // button handlers
+				 jQuery('#btnPcsBdInsert').click(function(){ saveForm("frmBDpcs","Breakdownpcs_save.Bbrdn"); });
+				 jQuery('#btnPcsBdDelete').click(function(){ saveForm("frmBDpcs","Breakdown_delete.Bbrdn?url=pcsDel"); });
+				 jQuery('#btnPcsBdClear').click(function(){
+				     jQuery('#cmbbdmsMachineid').combobox('clear');
+				     jQuery('#txtbdmsRemarks').val('');
+				     jQuery('#txtbdmsProblemdescription').val('');
+				 });
+
+				 // spinner bindings
+				 spinnerChange('spnbdmsProdacceptime','prodAcceptimeEvt');
+				 spinnerUp('spnbdmsProdacceptime','prodAcceptimeEvt');
+				 spinnerDown('spnbdmsProdacceptime','prodAcceptimeEvt');
+				 spinnerChange('spnbdmsReportedtime','setShiftEvt');
+				 spinnerUp('spnbdmsReportedtime','setShiftEvt');
+				 spinnerDown('spnbdmsReportedtime','setShiftEvt');
+				 spinnerKeyPress('spnbdmsProdacceptime');
+				 spinnerKeyPress('spnbdmsReportedtime');
 				
    }); 
 	  
 
-   var wsDate = jQuery("#dtebdmsReporteddate").datebox('getValue') + jQuery("#spnbdmsReportedtime").spinner('getValue');
+/*    var wsDate = jQuery("#dtebdmsReporteddate").datebox('getValue') + jQuery("#spnbdmsReportedtime").spinner('getValue');
 	var weDate = jQuery("#dtebdmsProdaccepdate").datebox('getValue') + jQuery("#spnbdmsProdacceptime").spinner('getValue');
 	var downTime = timeDifference(wsDate,weDate);
 	
 	displayText('txtbdmsActualworktime',downTime.minutes);
 	jQuery("#txtbdmsActualworktime").trigger("change");
-	
+	 */
 	
 
-   jQuery('#chbbdmsWoprodaccepflag').click(function() {				 
+  /*  jQuery('#chbbdmsWoprodaccepflag').click(function() {				 
 				 
 		 if(jQuery("#chbbdmsWoprodaccepflag").is(':checked') == true ){
 		 	enableFields("dtebdmsProdaccepdate");
@@ -81,15 +129,17 @@
 			 }
 		
 		 	  
-   });
+   }); */
+   
+   
   
-   jQuery('#btnPcsBdInsert').click(function(){
+/*    jQuery('#btnPcsBdInsert').click(function(){
 	  
-	   saveForm("frmBDpcs","Breakdownpcs_save.brdn");
+	   saveForm("frmBDpcs","Breakdownpcs_save.Bbrdn");
 	   
    });
    jQuery('#btnPcsBdDelete').click(function(){
-	    saveForm("frmBDpcs","Breakdown_delete.brdn?url=pcsDel");
+	    saveForm("frmBDpcs","Breakdown_delete.Bbrdn?url=pcsDel");
 	   
    });
    
@@ -97,7 +147,17 @@
 	  jQuery('#cmbbdmsMachineid').combobox('clear');
 	  jQuery('#txtbdmsRemarks').val('');
 	  jQuery('#txtbdmsProblemdescription').val('');
-   });
+   }); */
+   
+   
+   function frmBDpcs_FuntLocHierarchy_SuccessCallBack(keyIds)//bdsbu
+   {
+   	var sbuId = keyIds.sbuId;
+   	console.log("flid:", keyIds.flId, "sbuId:", sbuId);
+
+   	// SBU id goes in place of factory id
+   	jQuery("#frmBDpcs input[id='factory']").val(sbuId);
+   }
    
    function frmBDpcs_successsCallback(result) 
    {
@@ -133,7 +193,7 @@
 		setFieldValue('spnbdmsReportedtime',rowData.OccuredTime);
 		setFieldValue('hdnbdmsKeyid',rowData.BDId);
 		setFieldValue('txtbdmsActualworktime',rowData.WTIME);
-		loadFunctionalLocation("bdmsfunLocation","functionalLoc.brdn","bdmsfunLocationValues","frmBDpcs","&machId="+rowData.MachinId);
+		loadFunctionalLocation("bdmsfunLocation","functionalLoc.Bbrdn","bdmsfunLocationValues","frmBDpcs","&machId="+rowData.MachinId);
 		frmBDpcs_successsCallback(result);
    }
   
@@ -162,7 +222,8 @@
   }
    function actualTimeCalculation()
 	{		
-		if(jQuery("#spnbdmsReportedtime").spinner('getValue') != null && jQuery("#spnbdmsReportedtime").spinner('getValue') != null)
+	//	if(jQuery("#spnbdmsReportedtime").spinner('getValue') != null && jQuery("#spnbdmsReportedtime").spinner('getValue') != null)
+		if(jQuery("#dtebdmsReporteddate").datebox('getValue') != '' && jQuery("#spnbdmsReportedtime").spinner('getValue') != '')
 		{					
 			//alert(jQuery('#spnbdmsReportedtime').spinner('getValue')+'...nnn....nnnn');
 			var repDate = jQuery("#dtebdmsReporteddate").datebox('getValue') + jQuery("#spnbdmsReportedtime").spinner('getValue');				
@@ -197,7 +258,7 @@
    function frmBDpcscmbbdmsMachineid_onSelect(record)
    {	
 	 
-		    loadFunctionalLocation("bdmsfunLocation","functionalLoc.brdn","bdmsfunLocationValues","frmBDpcs","&machId="+record.id);
+		    loadFunctionalLocation("bdmsfunLocation","functionalLoc.Bbrdn","bdmsfunLocationValues","frmBDpcs","&machId="+record.id);
 			readOnlyFields('frmBDpcsFuntKeyIds');
   } 
 
@@ -211,7 +272,8 @@
    spinnerKeyPress('spnbdmsProdacceptime');
    spinnerKeyPress('spnbdmsReportedtime');
    
-   setFieldValue('dtebdmsReporteddate',jQuery('#hdnbdmslossdate').val());
+   //setFieldValue('dtebdmsReporteddate',jQuery('#hdnbdmslossdate').val());
+   if(jQuery('#hdnbdmslossdate').val()!='') setFieldValue('dtebdmsReporteddate',jQuery('#hdnbdmslossdate').val());//today
     var hr=jQuery('#hdnbdmshourno').val();
     var shft=jQuery('#hdnbdmsshifttext').val();
     //alert(hr+"..........");
@@ -313,7 +375,7 @@
 		   var fromDate = jQuery('#dtebdmsReporteddate').datebox('getValue') + ' '+jQuery('#spnbdmsReportedtime').spinner('getValue');
 		   var toDate = jQuery('#chbbdmsWoprodaccepflag').is(':checked') == true?jQuery('#dtebdmsProdaccepdate').datebox('getValue') + ' '+jQuery('#spnbdmsProdacceptime').spinner('getValue'):jQuery('#dtebdmsWoendtime').datebox('getValue') + ' '+jQuery('#spnbdmsWoend').spinner('getValue');
 		   var downTimedata = '?q=2&factId='+jQuery('#factory').val()+'&fromTime='+fromDate+'&toTime='+toDate;								
-		   processGridnew('downtime_view.brdn',downTimedata,"DwnTmeBrkupGrid","DwnTmeBrkupPager","","","","downTimeGrid","");
+		   processGridnew('downtime_view.Bbrdn',downTimedata,"DwnTmeBrkupGrid","DwnTmeBrkupPager","","","","downTimeGrid","");
 	}
   	 function downTimeGrid(){	
 
@@ -352,7 +414,7 @@
 	<input type="hidden" id="hdnRepBDFlag" name="hdnRepBDFlag" value="${requestScope.bdmTlMst.bdmsRepeatedbdflag}">
 	<input type="hidden" id="mode" name="mode" value="${requestScope.formMode}">
 			<div class="easyui-paddingbfpx" style="position:relative;">
-			<div style="margin-top:-21px;padding-left:478px;display:none"><input id="txtbdmsSapNo" type="text" style="width: 150px;"  class="easyui-text" value="${requestScope.bdmTlMst.bdmsKeyid}" disabled/></div>
+			<div style="margin-top:-21px;padding-left:478px;display:none"><input id="txtbdmsSapNo" type="text" style="width: 150px;"  class="easyui-text" value="${requestScope.bdmTlMst.bdmsKeyid}" readonly/></div>
 			<div  style="padding-left: 504px;margin-to: -25px;">
 <!--			<img id="" src="images/filemanager1.png"/>-->
 <!--			<img id="" src="images/hist3.png"/>-->
@@ -381,10 +443,10 @@
 		    </div>
 		    </div>
 			<div  style="padding-left:10px; "> 
-			<table><tr><td>	<input type="text" id="cmbbdmsMachineid" name="cmbbdmsMachineid" class="easyui-combobox" value="${requestScope.bdmTlMst.bdmsMachineid}" style="width: 300px;" <c:out value = "${requestScope.bdFormBean.disablebdmsMachineid == true ? ' disabled':''}"/>/>
+			<table><tr><td>	<input type="text" id="cmbbdmsMachineid" name="cmbbdmsMachineid" class="easyui-combobox" value="${requestScope.bdmTlMst.bdmsMachineid}" style="width: 300px;" ${requestScope.bdFormBean.disablebdmsMachineid == true ? ' readonly':''}/>
 			<input type="hidden" id="hdncmbbdmsMachineid" value="${requestScope.bdFormBean.disablebdmsMachineid}" /></td>
-			<td><span style="padding-left:30px;"><textarea id="txtbdmsProblemdescription" name="txtbdmsProblemdescription"   style="resize:none;width:280px;height:40px;" <c:out value = "${requestScope.bdFormBean.disablebdmsProblemdescription == true ? ' disabled':''}"/>>${requestScope.bdmTlMst.bdmsProblemdescription}</textarea></span>
-		  	</td><td><span style="padding-left:30px;"><textarea id="txtbdmsRemarks" name="txtbdmsRemarks"   style="resize:none;width:280px;height:40px" <c:out value = "${requestScope.bdFormBean.disablebdmsProblemdescription == true ? ' disabled':''}"/>>${requestScope.bdmTlMst.bdmsProblemdescription}</textarea></span>
+			<td><span style="padding-left:30px;"><textarea id="txtbdmsProblemdescription" name="txtbdmsProblemdescription"   style="resize:none;width:280px;height:40px;" ${requestScope.bdFormBean.disablebdmsProblemdescription == true ? ' readonly':''}">${requestScope.bdmTlMst.bdmsProblemdescription}</textarea></span>
+		  	</td><td><span style="padding-left:30px;"><textarea id="txtbdmsRemarks" name="txtbdmsRemarks"   style="resize:none;width:280px;height:40px"${requestScope.bdFormBean.disablebdmsProblemdescription == true ? ' readonly':''}">${requestScope.bdmTlMst.bdmsProblemdescription}</textarea></span>
 		 	</td></tr>
 		 	</table>
 		 	</div>
@@ -401,13 +463,18 @@
 			  </div>
 			 
 			  <div class="easyui-paddingbfpx">	
-				<span style="padding-left: 55px;"><input id="dtebdmsReporteddate"  name="dtebdmsReporteddate" clear="false" class="easyui-datebox" value="${requestScope.bdmTlMst.bdmsReporteddate}"  style="width: 85px;" <c:out value = "${requestScope.bdFormBean.disablebdmsReporteddate == true ? ' disabled':''}"/> /></span>
-				<span class="spinner"><input  id="spnbdmsReportedtime" name="spnbdmsReportedtime"  class="easyui-timespinner spinner-text validatebox-text" value="${requestScope.bdFormBean.bdmsReportedtime}"  style="width: 60px;" <c:out value = "${requestScope.bdFormBean.disablebdmsReportedtime == true ? ' disabled':''}"/>></span>
+				<span style="padding-left: 55px;"><input id="dtebdmsReporteddate"  name="dtebdmsReporteddate" clear="false" class="easyui-datebox" value="${requestScope.bdmTlMst.bdmsReporteddate}"  style="width: 85px;" ${requestScope.bdFormBean.disablebdmsReporteddate == true ? ' readonly':''} /></span>
+				<span class="spinner"><input  id="spnbdmsReportedtime" name="spnbdmsReportedtime"  class="easyui-timespinner spinner-text validatebox-text" value="${requestScope.bdFormBean.bdmsReportedtime}"  style="width: 60px;" ${requestScope.bdFormBean.disablebdmsReportedtime == true ? ' readonly':''}></span>
 				<!--  
-				<span  class="spinner"><input  id="spnbdmsReportedtime" name="spnbdmsReportedtime"  class="easyui-timespinner spinner-text validatebox-text" value="${requestScope.bdFormBean.bdmsReportedtime}"  style="width: 55px;" <c:out value = "${requestScope.bdFormBean.disablebdmsReportedtime == true ? ' disabled':''}"/>></span>
-				--><span style="padding-left:20px;"><input type="checkbox"  value="Y" id="chbbdmsWoprodaccepflag" name="chbbdmsWoprodaccepflag" <c:out value = "${requestScope.bdFormBean.disablebdmsProdaccepdate == true ? ' disabled':''}"/>/></span>
-				<span style="padding-left: 5px;"><input id="dtebdmsProdaccepdate"  name="dtebdmsProdaccepdate" clear="false" class="easyui-datebox" value="${requestScope.bdmTlMst.bdmsReporteddate}"  style="width: 85px;" <c:out value = "${requestScope.bdFormBean.disablebdmsReporteddate == true ? ' disabled':''}"/> /></span>
-				<span class="spinner"><input  id="spnbdmsProdacceptime" name="spnbdmsProdacceptime"  class="easyui-timespinner spinner-text validatebox-text" value="${requestScope.bdFormBean.bdmsReportedtime}"  style="width: 55px;" <c:out value = "${requestScope.bdFormBean.disablebdmsReportedtime == true ? ' disabled':''}"/>/></span>
+				<span  class="spinner"><input  id="spnbdmsReportedtime" name="spnbdmsReportedtime"  class="easyui-timespinner spinner-text validatebox-text" value="${requestScope.bdFormBean.bdmsReportedtime}"  style="width: 55px;" <c:out value = "${requestScope.bdFormBean.disablebdmsReportedtime == true ? ' readonly':''}"/>></span>
+				--><span style="padding-left:20px;">
+				<input type="checkbox"  value="Y" id="chbbdmsWoprodaccepflag" name="chbbdmsWoprodaccepflag" ${requestScope.bdFormBean.disablebdmsProdaccepdate == true ? ' disabled ':''}/>
+				</span>
+				<%-- <span style="padding-left: 5px;"><input id="dtebdmsProdaccepdate"  name="dtebdmsProdaccepdate" clear="false" class="easyui-datebox" value="${requestScope.bdmTlMst.bdmsReporteddate}"  style="width: 85px;" ${requestScope.bdFormBean.disablebdmsReporteddate == true ? ' readonly':''} /></span>
+				<span class="spinner"><input  id="spnbdmsProdacceptime" name="spnbdmsProdacceptime"  class="easyui-timespinner spinner-text validatebox-text" value="${requestScope.bdFormBean.bdmsReportedtime}"  style="width: 55px;" ${requestScope.bdFormBean.disablebdmsReportedtime == true ? ' readonly':''}/></span>
+				 --%>
+				<span style="padding-left: 5px;"><input id="dtebdmsProdaccepdate" name="dtebdmsProdaccepdate" clear="false" class="easyui-datebox" value="" style="width: 85px;" /></span>
+				<span class="spinner"><input id="spnbdmsProdacceptime" name="spnbdmsProdacceptime" class="easyui-timespinner spinner-text validatebox-text" value="" style="width: 55px;" /></span> 
 				<span style="padding-left:30px;"><input type="text"  class="easyui-text" name="txtbdmsActualworktime" id="txtbdmsActualworktime" size="15px;" style="text-align:center;"/></span>
 				<span style="Padding-left:350px;">
 				<input type="button" id="btnPcsBdInsert" name="btnPcsBdInsert" class="easyui-button" value="Insert"/>
@@ -435,8 +502,8 @@
  <input type="hidden" id="hdnbdmsTempfield7" name="hdnbdmsbdmsTempfield7" value="${requestScope.availTime}"/>
  <input type="hidden" id="hdnbdmshourno" name="hdnbdmshourno" value="${requestScope.hourno}"/>
  <input type="hidden" id="hdnbdmslossdate" name="hdnbdmslossdate" value="${requestScope.lossdate}"/>
- <input type="hidden" id="txtbdmsWno" name="txtbdmsWno" value="${requestScope.bdmTlMst.bdmsWno}" class="easyui-text noFocus" tabindex = "-1" disabled style="height: 22px;background-color:#D1E2FD;font-weight:bold;text-align:center;color:#245edc;" <c:out value = "${requestScope.bdFormBean.disablebdmsWno == true ? ' disabled':''}"/>/>
- <input type="hidden" style="display:hide;" id="txtbdmsKeyid" name="cmbbdmsKeyid" value="${requestScope.bdmTlMst.bdmsWno}" tabindex = "-1" disabled style="height: 22px;background-color:#D1E2FD;font-weight:bold;text-align:center;color:#245edc;" <c:out value = "${requestScope.bdFormBean.disablebdmsWno == true ? ' disabled':''}"/>/>
+ <input type="hidden" id="txtbdmsWno" name="txtbdmsWno" value="${requestScope.bdmTlMst.bdmsWno}" class="easyui-text noFocus" tabindex = "-1" readonly style="height: 22px;background-color:#D1E2FD;font-weight:bold;text-align:center;color:#245edc;" ${requestScope.bdFormBean.disablebdmsWno == true ? ' readonly':''}"/>
+ <input type="hidden" style="display:hide;" id="txtbdmsKeyid" name="cmbbdmsKeyid" value="${requestScope.bdmTlMst.bdmsWno}" tabindex = "-1" readonly style="height: 22px;background-color:#D1E2FD;font-weight:bold;text-align:center;color:#245edc;" ${requestScope.bdFormBean.disablebdmsWno == true ? ' readonly':''}"/>
   
  </div>
  

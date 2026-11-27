@@ -5,7 +5,7 @@ import com.akranta.tpm.model.BAL_PcsTlPcsBd;
 
 public class BAL_PcsTlPcsBdSql {
 	
-	public static final String TBL_PCS_TL_PCSBD = "PCS_TL_PCSBD";  
+	public static final String TBL_BAL_PCS_TL_PCSBD = "BAL_PCS_TL_PCSBD";
 
 	TableFieldType [] pcsbdDbFields = null;
 	
@@ -45,7 +45,7 @@ public class BAL_PcsTlPcsBdSql {
 	}
 	public static String getInsertSql(TableFieldType [] fieldTypeArr, Object [] dataArray)
 	{
-		return SqlUtils.getInsertSql(TBL_PCS_TL_PCSBD, fieldTypeArr, dataArray);
+		return SqlUtils.getInsertSql(TBL_BAL_PCS_TL_PCSBD, fieldTypeArr, dataArray);
 	}
 	public static String getDeleteSql(TableFieldType [] fieldTypeArr, Object [] dataArray)
 	{
@@ -53,7 +53,7 @@ public class BAL_PcsTlPcsBdSql {
 		//PcsTlPcsBd newpcsbd= new PcsTlPcsBd();
 		String sql=null;
 		
-		 sql = "DELETE from " + TBL_PCS_TL_PCSBD ;
+		 sql = "DELETE from " + TBL_BAL_PCS_TL_PCSBD ;
 		
 		sql += " where " + fieldTypeArr[tableFldConstants.keyid.ordinal()].fieldName  +
 			  " = '" +  (String)dataArray[ tableFldConstants.keyid.ordinal()] + "'";

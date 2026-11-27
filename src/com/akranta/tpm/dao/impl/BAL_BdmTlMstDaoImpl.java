@@ -436,8 +436,11 @@ public class BAL_BdmTlMstDaoImpl implements BAL_BdmTlMstDao {
 			updateWorkOrderPcsBd(bdmTlMst,womTlWomst,sqls);		
 		}
 		else
+			{
 			System.out.println(bdmTlMst.getBdmsWno()+" work orederrr no in else");
+			
 			insertWorkOrder(bdmTlMst,sqls);
+			}
 		
 		sqls.add(BAL_BdmTlMstSql.getInsertSql(bdmTlMstSql.getBdmsDbFields(), bdmTlMst.getSaveArray())); // add insert sql for master table
 		if(bdmTlMst.getBdmDetail()!= null && bdmTlMst.getBdmDetail().size()>0) // check for detail table data
@@ -455,14 +458,16 @@ public class BAL_BdmTlMstDaoImpl implements BAL_BdmTlMstDao {
 			pcsBd.setActive("Y");
 			pcsBd.setCreatedOn(dateTime);
 			pcsBd.setPcsBdmsKeyid(bdmTlMst.getBdmsKeyid());
-			pcsBd.setPcsbdKeyid(dbActionTemplate.getSequenceNumber(BAL_PcsTlPcsBdSql.TBL_PCS_TL_PCSBD, 12, "PCS", "", "Y"));
+			pcsBd.setPcsbdKeyid(dbActionTemplate.getSequenceNumber(BAL_PcsTlPcsBdSql.TBL_BAL_PCS_TL_PCSBD, 12, "PCS", "", "Y"));
 			sqls.add(BAL_PcsTlPcsBdSql.getInsertSql(pcsBdSql.getPcsBdDbFields(), pcsBd.getSaveArray()));
 		//	sqls.add(PcsTlMchineCalTimeSql.getInsertSql(mchCalSql.getMchCalDbfields(), mchTlCal.getSaveArray()));
 			//  Date dNow = new Date( );
 			  SimpleDateFormat ft =  new SimpleDateFormat ("DD-MM-YYYY");
 			  String date=bdmTlMst.getBdmsEntrydate();
 			  //ft.format(bdmTlMst.getBdmsEntrydate());
-			sqls.add("insert into PCS_TL_MACHINECALTIME(MCTM_FACTORYID,MCTM_SECTIONID,MCTM_CELLID,MCTM_MACHINEID,MCTM_SHIFTID,MCTM_SHIFTDATE,MCTM_CALTIME) values( '"+bdmTlMst.getBdmsFactoryid()+"','"+bdmTlMst.getBdmsSectionid()+"','"+bdmTlMst.getBdmsCellid()+"','"+bdmTlMst.getBdmsMachineid()+"','"+bdmTlMst.getBdmsShiftid()+"',TO_DATE('"+bdmTlMst.getBdmsEntrydate()+"','DD-MM-YYYY hh24:mi:ss'),"+480+")");
+			//sqls.add("insert into PCS_TL_MACHINECALTIME(MCTM_FACTORYID,MCTM_SECTIONID,MCTM_CELLID,MCTM_MACHINEID,MCTM_SHIFTID,MCTM_SHIFTDATE,MCTM_CALTIME) values( '"+bdmTlMst.getBdmsFactoryid()+"','"+bdmTlMst.getBdmsSectionid()+"','"+bdmTlMst.getBdmsCellid()+"','"+bdmTlMst.getBdmsMachineid()+"','"+bdmTlMst.getBdmsShiftid()+"'"+ ",TO_DATE('"+bdmTlMst.getBdmsEntrydate()+"','DD-Mon-YYYY hh24:mi:ss'),"+480+")");
+		   sqls.add("insert into PCS_TL_MACHINECALTIME(MCTM_FACTORYID,MCTM_SECTIONID,MCTM_CELLID,MCTM_MACHINEID,MCTM_SHIFTID,MCTM_SHIFTDATE,MCTM_CALTIME) values( '"+bdmTlMst.getBdmsFactoryid()+"','"+bdmTlMst.getBdmsSectionid()+"','"+bdmTlMst.getBdmsCellid()+"','"+bdmTlMst.getBdmsMachineid()+"','"+bdmTlMst.getBdmsShiftid()+"'"+ ",TO_DATE('"+bdmTlMst.getBdmsEntrydate()+"','yyyy-MM-dd'T'HH:mm:ss'),"+480+")");
+	
 		}
 		
 		insertShiftWise(bdmTlMst,sqls);
@@ -1863,13 +1868,23 @@ public SapTlMaintenanceOrdermst getSapSpareInFoData(String woKeyid)
 		String sql1="";
 		String keyid = commonFilter.getKey();
 		System.out.println("keyid.."+keyid);
-		sql.append(" select * from ( " );
-		sql.append("select 'BDId','Machine','Occured Date','Occured Time','Production Start Date','Production Start Time','Problem','Remark','Shift','ShiftId','MachinId','PRDFLAG','WONO','WTIME','ELEMENT',0 as dataorder from dual ");
-		sql.append(" UNION ALL SELECT BDMS_KEYID,E.MACHINE ||' - ' || E.FNLN_DISPLAYCODE as MACHINE,TO_CHAR(BDMS_REPORTEDDATE,'DD-MON-YYYY'),TO_CHAR(BDMS_REPORTEDDATE,'HH24:MI'), TO_CHAR(BDMS_PRODACCEPDATE,'DD-MON-YYYY'),TO_CHAR(BDMS_PRODACCEPDATE,'HH24:MI'),BDMS_PROBLEMdESCRIPTION,BDMS_REMARKS ");
-		sql.append(" ,SFTM_CODE,SFTM_KEYID,MCHM_KEYID,BDMS_WOPRODACCEPFLAG,BDMS_WNO,TO_CHAR(BDMS_ACTUALWORKTIME),BDMS_ELEMENTID,1 as dataorder FROM  BDM_TL_MST,GEN_TL_MACHINEMST,GEN_TL_SHIFTMST,gen_mv_flidhierarchy E,PCS_TL_PCSBD ");
-		sql.append(" WHERE 1=1   AND BDMS_SHIFTID=SFTM_KEYID AND MCHM_KEYID=BDMS_MACHINEID AND PBD_BDM_KEYID=BDMS_KEYID  AND BDMS_FLID= FLID  AND BDMS_CELLID='"+keyid+"'"); 
-		sql.append(" ) order by dataorder ");	
-		           
+//		sql.append(" select * from ( " );
+//		sql.append("select 'BDId','Machine','Occured Date','Occured Time','Production Start Date','Production Start Time','Problem','Remark','Shift','ShiftId','MachinId','PRDFLAG','WONO','WTIME','ELEMENT',0 as dataorder from ");
+//		sql.append(" UNION ALL SELECT BDMS_KEYID,E.MACHINE ||' - ' || E.FNLN_DISPLAYCODE as MACHINE,TO_CHAR(BDMS_REPORTEDDATE,'DD-MON-YYYY'),TO_CHAR(BDMS_REPORTEDDATE,'HH24:MI'), TO_CHAR(BDMS_PRODACCEPDATE,'DD-MON-YYYY'),TO_CHAR(BDMS_PRODACCEPDATE,'HH24:MI'),BDMS_PROBLEMdESCRIPTION,BDMS_REMARKS ");
+//		sql.append(" ,SFTM_CODE,SFTM_KEYID,MCHM_KEYID,BDMS_WOPRODACCEPFLAG,BDMS_WNO,TO_CHAR(BDMS_ACTUALWORKTIME),BDMS_ELEMENTID,1 as dataorder FROM  BDM_TL_MST,GEN_TL_MACHINEMST,GEN_TL_SHIFTMST,gen_mv_flidhierarchy E,PCS_TL_PCSBD ");
+//		sql.append(" WHERE 1=1   AND BDMS_SHIFTID=SFTM_KEYID AND MCHM_KEYID=BDMS_MACHINEID AND PBD_BDM_KEYID=BDMS_KEYID  AND BDMS_FLID= FLID  AND BDMS_CELLID='"+keyid+"'"); 
+//		sql.append(" ) order by dataorder ");	
+		
+
+		sql.append(" SELECT * FROM ( ");
+		sql.append(" SELECT 'BDId','Machine','Occured Date','Occured Time','Production Start Date','Production Start Time','Problem','Remark','Shift','ShiftId','MachinId','PRDFLAG','WONO','WTIME','ELEMENT',0 AS dataorder ");
+		sql.append(" UNION ALL SELECT BDMS_KEYID,E.MACHINE || ' - ' || E.FNLN_DISPLAYCODE AS MACHINE,TO_CHAR(BDMS_REPORTEDDATE,'DD-MON-YYYY'),TO_CHAR(BDMS_REPORTEDDATE,'HH24:MI'), TO_CHAR(BDMS_PRODACCEPDATE,'DD-MON-YYYY'),TO_CHAR(BDMS_PRODACCEPDATE,'HH24:MI'),BDMS_PROBLEMdESCRIPTION,BDMS_REMARKS ");
+		//sql.append(" ,SFTM_CODE,SFTM_KEYID,MCHM_KEYID,BDMS_WOPRODACCEPFLAG,BDMS_WNO,TO_CHAR(BDMS_ACTUALWORKTIME),BDMS_ELEMENTID,1 AS dataorder FROM BDM_TL_MST,GEN_TL_MACHINEMST,GEN_TL_SHIFTMST,gen_mv_flidhierarchy E,BAL_PCS_TL_PCSBD ");
+		sql.append(" ,SFTM_CODE,SFTM_KEYID,MCHM_KEYID,BDMS_WOPRODACCEPFLAG,BDMS_WNO,BDMS_ACTUALWORKTIME :: TEXT ,BDMS_ELEMENTID,1 AS dataorder FROM BAL_BDM_TL_MST,GEN_TL_MACHINEMST,GEN_TL_SHIFTMST,gen_mv_flidhierarchy E,BAL_PCS_TL_PCSBD ");
+		sql.append(" WHERE 1=1 AND BDMS_SHIFTID=SFTM_KEYID AND MCHM_KEYID=BDMS_MACHINEID AND PBD_BDM_KEYID=BDMS_KEYID AND BDMS_FLID=FLID AND BDMS_CELLID='"+keyid+"'");
+		sql.append(" ) AS result ORDER BY dataorder ");
+		
+			           
 	    
 		// TODO Auto-generated method stub
 		System.out.println("sql..." + sql);
@@ -2027,7 +2042,7 @@ public BAL_BdmTlMst updatepcsBd(BAL_BdmTlMst bdmTlMst,WomTlWomst womTlWomst)	thr
 				}
 						BAL_PcsTlPcsBd pcsTlbd= new BAL_PcsTlPcsBd();
 						pcsTlbd.setPcsBdmsKeyid(bdmTlMst.getBdmsKeyid());
-						String pcsbdkeyid = dbActionTemplate.getSingleValue(BAL_PcsTlPcsBdSql.TBL_PCS_TL_PCSBD,"PBD_KEYID", "PBD_BDM_KEYID", bdmTlMst.getBdmsKeyid());
+						String pcsbdkeyid = dbActionTemplate.getSingleValue(BAL_PcsTlPcsBdSql.TBL_BAL_PCS_TL_PCSBD,"PBD_KEYID", "PBD_BDM_KEYID", bdmTlMst.getBdmsKeyid());
 						
 						pcsTlbd.setPcsbdKeyid(pcsbdkeyid);
 						
