@@ -167,11 +167,15 @@
 	   return true;
    }
    function bdPcsdbl(rowid) { 
-	   alert("click");
+	  // alert("click");
 		//var plosKeyid = jQuery("#pcslossGrid").jqGrid('getCell',id,2); 		
 		//console.log("hi")
 		var rowData = jQuery("#pcsBdGrid").jqGrid('getRowData',rowid);
-		
+		// set Occurred On last, so nothing overwrites it
+		setTimeout(function() {
+		    jQuery('#dtebdmsReporteddate').datebox('setValue', rowData.OccuredDate);
+		    jQuery('#spnbdmsReportedtime').timespinner('setValue', rowData.OccuredTime);		    
+		}, 600);
 		var prdAccept=rowData.PRDFLAG;
 		//alert(prdAccept);
 		if(prdAccept=='Y'){
@@ -205,9 +209,18 @@
 	//	setFieldValue('dtebdmsReporteddate',rowData.OccuredDate);
 	//	setFieldValue('spnbdmsReportedtime',rowData.OccuredTime);
 		setFieldValue('hdnbdmsKeyid',rowData.BDId);
-		setFieldValue('txtbdmsActualworktime',rowData.WTIME);
-		loadFunctionalLocation("bdmsfunLocation","functionalLoc.Bbrdn","bdmsfunLocationValues","frmBDpcs","&machId="+rowData.MachinId);
-		frmBDpcs_successsCallback(result);
+//		setFieldValue('txtbdmsActualworktime',rowData.WTIME);
+//		loadFunctionalLocation("bdmsfunLocation","functionalLoc.Bbrdn","bdmsfunLocationValues","frmBDpcs","&machId="+rowData.MachinId);
+//		frmBDpcs_successsCallback(result);
+
+loadFunctionalLocation("bdmsfunLocation","functionalLoc.Bbrdn","bdmsfunLocationValues","frmBDpcs","&machId="+rowData.MachinId);
+
+// Down Time: grid value, otherwise Prod. Started minus Occurred On
+if (rowData.WTIME && rowData.WTIME != '0') {
+    jQuery('#txtbdmsActualworktime').val(rowData.WTIME);
+} else {
+    actualTimeCalculation();
+}
    }
   
    if( jQuery("#chbbdmsWoprodaccepflag").is(":checked") == false ){
